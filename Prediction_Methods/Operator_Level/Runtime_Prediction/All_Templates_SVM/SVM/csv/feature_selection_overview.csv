@@ -1,0 +1,27 @@
+operator;target;original_count;has_all_child_features;child_complete_iteration;final_count;selected_features_ffs;final_features;mre_original;mre_final
+Aggregate;execution_time;1;False;13;13;rt1;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, st1, st2, startup_cost, total_cost;125.1731;151.9760
+Aggregate;start_time;1;False;13;13;rt1;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, st1, st2, startup_cost, total_cost;80.2413;112.5448
+Gather;execution_time;2;False;13;13;rt1, sel;np, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;10.4936;19.7066
+Gather;start_time;7;False;13;13;np, nt2, reltuples, rt2, st1, st2, startup_cost;np, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;2.9080;9.4441
+Gather_Merge;execution_time;1;False;14;14;rt1;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;0.7114;0.8973
+Gather_Merge;start_time;1;False;14;14;rt1;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;0.8001;1.0062
+Hash;execution_time;2;False;12;12;rt1, startup_cost;np, nt, nt1, nt2, parallel_workers, reltuples, rt1, rt2, st1, st2, startup_cost, total_cost;17.8904;30.8899
+Hash;start_time;2;False;12;12;rt1, startup_cost;np, nt, nt1, nt2, parallel_workers, reltuples, rt1, rt2, st1, st2, startup_cost, total_cost;18.2532;31.5162
+Hash_Join;execution_time;2;False;13;13;rt1, total_cost;np, nt, nt1, nt2, parallel_workers, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;10.0551;18.8377
+Hash_Join;start_time;2;False;12;12;rt2, total_cost;np, nt, nt1, nt2, parallel_workers, reltuples, rt1, rt2, st1, st2, startup_cost, total_cost;2.0571;5.7554
+Incremental_Sort;execution_time;3;False;14;14;nt, nt1, rt1;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;0.0010;0.0056
+Incremental_Sort;start_time;3;False;14;14;nt, nt1, rt1;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;0.0010;0.0056
+Index_Only_Scan;execution_time;1;True;;1;np;np;0.0442;0.0442
+Index_Only_Scan;start_time;1;True;;1;np;np;0.1820;0.1820
+Index_Scan;execution_time;2;True;;2;np, plan_width;np, plan_width;75.1957;75.1957
+Index_Scan;start_time;3;True;;3;np, plan_width, sel;np, plan_width, sel;46.3669;46.3669
+Limit;execution_time;1;False;11;11;rt1;np, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2;0.4974;0.5107
+Limit;start_time;1;False;11;11;rt1;np, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2;0.4965;0.5100
+Merge_Join;execution_time;3;False;11;11;nt, rt1, st1;nt, nt1, nt2, plan_width, rt1, rt2, sel, st1, st2, startup_cost, total_cost;0.0034;0.0051
+Merge_Join;start_time;3;False;11;11;nt, rt1, st1;nt, nt1, nt2, plan_width, rt1, rt2, sel, st1, st2, startup_cost, total_cost;0.0034;0.0051
+Nested_Loop;execution_time;1;False;14;14;total_cost;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;4139.9153;5575.9582
+Nested_Loop;start_time;2;False;14;14;np, plan_width;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;2.6157;18.8642
+Seq_Scan;execution_time;2;True;;2;np, sel;np, sel;51835.7380;51835.7380
+Seq_Scan;start_time;2;True;;2;nt, total_cost;nt, total_cost;1066.2425;1066.2425
+Sort;execution_time;2;False;12;12;np, rt1;np, nt, nt1, nt2, parallel_workers, reltuples, rt1, rt2, st1, st2, startup_cost, total_cost;0.2994;0.7331
+Sort;start_time;2;False;12;12;np, rt1;np, nt, nt1, nt2, parallel_workers, reltuples, rt1, rt2, st1, st2, startup_cost, total_cost;0.3054;0.7473
