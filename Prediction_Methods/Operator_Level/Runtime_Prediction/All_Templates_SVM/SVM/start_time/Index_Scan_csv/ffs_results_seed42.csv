@@ -1,0 +1,8 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;plan_width;True;190.44442633096475;1;plan_width
+2;np;True;71.73546370672936;2;plan_width, np
+3;sel;True;46.36687977235599;3;plan_width, np, sel
+4;startup_cost;False;53.164284926468795;3;plan_width, np, sel
+5;total_cost;False;56.10080808079705;3;plan_width, np, sel
+6;nt;False;62.06808863598699;3;plan_width, np, sel
+7;reltuples;False;62.214455974567045;3;plan_width, np, sel
