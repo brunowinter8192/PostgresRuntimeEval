@@ -3,7 +3,7 @@
 ## Directory Structure
 
 ```
-Baseline/
+Datasets/
 ├── 00_InitSub_Analysis.py           # Analysis script for InitPlan/SubPlan template identification
 ├── 01_Leaf_Validation.py            # Validation script for Scan leaf node structure
 ├── 02_Filter_Templates.py           # Remove templates with InitPlan/SubPlan operators
@@ -11,8 +11,17 @@ Baseline/
 ├── 04_Split_Data.py                 # Split dataset into training and test sets by seed ranges
 ├── 05_Split_Types.py                # Split training data by node type into separate folders
 ├── 06_Clean_Test.py                 # Remove child features from test dataset
-├── [outputs]                         # Generated CSV files from scripts 00-06
-
+├── README.md                         # This file
+└── csv/                              # Output directory for all generated CSV files
+    ├── 00_InitSub_Templates.csv      # From script 00 (optional)
+    ├── 01_scan_leaf_issues.csv       # From script 01 (optional)
+    ├── 02_operator_dataset_cleaned.csv  # From script 02
+    ├── 03_operator_dataset_with_children.csv  # From script 03
+    ├── 04_training.csv               # From script 04
+    ├── 04_test.csv                   # From script 04
+    ├── 06_test_cleaned.csv           # From script 06
+    └── {NodeType}/                   # From script 05 (optional)
+        └── {NodeType}.csv            # One folder per operator type
 ```
 
 ## Workflow Execution Order
@@ -32,6 +41,35 @@ Execute scripts in this sequence:
 **Script Dependency Note**: Script 02_Filter_Templates removes templates (Q2, Q11, Q16, Q22) that were identified by 00_InitSub_Analysis as containing InitPlan/SubPlan operators. While the template list is hardcoded in script 02, it was originally determined by analyzing the output of script 00.
 
 Scripts 00 and 01 are optional analysis/validation scripts. Scripts 02-04 and 06 are required for dataset preparation. Script 05 is optional.
+
+## Shared Infrastructure
+
+### mapping_config.py
+
+**Location**: `/Prediction_Methods/Operator_Level/mapping_config.py`
+
+**Purpose**: Centralized configuration for operator features, targets, metadata, and naming conventions.
+
+**Used by**: Scripts 03, 05 (indirectly via feature column names)
+
+**Constants**:
+- `OPERATOR_FEATURES`: List of feature column names for model training
+- `OPERATOR_TARGETS`: List of target column names (actual_startup_time, actual_total_time)
+- `OPERATOR_METADATA`: List of metadata column names (query_file, node_id, etc.)
+- `CHILD_FEATURES`: Child operator timing features (st1, rt1, st2, rt2)
+- `TARGET_NAME_MAP`: Mapping between execution_time/start_time and actual column names
+- `TARGET_TYPES`: List of target types (execution_time, start_time)
+- `OPERATOR_CSV_TO_FOLDER`: Mapping from CSV operator names to folder names
+- `OPERATORS_CSV_NAMES`: List of operator names as they appear in CSV
+- `OPERATORS_FOLDER_NAMES`: List of operator names as folder names
+- `LEAF_OPERATORS`: List of leaf operator types (Seq Scan, Index Scan, Index Only Scan)
+
+**Functions**:
+- `csv_name_to_folder_name()`: Convert operator CSV name to folder name format
+- `folder_name_to_csv_name()`: Convert operator folder name to CSV name format
+- `is_leaf_operator()`: Check if operator is a leaf node type
+- `get_all_columns()`: Get all dataset columns (features + targets + metadata)
+- `get_feature_columns()`: Get feature column names for model training
 
 ## Script Documentation
 

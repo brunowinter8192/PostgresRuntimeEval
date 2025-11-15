@@ -10,6 +10,8 @@ from pathlib import Path
 import joblib
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+
+# From mapping_config.py: Get leaf operator list and name conversion utilities
 from mapping_config import LEAF_OPERATORS, csv_name_to_folder_name
 
 

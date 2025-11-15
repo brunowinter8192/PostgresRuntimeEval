@@ -32,12 +32,12 @@ def split_by_node_type(df):
     return node_type_dfs
 
 
-# Create folder per node type with NN prefix and save corresponding CSV file
+# Create folder per node type and save corresponding CSV file
 def export_node_types(node_type_dfs, base_dir):
     base_path = Path(base_dir)
 
     for node_type, node_df in node_type_dfs.items():
-        folder_name = f'04_{node_type.replace(" ", "_")}'
+        folder_name = node_type.replace(" ", "_")
 
         node_type_dir = base_path / folder_name
         node_type_dir.mkdir(exist_ok=True, parents=True)

@@ -51,22 +51,27 @@ LEAF_OPERATORS = ['Seq Scan', 'Index Scan', 'Index Only Scan']
 
 # FUNCTIONS
 
+# Convert operator CSV name to folder name format
 def csv_name_to_folder_name(csv_name):
     return OPERATOR_CSV_TO_FOLDER.get(csv_name, csv_name.replace(' ', '_'))
 
 
+# Convert operator folder name to CSV name format
 def folder_name_to_csv_name(folder_name):
     reverse_map = {v: k for k, v in OPERATOR_CSV_TO_FOLDER.items()}
     return reverse_map.get(folder_name, folder_name.replace('_', ' '))
 
 
+# Check if operator is a leaf node type
 def is_leaf_operator(operator_csv_name):
     return operator_csv_name in LEAF_OPERATORS
 
 
+# Get all dataset columns including features targets and metadata
 def get_all_columns():
     return OPERATOR_FEATURES + OPERATOR_TARGETS + OPERATOR_METADATA
 
 
+# Get feature column names for model training
 def get_feature_columns():
     return OPERATOR_FEATURES.copy()

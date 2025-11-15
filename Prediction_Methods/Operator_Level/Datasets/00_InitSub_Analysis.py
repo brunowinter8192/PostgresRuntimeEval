@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
-import sys
+# INFRASTRUCTURE
+import argparse
 import pandas as pd
 from pathlib import Path
 
+# ORCHESTRATOR
 
 # Coordinate workflow for InitPlan and SubPlan analysis
 def analyze_workflow(input_file, output_dir):
@@ -11,6 +13,7 @@ def analyze_workflow(input_file, output_dir):
     summary_df = analyze_initplan_subplan(df)
     export_results(summary_df, output_dir)
 
+# FUNCTIONS
 
 # Load operator dataset from CSV file
 def load_data(input_file):
@@ -44,10 +47,10 @@ def export_results(summary_df, output_dir):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        sys.exit(1)
-    
-    input_csv = sys.argv[1]
-    output_directory = sys.argv[2]
-    
-    analyze_workflow(input_csv, output_directory)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_file", help="Path to operator dataset CSV")
+    parser.add_argument("--output-dir", required=True, help="Output directory for analysis results")
+
+    args = parser.parse_args()
+
+    analyze_workflow(args.input_file, args.output_dir)
