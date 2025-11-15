@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
-import sys
+# INFRASTRUCTURE
+import argparse
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
+# ORCHESTRATOR
 
+# Coordinate workflow for prediction evaluation and visualization
 def evaluate_predictions_workflow(predictions_file, output_dir):
     df = load_predictions(predictions_file)
     root_ops = extract_root_operators(df)
@@ -15,6 +18,7 @@ def evaluate_predictions_workflow(predictions_file, output_dir):
     export_metrics(overall_mre, template_stats, output_dir)
     create_and_save_plot(template_stats, output_dir)
 
+# FUNCTIONS
 
 # Load predictions from CSV file
 def load_predictions(predictions_file):
@@ -120,10 +124,10 @@ def save_plot(fig, output_dir):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        sys.exit(1)
-    
-    predictions_csv = sys.argv[1]
-    output_directory = sys.argv[2]
-    
-    evaluate_predictions_workflow(predictions_csv, output_directory)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("predictions_file", help="Path to predictions CSV file")
+    parser.add_argument("--output-dir", required=True, help="Output directory for evaluation results")
+
+    args = parser.parse_args()
+
+    evaluate_predictions_workflow(args.predictions_file, args.output_dir)

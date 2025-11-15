@@ -7,18 +7,23 @@ Workflow für SVM-basierte Runtime-Vorhersage auf Operator-Ebene mit Two-Step Fo
 ## Directory Structure
 
 ```
-Baseline_SVM/
-├── SVM/
-│   ├── ffs_config.py                    # FFS-spezifische Konfiguration
-│   ├── forward_selection.py             # Two-Step Forward Feature Selection
-│   └── create_feature_overview.py       # (Deprecated - Functionality in forward_selection.py)
-├── Model/
-│   ├── 01_Train_Models.py               # Model Training
-│   └── 02_Bottom_Up_Prediction.py       # Bottom-Up Prediction
-├── Evaluation/
-│   ├── 03_Node_Type_Evaluation.py       # Node Type Cross-Evaluation
-│   └── 04_Operator_Time_Analysis.py     # Operator Time Range Analysis
-└── README.md
+Runtime_Prediction/
+├── 00_Forward_Selection.py          # Two-step forward feature selection for all operators
+├── 01_Train_Models.py                # Train SVM models for all operator-target combinations
+├── 02_Bottom_Up_Prediction.py        # Bottom-up prediction workflow on test set
+├── 03_Node_Type_Evaluation.py        # Cross-evaluation of node type prediction accuracy
+├── 04_Operator_Time_Analysis.py      # Statistical analysis of operator timing patterns
+├── evaluate_query_predictions.py     # Evaluate query-level predictions and create visualizations
+├── ffs_config.py                     # FFS-specific configuration (seed, params, features)
+├── README.md                          # This file
+├── csv/                               # Output directory for analysis results
+│   └── [outputs]                      # Generated CSV and PNG files
+├── execution_time/                    # Trained models for execution time prediction
+│   └── {Operator}/                    # One folder per operator type
+│       └── model.pkl                  # Trained SVM model
+└── start_time/                        # Trained models for start time prediction
+    └── {Operator}/                    # One folder per operator type
+        └── model.pkl                  # Trained SVM model
 ```
 
 **External Config**:
@@ -65,7 +70,7 @@ FFS-spezifische Konfiguration.
 - `SPARSE_FEATURES_MAP` - Features to exclude for Seq_Scan, Index_Scan, Index_Only_Scan
 - `SVM_PARAMS` - NuSVR hyperparameters (kernel, nu, C, gamma, cache_size)
 
-**Used by**: forward_selection.py, 01_Train_Models.py
+**Used by**: 00_Forward_Selection.py, 01_Train_Models.py
 
 ---
 

@@ -13,8 +13,13 @@ from sklearn.pipeline import Pipeline
 import joblib
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+
+# From mapping_config.py: Get operator names target types and target mapping
 from mapping_config import OPERATORS_FOLDER_NAMES, TARGET_TYPES, TARGET_NAME_MAP
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'SVM'))
+
+# From ffs_config.py: Get SVM hyperparameters
 from ffs_config import SVM_PARAMS
 
 

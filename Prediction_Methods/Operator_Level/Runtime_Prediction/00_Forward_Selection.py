@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import sys
+# INFRASTRUCTURE
+import argparse
 import re
 import pandas as pd
 import numpy as np
@@ -10,16 +11,18 @@ from sklearn.preprocessing import MaxAbsScaler
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.metrics import make_scorer
+import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+
+# From mapping_config.py: Get operator names target types child features and leaf operators
 from mapping_config import (
     OPERATORS_FOLDER_NAMES, TARGET_TYPES, TARGET_NAME_MAP,
     CHILD_FEATURES, LEAF_OPERATORS, csv_name_to_folder_name
 )
+
+# From ffs_config.py: Get FFS parameters SVM configuration and feature settings
 from ffs_config import SEED, MIN_FEATURES, SPARSE_FEATURES_MAP, SVM_PARAMS
-
-
-# INFRASTRUCTURE
 
 NO_CHILD_OPERATORS = set(csv_name_to_folder_name(op) for op in LEAF_OPERATORS)
 
@@ -290,10 +293,10 @@ def export_two_step_overview(overview_df, output_dir):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        sys.exit(1)
-    
-    dataset_directory = sys.argv[1]
-    output_directory = sys.argv[2]
-    
-    run_ffs_workflow(dataset_directory, output_directory)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("dataset_dir", help="Path to dataset directory containing operator folders")
+    parser.add_argument("--output-dir", required=True, help="Output directory for FFS results")
+
+    args = parser.parse_args()
+
+    run_ffs_workflow(args.dataset_dir, args.output_dir)
