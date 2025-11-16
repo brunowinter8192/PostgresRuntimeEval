@@ -18,7 +18,9 @@ OPERATOR_METADATA = [
     'depth', 'parent_relationship', 'subplan_name'
 ]
 
-CHILD_FEATURES = ['st1', 'rt1', 'st2', 'rt2', 'nt1', 'nt2']
+CHILD_FEATURES_TIMING = ['st1', 'rt1', 'st2', 'rt2']
+CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']
+CHILD_FEATURES = CHILD_FEATURES_TIMING + CHILD_FEATURES_STRUCTURAL
 
 TARGET_NAME_MAP = {
     'execution_time': 'actual_total_time',

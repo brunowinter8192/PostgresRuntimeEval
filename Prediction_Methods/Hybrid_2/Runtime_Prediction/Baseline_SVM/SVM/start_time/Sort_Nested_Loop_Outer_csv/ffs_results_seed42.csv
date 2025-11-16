@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;NestedLoop_Outer_rt1;True;0.004881291570084315;1;NestedLoop_Outer_rt1
+2;Sort_nt;True;0.0045623379897093705;2;NestedLoop_Outer_rt1, Sort_nt
+3;Sort_nt1;False;0.004621746644827447;2;NestedLoop_Outer_rt1, Sort_nt
+4;NestedLoop_Outer_nt;False;0.004621746644827447;2;NestedLoop_Outer_rt1, Sort_nt
+5;NestedLoop_Outer_nt1;False;0.004621746644827447;2;NestedLoop_Outer_rt1, Sort_nt
+6;Sort_total_cost;False;0.004720809150906053;2;NestedLoop_Outer_rt1, Sort_nt
+7;Sort_startup_cost;False;0.00472083371042174;2;NestedLoop_Outer_rt1, Sort_nt
+8;NestedLoop_Outer_total_cost;False;0.004721539129608633;2;NestedLoop_Outer_rt1, Sort_nt
+9;Sort_sel;False;0.004731832108225257;2;NestedLoop_Outer_rt1, Sort_nt
+10;Sort_plan_width;False;0.004731832108225257;2;NestedLoop_Outer_rt1, Sort_nt
+11;NestedLoop_Outer_nt2;False;0.004731832108225257;2;NestedLoop_Outer_rt1, Sort_nt
+12;NestedLoop_Outer_sel;False;0.004731832108225257;2;NestedLoop_Outer_rt1, Sort_nt
+13;NestedLoop_Outer_startup_cost;False;0.004731832108225257;2;NestedLoop_Outer_rt1, Sort_nt
+14;NestedLoop_Outer_plan_width;False;0.004731832108225257;2;NestedLoop_Outer_rt1, Sort_nt
+15;NestedLoop_Outer_st2;False;0.00639544071458086;2;NestedLoop_Outer_rt1, Sort_nt
+16;NestedLoop_Outer_rt2;False;0.00639544071458086;2;NestedLoop_Outer_rt1, Sort_nt
+17;NestedLoop_Outer_st1;False;0.009394488162542652;2;NestedLoop_Outer_rt1, Sort_nt
+18;Sort_np;False;0.010053868370358623;2;NestedLoop_Outer_rt1, Sort_nt
+19;Sort_nt2;False;0.010053868370358623;2;NestedLoop_Outer_rt1, Sort_nt
+20;Sort_reltuples;False;0.010053868370358623;2;NestedLoop_Outer_rt1, Sort_nt
+21;Sort_parallel_workers;False;0.010053868370358623;2;NestedLoop_Outer_rt1, Sort_nt
+22;NestedLoop_Outer_np;False;0.010053868370358623;2;NestedLoop_Outer_rt1, Sort_nt
+23;NestedLoop_Outer_reltuples;False;0.010053868370358623;2;NestedLoop_Outer_rt1, Sort_nt
+24;NestedLoop_Outer_parallel_workers;False;0.010053868370358623;2;NestedLoop_Outer_rt1, Sort_nt

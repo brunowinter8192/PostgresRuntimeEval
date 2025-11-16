@@ -10,14 +10,24 @@ import argparse
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
-from config import (
-    get_db_config,
-    DEFAULT_CONTAINER_NAME,
-    restart_orbstack_and_purge,
-    wait_for_docker_ready,
-    start_container,
-    wait_for_postgres
-)
+
+# From config.py: Build database configuration from parameters
+from config import get_db_config
+
+# From config.py: Default Docker container name
+from config import DEFAULT_CONTAINER_NAME
+
+# From config.py: Restart OrbStack and purge macOS cache
+from config import restart_orbstack_and_purge
+
+# From config.py: Wait for Docker daemon to be ready
+from config import wait_for_docker_ready
+
+# From config.py: Start Docker container by name
+from config import start_container
+
+# From config.py: Wait for PostgreSQL to accept connections
+from config import wait_for_postgres
 
 # ORCHESTRATOR
 def validate_cold_cache(query_dir, output_dir, runs, db_config, container_name):
@@ -41,6 +51,7 @@ def validate_cold_cache(query_dir, output_dir, runs, db_config, container_name):
 
 # FUNCTIONS
 
+# Get first seed query file from Q1 template
 def get_first_seed_q1(query_dir):
     template_dir = query_dir / 'Q1'
     if template_dir.exists() and template_dir.is_dir():
@@ -49,10 +60,12 @@ def get_first_seed_q1(query_dir):
             return [sql_files[0]]
     return []
 
+# Load SQL query from file
 def load_query(sql_file):
     with open(sql_file, 'r') as f:
         return f.read().strip()
 
+# Execute query multiple times with cold cache restarts between runs
 def execute_cold_cache_runs(query, sql_file, runs, db_config, container_name):
     times = []
     for run in range(1, runs + 1):
@@ -71,6 +84,7 @@ def execute_cold_cache_runs(query, sql_file, runs, db_config, container_name):
 
     return times
 
+# Execute query and measure execution time in milliseconds
 def execute_query(conn, query):
     conn.rollback()
     cursor = conn.cursor()
@@ -82,6 +96,7 @@ def execute_query(conn, query):
     conn.commit()
     return (end_time - start_time) * 1000
 
+# Calculate mean and span statistics from execution times
 def calculate_statistics(query_name, times):
     mean = sum(times) / len(times)
     span_ms = max(times) - min(times)
@@ -93,6 +108,7 @@ def calculate_statistics(query_name, times):
         'spannweite_ms': span_ms
     }
 
+# Export cold cache runs and statistics to CSV files
 def export_results(output_dir, all_runs, stats):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)

@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
 # INFRASTRUCTURE
+import sys
 import argparse
 import pandas as pd
 from pathlib import Path
 
-# ORCHESTRATOR
+sys.path.append(str(Path(__file__).parent.parent))
 
-# Coordinate workflow for scan and leaf structure verification
+# From mapping_config.py: Get leaf operator types for validation
+from mapping_config import LEAF_OPERATORS
+
+# ORCHESTRATOR
 def verify_workflow(input_file, output_dir):
     df = load_data(input_file)
     issues_df = verify_scan_leaf_structure(df)
@@ -22,7 +26,7 @@ def load_data(input_file):
 
 # Verify that all scans are leafs and all leafs are scans
 def verify_scan_leaf_structure(df):
-    scan_types = ['Seq Scan', 'Index Scan', 'Index Only Scan']
+    scan_types = LEAF_OPERATORS
     issues = []
     
     for query_file in df['query_file'].unique():

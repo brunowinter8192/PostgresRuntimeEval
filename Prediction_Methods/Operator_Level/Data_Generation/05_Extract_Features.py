@@ -10,7 +10,12 @@ from pathlib import Path
 from datetime import datetime
 
 sys.path.append(str(Path(__file__).parent))
-from config import get_db_config, get_query_files_all_templates
+
+# From config.py: Build database configuration from parameters
+from config import get_db_config
+
+# From config.py: Get all query files from Q1-Q22 excluding Q15
+from config import get_query_files_all_templates
 
 # ORCHESTRATOR
 def extract_all_features(query_dir, output_dir, db_config):
@@ -33,10 +38,12 @@ def extract_all_features(query_dir, output_dir, db_config):
 
 # FUNCTIONS
 
+# Load SQL query from file
 def load_query(query_file):
     with open(query_file, 'r') as f:
         return f.read().strip()
 
+# Execute EXPLAIN query and return JSON plan
 def get_explain_json(conn, query):
     conn.rollback()
     cursor = conn.cursor()
@@ -47,6 +54,7 @@ def get_explain_json(conn, query):
     conn.commit()
     return result[0][0]
 
+# Recursively extract features from plan node and children
 def extract_features(plan_node, query_file, conn, node_id_counter, depth=0, parent_relationship=None, features_data=None):
     if features_data is None:
         features_data = []
@@ -93,6 +101,7 @@ def extract_features(plan_node, query_file, conn, node_id_counter, depth=0, pare
 
     return features_data
 
+# Get table statistics from pg_class for scan operators
 def get_table_statistics(plan_node, conn, node_type):
     relation_name = plan_node.get("Relation Name")
     if relation_name and node_type in ["Seq Scan", "Index Scan", "Index Only Scan", "Bitmap Heap Scan"]:
@@ -100,6 +109,7 @@ def get_table_statistics(plan_node, conn, node_type):
         return pg_stats['relpages'], pg_stats['reltuples']
     return 0, 0
 
+# Query pg_class for relpages and reltuples statistics
 def get_pg_class_stats(conn, table_name):
     cursor = conn.cursor()
     cursor.execute("""
@@ -113,6 +123,7 @@ def get_pg_class_stats(conn, table_name):
         return {'relpages': result[0], 'reltuples': result[1]}
     return {'relpages': 0, 'reltuples': 0}
 
+# Extract row counts from outer and inner child nodes
 def get_child_row_counts(plan_node):
     nt1 = 0
     nt2 = 0
@@ -125,6 +136,7 @@ def get_child_row_counts(plan_node):
             nt2 = child.get("Plan Rows", 0)
     return nt1, nt2
 
+# Calculate selectivity based on node type and row counts
 def calculate_selectivity(node_type, nt, nt1, nt2, reltuples):
     if node_type in ["Seq Scan", "Index Scan", "Index Only Scan", "Bitmap Heap Scan"]:
         if reltuples > 0:
@@ -138,6 +150,7 @@ def calculate_selectivity(node_type, nt, nt1, nt2, reltuples):
         return nt / nt1
     return 0
 
+# Export features data to CSV with semicolon delimiter
 def export_features_csv(all_features_data, output_dir):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)

@@ -1,4 +1,4 @@
-# CLAUDE.MD - Thesis Project Engineering Reference
+# CLAUDE.MD - Thesis1 Project Engineering Reference
 
 ## 1. PROJECT IDENTITY
 
@@ -16,85 +16,123 @@
 
 ---
 
-## 2. COLLABORATION PROTOCOL
+## 2. PRIORITY LEVELS
 
-### Context Management (RAG Approach)
-
-- NO persistent working memory - context rebuilt per session
-- On-demand information retrieval via code exploration
-- User defines scope at session start
-- Meta-level understanding > exhaustive codebase knowledge
+**CRITICAL:** Must follow - violations break the system
+**IMPORTANT:** Should follow - violations reduce quality
+**RECOMMENDED:** Good practice - improves maintainability
 
 ---
 
 ## 3. CRITICAL STANDARDS
 
-- ❌ NO console outputs (print, console.log, echo)
-- ❌ NO logging statements (logger.info, logging.debug)
-- ❌ NO inline comments (only functions + section markers)
-- ❌ NO test files by default (only when requested)
-- ❌ NO emotes
-- ❌ NO hardcoded paths (always use argparse)
+- NO comments inside function bodies (only function header comments + section markers)
+- NO test files in root (ONLY in debug/ folder when requested)
+- NO emojis in code AND documentation
+- NO logging statements - scripts run completely silent
+- NO console output (print, console.log, echo)
+- NO hardcoded paths (always use argparse)
+- NO verbose output of any kind
 
-**Fail-Fast:** Let exceptions fly. No try-catch unless handling adds business value.
+**Type hints:** RECOMMENDED but optional
 
-### PRE-EDIT CHECKLIST
-
-Before ANY code change:
-1. How does this connect? (callers, callees, data flow)
-2. How will changes affect others? (impacts, side effects)
-3. Is integration guaranteed? (types, flow)
-4. Do you understand WHY? (problem, approach, trade-offs)
-
-**If uncertain → ASK.**
+**Fail-Fast:** Let exceptions fly. No try-catch that silently swallows errors affecting business logic. Script must fail if it cannot fulfill its purpose.
 
 ---
 
-## 4. THESIS-SPECIFIC RULES
+## 4. PROJECT ARCHITECTURE: Standalone Pipeline
+
+**This project uses standalone module architecture, NOT orchestrated workflow.**
+
+### Key Characteristics:
+- NO workflow.py (manual orchestration by user)
+- Each module: Independent script with argparse
+- Scripts run completely silent
+- Output ONLY via structured exports (.csv or .md files)
+- User manually executes scripts in sequence, reviewing outputs between steps
+
+### Rationale:
+Research pipeline where each step requires manual analysis before proceeding. Structured exports serve as execution trace. No need for logging when outputs are already structured.
+
+### Execution Pattern:
+```
+User runs: python 01_Script.py <args>
+         → Script runs silently
+         → Exports to csv/ or md/ folder
+         → User reviews output
+         → User runs: python 02_Script.py <args>
+         → ...
+```
+
+---
+
+## 5. THESIS-SPECIFIC RULES
 
 ### CSV Files
 
-- ALL CSV files MUST use semicolon `;` as delimiter, never comma
-- Excel on macOS requires semicolon to parse correctly
-- When generating: use `delimiter=';'` in csv.writer() or `sep=';'` in pd.to_csv()
-- Fix tool: `/Users/brunowinter2000/Documents/Thesis/2025_2026/convert_csv_delimiter.py`
-- Usage: `python3 convert_csv_delimiter.py <csv_file>` (in-place conversion)
+**CRITICAL:** ALL CSV files MUST use semicolon `;` as delimiter, never comma
 
-### Script Output Rules
+**Rationale:** Excel on macOS requires semicolon to parse correctly
 
-- Output ONLY: .md or .csv exports
-- Export location: Dedicated folder in same directory as script
-- Folder naming: Descriptive (e.g., `md/`, `csv/`, `analysis/`, `execution_time/`, `start_time/`, `predictions/`)
-- Scripts run **silently** - no prints, no logging
-- User manually orchestrates module execution in correct order
+**Implementation:**
+- When reading: `pd.read_csv(file, delimiter=';')` or `csv.reader(f, delimiter=';')`
+- When writing: `pd.to_csv(file, sep=';')` or `csv.writer(f, delimiter=';')`
 
-### Module Architecture
-
-- Modules are standalone - NO workflow.py
-- No automatic cross-module orchestration
-- Each module: Fixed Input (argparse) → Processing → Fixed Output (export folder)
+**Fix tool:** `/Users/brunowinter2000/Documents/Thesis/2025_2026/convert_csv_delimiter.py`
+**Usage:** `python3 convert_csv_delimiter.py <csv_file>` (in-place conversion)
 
 ---
 
-## 5. CODE ORGANIZATION
+### Script Output Rules
 
-Every script: **INFRASTRUCTURE → ORCHESTRATOR → FUNCTIONS**
+**Output ONLY:** .md or .csv exports
+**Export location:** Dedicated folder in same directory as script
+**Folder naming:** Descriptive (e.g., `md/`, `csv/`, `analysis/`, `execution_time/`, `start_time/`, `predictions/`)
+**Script behavior:** Completely silent - no prints, no logging, no verbose output
 
+---
+
+### Module Architecture
+
+**Standalone modules:**
+- Each module: Fixed Input (argparse) → Processing → Fixed Output (export folder)
+- NO automatic cross-module orchestration
+- User orchestrates execution manually
+
+---
+
+## 6. CODE ORGANIZATION
+
+**CRITICAL:** Every script follows this structure:
+
+**INFRASTRUCTURE → ORCHESTRATOR → FUNCTIONS**
+
+### INFRASTRUCTURE
+- Imports and constants
+- Argparse setup (positional + optional flags)
+- NO functions, NO logic
+
+### ORCHESTRATOR
+- ONE function calling other functions in sequence
+- ZERO functional logic (no calculations, transformations, business rules)
+- Meta-logic allowed: conditional workflow execution, parameter routing
+
+### FUNCTIONS
+- Ordered by call sequence
+- One responsibility each
+- Can call other functions internally
+
+**Example:**
 ```python
 # INFRASTRUCTURE
 import pandas as pd
 from pathlib import Path
-import argparse
-
-BATCH_SIZE = 100
-OUTPUT_FOLDER = "csv"
 
 # ORCHESTRATOR
 def process_workflow(input_file: str, output_dir: str) -> None:
     raw = load_data(input_file)
     cleaned = clean_data(raw)
-    results = analyze_data(cleaned)
-    export_results(results, output_dir)
+    export_results(analyze_data(cleaned), output_dir)
 
 # FUNCTIONS
 
@@ -102,52 +140,76 @@ def process_workflow(input_file: str, output_dir: str) -> None:
 def load_data(input_file: str) -> pd.DataFrame:
     return pd.read_csv(input_file, delimiter=';')
 
-# Remove invalid rows and null values
+# Remove invalid rows
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     return df.dropna()
 
-# Calculate statistics grouped by category
+# Calculate statistics
 def analyze_data(df: pd.DataFrame) -> pd.DataFrame:
-    return df.groupby('category').agg({'value': 'mean'})
+    return df.groupby('category').mean()
 
-# Save results to CSV with semicolon delimiter
+# Save results to CSV
 def export_results(results: pd.DataFrame, output_dir: str) -> None:
     Path(output_dir).mkdir(exist_ok=True)
     results.to_csv(f'{output_dir}/results.csv', sep=';', index=False)
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input_file", help="Path to input CSV")
-    parser.add_argument("--output-dir", default="./csv", help="Output directory")
-    parser.add_argument("--param", type=int, default=5, help="Parameter")
-    args = parser.parse_args()
-
-    process_workflow(args.input_file, args.output_dir)
 ```
 
-**INFRASTRUCTURE:** Imports, constants, argparse. NO functions.
-**ORCHESTRATOR:** ONE function. Calls only. ZERO logic.
-**FUNCTIONS:** Ordered by call sequence. One responsibility each.
+---
 
-### Comment Rules
+## 7. COMMENT RULES
 
-**Section Markers:**
-```python
-# INFRASTRUCTURE
-# ORCHESTRATOR
-# FUNCTIONS
-```
+**CRITICAL:** Three types of allowed comments only
 
-**Function Descriptions:**
+### 1. Section Markers
+`# INFRASTRUCTURE`, `# ORCHESTRATOR`, `# FUNCTIONS`
+
+### 2. Function Header Comments
+One line describing WHAT the function does, placed directly above function definition.
 ```python
 # Load validated customer data from CSV
 def load_customer_data(file_path: str) -> pd.DataFrame:
     return pd.read_csv(file_path, delimiter=';')
 ```
 
-Describe WHAT, never HOW. No inline comments.
+### 3. Cross-Module Import Comments
+Format: `# From <module>.py: <what it does>`
+```python
+# From data_loader.py: Load and validate CSV
+from data_loader import load_validated_data
+```
 
-### Argparse Template
+**CRITICAL:** ALL cross-module imports MUST have comments. NO inline comments inside function bodies.
+
+---
+
+## 8. ERROR HANDLING
+
+**IMPORTANT:** Fail-fast philosophy. If the script cannot fulfill its purpose, it must fail visibly.
+
+**ALLOWED:**
+- Retry logic with exponential backoff
+- Resource cleanup (files, connections)
+- Converting exceptions to domain errors
+
+**PROHIBITED:**
+- Silently swallowing errors
+- Generic `except Exception: pass`
+- Hiding failures affecting business logic
+
+**Example:**
+```python
+def fetch_data(params):
+    for attempt in range(3):
+        try:
+            return connect_and_fetch(params)
+        except ConnectionError:
+            if attempt == 2: raise
+            time.sleep(2 ** attempt)
+```
+
+---
+
+## 9. ARGPARSE TEMPLATE
 
 ```python
 if __name__ == "__main__":
@@ -169,7 +231,7 @@ if __name__ == "__main__":
 
 ---
 
-## 6. ARCHITECTURE STANDARDS
+## 10. ARCHITECTURE STANDARDS
 
 ### Naming Conventions
 
@@ -189,151 +251,149 @@ if __name__ == "__main__":
 
 **Rationale:** Immediate visual connection between script and its outputs
 
-### Shared Infrastructure (config.py)
+---
 
-**Include:**
-- Configuration helpers
-- Utility functions
-- Shared constants
-- Functions used by 2+ scripts
+### Mapping Configuration Pattern
 
-**Exclude:**
-- Business logic
-- Script-specific functions
-- Orchestration logic
+**Purpose:** Central mapping files (e.g., `mapping_config.py`) define dataset schema, folder naming, and feature sets for consistency.
 
-### Import Pattern
+**Use mapping for block operations** where multiple related values must stay synchronized:
+- Folder naming (ensures consistent structure across scripts)
+- Feature sets (column names that change together)
+- Type definitions (operator types, node categories)
 
-**Root-level scripts:**
+**Example:**
 ```python
-# From config.py: Build DB configuration from parameters
-from config import get_db_config
-
-# From mapping_config.py: Get operator feature column names
-from mapping_config import get_operator_features
+from mapping_config import CHILD_FEATURES_TIMING
+df = df.drop(columns=CHILD_FEATURES_TIMING)  # NOT ['st1', 'rt1', 'st2', 'rt2']
 ```
 
-**Subdirectory scripts:**
+**Skip mapping for individual column access** where script uses subset of columns:
 ```python
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).parent.parent))
-
-# From config.py: Build DB configuration from parameters
-from config import get_db_config
+df_filtered = df[['query_file', 'node_type']]  # Hardcoded is fine
 ```
 
-**CRITICAL:** ALL cross-module imports MUST have comments explaining WHAT the imported function does.
+**Split maps for semantic differences:**
+```python
+CHILD_FEATURES_TIMING = ['st1', 'rt1', 'st2', 'rt2']      # Unknown at prediction
+CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']                # Known at prediction
+```
 
-Format: `# From <module>.py: <what it does>`
+**Principle:** Mapping for coherent blocks, not arbitrary individual accesses.
 
-### README Structure
+---
 
-**Five Required Sections:**
+## 11. DOCUMENTATION STRUCTURE
 
-1. **Directory Structure**
-   - 2-3 directory levels with inline comments
-   - Show output folders, NOT generated files (use `[outputs]` placeholder)
-   - config.py: Brief description + "Used by: [scripts]"
+### Hierarchical Documentation Model
 
-2. **Documentation Files**
-   - One subsection per .md file (except README)
-   - Brief description + list key topics
+**Two-level hierarchy:** README (Workflow) stands ABOVE DOCS (Module)
 
-3. **Shared Infrastructure (config.py)**
-   - Document configuration flags
-   - List all functions with brief descriptions
-   - List all constants with their purpose
-   - Show which scripts import from config.py
+**Key principles:**
+- **README = Workflow-Level** - Can occur multiple times (one per workflow)
+- **DOCS = Module-Level** - Lives under README
+- **Relationship:** 1 README : n DOCS (NOT reverse)
+- **README hierarchically ABOVE DOCS** - Workflow orchestration documented before module details
 
-4. **Workflow Execution Order**
-   - Numbered list with script paths
-   - Inline purpose comment
-   - Mark optional vs required
-
-5. **Script Documentation**
-   - Purpose: One sentence
-   - Input: Positional arguments
-   - Variables: Script-specific argparse flags (exclude config flags)
-   - Output: Files with format and columns
-   - Important Notes: Critical information
-
-### Folder Structure
+**Structure visualization:**
 
 ```
 Project/
-├── config.py           # Shared infrastructure
-├── debug/              # ALL test files (test_*.py, debug_*.py)
-├── todo/               # Implementation TODOs
-└── logs/               # Runtime logs (optional)
+├── Workflow_A/
+│   ├── README.md          # Workflow-Level
+│   ├── Module_1/
+│   │   └── DOCS.md        # Module-Level
+│   ├── Module_2/
+│   │   └── DOCS.md        # Module-Level
+│   └── Module_3/
+│       └── DOCS.md        # Module-Level
+│
+└── Workflow_B/
+    ├── README.md          # Workflow-Level
+    └── Module_4/
+        └── DOCS.md        # Module-Level
 ```
 
-### Common Patterns
+**Concrete example (Operator_Level):**
 
-**Orchestrator Pattern:**
-```python
-def main_workflow(input_path, output_dir, config):
-    data = load_data(input_path)
-    processed = process_step1(data, config)
-    results = process_step2(processed)
-    export_results(results, output_dir)
 ```
-
-**Rules:**
-- ONE orchestrator per script
-- ZERO business logic
-- Only function calls
-- No transformations
-
-**CSV Export Pattern:**
-```python
-def export_to_csv(data, output_dir):
-    output_path = Path(output_dir)
-    output_path.mkdir(parents=True, exist_ok=True)
-
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    csv_path = output_path / f'data_{timestamp}.csv'
-
-    with open(csv_path, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=fields, delimiter=';')
-        writer.writeheader()
-        writer.writerows(data)
+Operator_Level/
+├── README.md                    # Workflow-Level (1 README)
+├── Data_Generation/
+│   └── DOCS.md                  # Module-Level
+├── Datasets/
+│   └── DOCS.md                  # Module-Level
+└── Runtime_Prediction/
+    └── DOCS.md                  # Module-Level
+                                 # → 3 DOCS under 1 README
 ```
-
-**Rules:**
-- Semicolon delimiter (`;`)
-- Create directory if needed
-- Timestamp in filename
-- `newline=''` with csv module
-
-**Function Ordering:**
-```python
-# ORCHESTRATOR
-def main_workflow(input, output):
-    data = load_data(input)        # First
-    cleaned = clean_data(data)     # Second
-    results = analyze_data(cleaned) # Third
-    export_results(results, output) # Fourth
-
-# FUNCTIONS
-
-# Load data from input
-def load_data(input_path):
-    pass
-
-# Clean loaded data
-def clean_data(data):
-    pass
-
-# Analyze cleaned data
-def analyze_data(cleaned):
-    pass
-
-# Export results
-def export_results(results, output_dir):
-    pass
-```
-
-Order by call sequence in orchestrator.
 
 ---
+
+### README.md (Workflow-Level Documentation)
+
+**Purpose:** High-level overview of multi-phase workflow orchestration
+
+**Placement Rules:**
+- **Location:** Workflow root (e.g., `Operator_Level/`)
+- **Relationship:** One README per workflow
+- **Scope:** Orchestrates multiple modules (references multiple DOCS)
+
+**Required Sections:**
+1. **Directory Structure** - 2-3 levels, inline comments, reference to module DOCS: `[See DOCS.md]`
+2. **Shared Infrastructure** - Workflow-wide config files (e.g., `mapping_config.py`), constants, functions
+3. **Workflow Overview** - Phase sequence (Phase 1 → 2 → 3), input/output, conceptual explanation
+4. **Phase Documentation** - Brief overview per phase, purpose/input/output, reference to `Module_Name/DOCS.md`
+
+**Keep it focused:** README explains WHAT happens at workflow level, DOCS explain HOW it happens at module level
+
+---
+
+### DOCS.md (Module-Level Documentation)
+
+**Purpose:** Detailed documentation of scripts within one module/phase
+
+**Placement Rules:**
+- **Location:** Module directories (e.g., `Runtime_Prediction/`)
+- **Relationship:** Multiple DOCS can exist under one README
+- **Scope:** Documents scripts within ONE module only
+
+**Required Sections:**
+1. **Directory Structure** - Complete module file tree, numbered scripts, output folders with `[outputs]` placeholder
+2. **Shared Infrastructure** - Module-specific config (e.g., `ffs_config.py`), constants, functions
+3. **Workflow Execution Order** - Script sequence (00 → 01 → 02), dependencies, ASCII flow diagram
+4. **Script Documentation** - Per script (### NN - Script_Name.py):
+   - **Purpose:** One sentence
+   - **Workflow:** Step-by-step process
+   - **Inputs:** Positional argparse arguments
+   - **Outputs:** Files with format, columns, location
+   - **Usage:** Command template with example
+   - **Variables:** Optional argparse flags
+
+**Single-Script Modules:** Can use README.md instead of DOCS.md with simplified structure
+
+---
+
+**Key principle:**
+- **README** = "How to RUN this workflow" (orchestration level)
+- **DOCS** = "How modules WORK" (implementation level)
+- **Hierarchy** = README references DOCS, never reverse
+
+---
+
+## 12. PROJECT STRUCTURE
+
+**Dynamic, organized by workflow needs**
+
+**Common patterns:**
+- `debug/` - Test files (when requested)
+- `config.py` - Shared infrastructure
+- `mapping_config.py` - Central mappings
+- `README.md` - Project documentation
+- `NN_Script_Name.py` - Workflow scripts
+- Output folders: `csv/`, `md/`, `analysis/`, etc.
+
+**NOT included:**
+- NO `logs/` folder (scripts are silent, exports are the trace)
+- NO `workflow.py` (manual orchestration)
+

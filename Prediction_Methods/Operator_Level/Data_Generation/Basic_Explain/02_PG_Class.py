@@ -9,7 +9,12 @@ from pathlib import Path
 from datetime import datetime
 
 sys.path.append(str(Path(__file__).parent.parent))
-from config import get_db_config, get_first_seed_per_template
+
+# From config.py: Build database configuration from parameters
+from config import get_db_config
+
+# From config.py: Get first seed file per template Q1-Q22 excluding Q15
+from config import get_first_seed_per_template
 
 # ORCHESTRATOR
 def export_pg_class_statistics(query_dir, output_dir, db_config):
@@ -38,10 +43,12 @@ def export_pg_class_statistics(query_dir, output_dir, db_config):
 
 # FUNCTIONS
 
+# Load SQL query from file
 def load_query(sql_file):
     with open(sql_file, 'r') as f:
         return f.read().strip()
 
+# Execute EXPLAIN query and return JSON plan
 def get_explain_json(conn, query):
     cursor = conn.cursor()
     explain_query = f"EXPLAIN (VERBOSE true, COSTS true, FORMAT JSON) {query}"
@@ -51,6 +58,7 @@ def get_explain_json(conn, query):
     conn.commit()
     return result[0][0]
 
+# Traverse plan tree and extract operator information with tables
 def traverse_plan(plan_node, operators_data, operator_id=0):
     operator_id += 1
     node_type = plan_node.get("Node Type", "Unknown")
@@ -72,6 +80,7 @@ def traverse_plan(plan_node, operators_data, operator_id=0):
 
     return operator_id
 
+# Extract all table names referenced by operator
 def extract_tables_from_operator(plan_node):
     tables = set()
 
@@ -110,12 +119,14 @@ def extract_tables_from_operator(plan_node):
 
     return tables
 
+# Write markdown header with metadata
 def write_header(f, total_queries):
     f.write("# PG_CLASS Statistics - Per Operator\n\n")
     f.write(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
     f.write(f"**Total Queries:** {total_queries}\n\n")
     f.write("---\n\n")
 
+# Write query section with all operators
 def write_query_section(f, idx, sql_file, operators_data, conn):
     f.write(f"## {idx}. {sql_file.name}\n\n")
     f.write(f"**Template:** Q{sql_file.name.split('_')[0][1:]}\n\n")
@@ -124,6 +135,7 @@ def write_query_section(f, idx, sql_file, operators_data, conn):
     for op_idx, op_data in enumerate(operators_data, 1):
         write_operator_section(f, op_idx, op_data, conn)
 
+# Write operator section with table statistics
 def write_operator_section(f, op_idx, op_data, conn):
     f.write(f"### Operator {op_idx}: {op_data['node_type']}\n\n")
     f.write(f"**Operator ID:** {op_data['operator_id']}\n\n")
@@ -139,6 +151,7 @@ def write_operator_section(f, op_idx, op_data, conn):
 
     f.write("---\n\n")
 
+# Query and write pg_class statistics for referenced tables
 def write_table_statistics(f, tables, conn):
     f.write(f"**Referenced Tables:** {', '.join(sorted(tables))}\n\n")
 

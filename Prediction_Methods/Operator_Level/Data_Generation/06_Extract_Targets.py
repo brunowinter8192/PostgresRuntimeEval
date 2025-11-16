@@ -11,15 +11,27 @@ from pathlib import Path
 from datetime import datetime
 
 sys.path.append(str(Path(__file__).parent))
-from config import (
-    get_db_config,
-    get_query_files_all_templates,
-    restart_orbstack_and_purge,
-    wait_for_docker_ready,
-    start_container,
-    wait_for_postgres,
-    DEFAULT_CONTAINER_NAME
-)
+
+# From config.py: Build database configuration from parameters
+from config import get_db_config
+
+# From config.py: Get all query files from Q1-Q22 excluding Q15
+from config import get_query_files_all_templates
+
+# From config.py: Restart OrbStack and purge macOS cache
+from config import restart_orbstack_and_purge
+
+# From config.py: Wait for Docker daemon to be ready
+from config import wait_for_docker_ready
+
+# From config.py: Start Docker container by name
+from config import start_container
+
+# From config.py: Wait for PostgreSQL to accept connections
+from config import wait_for_postgres
+
+# From config.py: Default Docker container name
+from config import DEFAULT_CONTAINER_NAME
 
 # ORCHESTRATOR
 def extract_all_targets(query_dir, output_dir, db_config, container_name):
@@ -46,10 +58,12 @@ def extract_all_targets(query_dir, output_dir, db_config, container_name):
 
 # FUNCTIONS
 
+# Load SQL query from file
 def load_query(query_file):
     with open(query_file, 'r') as f:
         return f.read().strip()
 
+# Restart environment with cold cache and prepare database connection
 def prepare_cold_cache_environment(container_name, db_config):
     if not restart_orbstack_and_purge():
         return False
@@ -58,6 +72,7 @@ def prepare_cold_cache_environment(container_name, db_config):
     start_container(container_name)
     return wait_for_postgres(db_config)
 
+# Execute EXPLAIN ANALYSE query and return JSON plan with runtime metrics
 def get_explain_analyse_json(conn, query):
     conn.rollback()
     cursor = conn.cursor()
@@ -68,6 +83,7 @@ def get_explain_analyse_json(conn, query):
     conn.commit()
     return result[0][0]
 
+# Recursively extract runtime targets from plan node and children
 def extract_targets(plan_node, query_file, node_id_counter, depth=0, parent_relationship=None, targets_data=None):
     if targets_data is None:
         targets_data = []
@@ -99,6 +115,7 @@ def extract_targets(plan_node, query_file, node_id_counter, depth=0, parent_rela
 
     return targets_data
 
+# Export targets data to CSV with semicolon delimiter
 def export_targets_csv(all_targets_data, output_dir):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)

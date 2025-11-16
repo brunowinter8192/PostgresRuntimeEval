@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
 # INFRASTRUCTURE
+import sys
 import argparse
 import pandas as pd
 from pathlib import Path
 
-# ORCHESTRATOR
+sys.path.append(str(Path(__file__).parent.parent))
 
-# Coordinate workflow to add child operator features to dataset
+# From mapping_config.py: Get child timing feature column names
+from mapping_config import CHILD_FEATURES_TIMING
+
+# ORCHESTRATOR
 def add_children_workflow(input_file, output_dir):
     df = load_data(input_file)
     df_with_children = compute_child_features(df)
@@ -57,11 +61,12 @@ def compute_child_features(df):
         rt2_list.append(rt2)
     
     df = df.copy()
-    df['st1'] = st1_list
-    df['rt1'] = rt1_list
-    df['st2'] = st2_list
-    df['rt2'] = rt2_list
-    
+    st1_name, rt1_name, st2_name, rt2_name = CHILD_FEATURES_TIMING
+    df[st1_name] = st1_list
+    df[rt1_name] = rt1_list
+    df[st2_name] = st2_list
+    df[rt2_name] = rt2_list
+
     return df
 
 

@@ -6,8 +6,6 @@ import pandas as pd
 from pathlib import Path
 
 # ORCHESTRATOR
-
-# Coordinate workflow for InitPlan and SubPlan analysis
 def analyze_workflow(input_file, output_dir):
     df = load_data(input_file)
     summary_df = analyze_initplan_subplan(df)

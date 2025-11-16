@@ -1,0 +1,31 @@
+pattern;leaf_pattern;total;Q1;Q10;Q12;Q13;Q14;Q18;Q19;Q3;Q4;Q5;Q6;Q7;Q8;Q9
+Hash Join → [Seq Scan (Outer), Hash (Inner)];False;1816;0;0;0;120;120;120;120;120;0;360;0;360;360;136
+Hash → Seq Scan (Outer);True;1680;0;240;0;0;120;0;120;120;0;240;0;240;360;240
+Hash → Hash Join (Outer);False;856;0;0;0;0;0;0;0;0;0;240;0;240;240;136
+Hash Join → [Nested Loop (Outer), Hash (Inner)];False;720;0;120;0;0;0;0;0;0;0;120;0;120;240;120
+Nested Loop → [Hash Join (Outer), Index Scan (Inner)];False;704;0;0;0;0;0;0;0;120;0;120;0;120;240;104
+Sort → Aggregate (Outer);False;600;120;120;0;0;0;120;0;120;120;0;0;0;0;0
+Sort → Hash Join (Outer);False;480;0;0;0;0;0;120;0;0;0;120;0;120;120;0
+Gather → Aggregate (Outer);False;480;0;0;0;0;120;0;120;0;0;0;120;0;0;120
+Gather Merge → Sort (Outer);False;480;120;0;0;0;0;0;0;0;120;0;0;120;120;0
+Nested Loop → [Seq Scan (Outer), Index Scan (Inner)];True;480;0;120;120;0;0;0;0;0;120;0;0;0;0;120
+Aggregate → Hash Join (Outer);False;376;0;0;0;120;120;0;120;0;0;0;0;0;0;16
+Aggregate → Gather (Outer);False;360;0;120;0;0;0;0;0;120;0;0;0;0;0;120
+Gather Merge → Aggregate (Outer);False;240;0;0;120;0;0;0;0;0;0;120;0;0;0;0
+Aggregate → Seq Scan (Outer);True;240;120;0;0;0;0;0;0;0;0;0;120;0;0;0
+Hash Join → [Hash Join (Outer), Hash (Inner)];False;240;0;120;0;0;0;0;0;0;0;0;0;0;0;120
+Aggregate → Gather Merge (Outer);False;240;0;0;0;0;0;120;0;0;0;120;0;0;0;0
+Aggregate → Sort (Outer);False;240;0;0;120;0;0;0;0;0;0;120;0;0;0;0
+Aggregate → Nested Loop (Outer);False;224;0;0;0;0;0;0;0;0;120;0;0;0;0;104
+Gather → Nested Loop (Outer);False;120;0;0;0;0;0;0;0;120;0;0;0;0;0;0
+Sort → Seq Scan (Outer);True;120;0;0;0;0;0;120;0;0;0;0;0;0;0;0
+Aggregate → Index Scan (Outer);True;120;0;0;0;0;0;120;0;0;0;0;0;0;0;0
+Hash → Aggregate (Outer);False;120;0;0;0;0;0;120;0;0;0;0;0;0;0;0
+Incremental Sort → Nested Loop (Outer);False;120;0;0;0;0;0;120;0;0;0;0;0;0;0;0
+Merge Join → [Sort (Outer), Sort (Inner)];False;120;0;0;0;0;0;120;0;0;0;0;0;0;0;0
+Nested Loop → [Merge Join (Outer), Index Scan (Inner)];False;120;0;0;0;0;0;120;0;0;0;0;0;0;0;0
+Gather Merge → Incremental Sort (Outer);False;120;0;0;0;0;0;120;0;0;0;0;0;0;0;0
+Gather → Hash Join (Outer);False;120;0;120;0;0;0;0;0;0;0;0;0;0;0;0
+Aggregate → Aggregate (Outer);False;120;0;0;0;120;0;0;0;0;0;0;0;0;0;0
+Sort → Nested Loop (Outer);False;120;0;0;120;0;0;0;0;0;0;0;0;0;0;0
+Hash → Index Only Scan (Outer);True;120;0;0;0;120;0;0;0;0;0;0;0;0;0;0

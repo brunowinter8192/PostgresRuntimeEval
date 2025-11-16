@@ -9,7 +9,12 @@ from pathlib import Path
 from datetime import datetime
 
 sys.path.append(str(Path(__file__).parent.parent))
-from config import get_db_config, get_first_seed_per_template
+
+# From config.py: Build database configuration from parameters
+from config import get_db_config
+
+# From config.py: Get first seed file per template Q1-Q22 excluding Q15
+from config import get_first_seed_per_template
 
 # ORCHESTRATOR
 def export_explain_json(query_dir, output_dir, db_config):
@@ -34,10 +39,12 @@ def export_explain_json(query_dir, output_dir, db_config):
 
 # FUNCTIONS
 
+# Load SQL query from file
 def load_query(sql_file):
     with open(sql_file, 'r') as f:
         return f.read().strip()
 
+# Execute EXPLAIN query and return JSON plan
 def get_explain_json(conn, query):
     cursor = conn.cursor()
     explain_query = f"EXPLAIN (VERBOSE true, COSTS true, FORMAT JSON) {query}"
@@ -47,12 +54,14 @@ def get_explain_json(conn, query):
     conn.commit()
     return result[0][0]
 
+# Write markdown header with metadata
 def write_header(f, total_queries):
     f.write("# EXPLAIN JSON Export - All Queries\n\n")
     f.write(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
     f.write(f"**Total Queries:** {total_queries}\n\n")
     f.write("---\n\n")
 
+# Write query section with EXPLAIN JSON plan
 def write_query_section(f, idx, sql_file, explain_json):
     f.write(f"## {idx}. {sql_file.name}\n\n")
     f.write(f"**Template:** Q{sql_file.name.split('_')[0][1:]}\n\n")

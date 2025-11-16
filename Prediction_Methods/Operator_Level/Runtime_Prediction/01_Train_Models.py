@@ -12,7 +12,7 @@ from sklearn.preprocessing import MaxAbsScaler
 from sklearn.pipeline import Pipeline
 import joblib
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 # From mapping_config.py: Get operator names target types and target mapping
 from mapping_config import OPERATORS_FOLDER_NAMES, TARGET_TYPES, TARGET_NAME_MAP
@@ -69,7 +69,7 @@ def get_selected_features(overview_df, operator, target):
     if row.empty:
         return []
 
-    features_str = row.iloc[0]['final_features_str']
+    features_str = row.iloc[0]['final_features']
 
     if pd.isna(features_str) or features_str.strip() == '':
         return []
@@ -99,7 +99,7 @@ def create_and_train_pipeline(X, y):
 
 # Save trained model pipeline to disk
 def save_model(pipeline, operator, target, output_dir):
-    model_dir = Path(output_dir) / target / operator
+    model_dir = Path(output_dir) / 'Model' / target / operator
     model_dir.mkdir(parents=True, exist_ok=True)
 
     model_file = model_dir / 'model.pkl'

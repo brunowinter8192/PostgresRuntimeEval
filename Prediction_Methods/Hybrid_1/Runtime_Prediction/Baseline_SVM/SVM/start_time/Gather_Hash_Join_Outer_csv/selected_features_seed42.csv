@@ -1,0 +1,6 @@
+feature;order
+HashJoin_Outer_st1;1
+Gather_startup_cost;2
+HashJoin_Outer_total_cost;3
+HashJoin_Outer_rt1;4
+Gather_plan_width;5
