@@ -1,0 +1,5 @@
+feature;order
+Hash_startup_cost;1
+Hash_nt;2
+Hash_nt1;3
+SeqScan_Outer_nt;4

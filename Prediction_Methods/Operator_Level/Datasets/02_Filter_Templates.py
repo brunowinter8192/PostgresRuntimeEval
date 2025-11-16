@@ -6,8 +6,6 @@ import pandas as pd
 from pathlib import Path
 
 # ORCHESTRATOR
-
-# Coordinate workflow to remove templates with unusual execution patterns
 def cleanup_workflow(input_file, output_dir):
     df = load_data(input_file)
     templates_to_remove = ['Q2', 'Q11', 'Q16', 'Q22']

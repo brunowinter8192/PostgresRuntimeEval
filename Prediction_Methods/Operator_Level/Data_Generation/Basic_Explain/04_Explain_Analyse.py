@@ -10,15 +10,27 @@ from pathlib import Path
 from datetime import datetime
 
 sys.path.append(str(Path(__file__).parent.parent))
-from config import (
-    get_db_config,
-    get_first_seed_per_template,
-    restart_orbstack_and_purge,
-    wait_for_docker_ready,
-    start_container,
-    wait_for_postgres,
-    DEFAULT_CONTAINER_NAME
-)
+
+# From config.py: Build database configuration from parameters
+from config import get_db_config
+
+# From config.py: Get first seed file per template Q1-Q22 excluding Q15
+from config import get_first_seed_per_template
+
+# From config.py: Restart OrbStack and purge macOS cache
+from config import restart_orbstack_and_purge
+
+# From config.py: Wait for Docker daemon to be ready
+from config import wait_for_docker_ready
+
+# From config.py: Start Docker container by name
+from config import start_container
+
+# From config.py: Wait for PostgreSQL to accept connections
+from config import wait_for_postgres
+
+# From config.py: Default Docker container name
+from config import DEFAULT_CONTAINER_NAME
 
 # ORCHESTRATOR
 def export_explain_analyse_cold_cache(query_dir, output_dir, db_config, container_name):
@@ -41,10 +53,12 @@ def export_explain_analyse_cold_cache(query_dir, output_dir, db_config, containe
 
 # FUNCTIONS
 
+# Load SQL query from file
 def load_query(sql_file):
     with open(sql_file, 'r') as f:
         return f.read().strip()
 
+# Process query with cold cache restart and write results
 def process_query_with_cold_cache(f, idx, sql_file, query, db_config, container_name):
     if not restart_orbstack_and_purge():
         write_error_section(f, idx, sql_file, "Restart failed")
@@ -65,6 +79,7 @@ def process_query_with_cold_cache(f, idx, sql_file, query, db_config, container_
     write_query_section(f, idx, sql_file, explain_json)
     conn.close()
 
+# Execute EXPLAIN ANALYSE query and return JSON plan with runtime metrics
 def get_explain_analyse_json(conn, query):
     conn.rollback()
     cursor = conn.cursor()
@@ -75,12 +90,14 @@ def get_explain_analyse_json(conn, query):
     conn.commit()
     return result[0][0]
 
+# Write markdown header with metadata
 def write_header(f, total_queries):
     f.write("# EXPLAIN ANALYSE JSON - COLD CACHE - First Seeds\n\n")
     f.write(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
     f.write(f"**Total Queries:** {total_queries}\n\n")
     f.write("---\n\n")
 
+# Write query section with EXPLAIN ANALYSE JSON plan
 def write_query_section(f, idx, sql_file, explain_json):
     template = sql_file.name.split('_')[0]
     f.write(f"## {idx}. {sql_file.name}\n\n")
@@ -91,6 +108,7 @@ def write_query_section(f, idx, sql_file, explain_json):
     f.write("\n```\n\n")
     f.write("---\n\n")
 
+# Write error section when cold cache preparation fails
 def write_error_section(f, idx, sql_file, error_message):
     f.write(f"## {idx}. {sql_file.name}\n\n")
     f.write(f"**ERROR:** {error_message}\n\n")

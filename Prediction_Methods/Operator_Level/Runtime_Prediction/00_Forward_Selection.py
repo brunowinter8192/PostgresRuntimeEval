@@ -13,16 +13,17 @@ from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.metrics import make_scorer
 import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 # From mapping_config.py: Get operator names target types child features and leaf operators
 from mapping_config import (
     OPERATORS_FOLDER_NAMES, TARGET_TYPES, TARGET_NAME_MAP,
-    CHILD_FEATURES, LEAF_OPERATORS, csv_name_to_folder_name
+    CHILD_FEATURES, LEAF_OPERATORS, csv_name_to_folder_name,
+    OPERATOR_METADATA, OPERATOR_TARGETS
 )
 
-# From ffs_config.py: Get FFS parameters SVM configuration and feature settings
-from ffs_config import SEED, MIN_FEATURES, SPARSE_FEATURES_MAP, SVM_PARAMS
+# From ffs_config.py: Get FFS parameters and SVM configuration
+from ffs_config import SEED, MIN_FEATURES, SVM_PARAMS
 
 NO_CHILD_OPERATORS = set(csv_name_to_folder_name(op) for op in LEAF_OPERATORS)
 
@@ -32,19 +33,23 @@ CHILD_FEATURES_SET = set(CHILD_FEATURES)
 # ORCHESTRATOR
 
 def run_ffs_workflow(dataset_dir, output_dir):
-    overview_data = []
-
-    for operator in OPERATORS_FOLDER_NAMES:
-        for target in TARGET_TYPES:
-            result = process_operator_target(operator, target, dataset_dir, output_dir)
-            if result:
-                overview_data.append(result)
-
+    overview_data = collect_operator_results(dataset_dir, output_dir)
     overview_df = generate_two_step_overview(overview_data)
     export_two_step_overview(overview_df, output_dir)
 
 
 # FUNCTIONS
+
+# Collect feature selection results from all operator-target combinations
+def collect_operator_results(dataset_dir, output_dir):
+    overview_data = []
+    for operator in OPERATORS_FOLDER_NAMES:
+        for target in TARGET_TYPES:
+            result = process_operator_target(operator, target, dataset_dir, output_dir)
+            if result:
+                overview_data.append(result)
+    return overview_data
+
 
 # Process forward feature selection for single operator-target combination
 def process_operator_target(operator, target, dataset_dir, output_dir):
@@ -90,20 +95,10 @@ def prepare_features_and_target(df, operator, target):
     return X, y, template_ids
 
 
-# Extract available features excluding non-feature and sparse columns
+# Extract available features excluding metadata and target columns
 def extract_available_features(df, operator):
-    non_feature_cols = [
-        'query_file', 'node_id', 'node_type', 'depth',
-        'parent_relationship', 'subplan_name',
-        'actual_startup_time', 'actual_total_time'
-    ]
-    
+    non_feature_cols = OPERATOR_METADATA + OPERATOR_TARGETS
     available_features = [col for col in df.columns if col not in non_feature_cols]
-    
-    if operator in SPARSE_FEATURES_MAP:
-        sparse_features = SPARSE_FEATURES_MAP[operator]
-        available_features = [f for f in available_features if f not in sparse_features]
-    
     return available_features
 
 
@@ -204,7 +199,7 @@ def extract_template_id(query_file):
 
 # Save selected features and iteration trace to CSV files
 def export_results(selected_features, results_df, operator, target, output_dir):
-    output_path = Path(output_dir) / target / f'{operator}_csv'
+    output_path = Path(output_dir) / 'SVM' / target / f'{operator}_csv'
     output_path.mkdir(parents=True, exist_ok=True)
 
     results_file = output_path / f'ffs_results_seed{SEED}.csv'
@@ -256,7 +251,7 @@ def evaluate_operator_two_step(df, operator, target, template_ids, cv, ffs_featu
 
 # Save final features to CSV file
 def export_final_features(final_features, operator, target, output_dir):
-    output_path = Path(output_dir) / target / f'{operator}_csv'
+    output_path = Path(output_dir) / 'SVM' / target / f'{operator}_csv'
     output_path.mkdir(parents=True, exist_ok=True)
 
     final_df = pd.DataFrame({
@@ -271,16 +266,15 @@ def export_final_features(final_features, operator, target, output_dir):
 def generate_two_step_overview(overview_data):
     df = pd.DataFrame(overview_data)
 
-    df['ffs_features_str'] = df['ffs_features'].apply(lambda x: ', '.join(sorted(x)))
-    df['missing_child_features_str'] = df['missing_child_features'].apply(lambda x: ', '.join(sorted(x)) if x else '')
-    df['final_features_str'] = df['final_features'].apply(lambda x: ', '.join(sorted(x)))
-    df['mre_delta'] = df['mre_final'] - df['mre_ffs']
+    df['ffs_features'] = df['ffs_features'].apply(lambda x: ', '.join(sorted(x)))
+    df['missing_child_features'] = df['missing_child_features'].apply(lambda x: ', '.join(sorted(x)) if x else '')
+    df['final_features'] = df['final_features'].apply(lambda x: ', '.join(sorted(x)))
 
     columns_order = [
         'operator', 'target',
         'ffs_feature_count', 'missing_child_count', 'final_feature_count',
-        'mre_ffs', 'mre_final', 'mre_delta',
-        'ffs_features_str', 'missing_child_features_str', 'final_features_str'
+        'mre_ffs', 'mre_final',
+        'ffs_features', 'missing_child_features', 'final_features'
     ]
 
     return df[columns_order]
@@ -288,7 +282,8 @@ def generate_two_step_overview(overview_data):
 
 # Save two-step evaluation overview to CSV
 def export_two_step_overview(overview_df, output_dir):
-    overview_path = Path(output_dir) / 'two_step_evaluation_overview.csv'
+    overview_path = Path(output_dir) / 'SVM' / 'two_step_evaluation_overview.csv'
+    overview_path.parent.mkdir(parents=True, exist_ok=True)
     overview_df.to_csv(overview_path, index=False, sep=';')
 
 

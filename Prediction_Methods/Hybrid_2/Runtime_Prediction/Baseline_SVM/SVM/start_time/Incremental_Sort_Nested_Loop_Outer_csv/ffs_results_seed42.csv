@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;NestedLoop_Outer_rt1;True;0.001328603919673361;1;NestedLoop_Outer_rt1
+2;IncrementalSort_nt;True;0.0010501709495313056;2;NestedLoop_Outer_rt1, IncrementalSort_nt
+3;IncrementalSort_nt1;True;0.0010251574430190202;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+4;NestedLoop_Outer_st1;False;0.00109487554402076;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+5;IncrementalSort_sel;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+6;IncrementalSort_startup_cost;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+7;IncrementalSort_total_cost;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+8;IncrementalSort_plan_width;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+9;NestedLoop_Outer_nt;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+10;NestedLoop_Outer_nt1;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+11;NestedLoop_Outer_nt2;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+12;NestedLoop_Outer_sel;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+13;NestedLoop_Outer_startup_cost;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+14;NestedLoop_Outer_total_cost;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+15;NestedLoop_Outer_plan_width;False;0.001243470538378638;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+16;NestedLoop_Outer_st2;False;0.005550075510876725;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+17;NestedLoop_Outer_rt2;False;0.0055502240669242165;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+18;IncrementalSort_np;False;0.005557879216445771;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+19;IncrementalSort_nt2;False;0.005557879216445771;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+20;IncrementalSort_reltuples;False;0.005557879216445771;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+21;IncrementalSort_parallel_workers;False;0.005557879216445771;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+22;NestedLoop_Outer_np;False;0.005557879216445771;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+23;NestedLoop_Outer_reltuples;False;0.005557879216445771;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1
+24;NestedLoop_Outer_parallel_workers;False;0.005557879216445771;3;NestedLoop_Outer_rt1, IncrementalSort_nt, IncrementalSort_nt1

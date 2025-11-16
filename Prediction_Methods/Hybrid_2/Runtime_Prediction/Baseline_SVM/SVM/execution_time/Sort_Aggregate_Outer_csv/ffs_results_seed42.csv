@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Aggregate_Outer_rt1;True;0.12029573103466426;1;Aggregate_Outer_rt1
+2;Aggregate_Outer_sel;True;0.11517512908933522;2;Aggregate_Outer_rt1, Aggregate_Outer_sel
+3;Aggregate_Outer_startup_cost;True;0.11128412687423898;3;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost
+4;Aggregate_Outer_nt1;True;0.11007067211892019;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+5;Aggregate_Outer_st1;False;0.11024158313941901;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+6;Aggregate_Outer_total_cost;False;0.11102901964607759;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+7;Sort_startup_cost;False;0.11111939341391364;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+8;Sort_total_cost;False;0.11112381435714913;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+9;Sort_np;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+10;Sort_nt2;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+11;Sort_reltuples;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+12;Sort_parallel_workers;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+13;Aggregate_Outer_np;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+14;Aggregate_Outer_nt2;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+15;Aggregate_Outer_reltuples;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+16;Aggregate_Outer_parallel_workers;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+17;Aggregate_Outer_st2;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+18;Aggregate_Outer_rt2;False;0.11192077258760806;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+19;Sort_nt;False;0.11239545006902832;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+20;Sort_nt1;False;0.11239545006902832;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+21;Aggregate_Outer_nt;False;0.11239545006902832;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+22;Sort_plan_width;False;0.11286470491383034;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+23;Aggregate_Outer_plan_width;False;0.11286470491383034;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+24;Sort_sel;False;0.1141027509313725;4;Aggregate_Outer_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1

@@ -7,8 +7,6 @@ import pandas as pd
 from pathlib import Path
 
 # ORCHESTRATOR
-
-# Coordinate workflow to split dataset into training and test sets by seed ranges
 def split_workflow(input_file, output_dir):
     df = load_data(input_file)
     train_df, test_df = split_by_seeds(df, 120, 30)

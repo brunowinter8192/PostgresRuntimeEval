@@ -1,0 +1,12 @@
+pattern
+Aggregate → Gather (Outer)
+Aggregate → Hash Join (Outer)
+Aggregate → Nested Loop (Outer)
+Gather → Aggregate (Outer)
+Hash Join → [Hash Join (Outer), Hash (Inner)]
+Hash Join → [Nested Loop (Outer), Hash (Inner)]
+Hash Join → [Seq Scan (Outer), Hash (Inner)]
+Hash → Hash Join (Outer)
+Hash → Seq Scan (Outer)
+Nested Loop → [Hash Join (Outer), Index Scan (Inner)]
+Nested Loop → [Seq Scan (Outer), Index Scan (Inner)]

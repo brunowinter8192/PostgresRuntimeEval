@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
 # INFRASTRUCTURE
+import sys
 import argparse
 import pandas as pd
 from pathlib import Path
 
-# ORCHESTRATOR
+sys.path.append(str(Path(__file__).parent.parent))
 
-# Coordinate workflow to split training data by node type into separate folders
+# From mapping_config.py: Convert operator CSV name to folder name format
+from mapping_config import csv_name_to_folder_name
+
+# ORCHESTRATOR
 def split_by_type_workflow(training_file, output_base_dir):
     df = load_data(training_file)
     node_type_dfs = split_by_node_type(df)
@@ -37,7 +41,7 @@ def export_node_types(node_type_dfs, base_dir):
     base_path = Path(base_dir)
 
     for node_type, node_df in node_type_dfs.items():
-        folder_name = node_type.replace(" ", "_")
+        folder_name = csv_name_to_folder_name(node_type)
 
         node_type_dir = base_path / folder_name
         node_type_dir.mkdir(exist_ok=True, parents=True)

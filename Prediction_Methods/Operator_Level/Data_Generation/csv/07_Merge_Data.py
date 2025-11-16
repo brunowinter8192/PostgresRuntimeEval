@@ -21,16 +21,20 @@ def merge_features_and_targets(features_csv, targets_csv, output_dir):
 
 # FUNCTIONS
 
+# Load features CSV with semicolon delimiter
 def load_features(features_csv):
     return pd.read_csv(features_csv, delimiter=';')
 
+# Load targets CSV with semicolon delimiter
 def load_targets(targets_csv):
     return pd.read_csv(targets_csv, delimiter=';')
 
+# Validate that features and targets have same row count
 def validate_row_counts(df_features, df_targets):
     if len(df_features) != len(df_targets):
         raise ValueError(f"Row count mismatch: features={len(df_features)}, targets={len(df_targets)}")
 
+# Merge features and targets on query_file and node_id
 def merge_datasets(df_features, df_targets):
     return pd.merge(
         df_features,
@@ -39,10 +43,12 @@ def merge_datasets(df_features, df_targets):
         how='inner'
     )
 
+# Validate that merge preserved row count
 def validate_merge_result(df_features, df_merged):
     if len(df_merged) != len(df_features):
         raise ValueError(f"Merge row count mismatch: expected={len(df_features)}, got={len(df_merged)}")
 
+# Export merged dataset to CSV with semicolon delimiter
 def export_merged_dataset(df_merged, output_dir):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,30 @@
+pattern;is_leaf;node_type;depth
+Aggregate → Gather (Outer) (#1);Non-Leaf;Aggregate;1
+Aggregate → Gather (Outer) (#1);Non-Leaf;Gather;2
+Gather → Aggregate (Outer) (#1);Non-Leaf;Gather;2
+Gather → Aggregate (Outer) (#1);Non-Leaf;Aggregate;3
+Aggregate → Hash Join (Outer) (#1);Non-Leaf;Aggregate;3
+Aggregate → Hash Join (Outer) (#1);Non-Leaf;Hash Join;4
+Hash Join → [Seq Scan (Outer), Hash (Inner)] (#1);Leaf;Hash Join;4
+Hash Join → [Seq Scan (Outer), Hash (Inner)] (#1);Leaf;Seq Scan;5
+Hash Join → [Seq Scan (Outer), Hash (Inner)] (#1);Leaf;Hash;5
+Hash → Hash Join (Outer) (#1);Non-Leaf;Hash;5
+Hash → Hash Join (Outer) (#1);Non-Leaf;Hash Join;6
+Hash Join → [Seq Scan (Outer), Hash (Inner)] (#2);Leaf;Hash Join;6
+Hash Join → [Seq Scan (Outer), Hash (Inner)] (#2);Leaf;Seq Scan;7
+Hash Join → [Seq Scan (Outer), Hash (Inner)] (#2);Leaf;Hash;7
+Hash → Hash Join (Outer) (#2);Non-Leaf;Hash;7
+Hash → Hash Join (Outer) (#2);Non-Leaf;Hash Join;8
+Hash Join → [Hash Join (Outer), Hash (Inner)] (#1);Non-Leaf;Hash Join;8
+Hash Join → [Hash Join (Outer), Hash (Inner)] (#1);Non-Leaf;Hash Join;9
+Hash Join → [Hash Join (Outer), Hash (Inner)] (#1);Non-Leaf;Hash;9
+Hash Join → [Nested Loop (Outer), Hash (Inner)] (#1);Non-Leaf;Hash Join;9
+Hash Join → [Nested Loop (Outer), Hash (Inner)] (#1);Non-Leaf;Nested Loop;10
+Hash Join → [Nested Loop (Outer), Hash (Inner)] (#1);Non-Leaf;Hash;10
+Nested Loop → [Seq Scan (Outer), Index Scan (Inner)] (#1);Leaf;Nested Loop;10
+Nested Loop → [Seq Scan (Outer), Index Scan (Inner)] (#1);Leaf;Seq Scan;11
+Nested Loop → [Seq Scan (Outer), Index Scan (Inner)] (#1);Leaf;Index Scan;11
+Hash → Seq Scan (Outer) (#1);Leaf;Hash;10
+Hash → Seq Scan (Outer) (#1);Leaf;Seq Scan;11
+Hash → Seq Scan (Outer) (#2);Leaf;Hash;9
+Hash → Seq Scan (Outer) (#2);Leaf;Seq Scan;10

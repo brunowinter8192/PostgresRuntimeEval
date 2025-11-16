@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
 # INFRASTRUCTURE
+import sys
 import argparse
 import pandas as pd
 from pathlib import Path
 
-# ORCHESTRATOR
+sys.path.append(str(Path(__file__).parent.parent))
 
-# Coordinate workflow to remove child features from test dataset
+# From mapping_config.py: Get child timing features to remove from test set
+from mapping_config import CHILD_FEATURES_TIMING
+
+# ORCHESTRATOR
 def clean_test_workflow(test_file, output_dir):
     df = load_data(test_file)
     df_cleaned = remove_child_features(df)
@@ -22,7 +26,7 @@ def load_data(test_file):
 
 # Remove st1, rt1, st2, rt2 columns from dataset
 def remove_child_features(df):
-    child_features = ['st1', 'rt1', 'st2', 'rt2']
+    child_features = CHILD_FEATURES_TIMING
     existing_child_features = [f for f in child_features if f in df.columns]
     
     if existing_child_features:
