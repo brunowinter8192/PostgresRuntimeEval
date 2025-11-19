@@ -342,8 +342,13 @@ Operator_Level/
 **Required Sections:**
 1. **Directory Structure** - 2-3 levels, inline comments, reference to module DOCS: `[See DOCS.md]`
 2. **Shared Infrastructure** - Workflow-wide config files (e.g., `mapping_config.py`), constants, functions
-3. **Workflow Overview** - Phase sequence (Phase 1 → 2 → 3), input/output, conceptual explanation
-4. **Phase Documentation** - Brief overview per phase, purpose/input/output, reference to `Module_Name/DOCS.md`
+3. **Datasets** - Dataset characteristics and philosophy
+   - Dataset structure (samples, features, columns, delimiter)
+   - Feature categories with counts and examples (table format)
+   - Plan_Level_X philosophy: Dataset variations vs methodology changes
+   - Baseline approach characteristics (full feature set, no adjustments)
+4. **Workflow Overview** - Phase sequence (Phase 1 → 2 → 3), input/output, conceptual explanation
+5. **Phase Documentation** - Brief overview per phase, purpose/input/output, reference to `Module_Name/DOCS.md`
 
 **Keep it focused:** README explains WHAT happens at workflow level, DOCS explain HOW it happens at module level
 
