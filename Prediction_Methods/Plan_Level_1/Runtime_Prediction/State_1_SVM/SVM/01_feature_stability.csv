@@ -1,0 +1,11 @@
+feature;count;percentage
+p_rows;5;100.0
+Aggregate_cnt;5;100.0
+Index_Only_Scan_rows;5;100.0
+Gather_cnt;5;100.0
+Seq_Scan_rows;5;100.0
+Index_Only_Scan_cnt;5;100.0
+Seq_Scan_cnt;5;100.0
+Hash_Join_rows;5;100.0
+p_tot_cost;5;100.0
+p_st_cost;5;100.0

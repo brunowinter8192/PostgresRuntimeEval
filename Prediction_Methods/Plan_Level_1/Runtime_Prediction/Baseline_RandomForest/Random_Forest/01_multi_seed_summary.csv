@@ -1,0 +1,6 @@
+seed;n_features;final_mre;selected_features
+42;10;0.02644480876100974;Sort_rows, jit_functions, p_rows, strategy_hashed, group_key_columns, Gather_cnt, parallel_aware_count, strategy_sorted, p_width, Hash_cnt
+123;11;0.026537439574362876;Sort_rows, jit_functions, p_rows, strategy_sorted, group_key_count, workers_planned, subplan_count, Sort_cnt, Index_Only_Scan_rows, Index_Scan_rows, sort_key_count
+456;10;0.026537512239425916;Sort_rows, jit_functions, p_rows, Gather_cnt, Limit_rows, partial_mode_simple, Aggregate_cnt, Index_Scan_rows, max_tree_depth, workers_planned
+789;11;0.026417211009694776;Sort_rows, jit_functions, Gather_Merge_rows, p_rows, Sort_cnt, Limit_rows, sort_key_columns, op_count, initplan_count, sort_key_count, group_key_columns
+999;14;0.026596276123177755;Sort_rows, jit_functions, p_rows, Gather_Merge_rows, Hash_cnt, strategy_plain, op_count, Merge_Join_cnt, Limit_rows, Index_Scan_rows, Gather_cnt, strategy_sorted, Hash_Join_cnt, Nested_Loop_cnt

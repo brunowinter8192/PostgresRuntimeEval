@@ -1,0 +1,27 @@
+# Ignore everything
+*
+
+# Except dbgen directory
+!dbgen/
+!dbgen/**
+
+# Standard ignores
+.DS_Store
+*.log
+*.tmp
+*.backup
+*.bak
+
+# Compiled artifacts in dbgen
+dbgen/*.o
+dbgen/dbgen
+dbgen/qgen
+
+# Generated data files
+dbgen/*.tbl
+
+# Generated queries  
+dbgen/queries/*_generated.sql
+
+# Don't ignore .gitignore itself
+!.gitignore

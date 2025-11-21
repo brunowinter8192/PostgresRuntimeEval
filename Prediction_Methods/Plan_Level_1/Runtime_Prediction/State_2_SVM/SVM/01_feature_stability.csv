@@ -1,0 +1,11 @@
+feature;count;percentage
+initplan_count;5;100.0
+subplan_count;5;100.0
+Index_Scan_cnt;5;100.0
+max_tree_depth;5;100.0
+jit_functions;5;100.0
+Aggregate_cnt;5;100.0
+sort_key_columns;5;100.0
+Index_Only_Scan_cnt;5;100.0
+Gather_cnt;5;100.0
+Hash_Join_rows;5;100.0
