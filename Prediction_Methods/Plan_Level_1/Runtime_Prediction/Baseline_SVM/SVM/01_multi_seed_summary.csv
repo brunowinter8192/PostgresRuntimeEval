@@ -1,0 +1,6 @@
+seed;n_features;final_mre;selected_features
+42;10;0.08551044609286991;initplan_count, subplan_count, group_key_count, jit_functions, Index_Only_Scan_cnt, Gather_cnt, workers_planned, sort_key_columns, Aggregate_cnt, Hash_Join_rows
+123;10;0.08549043442022333;initplan_count, subplan_count, group_key_count, jit_functions, Index_Only_Scan_cnt, Gather_cnt, workers_planned, sort_key_columns, Aggregate_cnt, Hash_Join_rows
+456;10;0.08562799402763868;initplan_count, subplan_count, group_key_count, jit_functions, Index_Only_Scan_cnt, Gather_cnt, workers_planned, sort_key_columns, Aggregate_cnt, Hash_Join_rows
+789;10;0.085358238368217;initplan_count, subplan_count, group_key_count, jit_functions, Index_Only_Scan_cnt, Gather_cnt, workers_planned, sort_key_columns, Aggregate_cnt, Hash_Join_rows
+999;10;0.08557222111030717;initplan_count, subplan_count, group_key_count, jit_functions, Index_Only_Scan_cnt, Gather_cnt, workers_planned, sort_key_columns, Aggregate_cnt, Hash_Join_rows

@@ -1,0 +1,21 @@
+pattern;leaf_pattern;total_occurrences;num_operators;expected_rows;actual_rows;match;status
+Hash Join → [Seq Scan (Outer), Hash (Inner)];False;1816;3;5448;5448;True;OK
+Aggregate → Gather Merge (Outer);False;840;2;1680;1680;True;OK
+Aggregate → Gather (Outer);False;720;2;1440;1440;True;OK
+Hash Join → [Nested Loop (Outer), Hash (Inner)];False;720;3;2160;2160;True;OK
+Nested Loop → [Hash Join (Outer), Index Scan (Inner)];False;704;3;2112;2112;True;OK
+Gather → Aggregate (Outer);False;480;2;960;960;True;OK
+Nested Loop → [Seq Scan (Outer), Index Scan (Inner)];True;480;3;1440;1440;True;OK
+Gather Merge → Sort (Outer);False;480;2;960;960;True;OK
+Aggregate → Hash Join (Outer);False;376;2;752;752;True;OK
+Aggregate → Seq Scan (Outer);True;240;2;480;480;True;OK
+Hash Join → [Hash Join (Outer), Hash (Inner)];False;240;3;720;720;True;OK
+Gather Merge → Aggregate (Outer);False;240;2;480;480;True;OK
+Aggregate → Sort (Outer);False;240;2;480;480;True;OK
+Aggregate → Nested Loop (Outer);False;224;2;448;448;True;OK
+Gather Merge → Incremental Sort (Outer);False;120;2;240;240;True;OK
+Nested Loop → [Merge Join (Outer), Index Scan (Inner)];False;120;3;360;360;True;OK
+Aggregate → Index Scan (Outer);True;120;2;240;240;True;OK
+Gather → Nested Loop (Outer);False;120;2;240;240;True;OK
+Gather → Hash Join (Outer);False;120;2;240;240;True;OK
+Aggregate → Aggregate (Outer);False;120;2;240;240;True;OK

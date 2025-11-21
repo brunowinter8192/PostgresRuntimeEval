@@ -1,0 +1,6 @@
+seed;n_features;final_mre;selected_features
+42;12;0.026513188420017552;Sort_rows, op_count, Hash_rows, Gather_cnt, p_rows, Aggregate_rows, Hash_cnt, Sort_cnt, Index_Scan_rows, Index_Only_Scan_rows, p_width, Incremental_Sort_cnt
+123;12;0.02666975678423917;Sort_rows, op_count, p_rows, Hash_rows, Aggregate_rows, Gather_cnt, Limit_rows, Sort_cnt, Incremental_Sort_rows, p_width, Limit_cnt, Gather_Merge_cnt
+456;10;0.02665252958504578;Sort_rows, Seq_Scan_cnt, p_rows, Hash_rows, Aggregate_rows, Gather_cnt, Gather_Merge_rows, Limit_rows, Incremental_Sort_rows, Gather_Merge_cnt
+789;11;0.026509245679935727;Sort_rows, Hash_cnt, Gather_Merge_rows, Hash_rows, Aggregate_rows, Gather_Merge_cnt, Aggregate_cnt, Incremental_Sort_rows, Limit_rows, op_count, Incremental_Sort_cnt
+999;11;0.026742414149807443;Sort_rows, op_count, p_rows, Hash_rows, Aggregate_rows, Gather_Merge_rows, Aggregate_cnt, Sort_cnt, Incremental_Sort_rows, Gather_cnt, Limit_rows

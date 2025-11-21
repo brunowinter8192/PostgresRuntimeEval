@@ -1,0 +1,6 @@
+seed;n_features;final_mre;selected_features
+42;10;0.3438952915204646;p_rows, Aggregate_cnt, Index_Only_Scan_rows, Gather_cnt, Seq_Scan_rows, Index_Only_Scan_cnt, Seq_Scan_cnt, Hash_Join_rows, p_tot_cost, p_st_cost
+123;10;0.3439649790131211;p_rows, Aggregate_cnt, Index_Only_Scan_rows, Gather_cnt, Seq_Scan_rows, Index_Only_Scan_cnt, Seq_Scan_cnt, Hash_Join_rows, p_tot_cost, p_st_cost
+456;10;0.34389353928957334;p_rows, Aggregate_cnt, Index_Only_Scan_rows, Gather_cnt, Seq_Scan_rows, Index_Only_Scan_cnt, Seq_Scan_cnt, Hash_Join_rows, p_tot_cost, p_st_cost
+789;10;0.3440531118251343;p_rows, Aggregate_cnt, Index_Only_Scan_rows, Gather_cnt, Seq_Scan_rows, Index_Only_Scan_cnt, Seq_Scan_cnt, Hash_Join_rows, p_tot_cost, p_st_cost
+999;10;0.34392641857619577;p_rows, Aggregate_cnt, Index_Only_Scan_rows, Gather_cnt, Seq_Scan_rows, Index_Only_Scan_cnt, Seq_Scan_cnt, Hash_Join_rows, p_tot_cost, p_st_cost

@@ -1,0 +1,6 @@
+seed;n_features;final_mre;selected_features
+42;13;0.026626213256362486;p_tot_cost, Index_Scan_rows, op_count, Index_Only_Scan_cnt, Incremental_Sort_cnt, Gather_Merge_cnt, partial_mode_simple, Index_Only_Scan_rows, jit_functions, subplan_count, Limit_cnt, sort_key_count, Incremental_Sort_rows
+123;13;0.026773659702314573;p_tot_cost, Index_Scan_rows, op_count, Index_Only_Scan_cnt, Limit_cnt, strategy_sorted, partial_mode_partial, subplan_count, initplan_count, Nested_Loop_cnt, strategy_plain, p_width, jit_functions
+456;13;0.026704857991927296;p_tot_cost, Index_Scan_rows, op_count, Limit_cnt, strategy_plain, Index_Only_Scan_cnt, Limit_rows, Incremental_Sort_cnt, Nested_Loop_cnt, Gather_cnt, sort_key_count, p_width, sort_key_columns
+789;10;0.02664348598353658;p_tot_cost, Index_Scan_rows, op_count, Limit_cnt, jit_functions, sort_key_count, Index_Only_Scan_cnt, Incremental_Sort_cnt, partial_mode_simple, strategy_plain
+999;13;0.02654192950020348;p_tot_cost, Index_Scan_rows, op_count, Limit_cnt, partial_mode_simple, p_width, jit_functions, sort_key_count, Aggregate_cnt, Incremental_Sort_cnt, strategy_sorted, Limit_rows, partial_mode_partial
