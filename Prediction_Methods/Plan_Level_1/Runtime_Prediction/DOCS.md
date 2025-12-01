@@ -9,10 +9,10 @@ Runtime_Prediction/
 ├── 02_Train_Model.py                    # Unified training with configurable model
 ├── 03_Summarize_Results.py              # Aggregate predictions by template
 ├── 04_Evaluation_Plot.py                # Create MRE bar plots
-├── 05_Correlation_Analysis.py           # Feature correlation analysis
-├── 06_Scatter_Plots.py                  # Feature vs runtime scatter plots
-├── 07_Outlier_Analysis.py               # IQR-based outlier detection
-├── 08_Template_Constancy.py             # Feature constancy per template
+├── A_01a_Correlation_Analysis.py        # Analysis: Feature correlations
+├── A_01b_Scatter_Plots.py               # Analysis: Feature vs runtime plots
+├── A_01c_Outlier_Analysis.py            # Analysis: IQR-based outlier detection
+├── A_01d_Template_Constancy.py          # Analysis: Feature constancy per template
 ├── Baseline_SVM/                        # NuSVR outputs
 │   ├── SVM/                             # [FFS outputs]
 │   ├── Model/                           # [training outputs]
@@ -71,7 +71,9 @@ Uses configuration files from parent directory:
          ↓
   Trained model and predictions (Baseline_<Model>/<output_folder>/)
          ↓
-Optional: Analysis scripts (03-08)
+03_Summarize_Results.py → 04_Evaluation_Plot.py
+         ↓
+Optional: Analysis scripts (A_01a-d, parallel)
 ```
 
 ### Example Workflow (SVM):
@@ -264,7 +266,13 @@ python 04_Evaluation_Plot.py summary.csv --output-dir custom_plots/
 
 ---
 
-### 05 - Correlation_Analysis.py
+## Analysis Scripts (A_01a-d)
+
+Analysis scripts are standalone tools, NOT part of the main workflow. They can be run in parallel as needed.
+
+---
+
+### A_01a - Correlation_Analysis.py
 
 **Purpose**: Identify highly correlated feature pairs from dataset
 
@@ -272,11 +280,11 @@ python 04_Evaluation_Plot.py summary.csv --output-dir custom_plots/
 - `dataset_csv` (positional): Dataset CSV with features
 
 **Outputs**:
-- `05_feature_correlations_{timestamp}.csv`: feature_1, feature_2, correlation
+- `A_01a_feature_correlations_{timestamp}.csv`: feature_1, feature_2, correlation
 
 **Usage**:
 ```bash
-python 05_Correlation_Analysis.py ../../Datasets/Baseline/training_data.csv --threshold 0.95
+python A_01a_Correlation_Analysis.py ../../Datasets/Baseline/training_data.csv --threshold 0.95
 ```
 
 **Variables**:
@@ -285,7 +293,7 @@ python 05_Correlation_Analysis.py ../../Datasets/Baseline/training_data.csv --th
 
 ---
 
-### 06 - Scatter_Plots.py
+### A_01b - Scatter_Plots.py
 
 **Purpose**: Create scatter plots of all features versus runtime
 
@@ -293,11 +301,11 @@ python 05_Correlation_Analysis.py ../../Datasets/Baseline/training_data.csv --th
 - `dataset_csv` (positional): Dataset CSV with features and runtime
 
 **Outputs**:
-- `06_scatter_plots_{timestamp}.png`: Grid of scatter plots with correlation coefficients
+- `A_01b_scatter_plots_{timestamp}.png`: Grid of scatter plots with correlation coefficients
 
 **Usage**:
 ```bash
-python 06_Scatter_Plots.py ../../Datasets/Baseline/training_data.csv
+python A_01b_Scatter_Plots.py ../../Datasets/Baseline/training_data.csv
 ```
 
 **Variables**:
@@ -305,7 +313,7 @@ python 06_Scatter_Plots.py ../../Datasets/Baseline/training_data.csv
 
 ---
 
-### 07 - Outlier_Analysis.py
+### A_01c - Outlier_Analysis.py
 
 **Purpose**: Analyze feature outliers using IQR method and zero value distribution
 
@@ -313,12 +321,12 @@ python 06_Scatter_Plots.py ../../Datasets/Baseline/training_data.csv
 - `dataset_csv` (positional): Dataset CSV with features
 
 **Outputs**:
-- `07_feature_outliers_{timestamp}.csv`: Outlier statistics per feature
-- `07_feature_zeros_{timestamp}.csv`: Zero count per feature
+- `A_01c_feature_outliers_{timestamp}.csv`: Outlier statistics per feature
+- `A_01c_feature_zeros_{timestamp}.csv`: Zero count per feature
 
 **Usage**:
 ```bash
-python 07_Outlier_Analysis.py ../../Datasets/Baseline/training_data.csv
+python A_01c_Outlier_Analysis.py ../../Datasets/Baseline/training_data.csv
 ```
 
 **Variables**:
@@ -326,7 +334,7 @@ python 07_Outlier_Analysis.py ../../Datasets/Baseline/training_data.csv
 
 ---
 
-### 08 - Template_Constancy.py
+### A_01d - Template_Constancy.py
 
 **Purpose**: Create matrix showing feature value constancy percentage per template
 
@@ -334,11 +342,11 @@ python 07_Outlier_Analysis.py ../../Datasets/Baseline/training_data.csv
 - `dataset_csv` (positional): Dataset CSV with features and template column
 
 **Outputs**:
-- `08_template_feature_constancy_{timestamp}.csv`: Matrix (templates x features) with constancy percentages
+- `A_01d_template_feature_constancy_{timestamp}.csv`: Matrix (templates x features) with constancy percentages
 
 **Usage**:
 ```bash
-python 08_Template_Constancy.py ../../Datasets/Baseline/training_data.csv
+python A_01d_Template_Constancy.py ../../Datasets/Baseline/training_data.csv
 ```
 
 **Variables**:

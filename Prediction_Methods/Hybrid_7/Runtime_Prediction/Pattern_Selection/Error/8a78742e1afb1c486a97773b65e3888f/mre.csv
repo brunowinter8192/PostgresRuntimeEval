@@ -1,0 +1,2 @@
+pattern_hash;pattern_string;mre;mre_pct;status
+8a78742e1afb1c486a97773b65e3888f;Incremental Sort -> Nested Loop (Outer);0.06060488137187222;6.060488137187222;REJECTED

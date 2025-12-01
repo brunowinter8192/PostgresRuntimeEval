@@ -1,0 +1,1 @@
+{"features_exec": ["HashJoin_Outer_plan_width", "NestedLoop_plan_width"], "features_start": ["IndexScan_Inner_total_cost"]}

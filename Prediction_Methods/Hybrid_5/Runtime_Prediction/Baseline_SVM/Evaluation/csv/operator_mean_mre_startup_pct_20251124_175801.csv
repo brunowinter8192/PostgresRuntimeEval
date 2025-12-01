@@ -1,0 +1,11 @@
+node_type (Operator Mean MRE Startup Time %);Q1;Q13;Q18;Q3;Q6;Q7;Q8;Q9
+Aggregate;;;88.77;;;;;
+Gather Merge;;;58.2;;;;;
+Hash;;;93.8;;;;;
+Incremental Sort;;;0.62;;;;;
+Index Only Scan;;19.89;;;;;;
+Index Scan;;;29.26;;;16.65;7.03;16.8
+Merge Join;;;0.62;;;;;
+Nested Loop;;;95.23;;;;;
+Seq Scan;72.27;;102.15;93.54;6.0;;461.16;
+Sort;;;1444.52;;;;;

@@ -1,0 +1,7 @@
+feature;order
+Aggregate_Outer_sel;1
+GatherMerge_total_cost;2
+NestedLoop_Outer_rt1;3
+NestedLoop_Outer_rt2;4
+NestedLoop_Outer_st1;5
+NestedLoop_Outer_st2;6

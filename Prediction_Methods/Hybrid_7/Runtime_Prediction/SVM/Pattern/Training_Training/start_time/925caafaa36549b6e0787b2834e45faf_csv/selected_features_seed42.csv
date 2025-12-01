@@ -1,0 +1,6 @@
+feature;order
+HashJoin_Outer_rt2;1
+NestedLoop_Outer_nt1;2
+Gather_total_cost;3
+HashJoin_Outer_rt1;4
+HashJoin_Outer_nt1;5

@@ -1,0 +1,1 @@
+{"features_exec": ["HashJoin_Outer_startup_cost", "Hash_np", "Hash_nt", "Hash_nt2", "Hash_plan_width"], "features_start": ["HashJoin_Outer_startup_cost", "Hash_nt", "Hash_plan_width", "SeqScan_Outer_total_cost"]}

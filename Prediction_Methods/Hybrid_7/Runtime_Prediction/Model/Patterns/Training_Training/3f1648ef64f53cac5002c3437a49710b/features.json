@@ -1,0 +1,1 @@
+{"features_exec": ["Aggregate_np", "Aggregate_nt1", "Aggregate_sel", "IndexScan_Inner_total_cost", "NestedLoop_Outer_nt", "NestedLoop_Outer_nt1", "SeqScan_Outer_nt", "SeqScan_Outer_sel"], "features_start": ["Aggregate_np", "Aggregate_nt1", "Aggregate_sel", "IndexScan_Inner_total_cost", "NestedLoop_Outer_nt", "NestedLoop_Outer_nt1", "SeqScan_Outer_nt", "SeqScan_Outer_sel"]}

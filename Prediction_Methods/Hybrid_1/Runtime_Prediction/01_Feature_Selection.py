@@ -14,8 +14,10 @@ from sklearn.metrics import make_scorer
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-# From mapping_config.py: Pattern definitions and FFS configuration
-from mapping_config import PATTERNS, TARGET_TYPES, NON_FEATURE_SUFFIXES, FFS_SEED, FFS_MIN_FEATURES
+# From mapping_config.py: Pattern definitions and feature suffixes
+from mapping_config import PATTERNS, TARGET_TYPES, NON_FEATURE_SUFFIXES
+# From ffs_config.py: Forward feature selection configuration
+from ffs_config import SEED, MIN_FEATURES, SVM_PARAMS
 
 # ORCHESTRATOR
 
@@ -86,7 +88,7 @@ def identify_target_column(df, target):
 
 # Create stratified K-fold cross-validator
 def create_cv_splitter():
-    return StratifiedKFold(n_splits=5, shuffle=True, random_state=FFS_SEED)
+    return StratifiedKFold(n_splits=5, shuffle=True, random_state=SEED)
 
 # Perform forward feature selection with cross-validation
 def perform_forward_selection(X, y, template_ids, cv):
@@ -108,7 +110,7 @@ def perform_forward_selection(X, y, template_ids, cv):
         best_feature = min(scores, key=scores.get)
         best_new_score = scores[best_feature]
         
-        if iteration <= FFS_MIN_FEATURES:
+        if iteration <= MIN_FEATURES:
             should_add = True
         else:
             improvement = (best_score - best_new_score) / best_score
@@ -144,13 +146,7 @@ def perform_forward_selection(X, y, template_ids, cv):
 def evaluate_feature_set(X, y, features, template_ids, cv):
     pipeline = Pipeline([
         ('scaler', MaxAbsScaler()),
-        ('model', NuSVR(
-            kernel='rbf',
-            nu=0.65,
-            C=1.5,
-            gamma='scale',
-            cache_size=500
-        ))
+        ('model', NuSVR(**SVM_PARAMS))
     ])
     
     scorer = make_scorer(calculate_mean_relative_error, greater_is_better=False)
@@ -185,14 +181,14 @@ def export_ffs_results(selected_features, results_df, pattern, target, output_di
     output_path = Path(output_dir) / 'SVM' / target / f'{pattern}_csv'
     output_path.mkdir(parents=True, exist_ok=True)
     
-    results_file = output_path / f'ffs_results_seed{FFS_SEED}.csv'
+    results_file = output_path / f'ffs_results_seed{SEED}.csv'
     results_df.to_csv(results_file, index=False, sep=';')
 
     selected_df = pd.DataFrame({
         'feature': selected_features,
         'order': range(1, len(selected_features) + 1)
     })
-    selected_file = output_path / f'selected_features_seed{FFS_SEED}.csv'
+    selected_file = output_path / f'selected_features_seed{SEED}.csv'
     selected_df.to_csv(selected_file, index=False, sep=';')
 
 # Process all patterns with two-step evaluation

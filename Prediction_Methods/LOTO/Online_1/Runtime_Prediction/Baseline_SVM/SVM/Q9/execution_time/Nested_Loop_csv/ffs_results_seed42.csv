@@ -1,0 +1,15 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;st2;True;0.1010628753224176;1;st2
+2;nt1;True;0.09756159387349536;2;st2, nt1
+3;rt1;True;0.09505873797372152;3;st2, nt1, rt1
+4;nt;True;0.09437235700263813;4;st2, nt1, rt1, nt
+5;rt2;True;0.09412179939176382;5;st2, nt1, rt1, nt, rt2
+6;total_cost;False;0.09432970632620817;5;st2, nt1, rt1, nt, rt2
+7;np;False;0.09462867392359745;5;st2, nt1, rt1, nt, rt2
+8;reltuples;False;0.09462867392359745;5;st2, nt1, rt1, nt, rt2
+9;parallel_workers;False;0.09462867392359745;5;st2, nt1, rt1, nt, rt2
+10;st1;False;0.0959606378458848;5;st2, nt1, rt1, nt, rt2
+11;startup_cost;False;0.09598789685033715;5;st2, nt1, rt1, nt, rt2
+12;sel;False;0.09871175931414794;5;st2, nt1, rt1, nt, rt2
+13;plan_width;False;0.10245697766652148;5;st2, nt1, rt1, nt, rt2
+14;nt2;False;0.1038770040240076;5;st2, nt1, rt1, nt, rt2

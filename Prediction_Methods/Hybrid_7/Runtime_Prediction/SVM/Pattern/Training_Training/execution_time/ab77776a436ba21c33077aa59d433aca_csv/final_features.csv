@@ -1,0 +1,17 @@
+feature;order
+Aggregate_Outer_nt1;1
+Aggregate_Outer_sel;2
+IndexScan_Inner_rt1;3
+IndexScan_Inner_rt2;4
+IndexScan_Inner_st1;5
+IndexScan_Inner_st2;6
+IndexScan_Inner_total_cost;7
+NestedLoop_Outer_nt;8
+NestedLoop_Outer_nt1;9
+SeqScan_Outer_nt;10
+SeqScan_Outer_rt1;11
+SeqScan_Outer_rt2;12
+SeqScan_Outer_sel;13
+SeqScan_Outer_st1;14
+SeqScan_Outer_st2;15
+Sort_np;16

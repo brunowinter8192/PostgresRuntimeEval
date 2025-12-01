@@ -1,0 +1,9 @@
+feature;order
+HashJoin_Outer_rt1;1
+HashJoin_Outer_rt2;2
+HashJoin_Outer_st2;3
+Sort_np;4
+Sort_nt2;5
+Sort_reltuples;6
+Sort_parallel_workers;7
+HashJoin_Outer_np;8

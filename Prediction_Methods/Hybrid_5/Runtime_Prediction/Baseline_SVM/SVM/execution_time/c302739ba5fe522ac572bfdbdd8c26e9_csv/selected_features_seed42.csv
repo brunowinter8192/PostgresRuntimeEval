@@ -1,0 +1,5 @@
+feature;order
+actual_total_time;1
+HashJoin_nt2;2
+HashJoin_sel;3
+HashJoin_startup_cost;4

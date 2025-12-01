@@ -1,0 +1,7 @@
+feature;order
+Aggregate_Outer_sel;1
+NestedLoop_Outer_rt1;2
+NestedLoop_Outer_rt2;3
+NestedLoop_Outer_st1;4
+NestedLoop_Outer_st2;5
+Sort_total_cost;6

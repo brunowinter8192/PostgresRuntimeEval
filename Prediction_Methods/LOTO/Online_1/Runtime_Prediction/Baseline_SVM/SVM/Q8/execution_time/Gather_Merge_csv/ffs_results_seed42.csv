@@ -1,0 +1,15 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;st1;True;0.13478123104904863;1;st1
+2;parallel_workers;True;0.1340281441581544;2;st1, parallel_workers
+3;plan_width;True;0.11882845613449555;3;st1, parallel_workers, plan_width
+4;sel;True;0.11693055363379849;4;st1, parallel_workers, plan_width, sel
+5;rt1;True;0.11587988345905045;5;st1, parallel_workers, plan_width, sel, rt1
+6;startup_cost;False;0.1161499077949216;5;st1, parallel_workers, plan_width, sel, rt1
+7;total_cost;False;0.11790899444016398;5;st1, parallel_workers, plan_width, sel, rt1
+8;nt;False;0.1201941665877762;5;st1, parallel_workers, plan_width, sel, rt1
+9;nt1;False;0.12019420173342317;5;st1, parallel_workers, plan_width, sel, rt1
+10;np;False;0.12323232641719295;5;st1, parallel_workers, plan_width, sel, rt1
+11;nt2;False;0.12323232641719295;5;st1, parallel_workers, plan_width, sel, rt1
+12;reltuples;False;0.12323232641719295;5;st1, parallel_workers, plan_width, sel, rt1
+13;st2;False;0.12323232641719295;5;st1, parallel_workers, plan_width, sel, rt1
+14;rt2;False;0.12323232641719295;5;st1, parallel_workers, plan_width, sel, rt1

@@ -1,0 +1,8 @@
+feature;order
+parallel_workers;1
+st2;2
+rt1;3
+nt1;4
+rt2;5
+st1;6
+nt2;7

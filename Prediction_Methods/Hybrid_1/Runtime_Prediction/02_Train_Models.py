@@ -13,6 +13,8 @@ import joblib
 sys.path.insert(0, str(Path(__file__).parent.parent))
 # From mapping_config.py: Pattern definitions and target types
 from mapping_config import PATTERNS, TARGET_TYPES
+# From ffs_config.py: SVM hyperparameters
+from ffs_config import SVM_PARAMS
 
 # ORCHESTRATOR
 
@@ -74,13 +76,7 @@ def identify_target_column(df, target):
 def create_and_train_pipeline(X, y):
     pipeline = Pipeline([
         ('scaler', MaxAbsScaler()),
-        ('model', NuSVR(
-            kernel='rbf',
-            nu=0.65,
-            C=1.5,
-            gamma='scale',
-            cache_size=500
-        ))
+        ('model', NuSVR(**SVM_PARAMS))
     ])
     pipeline.fit(X, y)
     return pipeline

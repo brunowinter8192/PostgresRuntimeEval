@@ -1,0 +1,49 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;HashJoin_Outer_rt2;True;0.030063652343061277;1;HashJoin_Outer_rt2
+2;NestedLoop_Outer_nt1;True;0.02890388519381411;2;HashJoin_Outer_rt2, NestedLoop_Outer_nt1
+3;Gather_total_cost;True;0.028805988050095925;3;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost
+4;HashJoin_Outer_rt1;True;0.028792399823281457;4;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1
+5;HashJoin_Outer_nt1;True;0.028766815045854134;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+6;HashJoin_Outer_st2;False;0.028809990788268697;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+7;NestedLoop_Outer_sel;False;0.028820381674213958;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+8;NestedLoop_Outer_total_cost;False;0.028843330501249133;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+9;Gather_startup_cost;False;0.028850123298544104;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+10;HashJoin_Outer_startup_cost;False;0.028850150506509666;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+11;NestedLoop_Outer_startup_cost;False;0.028850200596672582;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+12;HashJoin_Outer_total_cost;False;0.028850292442251717;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+13;Gather_sel;False;0.028850424376877227;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+14;HashJoin_Outer_sel;False;0.028850673089355655;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+15;Gather_plan_width;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+16;Gather_parallel_workers;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+17;NestedLoop_Outer_nt2;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+18;NestedLoop_Outer_plan_width;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+19;HashJoin_Outer_plan_width;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+20;IndexScan_Inner_np;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+21;IndexScan_Inner_nt;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+22;IndexScan_Inner_sel;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+23;IndexScan_Inner_startup_cost;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+24;IndexScan_Inner_total_cost;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+25;IndexScan_Inner_plan_width;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+26;IndexScan_Inner_reltuples;False;0.02885070866447926;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+27;HashJoin_Outer_nt;False;0.028891449880112424;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+28;HashJoin_Outer_nt2;False;0.02890411355255439;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+29;Gather_nt1;False;0.02890676106863254;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+30;NestedLoop_Outer_nt;False;0.02890676106863254;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+31;Gather_nt;False;0.02890702061351178;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+32;HashJoin_Outer_st1;False;0.033378173415246896;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+33;Gather_np;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+34;Gather_nt2;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+35;Gather_reltuples;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+36;NestedLoop_Outer_np;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+37;NestedLoop_Outer_reltuples;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+38;NestedLoop_Outer_parallel_workers;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+39;HashJoin_Outer_np;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+40;HashJoin_Outer_reltuples;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+41;HashJoin_Outer_parallel_workers;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+42;IndexScan_Inner_nt1;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+43;IndexScan_Inner_nt2;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+44;IndexScan_Inner_parallel_workers;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+45;IndexScan_Inner_st1;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+46;IndexScan_Inner_rt1;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+47;IndexScan_Inner_st2;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1
+48;IndexScan_Inner_rt2;False;0.03427623015981598;5;HashJoin_Outer_rt2, NestedLoop_Outer_nt1, Gather_total_cost, HashJoin_Outer_rt1, HashJoin_Outer_nt1

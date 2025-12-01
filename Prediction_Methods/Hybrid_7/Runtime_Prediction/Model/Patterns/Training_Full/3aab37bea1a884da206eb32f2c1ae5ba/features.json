@@ -1,0 +1,1 @@
+{"features_exec": ["Hash_nt", "Hash_nt1", "Hash_startup_cost", "SeqScan_Outer_nt", "SeqScan_Outer_reltuples"], "features_start": ["Hash_nt", "Hash_nt1", "Hash_startup_cost", "SeqScan_Outer_nt", "SeqScan_Outer_reltuples"]}

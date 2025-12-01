@@ -1,0 +1,1 @@
+{"features_exec": ["HashJoin_Outer_np", "HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2", "Sort_np", "Sort_nt2", "Sort_parallel_workers", "Sort_reltuples"], "features_start": ["HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2"]}

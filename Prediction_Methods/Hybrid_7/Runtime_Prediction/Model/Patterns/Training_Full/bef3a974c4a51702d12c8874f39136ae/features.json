@@ -1,0 +1,1 @@
+{"features_exec": ["Gather_Outer_total_cost", "HashJoin_Outer_total_cost", "NestedLoop_Outer_nt1", "NestedLoop_Outer_total_cost"], "features_start": ["Gather_Outer_total_cost", "HashJoin_Outer_total_cost", "NestedLoop_Outer_nt1", "NestedLoop_Outer_total_cost"]}

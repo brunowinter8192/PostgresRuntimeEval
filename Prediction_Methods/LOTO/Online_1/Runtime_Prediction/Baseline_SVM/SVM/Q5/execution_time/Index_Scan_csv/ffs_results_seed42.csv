@@ -1,0 +1,15 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;plan_width;True;0.39988785596690113;1;plan_width
+2;startup_cost;True;0.29900842849849407;2;plan_width, startup_cost
+3;nt1;False;0.7592860381538797;2;plan_width, startup_cost
+4;nt2;False;0.7592860381538797;2;plan_width, startup_cost
+5;parallel_workers;False;0.7592860381538797;2;plan_width, startup_cost
+6;st1;False;0.7592860381538797;2;plan_width, startup_cost
+7;rt1;False;0.7592860381538797;2;plan_width, startup_cost
+8;st2;False;0.7592860381538797;2;plan_width, startup_cost
+9;rt2;False;0.7592860381538797;2;plan_width, startup_cost
+10;np;False;1.5145133226239798;2;plan_width, startup_cost
+11;reltuples;False;1.5162304036754715;2;plan_width, startup_cost
+12;sel;False;9.805843281003854;2;plan_width, startup_cost
+13;nt;False;9.8131756047882;2;plan_width, startup_cost
+14;total_cost;False;9.825924281514748;2;plan_width, startup_cost

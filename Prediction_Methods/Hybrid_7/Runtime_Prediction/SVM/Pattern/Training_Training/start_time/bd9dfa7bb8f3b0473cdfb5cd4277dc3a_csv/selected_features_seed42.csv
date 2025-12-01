@@ -1,0 +1,4 @@
+feature;order
+HashJoin_Outer_rt1;1
+HashJoin_Outer_sel;2
+NestedLoop_np;3

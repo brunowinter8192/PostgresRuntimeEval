@@ -1,0 +1,1 @@
+{"features_exec": ["Aggregate_Outer_sel", "GatherMerge_Outer_total_cost", "NestedLoop_Outer_rt1", "NestedLoop_Outer_rt2", "NestedLoop_Outer_st1", "NestedLoop_Outer_st2"], "features_start": ["Aggregate_Outer_sel", "Aggregate_Outer_startup_cost", "NestedLoop_Outer_rt1", "NestedLoop_Outer_rt2", "NestedLoop_Outer_st1", "NestedLoop_Outer_st2"]}

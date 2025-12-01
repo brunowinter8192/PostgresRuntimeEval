@@ -1,0 +1,6 @@
+feature;order
+HashJoin_np;1
+HashJoin_nt;2
+HashJoin_Outer_st2;3
+HashJoin_Outer_rt2;4
+HashJoin_nt1;5

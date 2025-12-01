@@ -1,58 +1,30 @@
-# Data_Generation - Pattern Discovery
-
-Discovers and catalogs all parent-child operator patterns from the training dataset. Patterns are searched starting from depth 0 (root operator), including root-level patterns in addition to all child patterns.
-
-## Directory Structure
-
-```
-Data_Generation/
-├── 01_Find_Patterns.py                         # Pattern discovery script
-├── operator_dataset_{timestamp}.csv            # Input dataset from Operator_Level
-└── csv/                                        # [outputs]
-    └── baseline_patterns_depth0plus_{ts}.csv   # Pattern inventory with occurrences
-```
+# Data_Generation Module Documentation
 
 ## Shared Infrastructure
 
 No external dependencies. All pattern discovery logic is self-contained.
 
-## Configuration Parameters
+### Configuration Parameters
 
-### Input Data Selection
-
-Die entscheidende Stellschraube fuer Baseline vs All Templates:
-
-| Approach | Input Datei | Templates |
-|----------|-------------|-----------|
-| **Baseline** | `Operator_Level/Datasets/Baseline/04_training.csv` | Ohne Q2, Q11, Q16, Q22 (InitPlan/SubPlan) |
-| **All Templates** | `operator_dataset_{ts}.csv` | Alle 22 TPC-H Templates |
-
-### In-Script Configuration (01_Find_Patterns.py)
-
-**Depth Check (Zeile 44):**
-```python
-if parent_depth < 0:  # Hybrid_2: Alle Patterns ab Depth 0 (Root eingeschlossen)
-    continue
-# vs Hybrid_1:
-if parent_depth < 1:  # Nur Patterns ab Depth 1 (Root ausgeschlossen)
-    continue
-```
+**Depth Check (Line 44):**
+- Hybrid_2: `if parent_depth < 0` - All patterns from depth 0 (root included)
+- Hybrid_1: `if parent_depth < 1` - Only patterns from depth 1 (root excluded)
 
 **Operator Filter:**
-- Hybrid_2: KEIN Filter (alle Operator-Kombinationen)
-- Hybrid_1: REQUIRED_OPERATORS Filter (nur Gather, Hash, Hash Join, Nested Loop, Seq Scan)
+- Hybrid_2: No filter (all operator combinations)
+- Hybrid_1: REQUIRED_OPERATORS filter (only Gather, Hash, Hash Join, Nested Loop, Seq Scan)
 
-### Output Naming
+**Input Data Selection:**
 
-- Hybrid_2: `baseline_patterns_depth0plus_{ts}.csv`
-- Hybrid_1: `baseline_patterns_depth1plus_{ts}.csv`
+| Approach | Input File | Templates |
+|----------|------------|-----------|
+| Baseline | `Operator_Level/Datasets/Baseline/03_training.csv` | Without Q2, Q11, Q16, Q22 (InitPlan/SubPlan) |
+| All Templates | `operator_dataset_{ts}.csv` | All 22 TPC-H Templates |
 
 ## Workflow Execution Order
 
 ```
-01 - Find_Patterns
-     ↓
-Pattern inventory CSV
+01_Find_Patterns.py → csv/01_baseline_patterns_depth0plus_{ts}.csv
 ```
 
 Single script phase. Input dataset must be placed in this directory before execution.
@@ -68,29 +40,29 @@ Single script phase. Input dataset must be placed in this directory before execu
 2. Extract template identifier from query filenames
 3. Build parent-child relationship map for each query
 4. Identify patterns by grouping parent with immediate children (starting from depth 0)
-5. Count pattern occurrences per template (keine Operator-Filterung)
+5. Count pattern occurrences per template (no operator filtering)
 6. Export pattern matrix with template breakdown
 
 **Inputs:**
-- `input_file` - Path to operator dataset CSV (positional)
+- `input_file` (positional): Path to operator dataset CSV
 
 **Outputs:**
-- `csv/baseline_patterns_depth0plus_{timestamp}.csv`
+- `csv/01_baseline_patterns_depth0plus_{timestamp}.csv`
   - Columns: pattern, leaf_pattern, total, Q1, Q3, Q4, ... (per template)
-  - Pattern format: "Parent → [Child1 (Outer), Child2 (Inner)]"
+  - Pattern format: "Parent -> [Child1 (Outer), Child2 (Inner)]"
   - Includes root-level patterns (depth 0) in addition to child patterns
 
 **Usage:**
 
-Baseline Approach (ohne Q2, Q11, Q16, Q22):
+Baseline Approach (without Q2, Q11, Q16, Q22):
 ```bash
-python 01_Find_Patterns.py ../../Operator_Level/Datasets/Baseline/04_training.csv --output-dir .
+python 01_Find_Patterns.py ../../Operator_Level/Datasets/Baseline/03_training.csv --output-dir .
 ```
 
-All Templates Approach (alle 22 Templates):
+All Templates Approach (all 22 templates):
 ```bash
 python 01_Find_Patterns.py operator_dataset_20251102_140747.csv --output-dir .
 ```
 
 **Variables:**
-- `--output-dir` - Output directory for CSV results (required)
+- `--output-dir` (required): Output directory for CSV results

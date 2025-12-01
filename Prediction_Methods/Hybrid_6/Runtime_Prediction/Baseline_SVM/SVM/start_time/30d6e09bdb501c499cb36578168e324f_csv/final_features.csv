@@ -1,0 +1,15 @@
+feature;order
+HashJoin_plan_width;1
+Hash_Inner_rt1;2
+Hash_Inner_rt2;3
+Hash_Inner_st1;4
+Hash_Inner_st2;5
+NestedLoop_Outer_rt1;6
+NestedLoop_Outer_rt2;7
+NestedLoop_Outer_st1;8
+NestedLoop_Outer_st2;9
+SeqScan_Outer_rt1;10
+SeqScan_Outer_rt2;11
+SeqScan_Outer_st1;12
+SeqScan_Outer_st2;13
+actual_startup_time;14

@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent))  # Plan_Level_1
+sys.path.insert(0, str(Path(__file__).parent.parent))
 # From mapping_config.py: Metadata column names
 from mapping_config import PLAN_METADATA
 
@@ -32,15 +32,10 @@ def load_template_summary(csv_path: Path) -> pd.DataFrame:
 
 # Create MRE bar plot by template
 def create_mre_plot(df: pd.DataFrame):
-    """
-    Create bar chart showing Mean Relative Error (%) per template.
-
-    Style: steelblue bars with percentage labels on top
-    """
     fig, ax = plt.subplots(figsize=(16, 8))
 
     templates = df[PLAN_METADATA[1]].tolist()
-    mean_mre_pct = df['mre'].values * 100  # Convert to percentage
+    mean_mre_pct = df['mre'].values * 100
 
     x = np.arange(len(templates))
     width = 0.5
@@ -57,7 +52,6 @@ def create_mre_plot(df: pd.DataFrame):
     ax.legend(fontsize=11, loc='upper left')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 
-    # Add percentage labels on top of bars
     for i, bar in enumerate(bars):
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height,
@@ -72,12 +66,9 @@ def create_mre_plot(df: pd.DataFrame):
 # Save plot to file
 def save_plot(fig, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
-
     plot_file = output_dir / 'template_mre_plot.png'
     fig.savefig(plot_file, dpi=300, bbox_inches='tight')
     plt.close(fig)
-
-    print(f"✓ Plot saved: {plot_file}")
 
 
 if __name__ == "__main__":

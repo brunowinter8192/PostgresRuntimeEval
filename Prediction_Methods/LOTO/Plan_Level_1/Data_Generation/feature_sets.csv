@@ -1,0 +1,20 @@
+template;selected_features;n_features;final_mre
+Q1;initplan_count, subplan_count, Index_Scan_cnt, jit_functions, workers_planned, max_tree_depth, Aggregate_cnt, sort_key_columns, Gather_cnt, group_key_count;10;0.0749795329072227
+Q10;initplan_count, subplan_count, group_key_count, jit_functions, workers_planned, Index_Only_Scan_cnt, Gather_cnt, Aggregate_cnt, sort_key_columns, Nested_Loop_rows;10;0.0769768404304394
+Q11;subplan_count, Aggregate_cnt, initplan_count, Sort_cnt, jit_functions, Seq_Scan_rows, Index_Scan_cnt, Index_Only_Scan_rows, Hash_Join_rows, sort_key_columns;10;0.0745603184458991
+Q12;Aggregate_cnt, subplan_count, workers_planned, p_st_cost, initplan_count, Index_Scan_cnt, jit_functions, Gather_cnt, sort_key_columns, Seq_Scan_rows;10;0.0793085373862976
+Q13;initplan_count, subplan_count, group_key_count, jit_functions, Gather_cnt, Hash_Join_rows, Index_Only_Scan_cnt, workers_planned, Aggregate_cnt, Index_Only_Scan_rows;10;0.0685463091342898
+Q14;initplan_count, subplan_count, max_tree_depth, jit_functions, Index_Scan_cnt, Seq_Scan_rows, Gather_cnt, workers_planned, Aggregate_cnt, sort_key_columns;10;0.0763255056866482
+Q16;Aggregate_cnt, subplan_count, initplan_count, Index_Scan_cnt, jit_functions, strategy_hashed, Seq_Scan_rows, group_key_count, workers_planned, Gather_cnt;10;0.0708936915851759
+Q18;p_tot_cost, Index_Scan_cnt, group_key_count, p_width, Hash_rows, p_st_cost, workers_planned, sort_key_columns, Nested_Loop_cnt, partial_mode_simple;10;0.0710147477756771
+Q19;initplan_count, subplan_count, group_key_count, jit_functions, workers_planned, Gather_cnt, sort_key_columns, Aggregate_cnt, Index_Only_Scan_rows, Nested_Loop_rows;10;0.075968264132827
+Q2;initplan_count, subplan_count, Index_Scan_cnt, op_count, jit_functions, Seq_Scan_rows, Index_Only_Scan_cnt, Aggregate_cnt, Hash_Join_rows, Index_Only_Scan_rows;10;0.0755323117491941
+Q21;initplan_count, subplan_count, group_key_count, jit_functions, workers_planned, Gather_cnt, sort_key_columns, Aggregate_cnt, Index_Only_Scan_rows, planning_time_ms;10;0.076208401815895
+Q22;p_rows, planning_time_ms, subplan_count, initplan_count, strategy_sorted, Aggregate_cnt, Gather_cnt, jit_functions, sort_key_columns, workers_planned;10;0.0959333928634187
+Q3;initplan_count, subplan_count, Index_Scan_cnt, op_count, jit_functions, Seq_Scan_rows, Aggregate_cnt, Index_Only_Scan_rows, Hash_Join_rows, planning_time_ms;10;0.0781210813039992
+Q4;initplan_count, subplan_count, Index_Scan_cnt, op_count, Seq_Scan_rows, jit_functions, workers_planned, Aggregate_cnt, sort_key_columns, Gather_cnt;10;0.0795946003228435
+Q5;initplan_count, subplan_count, max_tree_depth, p_st_cost, strategy_plain, Index_Only_Scan_rows, jit_functions, Gather_cnt, sort_key_columns, partial_mode_simple, Nested_Loop_rows;11;0.0777105344806234
+Q6;initplan_count, subplan_count, group_key_count, jit_functions, workers_planned, op_count, Index_Only_Scan_rows, Aggregate_cnt, Hash_Join_rows, planning_time_ms;10;0.0808099807500656
+Q7;p_rows, initplan_count, subplan_count, group_key_count, jit_functions, workers_planned, Index_Only_Scan_rows, Gather_cnt, Aggregate_cnt, sort_key_columns, Nested_Loop_rows;11;0.0822643776436718
+Q8;p_rows, Nested_Loop_cnt, partial_mode_simple, p_width, jit_functions, Hash_Join_rows, Index_Scan_cnt, planning_time_ms, sort_key_count, Limit_cnt;10;0.1515928105497284
+Q9;p_rows, initplan_count, subplan_count, Seq_Scan_rows, Aggregate_cnt, sort_key_columns, jit_functions, Index_Scan_cnt, Index_Only_Scan_rows, Hash_Join_rows;10;0.0744803726706869

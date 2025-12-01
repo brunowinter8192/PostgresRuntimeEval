@@ -1,0 +1,1 @@
+{"features_exec": ["GatherMerge_nt", "MergeJoin_Outer_rt1", "MergeJoin_Outer_rt2", "MergeJoin_Outer_st1", "MergeJoin_Outer_st2"], "features_start": ["GatherMerge_nt", "MergeJoin_Outer_rt1", "MergeJoin_Outer_rt2", "MergeJoin_Outer_st1", "MergeJoin_Outer_st2"]}

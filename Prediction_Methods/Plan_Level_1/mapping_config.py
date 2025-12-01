@@ -28,54 +28,6 @@ PLAN_METADATA = ['query_file', 'template']
 # Target column
 PLAN_TARGET = 'runtime'
 
-# Plan-level structural features
-PLAN_STRUCTURAL_FEATURES = [
-    'p_st_cost',
-    'p_tot_cost',
-    'p_rows',
-    'p_width',
-    'op_count',
-    'workers_planned',
-    'parallel_aware_count',
-    'max_tree_depth',
-    'planning_time_ms',
-    'jit_functions',
-    'subplan_count',
-    'initplan_count'
-]
-
-# Aggregation strategy features
-PLAN_STRATEGY_FEATURES = [
-    'strategy_hashed',
-    'strategy_plain',
-    'strategy_sorted',
-    'partial_mode_simple',
-    'partial_mode_partial',
-    'partial_mode_finalize'
-]
-
-# Key and column count features
-PLAN_KEY_FEATURES = [
-    'group_key_count',
-    'group_key_columns',
-    'sort_key_count',
-    'sort_key_columns'
-]
-
-# Query result features
-PLAN_RESULT_FEATURES = [
-    'row_count',
-    'byte_count'
-]
-
-# All plan-level features combined
-PLAN_FEATURES = (
-    PLAN_STRUCTURAL_FEATURES +
-    PLAN_STRATEGY_FEATURES +
-    PLAN_KEY_FEATURES +
-    PLAN_RESULT_FEATURES
-)
-
 # Operator types tracked in feature extraction
 OPERATOR_TYPES = [
     'Aggregate',
@@ -93,28 +45,10 @@ OPERATOR_TYPES = [
     'Sort'
 ]
 
-# Operator feature types
-OPERATOR_FEATURE_TYPES = ['cnt', 'rows']
-
 # Backwards compatibility: columns to exclude from feature analysis
 METADATA_COLUMNS = PLAN_METADATA + [PLAN_TARGET]
 
-# State_1 Dataset Configuration
-STATE_1_METADATA = ['query_file', 'template']
-
-STATE_1_STRUCTURAL_FEATURES = [
-    'p_st_cost',
-    'p_tot_cost',
-    'p_rows',
-    'p_width',
-    'op_count'
-]
-
-STATE_1_FEATURES = (
-    STATE_1_STRUCTURAL_FEATURES +
-    PLAN_RESULT_FEATURES
-)
-
+# Features to remove when transforming Baseline to State_1
 FEATURES_TO_REMOVE_FOR_STATE_1 = [
     'workers_planned',
     'parallel_aware_count',
@@ -138,30 +72,13 @@ FEATURES_TO_REMOVE_FOR_STATE_1 = [
 
 # FUNCTIONS
 
-# Get all operator feature column names
-def get_operator_feature_columns():
-    return [
+# Get all State_1 dataset columns in correct order
+def get_state_1_columns():
+    structural = ['p_st_cost', 'p_tot_cost', 'p_rows', 'p_width', 'op_count']
+    result = ['row_count', 'byte_count']
+    operator_cols = [
         f"{op.replace(' ', '_')}_{metric}"
         for op in OPERATOR_TYPES
-        for metric in OPERATOR_FEATURE_TYPES
+        for metric in ['cnt', 'rows']
     ]
-
-
-# Get all feature columns
-def get_all_feature_columns():
-    return PLAN_FEATURES + get_operator_feature_columns()
-
-
-# Get all dataset columns
-def get_all_columns():
-    return PLAN_METADATA + get_all_feature_columns() + [PLAN_TARGET]
-
-
-# Get all State_1 feature columns
-def get_state_1_feature_columns():
-    return STATE_1_FEATURES + get_operator_feature_columns()
-
-
-# Get all State_1 dataset columns
-def get_state_1_columns():
-    return STATE_1_METADATA + get_state_1_feature_columns() + [PLAN_TARGET]
+    return PLAN_METADATA + structural + result + operator_cols + [PLAN_TARGET]

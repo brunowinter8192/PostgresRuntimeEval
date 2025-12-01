@@ -1,0 +1,4 @@
+feature;order
+HashJoin_nt1;1
+Hash_Inner_rt1;2
+Hash_Inner_st1;3

@@ -1,0 +1,1 @@
+{"features_exec": ["Aggregate_plan_width", "Aggregate_sel", "HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2"], "features_start": ["Aggregate_plan_width", "HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2"]}

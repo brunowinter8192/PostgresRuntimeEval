@@ -1,0 +1,5 @@
+feature;order
+Aggregate_Outer_nt1;1
+HashJoin_Outer_nt;2
+HashJoin_Outer_nt1;3
+SeqScan_Outer_nt;4

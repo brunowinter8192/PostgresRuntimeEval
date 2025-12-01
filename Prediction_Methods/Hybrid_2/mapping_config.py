@@ -38,19 +38,14 @@ PATTERNS = [
 
 TARGET_TYPES = ['execution_time', 'start_time']
 
-TARGET_NAME_MAP = {
-    'execution_time': 'actual_total_time',
-    'start_time': 'actual_startup_time'
-}
-
 NON_FEATURE_SUFFIXES = [
     '_node_id',
     '_node_type',
     '_depth',
     '_parent_relationship',
     '_subplan_name',
-    '_actual_startup_time',
-    '_actual_total_time'
+    'actual_startup_time',
+    'actual_total_time'
 ]
 
 LEAF_OPERATORS = ['SeqScan', 'IndexScan', 'IndexOnlyScan']

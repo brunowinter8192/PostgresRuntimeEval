@@ -1,0 +1,7 @@
+feature;order
+HashJoin_Outer_rt1;1
+Gather_sel;2
+Gather_plan_width;3
+Gather_parallel_workers;4
+Aggregate_Outer_plan_width;5
+NestedLoop_Outer_nt2;6

@@ -1,0 +1,10 @@
+feature;order
+Hash_Inner_rt1;1
+Hash_Inner_rt2;2
+Hash_Inner_st1;3
+Hash_Inner_st2;4
+SeqScan_Outer_rt1;5
+SeqScan_Outer_rt2;6
+SeqScan_Outer_st1;7
+SeqScan_Outer_st2;8
+actual_startup_time;9

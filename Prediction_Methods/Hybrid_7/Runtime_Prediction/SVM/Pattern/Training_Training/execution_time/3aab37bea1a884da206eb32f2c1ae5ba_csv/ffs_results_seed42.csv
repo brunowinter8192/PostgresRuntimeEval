@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Hash_startup_cost;True;6.891114196744037;1;Hash_startup_cost
+2;Hash_nt;True;2.9374751909484944;2;Hash_startup_cost, Hash_nt
+3;Hash_nt1;True;2.8625387097257167;3;Hash_startup_cost, Hash_nt, Hash_nt1
+4;SeqScan_Outer_nt;True;2.839831572537453;4;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt
+5;SeqScan_Outer_reltuples;True;2.8221631838957886;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+6;Hash_np;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+7;Hash_nt2;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+8;Hash_reltuples;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+9;Hash_parallel_workers;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+10;SeqScan_Outer_nt1;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+11;SeqScan_Outer_nt2;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+12;SeqScan_Outer_startup_cost;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+13;SeqScan_Outer_parallel_workers;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+14;SeqScan_Outer_st1;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+15;SeqScan_Outer_rt1;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+16;SeqScan_Outer_st2;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+17;SeqScan_Outer_rt2;False;2.832509348907208;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+18;Hash_plan_width;False;2.847110685683944;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+19;SeqScan_Outer_plan_width;False;2.847110685683944;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+20;Hash_total_cost;False;2.88807524927719;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+21;SeqScan_Outer_total_cost;False;2.88807524927719;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+22;SeqScan_Outer_np;False;2.981272196382179;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+23;Hash_sel;False;3.380878370866712;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples
+24;SeqScan_Outer_sel;False;6.00866914004159;5;Hash_startup_cost, Hash_nt, Hash_nt1, SeqScan_Outer_nt, SeqScan_Outer_reltuples

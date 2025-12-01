@@ -7,12 +7,11 @@ Discovers and catalogs all parent-child operator patterns from the training data
 ```
 Data_Generation/
 ├── 01_Find_Patterns.py                         # Pattern discovery script
-├── 02_Compare_Patterns.py                      # Pattern comparison script (Hybrid_2 vs Hybrid_3)
-├── operator_dataset_{timestamp}.csv            # Input dataset from Operator_Level
+├── A_01a_Compare_Patterns.py                   # [Analysis] Pattern comparison (Hybrid_2 vs Hybrid_3)
 ├── csv/                                        # [outputs]
-│   └── baseline_patterns_depth0plus_{ts}.csv   # Pattern inventory with occurrences
+│   └── 01_baseline_patterns_depth0plus_{ts}.csv  # Pattern inventory with occurrences
 └── md/                                         # [outputs]
-    └── pattern_comparison_{ts}.md              # Comparison report Hybrid_2 vs Hybrid_3
+    └── A_01a_pattern_comparison_{ts}.md        # Comparison report Hybrid_2 vs Hybrid_3
 ```
 
 ## Shared Infrastructure
@@ -57,10 +56,10 @@ if parent_depth < 1:  # Nur Patterns ab Depth 1 (Root ausgeschlossen)
 ```
 01 - Find_Patterns
      ↓
-Pattern inventory CSV
+csv/01_baseline_patterns_depth0plus_{ts}.csv
 ```
 
-Single script phase. Input dataset must be placed in this directory before execution.
+Single script phase. Input dataset referenced via argparse.
 
 ## Script Documentation
 
@@ -105,7 +104,9 @@ python 01_Find_Patterns.py ../../Operator_Level/Datasets/Raw/operator_dataset_20
 
 ---
 
-### 02 - Compare_Patterns.py
+## Analysis Scripts
+
+### A_01a - Compare_Patterns.py
 
 **Purpose:** Compare pattern inventories between Hybrid_2 and Hybrid_3 to verify Pass-Through pattern removal
 
@@ -114,13 +115,14 @@ python 01_Find_Patterns.py ../../Operator_Level/Datasets/Raw/operator_dataset_20
 2. Identify patterns that exist in Hybrid_2 but not in Hybrid_3
 3. Verify removed patterns are Pass-Through parent patterns
 4. Report new patterns that appear only in Hybrid_3
-5. Print detailed comparison report with verification status
+5. Export detailed comparison report with verification status
 
 **Inputs:**
-- Hardcoded paths to Hybrid_2 and Hybrid_3 pattern CSV files
+- `hybrid2_file` - Path to Hybrid_2 pattern CSV (positional)
+- `hybrid3_file` - Path to Hybrid_3 pattern CSV (positional)
 
 **Outputs:**
-- `md/pattern_comparison_{timestamp}.md`
+- `md/A_01a_pattern_comparison_{timestamp}.md`
   - Pattern count summary
   - Removed patterns categorized by PT/Non-PT
   - New patterns in Hybrid_3
@@ -128,8 +130,11 @@ python 01_Find_Patterns.py ../../Operator_Level/Datasets/Raw/operator_dataset_20
 
 **Usage:**
 ```bash
-python 02_Compare_Patterns.py
+python A_01a_Compare_Patterns.py ../Hybrid_2/Data_Generation/csv/baseline_patterns.csv ./csv/baseline_patterns.csv --output-dir .
 ```
+
+**Variables:**
+- `--output-dir` - Output directory for comparison report (required)
 
 **Expected Results:**
 - Hybrid_2: 31 patterns
@@ -140,6 +145,6 @@ python 02_Compare_Patterns.py
 - PT operators: Hash, Sort, Limit, Incremental Sort, Merge Join
 
 **Actual Results (Baseline Dataset):**
-- ✓ 11 PT parent patterns removed (4× Hash, 4× Sort, 1× Incremental Sort, 1× Limit, 1× Merge Join)
-- ✓ No new patterns
-- ✓ Perfect 31 → 20 pattern reduction
+- 11 PT parent patterns removed (4x Hash, 4x Sort, 1x Incremental Sort, 1x Limit, 1x Merge Join)
+- No new patterns
+- Perfect 31 -> 20 pattern reduction

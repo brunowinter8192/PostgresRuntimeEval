@@ -6,24 +6,24 @@ ML-based runtime prediction with pass-through operator inheritance. Reduces mode
 
 ```
 Hybrid_3/
-├── mapping_config.py       # Shared patterns, targets, PT operators, and constants
-├── Data_Generation/        # Phase 1: Pattern discovery [See DOCS.md]
+├── mapping_config.py                    # Shared patterns, targets, PT operators
+├── Data_Generation/                     [See DOCS.md]
 │   ├── 01_Find_Patterns.py
-│   └── 02_Compare_Patterns.py
-├── Datasets/               # Phase 2: Pattern extraction and preparation [See DOCS.md]
+│   └── A_01a_Compare_Patterns.py
+├── Datasets/                            [See DOCS.md]
 │   ├── 01_Extract_Patterns.py
-│   ├── 02_Verify_Extraction.py
-│   ├── 03_Aggregate_Patterns.py
-│   ├── 04_Verify_Aggregation.py
-│   └── 05_Clean_Patterns.py
-└── Runtime_Prediction/     # Phase 3: Model training and PT prediction [See DOCS.md]
+│   ├── 02_Aggregate_Patterns.py
+│   ├── 03_Clean_Patterns.py
+│   ├── A_01a_Verify_Extraction.py
+│   └── A_01b_Verify_Aggregation.py
+└── Runtime_Prediction/                  [See DOCS.md]
     ├── ffs_config.py
     ├── 01_Feature_Selection.py
     ├── 02_Train_Models.py
-    ├── 03_Predict_Queries.py      # Includes PT inheritance logic
-    ├── 04_Evaluate_Predictions.py
-    ├── 05_Node_Evaluation.py      # Includes PT evaluation
-    └── 06_Time_Analysis.py
+    ├── 03_Predict_Queries.py            # Includes PT inheritance logic
+    ├── A_01a_Evaluate_Predictions.py
+    ├── A_01b_Node_Evaluation.py         # Includes PT evaluation
+    └── A_01c_Time_Analysis.py
 ```
 
 ## External Dependencies

@@ -1,0 +1,10 @@
+feature;order
+Hash_np;1
+Hash_nt2;2
+Hash_parallel_workers;3
+Hash_reltuples;4
+SeqScan_Outer_rt1;5
+SeqScan_Outer_rt2;6
+SeqScan_Outer_st1;7
+SeqScan_Outer_st2;8
+actual_startup_time;9

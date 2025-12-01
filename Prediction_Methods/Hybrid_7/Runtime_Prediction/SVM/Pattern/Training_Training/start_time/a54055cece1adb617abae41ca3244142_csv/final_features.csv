@@ -1,0 +1,9 @@
+feature;order
+HashJoin_Outer_startup_cost;1
+Hash_nt;2
+Hash_plan_width;3
+SeqScan_Outer_rt1;4
+SeqScan_Outer_rt2;5
+SeqScan_Outer_st1;6
+SeqScan_Outer_st2;7
+SeqScan_Outer_total_cost;8

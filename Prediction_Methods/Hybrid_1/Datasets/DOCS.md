@@ -7,10 +7,10 @@ Extracts pattern instances, aggregates parent-child rows, and prepares training 
 ```
 Datasets/
 ├── 01_Extract_Patterns.py              # Extract pattern instances to folders
-├── 02_Verify_Extraction.py             # Verify extraction completeness
-├── 03_Aggregate_Patterns.py            # Combine parent+children into single rows
-├── 04_Verify_Aggregation.py            # Verify aggregation correctness
-├── 05_Clean_Patterns.py                # Remove unavailable features
+├── 02_Aggregate_Patterns.py            # Combine parent+children into single rows
+├── 03_Clean_Patterns.py                # Remove unavailable features
+├── A_01a_Verify_Extraction.py          # [analysis] Verify extraction completeness
+├── A_01b_Verify_Aggregation.py         # [analysis] Verify aggregation correctness
 └── Baseline_SVM/                       # [outputs] SVM baseline outputs
     ├── Hash_Join_Seq_Scan_Outer_Hash_Inner/
     │   ├── training.csv                # Raw pattern instances
@@ -19,8 +19,8 @@ Datasets/
     ├── Hash_Seq_Scan_Outer/
     │   └── ...
     └── csv/                            # Verification results
-        ├── pattern_extraction_verification_{ts}.csv
-        └── aggregation_verification.csv
+        ├── A_01a_extraction_verification_{ts}.csv
+        └── A_01b_aggregation_verification.csv
 ```
 
 ## Shared Infrastructure
@@ -30,23 +30,25 @@ Datasets/
 - `REQUIRED_OPERATORS` - Operators required in patterns
 - `CHILD_ACTUAL_SUFFIXES` - Child actual time columns to remove
 - `CHILD_TIMING_SUFFIXES` - Child st/rt columns for leaf operators
-- `CHILD_FEATURES_TIMING` - Child timing feature column names (st1, rt1, st2, rt2)
+- `PARENT_CHILD_FEATURES` - Parent timing feature column names (st1, rt1, st2, rt2)
 
-**Input data (external):** `Operator_Level/Datasets/Baseline/04_training.csv`
+**Input data (external):** `Operator_Level/Datasets/Baseline/03_training.csv`
 
 ## Workflow Execution Order
 
-**Pattern Pipeline (01-05):**
+**Main Pipeline (01-03):**
 ```
-01 - Extract_Patterns    [operator_dataset.csv → Pattern folders with training.csv]
-     ↓
-02 - Verify_Extraction   [pattern_csv + Pattern folders → verification CSV]
-     ↓
-03 - Aggregate_Patterns  [Pattern folders → training_aggregated.csv per pattern]
-     ↓
-04 - Verify_Aggregation  [pattern_csv + Pattern folders → aggregation verification]
-     ↓
-05 - Clean_Patterns      [Pattern folders + leaf_csv → training_cleaned.csv per pattern]
+01 - Extract_Patterns    [operator_dataset.csv -> Pattern folders with training.csv]
+     |
+02 - Aggregate_Patterns  [Pattern folders -> training_aggregated.csv per pattern]
+     |
+03 - Clean_Patterns      [Pattern folders + leaf_csv -> training_cleaned.csv per pattern]
+```
+
+**Analysis Scripts (A_):**
+```
+A_01a - Verify_Extraction   [pattern_csv + Pattern folders -> verification CSV]
+A_01b - Verify_Aggregation  [pattern_csv + Pattern folders -> aggregation verification]
 ```
 
 ## Script Documentation
@@ -71,7 +73,7 @@ Datasets/
 
 **Usage:**
 ```bash
-python 01_Extract_Patterns.py ../../Operator_Level/Datasets/Baseline/04_training.csv --output-dir Baseline_SVM
+python 01_Extract_Patterns.py ../../Operator_Level/Datasets/Baseline/03_training.csv --output-dir Baseline_SVM
 ```
 
 **Variables:**
@@ -79,35 +81,7 @@ python 01_Extract_Patterns.py ../../Operator_Level/Datasets/Baseline/04_training
 
 ---
 
-### 02 - Verify_Extraction.py
-
-**Purpose:** Verify extraction completeness by comparing expected vs actual row counts
-
-**Workflow:**
-1. Load pattern inventory from find_all_patterns output
-2. Calculate expected rows (occurrences × operators per pattern)
-3. Count actual rows in each pattern folder
-4. Report match/mismatch/missing status
-
-**Inputs:**
-- `pattern_csv` - Path to pattern inventory CSV (positional)
-- `patterns_dir` - Base directory with extracted patterns (positional)
-
-**Outputs:**
-- `{output-dir}/csv/pattern_extraction_verification_{timestamp}.csv`
-  - Columns: pattern, leaf_pattern, total_occurrences, num_operators, expected_rows, actual_rows, match, status
-
-**Usage:**
-```bash
-python 02_Verify_Extraction.py baseline_patterns.csv Baseline_SVM --output-dir Baseline_SVM
-```
-
-**Variables:**
-- `--output-dir` - Output directory for verification results (required)
-
----
-
-### 03 - Aggregate_Patterns.py
+### 02 - Aggregate_Patterns.py
 
 **Purpose:** Aggregate parent and child rows into single feature vectors
 
@@ -127,40 +101,12 @@ python 02_Verify_Extraction.py baseline_patterns.csv Baseline_SVM --output-dir B
 
 **Usage:**
 ```bash
-python 03_Aggregate_Patterns.py Baseline_SVM
+python 02_Aggregate_Patterns.py Baseline_SVM
 ```
 
 ---
 
-### 04 - Verify_Aggregation.py
-
-**Purpose:** Verify aggregation correctness by comparing row counts
-
-**Workflow:**
-1. Load pattern inventory
-2. Count rows in training_aggregated.csv per pattern
-3. Compare with expected occurrence count
-4. Report verification status
-
-**Inputs:**
-- `pattern_csv` - Path to pattern inventory CSV (positional)
-- `patterns_dir` - Base directory with aggregated patterns (positional)
-
-**Outputs:**
-- `{output-dir}/csv/aggregation_verification.csv`
-  - Columns: pattern, leaf_pattern, total_occurrences, aggregated_rows, match, status
-
-**Usage:**
-```bash
-python 04_Verify_Aggregation.py baseline_patterns.csv Baseline_SVM --output-dir Baseline_SVM
-```
-
-**Variables:**
-- `--output-dir` - Output directory for verification results (required)
-
----
-
-### 05 - Clean_Patterns.py
+### 03 - Clean_Patterns.py
 
 **Purpose:** Remove features unavailable at prediction time (child actuals)
 
@@ -182,5 +128,63 @@ python 04_Verify_Aggregation.py baseline_patterns.csv Baseline_SVM --output-dir 
 
 **Usage:**
 ```bash
-python 05_Clean_Patterns.py Baseline_SVM baseline_patterns.csv
+python 03_Clean_Patterns.py Baseline_SVM baseline_patterns.csv
 ```
+
+---
+
+## Analysis Scripts
+
+### A_01a - Verify_Extraction.py
+
+**Purpose:** Verify extraction completeness by comparing expected vs actual row counts
+
+**Workflow:**
+1. Load pattern inventory from find_all_patterns output
+2. Calculate expected rows (occurrences x operators per pattern)
+3. Count actual rows in each pattern folder
+4. Report match/mismatch/missing status
+
+**Inputs:**
+- `pattern_csv` - Path to pattern inventory CSV (positional)
+- `patterns_dir` - Base directory with extracted patterns (positional)
+
+**Outputs:**
+- `{output-dir}/csv/A_01a_extraction_verification_{timestamp}.csv`
+  - Columns: pattern, leaf_pattern, total_occurrences, num_operators, expected_rows, actual_rows, match, status
+
+**Usage:**
+```bash
+python A_01a_Verify_Extraction.py baseline_patterns.csv Baseline_SVM --output-dir Baseline_SVM
+```
+
+**Variables:**
+- `--output-dir` - Output directory for verification results (required)
+
+---
+
+### A_01b - Verify_Aggregation.py
+
+**Purpose:** Verify aggregation correctness by comparing row counts
+
+**Workflow:**
+1. Load pattern inventory
+2. Count rows in training_aggregated.csv per pattern
+3. Compare with expected occurrence count
+4. Report verification status
+
+**Inputs:**
+- `pattern_csv` - Path to pattern inventory CSV (positional)
+- `patterns_dir` - Base directory with aggregated patterns (positional)
+
+**Outputs:**
+- `{output-dir}/csv/A_01b_aggregation_verification.csv`
+  - Columns: pattern, leaf_pattern, total_occurrences, aggregated_rows, match, status
+
+**Usage:**
+```bash
+python A_01b_Verify_Aggregation.py baseline_patterns.csv Baseline_SVM --output-dir Baseline_SVM
+```
+
+**Variables:**
+- `--output-dir` - Output directory for verification results (required)
