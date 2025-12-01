@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+
+# INFRASTRUCTURE
+
+# SVM Parameters (from Hybrid_7/ffs_config.py)
+SVM_PARAMS = {
+    'kernel': 'rbf',
+    'nu': 0.65,
+    'C': 1.5,
+    'gamma': 'scale',
+    'cache_size': 500
+}
+
+# Online Selection Parameters
+EPSILON = 0.0001  # 0.01% minimum improvement
+MIN_SAMPLES = 5   # Minimum samples for training
+
+# Operator Feature-Set (10 base features)
+OPERATOR_FEATURES = [
+    'np', 'nt', 'nt1', 'nt2', 'sel',
+    'startup_cost', 'total_cost', 'plan_width',
+    'reltuples', 'parallel_workers'
+]
+
+# Child Features (timing + structural)
+CHILD_FEATURES_TIMING = ['st1', 'rt1', 'st2', 'rt2']
+CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']
+CHILD_FEATURES = CHILD_FEATURES_TIMING + CHILD_FEATURES_STRUCTURAL
+
+# Pattern Feature-Set (14 features, prefixed per operator in pattern)
+PATTERN_FEATURES = [
+    'nt', 'nt1', 'nt2',
+    'np', 'plan_width',
+    'rt1', 'rt2', 'st1', 'st2',
+    'sel', 'reltuples',
+    'parallel_workers',
+    'startup_cost', 'total_cost'
+]
+
+# Target columns
+OPERATOR_TARGETS = ['actual_startup_time', 'actual_total_time']
+
+TARGET_NAME_MAP = {
+    'execution_time': 'actual_total_time',
+    'start_time': 'actual_startup_time'
+}
+
+TARGET_TYPES = ['execution_time', 'start_time']
+
+# Metadata columns (not features)
+OPERATOR_METADATA = [
+    'query_file', 'node_id', 'node_type',
+    'depth', 'parent_relationship', 'subplan_name'
+]
+
+# Leaf operators (no child timing features)
+LEAF_OPERATORS = ['Seq Scan', 'Index Scan', 'Index Only Scan']
+
+# Operator name mapping (CSV name -> folder name)
+OPERATOR_CSV_TO_FOLDER = {
+    'Aggregate': 'Aggregate',
+    'Gather': 'Gather',
+    'Gather Merge': 'Gather_Merge',
+    'Hash': 'Hash',
+    'Hash Join': 'Hash_Join',
+    'Incremental Sort': 'Incremental_Sort',
+    'Index Only Scan': 'Index_Only_Scan',
+    'Index Scan': 'Index_Scan',
+    'Limit': 'Limit',
+    'Merge Join': 'Merge_Join',
+    'Nested Loop': 'Nested_Loop',
+    'Seq Scan': 'Seq_Scan',
+    'Sort': 'Sort'
+}
+
+
+# FUNCTIONS
+
+# Get feature set for operator (removes timing for leafs)
+def get_operator_features(node_type: str) -> list:
+    base = OPERATOR_FEATURES.copy()
+    if node_type in LEAF_OPERATORS:
+        return base + CHILD_FEATURES_STRUCTURAL
+    return base + CHILD_FEATURES
+
+
+# Get pattern features with prefix
+def get_pattern_features_with_prefix(prefix: str, is_leaf: bool) -> list:
+    features = []
+    for f in PATTERN_FEATURES:
+        if is_leaf and f in CHILD_FEATURES_TIMING:
+            continue
+        features.append(f'{prefix}{f}')
+    return features
+
+
+# Convert operator CSV name to folder name format
+def csv_name_to_folder_name(csv_name: str) -> str:
+    return OPERATOR_CSV_TO_FOLDER.get(csv_name, csv_name.replace(' ', '_'))

@@ -1,0 +1,51 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;actual_startup_time;True;0.0013630446464904073;1;actual_startup_time
+2;Hash_np;True;0.0009850286593757337;2;actual_startup_time, Hash_np
+3;Hash_nt2;True;0.0008036339187196491;3;actual_startup_time, Hash_np, Hash_nt2
+4;Hash_reltuples;True;0.000752786096500855;4;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples
+5;Hash_parallel_workers;True;0.000738558532525881;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+6;actual_total_time;False;0.0008067368562130875;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+7;HashJoin_Outer_np;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+8;HashJoin_Outer_reltuples;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+9;HashJoin_Outer_parallel_workers;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+10;SeqScan_Outer_nt1;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+11;SeqScan_Outer_nt2;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+12;SeqScan_Outer_startup_cost;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+13;SeqScan_Outer_parallel_workers;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+14;SeqScan_Outer_st1;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+15;SeqScan_Outer_rt1;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+16;SeqScan_Outer_st2;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+17;SeqScan_Outer_rt2;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+18;Hash_Inner_np;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+19;Hash_Inner_nt2;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+20;Hash_Inner_reltuples;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+21;Hash_Inner_parallel_workers;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+22;Hash_Inner_st2;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+23;Hash_Inner_rt2;False;0.0012027630098220144;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+24;Hash_Inner_rt1;False;0.004332894766428695;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+25;Hash_Inner_st1;False;0.0043348879835225255;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+26;Hash_nt;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+27;Hash_nt1;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+28;Hash_sel;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+29;Hash_startup_cost;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+30;Hash_total_cost;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+31;HashJoin_Outer_nt;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+32;HashJoin_Outer_nt1;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+33;HashJoin_Outer_nt2;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+34;HashJoin_Outer_sel;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+35;HashJoin_Outer_startup_cost;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+36;HashJoin_Outer_total_cost;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+37;SeqScan_Outer_np;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+38;SeqScan_Outer_nt;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+39;SeqScan_Outer_sel;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+40;SeqScan_Outer_total_cost;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+41;SeqScan_Outer_reltuples;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+42;Hash_Inner_nt;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+43;Hash_Inner_nt1;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+44;Hash_Inner_sel;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+45;Hash_Inner_startup_cost;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+46;Hash_Inner_total_cost;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+47;Hash_Inner_plan_width;False;0.02990342498920896;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+48;SeqScan_Outer_plan_width;False;0.033639571228681074;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+49;HashJoin_Outer_plan_width;False;0.03426667576623687;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers
+50;Hash_plan_width;False;0.03431329802164064;5;actual_startup_time, Hash_np, Hash_nt2, Hash_reltuples, Hash_parallel_workers

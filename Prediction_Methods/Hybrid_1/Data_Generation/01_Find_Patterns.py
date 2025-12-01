@@ -138,7 +138,7 @@ def export_results(results, output_dir):
     csv_dir = Path(output_dir) / 'csv'
     csv_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = csv_dir / f'baseline_patterns_depth1plus_{timestamp}.csv'
+    output_file = csv_dir / f'01_baseline_patterns_depth1plus_{timestamp}.csv'
     results.to_csv(output_file, sep=';', index=False)
 
 if __name__ == '__main__':

@@ -1,0 +1,2 @@
+seed;n_features;final_mre;selected_features
+42;10;0.051963523102891394;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, p_rows, byte_count, subplan_count, initplan_count, planning_time_ms

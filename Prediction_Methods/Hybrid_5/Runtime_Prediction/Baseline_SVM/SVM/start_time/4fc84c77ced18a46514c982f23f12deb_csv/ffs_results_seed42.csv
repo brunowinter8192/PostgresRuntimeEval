@@ -1,0 +1,27 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Gather_Outer_rt1;True;0.016087874585614812;1;Gather_Outer_rt1
+2;actual_startup_time;True;0.01579192519356134;2;Gather_Outer_rt1, actual_startup_time
+3;actual_total_time;False;0.015944909594549063;2;Gather_Outer_rt1, actual_startup_time
+4;Aggregate_total_cost;False;0.019437229501198645;2;Gather_Outer_rt1, actual_startup_time
+5;Aggregate_startup_cost;False;0.01972572581589751;2;Gather_Outer_rt1, actual_startup_time
+6;Gather_Outer_total_cost;False;0.02022553494475693;2;Gather_Outer_rt1, actual_startup_time
+7;Gather_Outer_sel;False;0.022937193705080978;2;Gather_Outer_rt1, actual_startup_time
+8;Gather_Outer_parallel_workers;False;0.02336793914989381;2;Gather_Outer_rt1, actual_startup_time
+9;Gather_Outer_st1;False;0.032331338833284776;2;Gather_Outer_rt1, actual_startup_time
+10;Gather_Outer_startup_cost;False;0.037519720464793946;2;Gather_Outer_rt1, actual_startup_time
+11;Aggregate_sel;False;0.04247653907403847;2;Gather_Outer_rt1, actual_startup_time
+12;Aggregate_plan_width;False;0.04669692745504658;2;Gather_Outer_rt1, actual_startup_time
+13;Aggregate_nt1;False;0.04762968592234622;2;Gather_Outer_rt1, actual_startup_time
+14;Gather_Outer_nt;False;0.04762968592234622;2;Gather_Outer_rt1, actual_startup_time
+15;Gather_Outer_nt1;False;0.050326777186837465;2;Gather_Outer_rt1, actual_startup_time
+16;Gather_Outer_plan_width;False;0.05492932181475246;2;Gather_Outer_rt1, actual_startup_time
+17;Aggregate_nt;False;0.07188505473618956;2;Gather_Outer_rt1, actual_startup_time
+18;Aggregate_np;False;0.09400822981184849;2;Gather_Outer_rt1, actual_startup_time
+19;Aggregate_nt2;False;0.09400822981184849;2;Gather_Outer_rt1, actual_startup_time
+20;Aggregate_reltuples;False;0.09400822981184849;2;Gather_Outer_rt1, actual_startup_time
+21;Aggregate_parallel_workers;False;0.09400822981184849;2;Gather_Outer_rt1, actual_startup_time
+22;Gather_Outer_np;False;0.09400822981184849;2;Gather_Outer_rt1, actual_startup_time
+23;Gather_Outer_nt2;False;0.09400822981184849;2;Gather_Outer_rt1, actual_startup_time
+24;Gather_Outer_reltuples;False;0.09400822981184849;2;Gather_Outer_rt1, actual_startup_time
+25;Gather_Outer_st2;False;0.09400822981184849;2;Gather_Outer_rt1, actual_startup_time
+26;Gather_Outer_rt2;False;0.09400822981184849;2;Gather_Outer_rt1, actual_startup_time

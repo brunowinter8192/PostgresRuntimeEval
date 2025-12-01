@@ -8,8 +8,8 @@ import re
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-# From mapping_config.py: Pattern discovery constants
-from mapping_config import REQUIRED_OPERATORS
+# From mapping_config.py: Pattern discovery constants and folder name conversion
+from mapping_config import REQUIRED_OPERATORS, pattern_to_folder_name
 
 
 # ORCHESTRATOR
@@ -101,19 +101,9 @@ def format_pattern_key(parent_type, children):
         children_str = ', '.join([f"{ct} ({rel})" for ct, rel in children_sorted])
         return f"{parent_type} → [{children_str}]"
 
-# Create clean folder name from pattern key
-def create_pattern_folder_name(pattern_key):
-    clean = pattern_key.replace(' → ', '_')
-    clean = clean.replace('[', '').replace(']', '')
-    clean = clean.replace('(', '').replace(')', '')
-    clean = clean.replace(', ', '_')
-    clean = clean.replace(' ', '_')
-    clean = re.sub(r'_+', '_', clean)
-    return clean
-
 # Export pattern dataset to dedicated folder
 def export_pattern_dataset(df, pattern_key, row_indices, output_base):
-    folder_name = create_pattern_folder_name(pattern_key)
+    folder_name = pattern_to_folder_name(pattern_key)
     pattern_dir = Path(output_base) / folder_name
     pattern_dir.mkdir(parents=True, exist_ok=True)
     

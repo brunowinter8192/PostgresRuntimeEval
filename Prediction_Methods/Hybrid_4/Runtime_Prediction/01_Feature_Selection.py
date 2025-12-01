@@ -16,6 +16,8 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 # From mapping_config.py: Pattern definitions and FFS configuration
 from mapping_config import PATTERNS, TARGET_TYPES, NON_FEATURE_SUFFIXES, FFS_SEED, FFS_MIN_FEATURES
+# From ffs_config.py: SVM hyperparameters
+from ffs_config import SVM_PARAMS
 
 # ORCHESTRATOR
 
@@ -144,13 +146,7 @@ def perform_forward_selection(X, y, template_ids, cv):
 def evaluate_feature_set(X, y, features, template_ids, cv):
     pipeline = Pipeline([
         ('scaler', MaxAbsScaler()),
-        ('model', NuSVR(
-            kernel='rbf',
-            nu=0.65,
-            C=1.5,
-            gamma='scale',
-            cache_size=500
-        ))
+        ('model', NuSVR(**SVM_PARAMS))
     ])
     
     scorer = make_scorer(calculate_mean_relative_error, greater_is_better=False)

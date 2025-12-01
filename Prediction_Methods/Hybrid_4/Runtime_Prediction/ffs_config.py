@@ -2,9 +2,6 @@
 
 # INFRASTRUCTURE
 
-SEED = 42
-MIN_FEATURES = 1
-
 SVM_PARAMS = {
     'kernel': 'rbf',
     'nu': 0.65,

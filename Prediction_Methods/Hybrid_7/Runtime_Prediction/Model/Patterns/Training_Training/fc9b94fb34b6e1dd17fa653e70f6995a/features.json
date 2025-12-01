@@ -1,0 +1,1 @@
+{"features_exec": ["Aggregate_Outer_nt1", "HashJoin_Outer_nt", "HashJoin_Outer_nt1", "Hash_Inner_rt1", "Hash_Inner_rt2", "Hash_Inner_st1", "Hash_Inner_st2", "SeqScan_Outer_nt"], "features_start": ["Aggregate_Outer_nt1", "HashJoin_Outer_nt", "HashJoin_Outer_nt1", "Hash_Inner_rt1", "Hash_Inner_rt2", "Hash_Inner_st1", "Hash_Inner_st2", "SeqScan_Outer_nt"]}

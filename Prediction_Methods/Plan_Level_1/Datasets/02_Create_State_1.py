@@ -1,18 +1,6 @@
 #!/usr/bin/env python3
-"""
-Transform Baseline complete dataset to State_1 dataset by removing advanced features.
 
-State_1 represents the first research iteration with basic feature set:
-- 5 basic plan metrics (costs, rows, width, operator count)
-- 26 operator features (count and row metrics per operator type)
-- 2 query result features (row count, byte count)
-
-Removed from Baseline: 16 advanced features (parallelization, strategies, keys)
-and template metadata column.
-
-Author: Auto-generated
-Date: 2025-11-19
-"""
+# INFRASTRUCTURE
 
 import argparse
 import sys
@@ -22,11 +10,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 # From mapping_config.py: Feature mappings for State_1 transformation
-from mapping_config import (
-    FEATURES_TO_REMOVE_FOR_STATE_1,
-    get_state_1_columns,
-    PLAN_TARGET
-)
+from mapping_config import FEATURES_TO_REMOVE_FOR_STATE_1, get_state_1_columns
 
 
 # ORCHESTRATOR

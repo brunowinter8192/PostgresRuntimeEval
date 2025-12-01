@@ -1,0 +1,6 @@
+node_type (Operator Mean MRE Startup Time %);Q1;Q10;Q13;Q18;Q3;Q6;Q7;Q8;Q9
+Gather;;648.09;;;472.13;;;;
+Index Only Scan;;;19.89;;;;;;
+Index Scan;;;;29.26;;;16.65;;
+Nested Loop;;;;95.12;;;;;
+Seq Scan;72.27;;;89.78;93.54;6.0;;157.33;99.58

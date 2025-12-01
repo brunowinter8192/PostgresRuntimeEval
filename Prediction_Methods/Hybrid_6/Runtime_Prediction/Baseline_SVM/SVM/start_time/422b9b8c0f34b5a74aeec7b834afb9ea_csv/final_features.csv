@@ -1,0 +1,14 @@
+feature;order
+Aggregate_Outer_nt;1
+Gather_nt;2
+Gather_nt1;3
+Gather_parallel_workers;4
+Gather_sel;5
+Hash_Inner_sel;6
+SeqScan_Outer_np;7
+SeqScan_Outer_reltuples;8
+SeqScan_Outer_rt1;9
+SeqScan_Outer_rt2;10
+SeqScan_Outer_st1;11
+SeqScan_Outer_st2;12
+actual_startup_time;13

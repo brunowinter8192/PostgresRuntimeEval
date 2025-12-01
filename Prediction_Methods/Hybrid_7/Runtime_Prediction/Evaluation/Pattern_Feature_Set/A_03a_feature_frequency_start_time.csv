@@ -1,0 +1,15 @@
+feature;count
+nt;375
+rt1;346
+rt2;346
+st1;346
+st2;346
+np;333
+sel;325
+nt1;316
+plan_width;309
+nt2;304
+parallel_workers;276
+reltuples;273
+startup_cost;265
+total_cost;249

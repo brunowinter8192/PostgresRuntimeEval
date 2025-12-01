@@ -1,0 +1,3 @@
+feature;order
+HashJoin_Outer_rt1;1
+GatherMerge_total_cost;2

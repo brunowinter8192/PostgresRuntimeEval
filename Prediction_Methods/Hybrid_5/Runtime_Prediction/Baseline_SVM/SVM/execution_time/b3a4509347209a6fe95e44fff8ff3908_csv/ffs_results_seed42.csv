@@ -1,0 +1,37 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;actual_total_time;True;0.004481813054743074;1;actual_total_time
+2;Sort_sel;True;0.0032130462907941186;2;actual_total_time, Sort_sel
+3;actual_startup_time;False;0.0038764936371407863;2;actual_total_time, Sort_sel
+4;Gather_Outer_rt1;False;0.005343330882350582;2;actual_total_time, Sort_sel
+5;Sort_plan_width;False;0.013591851737085816;2;actual_total_time, Sort_sel
+6;Aggregate_Outer_plan_width;False;0.013591851737085816;2;actual_total_time, Sort_sel
+7;Gather_Outer_nt1;False;0.013734552505146186;2;actual_total_time, Sort_sel
+8;Gather_Outer_plan_width;False;0.013760406722959268;2;actual_total_time, Sort_sel
+9;Aggregate_Outer_nt1;False;0.013967986447174494;2;actual_total_time, Sort_sel
+10;Gather_Outer_nt;False;0.013967986447174494;2;actual_total_time, Sort_sel
+11;Sort_total_cost;False;0.014015954320485035;2;actual_total_time, Sort_sel
+12;Sort_startup_cost;False;0.014060071138758012;2;actual_total_time, Sort_sel
+13;Aggregate_Outer_total_cost;False;0.014393433681908024;2;actual_total_time, Sort_sel
+14;Aggregate_Outer_startup_cost;False;0.014710598349530885;2;actual_total_time, Sort_sel
+15;Gather_Outer_total_cost;False;0.015129485148097154;2;actual_total_time, Sort_sel
+16;Gather_Outer_sel;False;0.016347042658646522;2;actual_total_time, Sort_sel
+17;Gather_Outer_parallel_workers;False;0.016511945759707734;2;actual_total_time, Sort_sel
+18;Aggregate_Outer_sel;False;0.01671364449711246;2;actual_total_time, Sort_sel
+19;Gather_Outer_st1;False;0.01697057794710662;2;actual_total_time, Sort_sel
+20;Gather_Outer_startup_cost;False;0.01704676817448033;2;actual_total_time, Sort_sel
+21;Sort_nt;False;0.019676755913785347;2;actual_total_time, Sort_sel
+22;Sort_nt1;False;0.019676755913785347;2;actual_total_time, Sort_sel
+23;Aggregate_Outer_nt;False;0.019676755913785347;2;actual_total_time, Sort_sel
+24;Sort_np;False;0.020245821615634506;2;actual_total_time, Sort_sel
+25;Sort_nt2;False;0.020245821615634506;2;actual_total_time, Sort_sel
+26;Sort_reltuples;False;0.020245821615634506;2;actual_total_time, Sort_sel
+27;Sort_parallel_workers;False;0.020245821615634506;2;actual_total_time, Sort_sel
+28;Aggregate_Outer_np;False;0.020245821615634506;2;actual_total_time, Sort_sel
+29;Aggregate_Outer_nt2;False;0.020245821615634506;2;actual_total_time, Sort_sel
+30;Aggregate_Outer_reltuples;False;0.020245821615634506;2;actual_total_time, Sort_sel
+31;Aggregate_Outer_parallel_workers;False;0.020245821615634506;2;actual_total_time, Sort_sel
+32;Gather_Outer_np;False;0.020245821615634506;2;actual_total_time, Sort_sel
+33;Gather_Outer_nt2;False;0.020245821615634506;2;actual_total_time, Sort_sel
+34;Gather_Outer_reltuples;False;0.020245821615634506;2;actual_total_time, Sort_sel
+35;Gather_Outer_st2;False;0.020245821615634506;2;actual_total_time, Sort_sel
+36;Gather_Outer_rt2;False;0.020245821615634506;2;actual_total_time, Sort_sel

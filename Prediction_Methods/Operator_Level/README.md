@@ -110,3 +110,22 @@ The operator-level prediction pipeline consists of three sequential phases:
 **Toolset:** The Runtime_Prediction/ directory contains scripts for model training, prediction, and various evaluation analyses. Scripts 00-02 form the core pipeline. Script 03 provides query-level evaluation, while scripts 04-05 provide operator and timing analysis.
 
 **See Runtime_Prediction/README.md for detailed script documentation**
+
+## Open Issues
+
+### Train/Test Split Alignment
+
+**Status:** Open
+
+**Problem:** The train/test split method differs from Hybrid_7, making MRE comparison invalid.
+
+| Aspect | Current (Operator_Level) | Target (Hybrid_7) |
+|--------|-------------------------|-------------------|
+| Method | Seed-based (deterministic) | sklearn train_test_split |
+| Training | First 120 seeds per template | 80% random (seed=42) |
+| Test | Last 30 seeds per template | 20% random (seed=42) |
+| Script | 03_Split_Data.py | 01_Split_Data.py |
+
+**Impact:** MRE values are not directly comparable between Operator_Level (19.45%) and Hybrid_7 (18.51%) due to different test queries.
+
+**Fix:** Update 03_Split_Data.py to use sklearn train_test_split with random_state=42 and re-run the entire pipeline.

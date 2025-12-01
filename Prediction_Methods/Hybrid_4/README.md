@@ -8,22 +8,21 @@ ML-based runtime prediction with extended pass-through threshold (95% vs 99%). I
 Hybrid_4/
 ├── mapping_config.py       # Shared patterns, targets, PT operators, and constants
 ├── Data_Generation/        # Phase 1: Pattern discovery [See DOCS.md]
-│   ├── 01_Find_Patterns.py
-│   └── 02_Compare_Patterns.py
+│   └── 01_Find_Patterns.py
 ├── Datasets/               # Phase 2: Pattern extraction and preparation [See DOCS.md]
 │   ├── 01_Extract_Patterns.py
-│   ├── 02_Verify_Extraction.py
-│   ├── 03_Aggregate_Patterns.py
-│   ├── 04_Verify_Aggregation.py
-│   └── 05_Clean_Patterns.py
+│   ├── 02_Aggregate_Patterns.py
+│   ├── 03_Clean_Patterns.py
+│   ├── A_01a_Verify_Extraction.py
+│   └── A_01b_Verify_Aggregation.py
 └── Runtime_Prediction/     # Phase 3: Model training and PT prediction [See DOCS.md]
     ├── ffs_config.py
     ├── 01_Feature_Selection.py
     ├── 02_Train_Models.py
     ├── 03_Predict_Queries.py      # Includes PT inheritance logic
-    ├── 04_Evaluate_Predictions.py
-    ├── 05_Node_Evaluation.py      # Includes PT evaluation
-    └── 06_Time_Analysis.py
+    ├── A_01a_Evaluate_Predictions.py
+    ├── A_01b_Node_Evaluation.py   # Includes PT evaluation
+    └── A_01c_Time_Analysis.py
 ```
 
 ## External Dependencies
@@ -44,11 +43,11 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 **mapping_config.py** - Central configuration shared across all three phases
 
 **Constants:**
-- `PATTERNS` - **20 pattern folder names** (PT parent patterns excluded)
+- `PATTERNS` - **9 pattern folder names** (PT parent patterns excluded)
 - `TARGET_TYPES` - Target variables (execution_time, start_time)
 - `NON_FEATURE_SUFFIXES` - Metadata column suffixes to exclude
 - `LEAF_OPERATORS` - Leaf node types (SeqScan, IndexScan, IndexOnlyScan)
-- `PASSTHROUGH_OPERATORS` - **PT operators** (Incremental Sort, Merge Join, Limit, Sort, Hash)
+- `PASSTHROUGH_OPERATORS` - **7 PT operators** (Incremental Sort, Merge Join, Limit, Sort, Hash, Gather Merge, Aggregate)
 - `FFS_SEED` - Random seed for cross-validation (42)
 - `FFS_MIN_FEATURES` - Minimum features to select (1)
 
@@ -90,8 +89,8 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 | **Operator Filter** | REQUIRED_OPERATORS | Kein Filter | PT Filter (≥99%) | **PT Filter (≥95%)** |
 | **PT Threshold** | N/A | N/A | 0.99 | **0.95** |
 | **PT Operators** | N/A | Als Parents | 5 excluded | **7 excluded** |
-| **Pattern Count** | 21 | 31 | 20 | **TBD (< 20)** |
-| **Model Count** | 42 (21×2) | 62 (31×2) | 40 (20×2) | **TBD (< 40)** |
+| **Pattern Count** | 21 | 31 | 20 | **9** |
+| **Model Count** | 42 (21×2) | 62 (31×2) | 40 (20×2) | **18 (9×2)** |
 | **Prediction Types** | 2 (pattern, operator) | 2 (pattern, operator) | 3 (pattern, operator, passthrough) | 3 (pattern, operator, passthrough) |
 | **Key Innovation** | Patterns mit Root | Alle Operators | PT Inheritance | **Extended PT** |
 
@@ -102,10 +101,10 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 **PT Operators (Hybrid_4):** Hash, Sort, Limit, Incremental Sort, Merge Join, Gather Merge, Aggregate
 
 **Strategy:**
-- **Excluded as pattern parents** → Reduces patterns from 20 (Hybrid_3) to < 20
+- **Excluded as pattern parents** → Reduces patterns from 20 (Hybrid_3) to 9
 - **Inherit child predictions** → No model training/inference needed
 - **prediction_type = 'passthrough'** → Identified in evaluation
-- **Hybrid_4 adds:** Aggregate and Gather Merge (both ≥ 95% ratio)
+- **Hybrid_4 adds:** Aggregate and Gather Merge (both >= 95% ratio)
 
 **Example Chain:**
 ```
@@ -122,11 +121,11 @@ Result: Limit and Sort predictions = Aggregate prediction (perfect inheritance, 
 
 **Phase 1 → Phase 2 → Phase 3**
 
-1. **Data_Generation**: Discover patterns, skip PT parents → 20 patterns (vs 31 in Hybrid_2)
+1. **Data_Generation**: Discover patterns, skip PT parents → 9 patterns (vs 20 in Hybrid_3)
 
-2. **Datasets**: Extract pattern instances, skip PT parents → 20 pattern folders
+2. **Datasets**: Extract pattern instances, skip PT parents → 9 pattern folders
 
-3. **Runtime_Prediction**: Train 40 models (20×2), predict with PT inheritance → 3 prediction types
+3. **Runtime_Prediction**: Train 18 models (9×2), predict with PT inheritance → 3 prediction types
 
 **Hybrid Concept:** Groups parent+children into patterns (e.g., Hash_Join → Seq_Scan + Hash). Bottom-up prediction with 3 fallback levels:
 1. Pattern match → pattern model

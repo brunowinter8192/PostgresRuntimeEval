@@ -1,0 +1,15 @@
+feature;order
+Aggregate_plan_width;1
+HashJoin_Outer_rt1;2
+HashJoin_Outer_rt2;3
+HashJoin_Outer_st1;4
+HashJoin_Outer_st2;5
+IndexScan_Inner_rt1;6
+IndexScan_Inner_rt2;7
+IndexScan_Inner_st1;8
+IndexScan_Inner_st2;9
+NestedLoop_Outer_total_cost;10
+SeqScan_Outer_rt1;11
+SeqScan_Outer_rt2;12
+SeqScan_Outer_st1;13
+SeqScan_Outer_st2;14

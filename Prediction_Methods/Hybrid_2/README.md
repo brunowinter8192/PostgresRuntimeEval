@@ -6,23 +6,27 @@ ML-based runtime prediction for SQL queries using pattern-level SVM models that 
 
 ```
 Hybrid_2/
-├── mapping_config.py       # Shared patterns, targets, and constants
-├── Data_Generation/        # Phase 1: Pattern discovery [See DOCS.md]
-│   └── 01_Find_Patterns.py
-├── Datasets/               # Phase 2: Pattern extraction and preparation [See DOCS.md]
+├── mapping_config.py                        # Shared patterns, targets, and constants
+├── README.md                                # Workflow documentation (THIS FILE)
+├── Data_Generation/                         [See DOCS.md]
+│   ├── 01_Find_Patterns.py
+│   └── csv/
+├── Datasets/                                [See DOCS.md]
 │   ├── 01_Extract_Patterns.py
-│   ├── 02_Verify_Extraction.py
-│   ├── 03_Aggregate_Patterns.py
-│   ├── 04_Verify_Aggregation.py
-│   └── 05_Clean_Patterns.py
-└── Runtime_Prediction/     # Phase 3: Model training and prediction [See DOCS.md]
+│   ├── 02_Aggregate_Patterns.py
+│   ├── 03_Clean_Patterns.py
+│   ├── A_01a_Verify_Extraction.py           # Analysis script
+│   ├── A_01b_Verify_Aggregation.py          # Analysis script
+│   └── Baseline_SVM/
+└── Runtime_Prediction/                      [See DOCS.md]
     ├── ffs_config.py
     ├── 01_Feature_Selection.py
     ├── 02_Train_Models.py
     ├── 03_Predict_Queries.py
-    ├── 04_Evaluate_Predictions.py
-    ├── 05_Node_Evaluation.py
-    └── 06_Time_Analysis.py
+    ├── A_01a_Evaluate_Predictions.py        # Analysis script
+    ├── A_01b_Node_Evaluation.py             # Analysis script
+    ├── A_01c_Time_Analysis.py               # Analysis script
+    └── Baseline_SVM/
 ```
 
 ## External Dependencies

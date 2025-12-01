@@ -1,0 +1,10 @@
+feature;order
+Gather_sel;1
+IndexScan_Inner_rt1;2
+IndexScan_Inner_rt2;3
+IndexScan_Inner_st1;4
+IndexScan_Inner_st2;5
+SeqScan_Outer_rt1;6
+SeqScan_Outer_rt2;7
+SeqScan_Outer_st1;8
+SeqScan_Outer_st2;9

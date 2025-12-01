@@ -1,0 +1,1 @@
+{"features_exec": ["Aggregate_plan_width", "HashJoin_Outer_nt2", "SeqScan_Outer_nt", "SeqScan_Outer_sel"], "features_start": ["Aggregate_plan_width", "HashJoin_Outer_nt2", "SeqScan_Outer_nt", "SeqScan_Outer_sel"]}

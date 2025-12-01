@@ -1,0 +1,17 @@
+feature;order
+Hash_Inner_rt1;1
+Hash_Inner_rt2;2
+Hash_Inner_st1;3
+Hash_Inner_st2;4
+IndexScan_Inner_rt1;5
+IndexScan_Inner_rt2;6
+IndexScan_Inner_st1;7
+IndexScan_Inner_st2;8
+NestedLoop_Outer_rt1;9
+NestedLoop_Outer_rt2;10
+NestedLoop_Outer_st1;11
+NestedLoop_Outer_st2;12
+SeqScan_Outer_rt1;13
+SeqScan_Outer_rt2;14
+SeqScan_Outer_st1;15
+SeqScan_Outer_st2;16

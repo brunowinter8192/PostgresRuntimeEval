@@ -1,0 +1,6 @@
+feature;order
+HashJoin_nt2;1
+HashJoin_sel;2
+SeqScan_Outer_nt;3
+Hash_Inner_nt;4
+Hash_Inner_nt1;5

@@ -1,0 +1,16 @@
+feature;order
+Aggregate_Outer_nt1;1
+Aggregate_Outer_sel;2
+GatherMerge_np;3
+IndexScan_Inner_rt1;4
+IndexScan_Inner_rt2;5
+IndexScan_Inner_st1;6
+IndexScan_Inner_st2;7
+NestedLoop_Outer_nt;8
+NestedLoop_Outer_nt1;9
+SeqScan_Outer_rt1;10
+SeqScan_Outer_rt2;11
+SeqScan_Outer_st1;12
+SeqScan_Outer_st2;13
+Sort_Outer_nt;14
+Sort_Outer_nt1;15

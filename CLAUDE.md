@@ -16,7 +16,17 @@
 
 ---
 
-## 2. PRIORITY LEVELS
+## 2. SCIENTIFIC FOUNDATION
+
+**Base Paper:** "Learning-based Query Performance Modeling and Prediction" (Akdere, Cetintemel, Upfal - Brown University, 2012)
+
+**Paper Source:** `Misc/Learning-based_Query_Performance_Modeling_and_Pred.md`
+
+**Workflow-Hook:** Bei jedem neuen Workflow (## Marker) frage: "Basiert dieser Ansatz auf dem Paper?" Falls ja: Paper lesen fuer Kontext.
+
+---
+
+## 3. PRIORITY LEVELS
 
 **CRITICAL:** Must follow - violations break the system
 **IMPORTANT:** Should follow - violations reduce quality
@@ -24,7 +34,7 @@
 
 ---
 
-## 3. CRITICAL STANDARDS
+## 4. CRITICAL STANDARDS
 
 - NO comments inside function bodies (only function header comments + section markers)
 - NO test files in root (ONLY in debug/ folder when requested)
@@ -38,9 +48,19 @@
 
 **Fail-Fast:** Let exceptions fly. No try-catch that silently swallows errors affecting business logic. Script must fail if it cannot fulfill its purpose.
 
+**Sofortiger Stopp bei Problemen:**
+- Bei JEDEM unerwarteten Problem waehrend der Ausfuehrung: SOFORT STOPPEN
+- User informieren mit klarer Problembeschreibung
+- NIEMALS eigenmaechtig "fixen" oder Workarounds implementieren
+- Warten auf explizite User-Entscheidung bevor fortgefahren wird
+
+**Beispiele:** NaN-Werte, fehlende Dateien, unerwartete Formate, Algorithmus-Fehler, Abhaengigkeitsprobleme, etc.
+
+**Warum:** Ein eigenmaechtiger "Fix" kann das gesamte Projekt invalidieren. Lieber einmal zu oft fragen als einmal zu wenig.
+
 ---
 
-## 4. PROJECT ARCHITECTURE: Standalone Pipeline
+## 5. PROJECT ARCHITECTURE: Standalone Pipeline
 
 **This project uses standalone module architecture, NOT orchestrated workflow.**
 
@@ -66,7 +86,7 @@ User runs: python 01_Script.py <args>
 
 ---
 
-## 5. THESIS-SPECIFIC RULES
+## 6. THESIS-SPECIFIC RULES
 
 ### CSV Files
 
@@ -101,7 +121,7 @@ User runs: python 01_Script.py <args>
 
 ---
 
-## 6. CODE ORGANIZATION
+## 7. CODE ORGANIZATION
 
 **CRITICAL:** Every script follows this structure:
 
@@ -156,7 +176,7 @@ def export_results(results: pd.DataFrame, output_dir: str) -> None:
 
 ---
 
-## 7. COMMENT RULES
+## 8. COMMENT RULES
 
 **CRITICAL:** Three types of allowed comments only
 
@@ -182,7 +202,7 @@ from data_loader import load_validated_data
 
 ---
 
-## 8. ERROR HANDLING
+## 9. ERROR HANDLING
 
 **IMPORTANT:** Fail-fast philosophy. If the script cannot fulfill its purpose, it must fail visibly.
 
@@ -209,7 +229,7 @@ def fetch_data(params):
 
 ---
 
-## 9. ARGPARSE TEMPLATE
+## 10. ARGPARSE TEMPLATE
 
 ```python
 if __name__ == "__main__":
@@ -231,7 +251,7 @@ if __name__ == "__main__":
 
 ---
 
-## 10. ARCHITECTURE STANDARDS
+## 11. ARCHITECTURE STANDARDS
 
 ### Naming Conventions
 
@@ -239,6 +259,17 @@ if __name__ == "__main__":
 - `NN`: Workflow position (01-99)
 - `Two_Words`: Max 2 words, capitals
 - Examples: `01_Process_Data.py`, `05_Extract_Features.py`, `07_Merge_Data.py`
+
+**Parallel Scripts:** `NNx_Two_Words.py`
+- Scripts on same level that can run in parallel: `01a`, `01b`, `01c`
+- Successor script uses next number: `02` (requires all `01x` outputs)
+- Examples: `01a_Runtime_Data.py`, `01b_Plan_Features.py` -> `02_Merge_Data.py`
+
+**Analysis Scripts:** `A_NNx_Two_Words.py`
+- Standalone analysis tools, NOT part of main workflow
+- `A_` prefix distinguishes from workflow scripts
+- Parallel numbering (`A_01a`, `A_01b`) since no dependencies between them
+- Examples: `A_01a_Correlation_Analysis.py`, `A_01b_Scatter_Plots.py`
 
 **Directories:** `Capital_Words/`
 - Capital first letters, underscores between words
@@ -283,7 +314,7 @@ CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']                # Known at prediction
 
 ---
 
-## 11. DOCUMENTATION STRUCTURE
+## 12. DOCUMENTATION STRUCTURE
 
 ### Hierarchical Documentation Model
 
@@ -335,20 +366,92 @@ Operator_Level/
 **Purpose:** High-level overview of multi-phase workflow orchestration
 
 **Placement Rules:**
-- **Location:** Workflow root (e.g., `Operator_Level/`)
+- **Location:** Workflow root (e.g., `Plan_Level_1/`)
 - **Relationship:** One README per workflow
 - **Scope:** Orchestrates multiple modules (references multiple DOCS)
 
 **Required Sections:**
-1. **Directory Structure** - 2-3 levels, inline comments, reference to module DOCS: `[See DOCS.md]`
-2. **Shared Infrastructure** - Workflow-wide config files (e.g., `mapping_config.py`), constants, functions
-3. **Datasets** - Dataset characteristics and philosophy
-   - Dataset structure (samples, features, columns, delimiter)
-   - Feature categories with counts and examples (table format)
-   - Plan_Level_X philosophy: Dataset variations vs methodology changes
-   - Baseline approach characteristics (full feature set, no adjustments)
-4. **Workflow Overview** - Phase sequence (Phase 1 → 2 → 3), input/output, conceptual explanation
-5. **Phase Documentation** - Brief overview per phase, purpose/input/output, reference to `Module_Name/DOCS.md`
+
+#### 1. Directory Structure
+
+Tree with 2-3 levels, inline comments, `[See DOCS.md]` references:
+
+```
+Plan_Level_1/
+├── mapping_config.py                    # Shared configuration
+├── README.md                            # Workflow documentation (THIS FILE)
+├── Data_Generation/                     [See DOCS.md]
+│   ├── 01a_Runtime_Data.py
+│   ├── 01b_Plan_Features.py
+│   └── csv/
+├── Datasets/                            [See DOCS.md]
+│   ├── 01_Split_Train_Test.py
+│   ├── Baseline/
+│   └── State_1/
+└── Runtime_Prediction/                  [See DOCS.md]
+    ├── ffs_config.py
+    ├── 01_Forward_Selection.py
+    └── Baseline_SVM/
+```
+
+#### 2. Shared Infrastructure
+
+Config files with bullet list of exports:
+
+```markdown
+**mapping_config.py:**
+- `DB_CONFIG`: PostgreSQL connection parameters
+- `OPERATOR_TYPES`: 13 plan operator types for feature extraction
+- `PLAN_METADATA`: ['query_file', 'template']
+- `PLAN_TARGET`: 'runtime'
+```
+
+#### 3. Datasets
+
+Table with dataset variants:
+
+```markdown
+| State | Features | Samples | Train/Test | Purpose |
+|-------|----------|---------|------------|---------|
+| Baseline | 50 | 2,850 | 2,280/570 | Full feature set reference |
+| State_1 | 33 | 2,850 | 2,280/570 | Feature reduction impact |
+```
+
+#### 4. Workflow Overview
+
+ASCII flow diagram showing phase dependencies:
+
+```
+Phase 1: Data_Generation
+├── 01a_Runtime_Data.py ──┐
+├── 01b_Plan_Features.py ─┼──→ 02_Merge_Data.py → complete_dataset.csv
+└── 01c_Row_Features.py ──┘
+
+Phase 2: Datasets
+01_Split_Train_Test.py → 02_Create_State_1.py
+
+Phase 3: Runtime_Prediction
+01_Forward_Selection.py → 02_Train_Model.py → 03_Summarize_Results.py
+```
+
+#### 5. Phase Documentation
+
+Per phase: Purpose, Input, Output, Details link:
+
+```markdown
+### Phase 1: Data_Generation
+
+**Purpose:** Extract features and measure runtime for TPC-H queries
+
+**Input:** Query directory with Q1/-Q22/ template folders containing SQL files
+
+**Output:** `complete_dataset.csv` (2850 samples x 53 columns)
+- 2 Metadata columns (query_file, template)
+- 50 Feature columns (plan-level + operator metrics)
+- 1 Target column (runtime in ms, cold cache)
+
+**Details:** See [Data_Generation/DOCS.md](Data_Generation/DOCS.md)
+```
 
 **Keep it focused:** README explains WHAT happens at workflow level, DOCS explain HOW it happens at module level
 
@@ -364,10 +467,9 @@ Operator_Level/
 - **Scope:** Documents scripts within ONE module only
 
 **Required Sections:**
-1. **Directory Structure** - Complete module file tree, numbered scripts, output folders with `[outputs]` placeholder
-2. **Shared Infrastructure** - Module-specific config (e.g., `ffs_config.py`), constants, functions
-3. **Workflow Execution Order** - Script sequence (00 → 01 → 02), dependencies, ASCII flow diagram
-4. **Script Documentation** - Per script (### NN - Script_Name.py):
+1. **Shared Infrastructure** - Module-specific config (e.g., `ffs_config.py`), constants, functions
+2. **Workflow Execution Order** - Script sequence (00 → 01 → 02), dependencies, ASCII flow diagram
+3. **Script Documentation** - Per script (### NN - Script_Name.py):
    - **Purpose:** One sentence
    - **Workflow:** Step-by-step process
    - **Inputs:** Positional argparse arguments
@@ -384,9 +486,13 @@ Operator_Level/
 - **DOCS** = "How modules WORK" (implementation level)
 - **Hierarchy** = README references DOCS, never reverse
 
+**User Reading Flow:**
+1. README.md -> Understand tree structure + high-level workflow
+2. DOCS.md -> Understand granular workflow + script details
+
 ---
 
-## 12. PROJECT STRUCTURE
+## 13. PROJECT STRUCTURE
 
 **Dynamic, organized by workflow needs**
 

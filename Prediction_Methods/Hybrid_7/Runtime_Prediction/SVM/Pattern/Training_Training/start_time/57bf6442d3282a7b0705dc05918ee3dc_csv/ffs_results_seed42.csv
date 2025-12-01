@@ -1,0 +1,35 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;HashJoin_Outer_rt1;True;0.01147445450123619;1;HashJoin_Outer_rt1
+2;Aggregate_Outer_sel;True;0.011387893059732479;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+3;Aggregate_nt;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+4;Aggregate_nt1;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+5;Aggregate_sel;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+6;Aggregate_plan_width;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+7;Aggregate_Outer_nt;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+8;Aggregate_Outer_plan_width;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+9;HashJoin_Outer_nt2;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+10;HashJoin_Outer_sel;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+11;HashJoin_Outer_startup_cost;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+12;HashJoin_Outer_plan_width;False;0.011465389642629489;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+13;HashJoin_Outer_total_cost;False;0.01146594875905874;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+14;Aggregate_total_cost;False;0.011466784729867913;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+15;Aggregate_startup_cost;False;0.011466784758365213;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+16;Aggregate_Outer_total_cost;False;0.011466838440535036;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+17;Aggregate_Outer_startup_cost;False;0.0114668766187864;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+18;Aggregate_Outer_nt1;False;0.011474850436573153;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+19;HashJoin_Outer_nt;False;0.011474850436573153;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+20;HashJoin_Outer_nt1;False;0.011474850436573153;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+21;HashJoin_Outer_st2;False;0.01561205239333931;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+22;HashJoin_Outer_rt2;False;0.01561217917606641;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+23;HashJoin_Outer_st1;False;0.01651530339505322;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+24;Aggregate_np;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+25;Aggregate_nt2;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+26;Aggregate_reltuples;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+27;Aggregate_parallel_workers;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+28;Aggregate_Outer_np;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+29;Aggregate_Outer_nt2;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+30;Aggregate_Outer_reltuples;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+31;Aggregate_Outer_parallel_workers;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+32;HashJoin_Outer_np;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+33;HashJoin_Outer_reltuples;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel
+34;HashJoin_Outer_parallel_workers;False;0.017073376309648287;2;HashJoin_Outer_rt1, Aggregate_Outer_sel

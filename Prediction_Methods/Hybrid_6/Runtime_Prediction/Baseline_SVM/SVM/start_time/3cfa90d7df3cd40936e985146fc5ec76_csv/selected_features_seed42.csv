@@ -1,0 +1,7 @@
+feature;order
+actual_startup_time;1
+HashJoin_Outer_rt2;2
+HashJoin_Outer_st2;3
+NestedLoop_np;4
+NestedLoop_reltuples;5
+NestedLoop_parallel_workers;6

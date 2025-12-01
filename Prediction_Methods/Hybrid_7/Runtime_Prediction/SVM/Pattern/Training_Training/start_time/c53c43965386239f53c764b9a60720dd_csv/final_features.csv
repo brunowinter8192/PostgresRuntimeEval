@@ -1,0 +1,13 @@
+feature;order
+IndexScan_Inner_rt1;1
+IndexScan_Inner_rt2;2
+IndexScan_Inner_st1;3
+IndexScan_Inner_st2;4
+NestedLoop_np;5
+NestedLoop_total_cost;6
+SeqScan_Outer_np;7
+SeqScan_Outer_reltuples;8
+SeqScan_Outer_rt1;9
+SeqScan_Outer_rt2;10
+SeqScan_Outer_st1;11
+SeqScan_Outer_st2;12

@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;NestedLoop_Outer_st1;True;0.03057017337476258;1;NestedLoop_Outer_st1
+2;NestedLoop_Outer_st2;True;0.02907450141654027;2;NestedLoop_Outer_st1, NestedLoop_Outer_st2
+3;Gather_sel;True;0.02863149939539635;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+4;Gather_plan_width;False;0.02875594179940012;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+5;Gather_parallel_workers;False;0.02875594179940012;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+6;NestedLoop_Outer_nt2;False;0.02875594179940012;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+7;NestedLoop_Outer_plan_width;False;0.02875594179940012;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+8;NestedLoop_Outer_startup_cost;False;0.028758448509819533;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+9;Gather_startup_cost;False;0.028758499353750834;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+10;NestedLoop_Outer_rt1;False;0.028779038273853863;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+11;NestedLoop_Outer_sel;False;0.028851621340930743;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+12;Gather_nt1;False;0.02885584512415959;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+13;NestedLoop_Outer_nt;False;0.02885584512415959;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+14;Gather_nt;False;0.028856035061716245;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+15;NestedLoop_Outer_total_cost;False;0.02886771508318926;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+16;Gather_total_cost;False;0.028869178330434085;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+17;NestedLoop_Outer_rt2;False;0.028900275839077293;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+18;NestedLoop_Outer_nt1;False;0.028956100577809295;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+19;Gather_np;False;0.03359863163991366;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+20;Gather_nt2;False;0.03359863163991366;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+21;Gather_reltuples;False;0.03359863163991366;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+22;NestedLoop_Outer_np;False;0.03359863163991366;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+23;NestedLoop_Outer_reltuples;False;0.03359863163991366;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel
+24;NestedLoop_Outer_parallel_workers;False;0.03359863163991366;3;NestedLoop_Outer_st1, NestedLoop_Outer_st2, Gather_sel

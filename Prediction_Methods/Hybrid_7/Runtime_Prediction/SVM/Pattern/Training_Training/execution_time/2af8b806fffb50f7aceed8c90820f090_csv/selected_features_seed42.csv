@@ -1,0 +1,11 @@
+feature;order
+NestedLoop_Outer_st2;1
+Aggregate_plan_width;2
+NestedLoop_Outer_nt2;3
+NestedLoop_Outer_startup_cost;4
+NestedLoop_Outer_plan_width;5
+HashJoin_Outer_nt2;6
+HashJoin_Outer_sel;7
+HashJoin_Outer_startup_cost;8
+HashJoin_Outer_plan_width;9
+NestedLoop_Outer_sel;10

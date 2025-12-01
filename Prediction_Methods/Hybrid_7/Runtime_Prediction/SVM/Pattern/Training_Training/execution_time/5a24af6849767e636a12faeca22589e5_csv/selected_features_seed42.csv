@@ -1,0 +1,6 @@
+feature;order
+Sort_np;1
+Sort_nt;2
+Sort_nt1;3
+Sort_nt2;4
+HashJoin_Outer_total_cost;5

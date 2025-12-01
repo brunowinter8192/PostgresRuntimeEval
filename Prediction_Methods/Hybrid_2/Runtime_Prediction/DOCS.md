@@ -10,9 +10,9 @@ Runtime_Prediction/
 ├── 01_Feature_Selection.py             # Forward feature selection for patterns
 ├── 02_Train_Models.py                  # Train SVM models for patterns
 ├── 03_Predict_Queries.py               # Hybrid bottom-up prediction
-├── 04_Evaluate_Predictions.py          # Query-level MRE evaluation
-├── 05_Node_Evaluation.py               # Node type evaluation by prediction source
-├── 06_Time_Analysis.py                 # Operator time range analysis
+├── A_01a_Evaluate_Predictions.py       # [analysis] Query-level MRE evaluation
+├── A_01b_Node_Evaluation.py            # [analysis] Node type evaluation by prediction source
+├── A_01c_Time_Analysis.py              # [analysis] Operator time range analysis
 └── Baseline_SVM/                       # [outputs] SVM baseline outputs
     ├── SVM/                            # Feature selection results
     │   ├── execution_time/{Pattern}_csv/
@@ -62,17 +62,21 @@ Used as fallback for operators not matching any pattern.
 ## Workflow Execution Order
 
 ```
-01 - Feature_Selection  [Pattern datasets → SVM/ FFS results + overview CSV]
-     ↓
-02 - Train_Models       [Overview + Pattern datasets → Model/ directory]
-     ↓
-03 - Predict_Queries    [Test data + Pattern + Operator Models → predictions.csv]
-     ↓
-04 - Evaluate_Predictions [predictions.csv → MRE metrics]
-     ↓
-05 - Node_Evaluation    [predictions.csv → Node type analysis by source]
-     ↓
-06 - Time_Analysis      [operator_dataset.csv → Operator range statistics]
+01 - Feature_Selection  [Pattern datasets -> SVM/ FFS results + overview CSV]
+     |
+02 - Train_Models       [Overview + Pattern datasets -> Model/ directory]
+     |
+03 - Predict_Queries    [Test data + Pattern + Operator Models -> predictions.csv]
+```
+
+## Analysis Scripts
+
+Independent analysis scripts (can run in parallel after workflow completion):
+
+```
+A_01a - Evaluate_Predictions  [predictions.csv -> MRE metrics + plot]
+A_01b - Node_Evaluation       [predictions.csv -> Node type analysis by source]
+A_01c - Time_Analysis         [operator_dataset.csv -> Operator range statistics]
 ```
 
 ## Script Documentation
@@ -149,8 +153,8 @@ python 02_Train_Models.py Baseline_SVM SVM/two_step_evaluation_overview.csv --ou
    - Build execution tree from operators
    - Traverse bottom-up (leaves to root)
    - For each operator:
-     - If parent matches pattern → use pattern model
-     - Else → use operator-level fallback model
+     - If parent matches pattern -> use pattern model
+     - Else -> use operator-level fallback model
    - Propagate child predictions to parent features
 3. Export predictions with actual vs predicted times
 
@@ -180,7 +184,7 @@ python 03_Predict_Queries.py test.csv \
 
 ---
 
-### 04 - Evaluate_Predictions.py
+### A_01a - Evaluate_Predictions.py
 
 **Purpose:** Evaluate query-level prediction accuracy using MRE
 
@@ -201,7 +205,7 @@ python 03_Predict_Queries.py test.csv \
 
 **Usage:**
 ```bash
-python 04_Evaluate_Predictions.py Baseline_SVM/Evaluation/predictions.csv --output-dir Baseline_SVM/Evaluation
+python A_01a_Evaluate_Predictions.py Baseline_SVM/Evaluation/predictions.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables:**
@@ -209,7 +213,7 @@ python 04_Evaluate_Predictions.py Baseline_SVM/Evaluation/predictions.csv --outp
 
 ---
 
-### 05 - Node_Evaluation.py
+### A_01b - Node_Evaluation.py
 
 **Purpose:** Cross-evaluation split by prediction source (pattern vs operator)
 
@@ -231,7 +235,7 @@ python 04_Evaluate_Predictions.py Baseline_SVM/Evaluation/predictions.csv --outp
 
 **Usage:**
 ```bash
-python 05_Node_Evaluation.py Baseline_SVM/Evaluation/predictions.csv --output-dir Baseline_SVM/Evaluation
+python A_01b_Node_Evaluation.py Baseline_SVM/Evaluation/predictions.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables:**
@@ -239,7 +243,7 @@ python 05_Node_Evaluation.py Baseline_SVM/Evaluation/predictions.csv --output-di
 
 ---
 
-### 06 - Time_Analysis.py
+### A_01c - Time_Analysis.py
 
 **Purpose:** Analyze operator time ranges across dataset
 
@@ -254,12 +258,12 @@ python 05_Node_Evaluation.py Baseline_SVM/Evaluation/predictions.csv --output-di
 - `input_file` - Path to operator dataset CSV (positional)
 
 **Outputs:**
-- `{output-dir}/csv/operator_range_analysis_{timestamp}.csv`
+- `{output-dir}/operator_range_analysis_{timestamp}.csv`
   - Columns: node_type, mean_startup_ms, min_startup_ms, max_startup_ms, count, mean_total_ms, min_total_ms, max_total_ms, template extremes, range metrics
 
 **Usage:**
 ```bash
-python 06_Time_Analysis.py operator_dataset.csv --output-dir Baseline_SVM/Evaluation
+python A_01c_Time_Analysis.py operator_dataset.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables:**

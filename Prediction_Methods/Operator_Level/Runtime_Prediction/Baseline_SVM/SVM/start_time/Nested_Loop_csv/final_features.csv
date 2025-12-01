@@ -1,9 +1,9 @@
 feature;order
 sel;1
 plan_width;2
-nt1;3
-nt2;4
-rt1;5
-st2;6
-st1;7
+rt1;3
+st2;4
+nt2;5
+st1;6
+nt1;7
 rt2;8

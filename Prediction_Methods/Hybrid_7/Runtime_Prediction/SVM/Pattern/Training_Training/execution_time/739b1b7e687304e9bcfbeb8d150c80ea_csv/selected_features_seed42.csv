@@ -1,0 +1,6 @@
+feature;order
+GatherMerge_np;1
+GatherMerge_nt;2
+GatherMerge_nt1;3
+GatherMerge_nt2;4
+HashJoin_Outer_total_cost;5

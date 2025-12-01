@@ -1,0 +1,14 @@
+feature;order
+IncrementalSort_nt;1
+IndexScan_Inner_rt1;2
+IndexScan_Inner_rt2;3
+IndexScan_Inner_st1;4
+IndexScan_Inner_st2;5
+Sort_Inner_rt1;6
+Sort_Inner_rt2;7
+Sort_Inner_st1;8
+Sort_Inner_st2;9
+Sort_Outer_rt1;10
+Sort_Outer_rt2;11
+Sort_Outer_st1;12
+Sort_Outer_st2;13

@@ -1,0 +1,15 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;rt1;True;4.237360619937016;1;rt1
+2;nt;True;3.606212893956605;2;rt1, nt
+3;np;True;3.5497323473886424;3;rt1, nt, np
+4;nt2;True;3.5239697918449737;4;rt1, nt, np, nt2
+5;reltuples;True;3.5058431210261696;5;rt1, nt, np, nt2, reltuples
+6;parallel_workers;True;3.494555180724098;6;rt1, nt, np, nt2, reltuples, parallel_workers
+7;st2;True;3.4836526064229303;7;rt1, nt, np, nt2, reltuples, parallel_workers, st2
+8;rt2;True;3.4811278123989395;8;rt1, nt, np, nt2, reltuples, parallel_workers, st2, rt2
+9;st1;False;4.190450012067974;8;rt1, nt, np, nt2, reltuples, parallel_workers, st2, rt2
+10;startup_cost;False;4.577988187397539;8;rt1, nt, np, nt2, reltuples, parallel_workers, st2, rt2
+11;total_cost;False;4.577988187397539;8;rt1, nt, np, nt2, reltuples, parallel_workers, st2, rt2
+12;nt1;False;12.130726549070989;8;rt1, nt, np, nt2, reltuples, parallel_workers, st2, rt2
+13;plan_width;False;84.05151097553289;8;rt1, nt, np, nt2, reltuples, parallel_workers, st2, rt2
+14;sel;False;106.31697303073493;8;rt1, nt, np, nt2, reltuples, parallel_workers, st2, rt2

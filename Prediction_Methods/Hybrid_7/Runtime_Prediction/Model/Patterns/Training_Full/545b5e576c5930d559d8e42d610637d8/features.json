@@ -1,0 +1,1 @@
+{"features_exec": ["HashJoin_nt", "HashJoin_startup_cost"], "features_start": ["HashJoin_nt", "SeqScan_Outer_sel"]}

@@ -1,0 +1,2 @@
+query_count;mean_actual_total;mean_predicted_total;mean_mre_startup;std_mre_startup;mean_mre_total;std_mre_total;mean_mre_startup_pct;mean_mre_total_pct
+150;791.0161066666667;893.1283590711704;0.13132939446520522;0.031838011374657096;0.1299673869851839;0.03165736224531979;13.132939446520522;12.99673869851839

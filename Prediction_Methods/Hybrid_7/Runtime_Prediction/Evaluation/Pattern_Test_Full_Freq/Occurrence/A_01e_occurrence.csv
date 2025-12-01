@@ -1,0 +1,6 @@
+occurrence_class;occ_min;occ_max;patterns_total;patterns_selected;patterns_rejected;selection_rate;total_delta;avg_delta
+occ_001_010;1;10;32;1;31;0.0312;8e-06;8e-06
+occ_011_050;11;50;300;11;289;0.0367;0.026358;0.002396
+occ_051_100;51;100;25;5;20;0.2;0.11309;0.022618
+occ_101_200;101;200;11;5;6;0.4545;0.028531;0.005706
+occ_200_plus;201;356;2;2;0;1.0;0.000233;0.000116

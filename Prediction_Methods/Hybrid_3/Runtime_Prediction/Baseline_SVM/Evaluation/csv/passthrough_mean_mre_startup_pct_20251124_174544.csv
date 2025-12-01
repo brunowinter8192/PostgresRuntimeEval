@@ -1,0 +1,4 @@
+node_type (Passthrough Mean MRE Startup Time %);Q10;Q13;Q18;Q3;Q5;Q9
+Hash;99.84;;;;;98.73
+Limit;11.08;;58.68;14.53;;
+Sort;11.08;1.77;82.5;13.33;1.11;16.74

@@ -1,0 +1,7 @@
+feature;order
+plan_width;1
+reltuples;2
+nt;3
+total_cost;4
+sel;5
+startup_cost;6

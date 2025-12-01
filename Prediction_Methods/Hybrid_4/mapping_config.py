@@ -16,38 +16,17 @@ PATTERNS = [
 
 TARGET_TYPES = ['execution_time', 'start_time']
 
-TARGET_NAME_MAP = {
-    'execution_time': 'actual_total_time',
-    'start_time': 'actual_startup_time'
-}
-
 NON_FEATURE_SUFFIXES = [
     '_node_id',
     '_node_type',
     '_depth',
     '_parent_relationship',
     '_subplan_name',
-    '_actual_startup_time',
-    '_actual_total_time'
+    'actual_startup_time',
+    'actual_total_time'
 ]
 
 LEAF_OPERATORS = ['SeqScan', 'IndexScan', 'IndexOnlyScan']
-
-CHILD_ACTUAL_SUFFIXES = [
-    '_Outer_actual_startup_time',
-    '_Outer_actual_total_time',
-    '_Inner_actual_startup_time',
-    '_Inner_actual_total_time'
-]
-
-CHILD_TIMING_SUFFIXES = [
-    '_Outer_st1', '_Outer_rt1', '_Outer_st2', '_Outer_rt2',
-    '_Inner_st1', '_Inner_rt1', '_Inner_st2', '_Inner_rt2'
-]
-
-PARENT_CHILD_FEATURES = ['_st1', '_rt1', '_st2', '_rt2']
-
-CHILD_FEATURES_TIMING = ['st1', 'rt1', 'st2', 'rt2']
 
 FFS_SEED = 42
 FFS_MIN_FEATURES = 1
@@ -79,18 +58,3 @@ def pattern_to_folder_name(pattern_str: str) -> str:
     clean = clean.replace(' ', '_')
     clean = re.sub(r'_+', '_', clean)
     return clean
-
-
-# Convert folder name back to pattern string format
-def folder_name_to_pattern(folder_name: str) -> str:
-    return folder_name.replace('_', ' ')
-
-
-# Check if operator type is a leaf node
-def is_leaf_operator(operator_type: str) -> bool:
-    return operator_type in LEAF_OPERATORS
-
-
-# Get target column name from target type
-def get_target_column_name(target_type: str) -> str:
-    return TARGET_NAME_MAP.get(target_type, target_type)

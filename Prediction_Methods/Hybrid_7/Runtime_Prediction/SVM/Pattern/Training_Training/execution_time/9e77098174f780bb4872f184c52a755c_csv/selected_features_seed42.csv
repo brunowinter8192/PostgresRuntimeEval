@@ -1,0 +1,9 @@
+feature;order
+Hash_Inner_rt1;1
+Sort_nt;2
+Sort_nt1;3
+Sort_sel;4
+Sort_plan_width;5
+Aggregate_Outer_plan_width;6
+Gather_Outer_sel;7
+HashJoin_Outer_sel;8

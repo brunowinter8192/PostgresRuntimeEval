@@ -1,0 +1,15 @@
+feature;order
+HashJoin_Outer_nt2;1
+Hash_Inner_nt;2
+Hash_Inner_nt1;3
+Hash_Inner_plan_width;4
+Hash_Inner_rt1;5
+Hash_Inner_rt2;6
+Hash_Inner_st1;7
+Hash_Inner_st2;8
+NestedLoop_Outer_nt2;9
+NestedLoop_Outer_rt1;10
+NestedLoop_Outer_rt2;11
+NestedLoop_Outer_st1;12
+NestedLoop_Outer_st2;13
+Sort_nt;14

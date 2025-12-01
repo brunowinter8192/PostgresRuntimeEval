@@ -1,0 +1,14 @@
+feature;order
+HashJoin_Outer_rt1;1
+HashJoin_Outer_st2;2
+HashJoin_Outer_rt2;3
+Aggregate_np;4
+Aggregate_nt2;5
+Aggregate_reltuples;6
+Aggregate_parallel_workers;7
+GatherMerge_Outer_np;8
+GatherMerge_Outer_nt2;9
+GatherMerge_Outer_reltuples;10
+Aggregate_Outer_np;11
+Aggregate_Outer_nt2;12
+Aggregate_Outer_reltuples;13

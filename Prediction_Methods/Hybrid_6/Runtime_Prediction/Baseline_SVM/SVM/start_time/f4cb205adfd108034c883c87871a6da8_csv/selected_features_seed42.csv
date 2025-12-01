@@ -1,0 +1,9 @@
+feature;order
+actual_startup_time;1
+Hash_Inner_sel;2
+HashJoin_nt2;3
+SeqScan_Outer_nt;4
+HashJoin_np;5
+HashJoin_reltuples;6
+HashJoin_parallel_workers;7
+SeqScan_Outer_nt1;8
