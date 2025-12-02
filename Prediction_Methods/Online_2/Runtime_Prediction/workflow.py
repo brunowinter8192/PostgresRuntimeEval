@@ -12,7 +12,7 @@ import pandas as pd
 from src.training import train_all_operators, train_selected_patterns
 
 # From src/prediction.py: Query prediction
-from src.prediction import predict_all_queries_operator_only, predict_single_query_with_patterns
+from src.prediction import predict_all_queries_operator_only, predict_single_query_operator_only, predict_single_query_with_patterns
 
 # From src/mining.py: Pattern mining and ranking
 from src.mining import mine_patterns_from_query, find_pattern_occurrences_in_data, calculate_error_ranking
@@ -53,9 +53,11 @@ def online_prediction_workflow(
 
     baseline_predictions = predict_all_queries_operator_only(df_tv, operator_models)
     baseline_mre = calculate_mre(baseline_predictions)
-    report.add_operator_baseline(baseline_mre)
 
     test_query_ops = get_query_operators(df_test, test_query_file)
+    test_query_baseline = predict_single_query_operator_only(test_query_ops, operator_models)
+    test_query_baseline_mre = calculate_query_mre(test_query_baseline)
+    report.add_operator_baseline(test_query_baseline_mre)
     patterns = mine_patterns_from_query(test_query_ops)
     pattern_occurrences = find_pattern_occurrences_in_data(df_tv, patterns)
     initial_ranking = calculate_error_ranking(baseline_predictions, pattern_occurrences, patterns)
@@ -69,12 +71,17 @@ def online_prediction_workflow(
     final_operator_models = train_all_operators(df_train, None)
     final_pattern_models = train_selected_patterns(df_train, selected_patterns, patterns)
 
-    final_predictions = predict_single_query_with_patterns(
-        test_query_ops, final_operator_models, final_pattern_models, patterns, selected_patterns
+    error_scores = {entry['pattern_hash']: entry['error_score'] for entry in selection_log}
+    final_predictions, pattern_assignments, consumed_nodes, prediction_cache = predict_single_query_with_patterns(
+        test_query_ops, final_operator_models, final_pattern_models, patterns, selected_patterns, error_scores,
+        return_details=True
     )
     final_mre = calculate_query_mre(final_predictions)
 
-    report.add_final_prediction(final_predictions, final_mre, baseline_mre)
+    report.add_query_tree(test_query_ops, pattern_assignments, consumed_nodes, patterns)
+    report.add_pattern_assignments(pattern_assignments, consumed_nodes, patterns)
+    report.add_final_prediction(final_predictions, final_mre, test_query_baseline_mre)
+    report.add_prediction_chain(final_predictions, prediction_cache, pattern_assignments, consumed_nodes, patterns)
 
     save_models(output_dir, test_query_file, final_operator_models, final_pattern_models)
     save_csv_outputs(output_dir, test_query_file, selection_log, final_predictions)

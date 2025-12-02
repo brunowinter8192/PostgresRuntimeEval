@@ -41,6 +41,7 @@ def run_pattern_selection(
     pattern_models = {}
     selection_log = []
     consumed_hashes = set()
+    error_scores = {r['pattern_hash']: r['error_score'] for r in initial_ranking}
 
     current_ranking = initial_ranking.copy()
     iteration = 0
@@ -67,7 +68,7 @@ def run_pattern_selection(
         test_selected = selected_patterns | {pattern_hash}
 
         new_predictions = predict_all_queries_with_patterns(
-            df_tv, operator_models, test_models, patterns, test_selected
+            df_tv, operator_models, test_models, patterns, test_selected, error_scores
         )
 
         new_mre = calculate_mre(new_predictions)
