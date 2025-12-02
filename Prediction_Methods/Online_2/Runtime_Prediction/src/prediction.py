@@ -31,6 +31,45 @@ from mapping_config import (
 
 # FUNCTIONS
 
+# Build pattern assignments before prediction (Phase 1)
+def _build_pattern_assignments(
+    all_nodes: list,
+    patterns: dict,
+    selected_patterns: set,
+    error_scores: dict
+) -> tuple:
+    consumed_nodes = set()
+    pattern_assignments = {}
+
+    sorted_patterns = sorted(
+        selected_patterns,
+        key=lambda ph: error_scores.get(ph, 0),
+        reverse=True
+    )
+
+    for pattern_hash in sorted_patterns:
+        if pattern_hash not in patterns:
+            continue
+        pattern_info = patterns[pattern_hash]
+        pattern_length = pattern_info['pattern_length']
+
+        for node in all_nodes:
+            if node.node_id in consumed_nodes:
+                continue
+            if not has_children_at_length(node, pattern_length):
+                continue
+
+            computed_hash = compute_pattern_hash(node, pattern_length)
+            if computed_hash == pattern_hash:
+                pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
+                if any(nid in consumed_nodes for nid in pattern_node_ids):
+                    continue
+                consumed_nodes.update(pattern_node_ids)
+                pattern_assignments[node.node_id] = pattern_hash
+
+    return consumed_nodes, pattern_assignments
+
+
 # Predict all queries using only operator models
 def predict_all_queries_operator_only(df: pd.DataFrame, operator_models: dict) -> list:
     all_predictions = []
@@ -53,7 +92,7 @@ def predict_single_query_operator_only(query_ops: pd.DataFrame, operator_models:
     predictions = []
 
     for node in nodes_by_depth:
-        pred_start, pred_exec = _predict_operator(node, query_ops, operator_models, prediction_cache)
+        pred_start, pred_exec, _ = _predict_operator(node, query_ops, operator_models, prediction_cache)
         prediction_cache[node.node_id] = {'start': pred_start, 'exec': pred_exec}
 
         row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
@@ -68,68 +107,98 @@ def predict_all_queries_with_patterns(
     operator_models: dict,
     pattern_models: dict,
     patterns: dict,
-    selected_patterns: set
+    selected_patterns: set,
+    error_scores: dict = None
 ) -> list:
     all_predictions = []
 
     for query_file in df['query_file'].unique():
         query_ops = df[df['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
         predictions = predict_single_query_with_patterns(
-            query_ops, operator_models, pattern_models, patterns, selected_patterns
+            query_ops, operator_models, pattern_models, patterns, selected_patterns, error_scores
         )
         all_predictions.extend(predictions)
 
     return all_predictions
 
 
-# Predict single query with patterns
+# Predict single query with patterns (two-phase approach)
 def predict_single_query_with_patterns(
     query_ops: pd.DataFrame,
     operator_models: dict,
     pattern_models: dict,
     patterns: dict,
-    selected_patterns: set
+    selected_patterns: set,
+    error_scores: dict = None,
+    return_details: bool = False
 ) -> list:
     root = build_tree_from_dataframe(query_ops, include_row_data=True)
     all_nodes = extract_all_nodes(root)
     nodes_by_depth = sorted(all_nodes, key=lambda n: n.depth, reverse=True)
 
+    if error_scores is None:
+        error_scores = {}
+
+    consumed_nodes, pattern_assignments = _build_pattern_assignments(
+        all_nodes, patterns, selected_patterns, error_scores
+    )
+
     prediction_cache = {}
-    consumed_nodes = set()
     predictions = []
 
     for node in nodes_by_depth:
-        if node.node_id in consumed_nodes:
+        if node.node_id in consumed_nodes and node.node_id not in pattern_assignments:
             continue
 
-        matched_pattern = _match_pattern(node, patterns, selected_patterns)
+        child_timing = _get_child_timing(node, prediction_cache)
 
-        if matched_pattern:
-            pattern_hash = matched_pattern
+        if node.node_id in pattern_assignments:
+            pattern_hash = pattern_assignments[node.node_id]
             pattern_info = patterns[pattern_hash]
             pattern_node_ids = extract_pattern_node_ids(node, pattern_info['pattern_length'])
-            consumed_nodes.update(pattern_node_ids)
 
             if pattern_hash in pattern_models:
-                pred_start, pred_exec = _predict_pattern(
+                pred_start, pred_exec, input_features = _predict_pattern(
                     node, query_ops, pattern_models[pattern_hash], prediction_cache, pattern_info['pattern_length']
                 )
             else:
-                pred_start, pred_exec = _predict_operator(node, query_ops, operator_models, prediction_cache)
+                pred_start, pred_exec, input_features = _predict_operator(node, query_ops, operator_models, prediction_cache)
 
             for nid in pattern_node_ids:
-                prediction_cache[nid] = {'start': pred_start, 'exec': pred_exec}
+                prediction_cache[nid] = {'start': pred_start, 'exec': pred_exec, 'child_timing': child_timing, 'input_features': input_features}
 
             row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
             predictions.append(create_prediction_result(row, pred_start, pred_exec, 'pattern'))
         else:
-            pred_start, pred_exec = _predict_operator(node, query_ops, operator_models, prediction_cache)
-            prediction_cache[node.node_id] = {'start': pred_start, 'exec': pred_exec}
+            pred_start, pred_exec, input_features = _predict_operator(node, query_ops, operator_models, prediction_cache)
+            prediction_cache[node.node_id] = {'start': pred_start, 'exec': pred_exec, 'child_timing': child_timing, 'input_features': input_features}
 
             row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
-            predictions.append(create_prediction_result(row, pred_start, pred_exec, 'operator'))
+            is_leaf = len(node.children) == 0
+            result = create_prediction_result(row, pred_start, pred_exec, 'operator')
+            result['is_leaf'] = is_leaf
+            predictions.append(result)
 
+    if return_details:
+        return predictions, pattern_assignments, consumed_nodes, prediction_cache
     return predictions
+
+
+# Get child timing from prediction cache
+def _get_child_timing(node, prediction_cache: dict) -> dict:
+    child_timing = {'st1': 0.0, 'rt1': 0.0, 'st2': 0.0, 'rt2': 0.0}
+
+    for child in node.children:
+        if child.node_id in prediction_cache:
+            pred = prediction_cache[child.node_id]
+            if child.parent_relationship == 'Outer':
+                child_timing['st1'] = pred['start']
+                child_timing['rt1'] = pred['exec']
+            elif child.parent_relationship == 'Inner':
+                child_timing['st2'] = pred['start']
+                child_timing['rt2'] = pred['exec']
+
+    return child_timing
 
 
 # Predict single operator
@@ -137,7 +206,7 @@ def _predict_operator(node, query_ops: pd.DataFrame, operator_models: dict, pred
     op_name = csv_name_to_folder_name(node.node_type)
 
     if op_name not in operator_models['execution_time'] or op_name not in operator_models['start_time']:
-        return 0.0, 0.0
+        return 0.0, 0.0, {}
 
     row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
     features = _build_operator_features(row, node, prediction_cache)
@@ -153,7 +222,7 @@ def _predict_operator(node, query_ops: pd.DataFrame, operator_models: dict, pred
     pred_exec = model_info_exec['model'].predict(X_exec)[0]
     pred_start = model_info_start['model'].predict(X_start)[0]
 
-    return pred_start, pred_exec
+    return pred_start, pred_exec, features
 
 
 # Build operator features with child predictions
@@ -182,25 +251,6 @@ def _build_operator_features(row, node, prediction_cache: dict) -> dict:
     return features
 
 
-# Match node against selected patterns
-def _match_pattern(node, patterns: dict, selected_patterns: set) -> str:
-    for pattern_hash in selected_patterns:
-        if pattern_hash not in patterns:
-            continue
-
-        pattern_info = patterns[pattern_hash]
-        pattern_length = pattern_info['pattern_length']
-
-        if not has_children_at_length(node, pattern_length):
-            continue
-
-        computed_hash = compute_pattern_hash(node, pattern_length)
-        if computed_hash == pattern_hash:
-            return pattern_hash
-
-    return None
-
-
 # Predict using pattern model
 def _predict_pattern(node, query_ops: pd.DataFrame, model: dict, prediction_cache: dict, pattern_length: int) -> tuple:
     pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
@@ -214,4 +264,5 @@ def _predict_pattern(node, query_ops: pd.DataFrame, model: dict, prediction_cach
     pred_exec = model['execution_time'].predict(X)[0]
     pred_start = model['start_time'].predict(X)[0]
 
-    return pred_start, pred_exec
+    input_features = {f: aggregated.get(f, 0) for f in features}
+    return pred_start, pred_exec, input_features
