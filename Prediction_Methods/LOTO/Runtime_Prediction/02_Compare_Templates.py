@@ -10,14 +10,14 @@ from pathlib import Path
 
 # ORCHESTRATOR
 
-def compare_workflow(evaluation_dir: str) -> None:
+def compare_workflow(evaluation_dir: str, title: str) -> None:
     eval_path = Path(evaluation_dir)
     template_folders = sorted([d for d in eval_path.iterdir() if d.is_dir()])
 
     all_metrics = collect_all_metrics(template_folders)
     comparison_df = create_comparison_table(all_metrics)
     export_comparison(comparison_df, eval_path)
-    create_comparison_plot(comparison_df, eval_path)
+    create_comparison_plot(comparison_df, eval_path, title)
 
 
 # FUNCTIONS
@@ -53,7 +53,7 @@ def export_comparison(comparison_df: pd.DataFrame, output_path: Path) -> None:
 
 
 # Create comparison bar plot
-def create_comparison_plot(comparison_df: pd.DataFrame, output_path: Path) -> None:
+def create_comparison_plot(comparison_df: pd.DataFrame, output_path: Path, title: str) -> None:
     fig, ax = plt.subplots(figsize=(16, 8))
 
     templates = comparison_df.index.tolist()
@@ -67,7 +67,7 @@ def create_comparison_plot(comparison_df: pd.DataFrame, output_path: Path) -> No
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
-    ax.set_title('Plan-Level-2 Prediction: Query-Level MRE by Template',
+    ax.set_title(f'{title}: Query-Level MRE by Template',
                  fontsize=15, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, rotation=0, fontsize=11)
@@ -88,7 +88,8 @@ def create_comparison_plot(comparison_df: pd.DataFrame, output_path: Path) -> No
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("evaluation_dir", help="Path to Evaluation/ containing template folders")
+    parser.add_argument("--title", default="LOTO Prediction", help="Plot title prefix")
 
     args = parser.parse_args()
 
-    compare_workflow(args.evaluation_dir)
+    compare_workflow(args.evaluation_dir, args.title)
