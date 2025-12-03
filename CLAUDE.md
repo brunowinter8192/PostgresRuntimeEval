@@ -9,11 +9,6 @@
 
 **Critical Constraint:** Large, mature codebase requiring focused, session-based navigation with strict context management.
 
-**Hierarchy:**
-- User + Claude Desktop → Meta-level, review, decisions
-- Claude Code → Code implementation
-- Subagents → Specialized tasks
-
 ---
 
 ## 2. SCIENTIFIC FOUNDATION
@@ -21,8 +16,6 @@
 **Base Paper:** "Learning-based Query Performance Modeling and Prediction" (Akdere, Cetintemel, Upfal - Brown University, 2012)
 
 **Paper Source:** `Misc/Learning-based_Query_Performance_Modeling_and_Pred.md`
-
-**Workflow-Hook:** Bei jedem neuen Workflow (## Marker) frage: "Basiert dieser Ansatz auf dem Paper?" Falls ja: Paper lesen fuer Kontext.
 
 ---
 
@@ -45,15 +38,15 @@
 
 **Fail-Fast:** Let exceptions fly. No try-catch that silently swallows errors affecting business logic. Script must fail if it cannot fulfill its purpose.
 
-**Sofortiger Stopp bei Problemen:**
-- Bei JEDEM unerwarteten Problem waehrend der Ausfuehrung: SOFORT STOPPEN
-- User informieren mit klarer Problembeschreibung
-- NIEMALS eigenmaechtig "fixen" oder Workarounds implementieren
-- Warten auf explizite User-Entscheidung bevor fortgefahren wird
+**Immediate Stop on Problems:**
+- On ANY unexpected problem during execution: STOP IMMEDIATELY
+- Inform user with clear problem description
+- NEVER autonomously "fix" or implement workarounds
+- Wait for explicit user decision before proceeding
 
-**Beispiele:** NaN-Werte, fehlende Dateien, unerwartete Formate, Algorithmus-Fehler, Abhaengigkeitsprobleme, etc.
+**Examples:** NaN values, missing files, unexpected formats, algorithm errors, dependency issues, etc.
 
-**Warum:** Ein eigenmaechtiger "Fix" kann das gesamte Projekt invalidieren. Lieber einmal zu oft fragen als einmal zu wenig.
+**Why:** An autonomous "fix" can invalidate the entire project. Better to ask once too often than once too little.
 
 ---
 
@@ -260,83 +253,53 @@ CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']                # Known at prediction
 
 ## 10. DOCUMENTATION STRUCTURE
 
-### Hierarchical Documentation Model
+### Terminology
 
-**Two-level hierarchy:** README (Workflow) stands ABOVE DOCS (Module)
+| Term | Definition | Example |
+|------|------------|---------|
+| **Workflow** | Top-level directory containing a complete pipeline | `Plan_Level_1/` |
+| **Directory** | Subdirectory within a workflow (a phase) | `Data_Generation/` |
+| **Module** | Python script (`.py` file) | `01a_Runtime_Data.py` |
+| **Function** | Python function within a module | `load_queries()` |
 
-**Key principles:**
-- **README = Workflow-Level** - Can occur multiple times (one per workflow)
-- **DOCS = Module-Level** - Lives under README
-- **Relationship:** 1 README : n DOCS (NOT reverse)
-- **README hierarchically ABOVE DOCS** - Workflow orchestration documented before module details
-
-**Structure visualization:**
-
-```
-Project/
-├── Workflow_A/
-│   ├── README.md          # Workflow-Level
-│   ├── Module_1/
-│   │   └── DOCS.md        # Module-Level
-│   ├── Module_2/
-│   │   └── DOCS.md        # Module-Level
-│   └── Module_3/
-│       └── DOCS.md        # Module-Level
-│
-└── Workflow_B/
-    ├── README.md          # Workflow-Level
-    └── Module_4/
-        └── DOCS.md        # Module-Level
-```
-
-**Concrete example (Operator_Level):**
+### Hierarchy
 
 ```
-Operator_Level/
-├── README.md                    # Workflow-Level (1 README)
-├── Data_Generation/
-│   └── DOCS.md                  # Module-Level
-├── Datasets/
-│   └── DOCS.md                  # Module-Level
-└── Runtime_Prediction/
-    └── DOCS.md                  # Module-Level
-                                 # → 3 DOCS under 1 README
+Workflow/          -> README.md (tree to directories)
+├── Directory_A/   -> DOCS.md (tree to functions)
+├── Directory_B/   -> DOCS.md
+└── Directory_C/   -> DOCS.md
 ```
+
+**Principle:** No redundancy - README stops where DOCS begins.
 
 ---
 
-### README.md (Workflow-Level Documentation)
+### README.md (Workflow-Level)
 
 **Purpose:** High-level overview of multi-phase workflow orchestration
 
-**Placement Rules:**
+**Placement:**
 - **Location:** Workflow root (e.g., `Plan_Level_1/`)
 - **Relationship:** One README per workflow
-- **Scope:** Orchestrates multiple modules (references multiple DOCS)
+- **Scope:** Tree to directories only, links to DOCS.md
 
 **Required Sections:**
 
 #### 1. Directory Structure
 
-Tree with 2-3 levels, inline comments, `[See DOCS.md]` references:
+Tree showing only directories with `[See DOCS.md]` references:
 
 ```
 Plan_Level_1/
+├── README.md                            # This file
 ├── mapping_config.py                    # Shared configuration
-├── README.md                            # Workflow documentation (THIS FILE)
 ├── Data_Generation/                     [See DOCS.md]
-│   ├── 01a_Runtime_Data.py
-│   ├── 01b_Plan_Features.py
-│   └── csv/
 ├── Datasets/                            [See DOCS.md]
-│   ├── 01_Split_Train_Test.py
-│   ├── Baseline/
-│   └── State_1/
 └── Runtime_Prediction/                  [See DOCS.md]
-    ├── ffs_config.py
-    ├── 01_Forward_Selection.py
-    └── Baseline_SVM/
 ```
+
+**Rule:** No `.py` files, no subdirectories - only top-level directories with DOCS links.
 
 #### 2. Shared Infrastructure
 
@@ -345,40 +308,23 @@ Config files with bullet list of exports:
 ```markdown
 **mapping_config.py:**
 - `DB_CONFIG`: PostgreSQL connection parameters
-- `OPERATOR_TYPES`: 13 plan operator types for feature extraction
+- `OPERATOR_TYPES`: 13 plan operator types
 - `PLAN_METADATA`: ['query_file', 'template']
-- `PLAN_TARGET`: 'runtime'
 ```
 
-#### 3. Datasets
+#### 3. Workflow Overview
 
-Table with dataset variants:
-
-```markdown
-| State | Features | Samples | Train/Test | Purpose |
-|-------|----------|---------|------------|---------|
-| Baseline | 50 | 2,850 | 2,280/570 | Full feature set reference |
-| State_1 | 33 | 2,850 | 2,280/570 | Feature reduction impact |
-```
-
-#### 4. Workflow Overview
-
-Flow diagram showing phase dependencies:
+Phase dependencies as flow diagram:
 
 ```
 Phase 1: Data_Generation
-  01a_Runtime_Data.py
-  01b_Plan_Features.py   --> 02_Merge_Data.py --> complete_dataset.csv
-  01c_Row_Features.py
-
 Phase 2: Datasets
-  01_Split_Train_Test.py --> 02_Create_State_1.py
-
 Phase 3: Runtime_Prediction
-  01_Forward_Selection.py --> 02_Train_Model.py --> 03_Summarize_Results.py
+
+Data_Generation -> Datasets -> Runtime_Prediction
 ```
 
-#### 5. Phase Documentation
+#### 4. Phase Documentation
 
 Per phase: Purpose, Input, Output, Details link:
 
@@ -387,59 +333,75 @@ Per phase: Purpose, Input, Output, Details link:
 
 **Purpose:** Extract features and measure runtime for TPC-H queries
 
-**Input:** Query directory with Q1/-Q22/ template folders containing SQL files
+**Input:** Query directory with SQL files
 
-**Output:** `complete_dataset.csv` (2850 samples x 53 columns)
-- 2 Metadata columns (query_file, template)
-- 50 Feature columns (plan-level + operator metrics)
-- 1 Target column (runtime in ms, cold cache)
+**Output:** `complete_dataset.csv`
 
-**Details:** See [Data_Generation/DOCS.md](Data_Generation/DOCS.md)
+**Details:** [Data_Generation/DOCS.md](Data_Generation/DOCS.md)
 ```
 
-**Key Distinction:**
-- **README.md** = Meta-Workflow (WHAT): Wie Module zusammenhaengen, Phasen, Shared Infrastructure
-- **DOCS.md** = Modul-Details (HOW): Workflow im Modul, was Funktionen tun, Inputs/Outputs
-
 ---
 
-### DOCS.md (Module-Level Documentation)
+### DOCS.md (Directory-Level)
 
-**Purpose:** Detailed documentation of scripts within one module/phase
+**Purpose:** Detailed documentation of all modules within one directory
 
-**Placement Rules:**
-- **Location:** Module directories (e.g., `Runtime_Prediction/`)
+**Placement:**
+- **Location:** Directory root (e.g., `Data_Generation/`)
 - **Relationship:** Multiple DOCS can exist under one README
-- **Scope:** Documents scripts within ONE module only
+- **Scope:** Tree to functions, every function documented
 
 **Required Sections:**
-1. **Shared Infrastructure** - Module-specific config (e.g., `ffs_config.py`), constants, functions
-2. **Workflow Execution Order** - Script sequence (01 → 02 → 03), dependencies
-3. **Script Documentation** - Per script (### NN - Script_Name.py):
-   - **Purpose:** One sentence
-   - **Workflow:** Step-by-step process
-   - **Inputs:** Positional argparse arguments
-   - **Outputs:** Files with format, columns, location
-   - **Usage:** Command template with example
-   - **Variables:** Optional argparse flags
 
-**Single-Script Modules:** Can use README.md instead of DOCS.md with simplified structure
+#### 1. Directory Structure
 
----
+Tree showing modules AND their functions:
 
-## 11. PROJECT STRUCTURE
+```
+Data_Generation/
+├── DOCS.md
+├── 01a_Runtime_Data.py
+│   ├── process_workflow()
+│   ├── load_queries()
+│   ├── execute_query()
+│   └── export_results()
+├── 01b_Plan_Features.py
+│   ├── extract_workflow()
+│   └── parse_explain()
+└── csv/
+```
 
-**Dynamic, organized by workflow needs**
+#### 2. Shared Infrastructure (if applicable)
 
-**Common patterns:**
-- `debug/` - Test files (when requested)
-- `config.py` - Shared infrastructure
-- `mapping_config.py` - Central mappings
-- `README.md` - Project documentation
-- `NN_Script_Name.py` - Workflow scripts
-- Output folders: `csv/`, `md/`, `analysis/`, etc.
+Directory-specific config files with exports.
 
-**NOT included:**
-- NO `logs/` folder (scripts are silent, exports are the trace)
-- NO `workflow.py` (manual orchestration)
+#### 3. Module Documentation
+
+Per module (`## module_name.py`) with Purpose, Input, Output, then all functions (`### function_name()`):
+
+```markdown
+## 01a_Runtime_Data.py
+**Purpose:** Measure query execution time with cold cache
+**Input:** Query directory path
+**Output:** CSV with runtime measurements
+
+### process_workflow()
+Orchestrator function that coordinates the full measurement pipeline.
+Calls load_queries, iterates through queries calling execute_query and
+measure_runtime for each, then exports all results.
+
+### load_queries()
+Loads all SQL files from the specified directory. Returns list of
+query file paths sorted alphabetically.
+
+### execute_query()
+Executes a single SQL query against PostgreSQL with cold cache.
+Clears shared buffers before execution to ensure consistent measurements.
+
+### export_results()
+Saves runtime measurements to CSV with semicolon delimiter.
+Creates output directory if it does not exist.
+```
+
+**Rule:** Every function in the module must be documented. Undocumented functions indicate dead code or outdated docs.
 
