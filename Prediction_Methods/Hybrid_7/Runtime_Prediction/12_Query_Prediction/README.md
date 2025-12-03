@@ -108,4 +108,32 @@ python3 12_Query_Prediction.py \
 4. **Query Tree** - ASCII visualization
 5. **Prediction Results** - Per-node MRE table
 6. **Summary** - Average MRE, prediction counts
-7. **Prediction Chain** - Step-by-step with features
+7. **Prediction Chain** - Step-by-step prediction details (bottom-up order)
+
+### Prediction Chain Format
+
+Each step in the Prediction Chain contains:
+
+```markdown
+### Step N: Node {id} ({type}) - {ROLE}
+
+- **Source:** operator/pattern
+- **Pattern:** {hash} (length={n})           # Only for pattern predictions
+- **Model:** `{path_to_model}`
+- **Input (execution_time):**
+  - feature1=value
+  - feature2=value
+- **Input (start_time):**
+  - feature1=value
+  - feature2=value
+- **Output:** st={startup_time}, rt={total_time}
+```
+
+| Field | Description |
+|-------|-------------|
+| Source | Prediction method (operator or pattern) |
+| Pattern | Pattern hash and length (pattern predictions only) |
+| Model | Full path to the model directory/file |
+| Input (execution_time) | Features used for execution_time prediction |
+| Input (start_time) | Features used for start_time prediction |
+| Output | Predicted startup time (st) and total time (rt) in ms |

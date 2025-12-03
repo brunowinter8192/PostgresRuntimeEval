@@ -34,7 +34,9 @@ def predict_all_queries(
     pattern_features: dict,
     pattern_info: dict,
     pattern_order: list,
-    report=None
+    report=None,
+    operator_model_dir: str = '',
+    pattern_model_dir: str = ''
 ) -> list:
     all_predictions = []
 
@@ -43,7 +45,8 @@ def predict_all_queries(
 
         predictions, prediction_cache, consumed_nodes, pattern_assignments = predict_single_query(
             query_ops, operator_models, operator_features,
-            pattern_models, pattern_features, pattern_info, pattern_order
+            pattern_models, pattern_features, pattern_info, pattern_order,
+            operator_model_dir, pattern_model_dir
         )
 
         all_predictions.extend(predictions)
@@ -67,7 +70,9 @@ def predict_single_query(
     pattern_models: dict,
     pattern_features: dict,
     pattern_info: dict,
-    pattern_order: list
+    pattern_order: list,
+    operator_model_dir: str = '',
+    pattern_model_dir: str = ''
 ) -> tuple:
     root = build_tree_from_dataframe(query_ops)
     all_nodes = extract_all_nodes(root)
@@ -89,30 +94,31 @@ def predict_single_query(
             info = pattern_info[pattern_hash]
             pattern_node_ids = extract_pattern_node_ids(node, info['length'])
 
-            pred_start, pred_exec = predict_pattern(
-                node, query_ops, pattern_models[pattern_hash], prediction_cache, info['length']
+            result = predict_pattern(
+                node, query_ops, pattern_models[pattern_hash], prediction_cache, info['length'],
+                pattern_hash, pattern_model_dir
             )
 
             for nid in pattern_node_ids:
-                prediction_cache[nid] = {'start': pred_start, 'exec': pred_exec}
+                prediction_cache[nid] = result
 
             row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
-            predictions.append(create_prediction_result(row, pred_start, pred_exec, 'pattern'))
+            predictions.append(create_prediction_result(row, result['start'], result['exec'], 'pattern'))
         else:
-            pred_start, pred_exec = predict_operator(
-                node, query_ops, operator_models, operator_features, prediction_cache
+            result = predict_operator(
+                node, query_ops, operator_models, operator_features, prediction_cache, operator_model_dir
             )
 
-            prediction_cache[node.node_id] = {'start': pred_start, 'exec': pred_exec}
+            prediction_cache[node.node_id] = result
 
             row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
-            predictions.append(create_prediction_result(row, pred_start, pred_exec, 'operator'))
+            predictions.append(create_prediction_result(row, result['start'], result['exec'], 'operator'))
 
     return predictions, prediction_cache, consumed_nodes, pattern_assignments
 
 
 # Predict using pattern model
-def predict_pattern(node: QueryNode, query_ops: pd.DataFrame, model: dict, prediction_cache: dict, pattern_length: int) -> tuple:
+def predict_pattern(node: QueryNode, query_ops: pd.DataFrame, model: dict, prediction_cache: dict, pattern_length: int, pattern_hash: str, model_dir: str) -> dict:
     pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
     pattern_rows = query_ops[query_ops['node_id'].isin(pattern_node_ids)]
     aggregated = aggregate_pattern_with_cache(pattern_rows, pattern_length, query_ops, prediction_cache, set(pattern_node_ids))
@@ -123,15 +129,23 @@ def predict_pattern(node: QueryNode, query_ops: pd.DataFrame, model: dict, predi
     pred_exec = model['execution_time'].predict(X_exec)[0]
     pred_start = model['start_time'].predict(X_start)[0]
 
-    return pred_start, pred_exec
+    input_features_exec = {f: aggregated.get(f, 0) for f in model['features_exec']}
+    input_features_start = {f: aggregated.get(f, 0) for f in model['features_start']}
+
+    return {
+        'start': pred_start,
+        'exec': pred_exec,
+        'input_features': {'execution_time': input_features_exec, 'start_time': input_features_start},
+        'model_path': f'{model_dir}/{pattern_hash}'
+    }
 
 
 # Predict using operator model
-def predict_operator(node: QueryNode, query_ops: pd.DataFrame, operator_models: dict, operator_features: dict, prediction_cache: dict) -> tuple:
+def predict_operator(node: QueryNode, query_ops: pd.DataFrame, operator_models: dict, operator_features: dict, prediction_cache: dict, operator_model_dir: str) -> dict:
     op_name = csv_name_to_folder_name(node.node_type)
 
     if op_name not in operator_models['execution_time'] or op_name not in operator_models['start_time']:
-        return 0.0, 0.0
+        return {'start': 0.0, 'exec': 0.0, 'input_features': {}, 'model_path': None}
 
     row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
     features = build_operator_features(row, node, prediction_cache)
@@ -143,7 +157,7 @@ def predict_operator(node: QueryNode, query_ops: pd.DataFrame, operator_models: 
     start_feature_names = operator_features['start_time'].get(op_name, [])
 
     if not exec_feature_names or not start_feature_names:
-        return 0.0, 0.0
+        return {'start': 0.0, 'exec': 0.0, 'input_features': {}, 'model_path': None}
 
     X_exec = pd.DataFrame([[features.get(f, 0) for f in exec_feature_names]], columns=exec_feature_names)
     X_start = pd.DataFrame([[features.get(f, 0) for f in start_feature_names]], columns=start_feature_names)
@@ -151,7 +165,15 @@ def predict_operator(node: QueryNode, query_ops: pd.DataFrame, operator_models: 
     pred_exec = model_exec.predict(X_exec)[0]
     pred_start = model_start.predict(X_start)[0]
 
-    return pred_start, pred_exec
+    input_features_exec = {f: features.get(f, 0) for f in exec_feature_names}
+    input_features_start = {f: features.get(f, 0) for f in start_feature_names}
+
+    return {
+        'start': pred_start,
+        'exec': pred_exec,
+        'input_features': {'execution_time': input_features_exec, 'start_time': input_features_start},
+        'model_path': f'{operator_model_dir}/{{execution_time,start_time}}/{op_name}/model.pkl'
+    }
 
 
 # Build operator features with child predictions from cache
