@@ -1,2 +1,0 @@
-seed;n_features;final_mre;selected_features
-42;10;0.07620840181589508;initplan_count, subplan_count, group_key_count, jit_functions, workers_planned, Gather_cnt, sort_key_columns, Aggregate_cnt, Index_Only_Scan_rows, planning_time_ms

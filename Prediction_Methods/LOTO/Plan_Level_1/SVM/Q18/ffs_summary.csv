@@ -1,2 +1,0 @@
-seed;n_features;final_mre;selected_features
-42;10;0.07101474777567715;p_tot_cost, Index_Scan_cnt, group_key_count, p_width, Hash_rows, p_st_cost, workers_planned, sort_key_columns, Nested_Loop_cnt, partial_mode_simple

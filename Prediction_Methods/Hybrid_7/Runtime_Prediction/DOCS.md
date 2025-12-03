@@ -18,12 +18,12 @@ Phase 2: Pattern Preparation
                                  09 (Pretrain)       -+-> parallel
 
 Phase 3: Pattern Selection (parallel, independent)
-10 --strategy frequency -+
-10 --strategy size      -+-> A_01a/A_01b per selection
-10 --strategy error     -+
+10_Pattern_Selection/ --strategy frequency -+
+10_Pattern_Selection/ --strategy size      -+-> A_01a/A_01b per selection
+10_Pattern_Selection/ --strategy error     -+
 
 Phase 4: Final Training + Prediction (on Training.csv/Test.csv)
-11a (Operators) -> 11b (Patterns per method) -> 12 (Predictions) -> A_01a/A_01b (Evaluation)
+11a (Operators) -> 11b (Patterns per method) -> 12_Query_Prediction/ -> A_01a/A_01b (Evaluation)
 
 Phase 5: Parameter Analysis (parallel, standalone)
 A_02a-A_02c, A_03a
@@ -264,56 +264,13 @@ python3 09_Pretrain_Patterns.py SVM/Pattern/pattern_ffs_overview.csv Pattern_Sel
 
 ---
 
-### 10 - Pattern_Selection.py
+### 10 - Pattern_Selection/
 
-**Purpose:** Greedy pattern selection with configurable strategy.
+**Purpose:** Greedy pattern selection with configurable strategy (frequency/size/error).
 
-**Strategies:**
-- `frequency`: Static ordering by occurrence count DESC
-- `size`: Static ordering by operator count ASC
-- `error`: Dynamic re-ranking by error score after each selection
+**Structure:** Modular directory with entry-point and src/ modules.
 
-**Workflow:**
-1. Load operator models, pattern FFS, sorted patterns
-2. Set baseline MRE (operator-only)
-3. For each pattern (static or dynamic order):
-   - Load/train pattern model
-   - Predict test set with current selected + candidate
-   - If MRE improves: SELECT and update baseline
-   - Else: REJECT
-   - (error only) Re-rank remaining patterns based on updated predictions
-4. Export selection log, selected patterns, per-pattern predictions
-
-**Inputs:**
-- `--strategy`: Selection strategy (frequency/size/error)
-- `sorted_patterns_file`: 07_patterns_by_frequency.csv, 07_patterns_by_size.csv, or 08_patterns_by_error.csv
-- `pattern_ffs_file`: pattern_ffs_overview.csv
-- `training_file`: Training_Training.csv
-- `test_file`: Training_Test.csv
-- `operator_model_dir`: Model/Operator/
-- `operator_ffs_dir`: SVM/Operator/
-
-**Outputs:**
-- `{pattern-output-dir}/{hash}/predictions.csv`
-- `{pattern-output-dir}/selection_log.csv`
-- `{pattern-output-dir}/selected_patterns.csv`
-- `{model-dir}/{hash}/` (selected models)
-
-**Variables:**
-- `--pretrained-dir`: Path to pretrained models (skip re-training)
-- `--pattern-occurrences-file`: Required for error strategy (06_test_pattern_occurrences_*.csv)
-
-**Usage:**
-```
-# Frequency strategy
-python3 10_Pattern_Selection.py --strategy frequency Pattern_Selection/07_patterns_by_frequency.csv SVM/Pattern/pattern_ffs_overview.csv ../Dataset/Baseline/Training_Training.csv ../Dataset/Baseline/Training_Test.csv Model/Operator SVM/Operator --pattern-output-dir Pattern_Selection/Frequency --model-dir Model/Selected_Pattern/Frequency --pretrained-dir Model/Patterns_Pretrained
-
-# Size strategy
-python3 10_Pattern_Selection.py --strategy size Pattern_Selection/07_patterns_by_size.csv SVM/Pattern/pattern_ffs_overview.csv ../Dataset/Baseline/Training_Training.csv ../Dataset/Baseline/Training_Test.csv Model/Operator SVM/Operator --pattern-output-dir Pattern_Selection/Size --model-dir Model/Selected_Pattern/Size --pretrained-dir Model/Patterns_Pretrained
-
-# Error strategy (with dynamic re-ranking)
-python3 10_Pattern_Selection.py --strategy error Pattern_Selection/08_patterns_by_error.csv SVM/Pattern/pattern_ffs_overview.csv ../Dataset/Baseline/Training_Training.csv ../Dataset/Baseline/Training_Test.csv Model/Operator SVM/Operator --pattern-output-dir Pattern_Selection/Error --model-dir Model/Selected_Pattern/Error --pretrained-dir Model/Patterns_Pretrained --pattern-occurrences-file Pattern_Selection/06_test_pattern_occurrences_*.csv
-```
+**Details:** [10_Pattern_Selection/README.md](10_Pattern_Selection/README.md)
 
 ---
 
@@ -377,42 +334,13 @@ python3 11b_Train_Final_Patterns.py Selected_Patterns/Pattern_Freq/selected_patt
 
 ---
 
-### 12 - Query_Prediction.py
+### 12 - Query_Prediction/
 
-**Purpose:** Bottom-up prediction on Test.csv using final models.
+**Purpose:** Bottom-up query prediction using operator and pattern models with MD report generation.
 
-**Workflow:**
-1. Load Test.csv (filter main plan)
-2. Load operator models + features
-3. If pattern args provided: Load pattern models + features + info
-4. For each query:
-   - Build tree structure
-   - Bottom-up from leaves
-   - Try pattern match first, fallback to operator
-   - Store predictions
-5. Export predictions.csv
+**Structure:** Modular directory with entry-point and src/ modules.
 
-**Inputs:**
-- `test_file`: Path to Test.csv
-- `operator_model_dir`: Path to Model/Final_Operator/
-- `operator_overview_file`: Path to two_step_evaluation_overview.csv
-
-**Optional Inputs (for pattern prediction):**
-- `--pattern-model-dir`: Path to pattern models
-- `--pattern-ffs-file`: Path to pattern_ffs_overview.csv
-- `--selected-patterns`: Path to selected_patterns.csv
-
-**Outputs:**
-- `{output-dir}/predictions.csv`
-
-**Usage:**
-```
-# Operator-only baseline
-python3 12_Query_Prediction.py ../Dataset/Test.csv Model/Final_Operator SVM/Operator/two_step_evaluation_overview.csv --output-dir Evaluation/Operator_Test
-
-# With patterns (e.g., Frequency)
-python3 12_Query_Prediction.py ../Dataset/Test.csv Model/Final_Operator SVM/Operator/two_step_evaluation_overview.csv --pattern-model-dir Model/Final_Frequency --pattern-ffs-file SVM/Pattern/pattern_ffs_overview.csv --selected-patterns Selected_Patterns/Pattern_Freq/selected_patterns.csv --output-dir Evaluation/Frequency_Test
-```
+**Details:** [12_Query_Prediction/README.md](12_Query_Prediction/README.md)
 
 ---
 

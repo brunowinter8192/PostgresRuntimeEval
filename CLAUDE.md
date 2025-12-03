@@ -39,10 +39,7 @@
 - NO comments inside function bodies (only function header comments + section markers)
 - NO test files in root (ONLY in debug/ folder when requested)
 - NO emojis in code AND documentation
-- NO logging statements - scripts run completely silent
-- NO console output (print, console.log, echo)
 - NO hardcoded paths (always use argparse)
-- NO verbose output of any kind
 
 **Type hints:** RECOMMENDED but optional
 
@@ -60,33 +57,7 @@
 
 ---
 
-## 5. PROJECT ARCHITECTURE: Standalone Pipeline
-
-**This project uses standalone module architecture, NOT orchestrated workflow.**
-
-### Key Characteristics:
-- NO workflow.py (manual orchestration by user)
-- Each module: Independent script with argparse
-- Scripts run completely silent
-- Output ONLY via structured exports (.csv or .md files)
-- User manually executes scripts in sequence, reviewing outputs between steps
-
-### Rationale:
-Research pipeline where each step requires manual analysis before proceeding. Structured exports serve as execution trace. No need for logging when outputs are already structured.
-
-### Execution Pattern:
-```
-User runs: python 01_Script.py <args>
-         → Script runs silently
-         → Exports to csv/ or md/ folder
-         → User reviews output
-         → User runs: python 02_Script.py <args>
-         → ...
-```
-
----
-
-## 6. THESIS-SPECIFIC RULES
+## 5. THESIS-SPECIFIC RULES
 
 ### CSV Files
 
@@ -121,7 +92,7 @@ User runs: python 01_Script.py <args>
 
 ---
 
-## 7. CODE ORGANIZATION
+## 6. CODE ORGANIZATION
 
 **CRITICAL:** Every script follows this structure:
 
@@ -176,7 +147,7 @@ def export_results(results: pd.DataFrame, output_dir: str) -> None:
 
 ---
 
-## 8. COMMENT RULES
+## 7. COMMENT RULES
 
 **CRITICAL:** Three types of allowed comments only
 
@@ -202,34 +173,7 @@ from data_loader import load_validated_data
 
 ---
 
-## 9. ERROR HANDLING
-
-**IMPORTANT:** Fail-fast philosophy. If the script cannot fulfill its purpose, it must fail visibly.
-
-**ALLOWED:**
-- Retry logic with exponential backoff
-- Resource cleanup (files, connections)
-- Converting exceptions to domain errors
-
-**PROHIBITED:**
-- Silently swallowing errors
-- Generic `except Exception: pass`
-- Hiding failures affecting business logic
-
-**Example:**
-```python
-def fetch_data(params):
-    for attempt in range(3):
-        try:
-            return connect_and_fetch(params)
-        except ConnectionError:
-            if attempt == 2: raise
-            time.sleep(2 ** attempt)
-```
-
----
-
-## 10. ARGPARSE TEMPLATE
+## 8. ARGPARSE TEMPLATE
 
 ```python
 if __name__ == "__main__":
@@ -251,7 +195,7 @@ if __name__ == "__main__":
 
 ---
 
-## 11. ARCHITECTURE STANDARDS
+## 9. ARCHITECTURE STANDARDS
 
 ### Naming Conventions
 
@@ -314,7 +258,7 @@ CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']                # Known at prediction
 
 ---
 
-## 12. DOCUMENTATION STRUCTURE
+## 10. DOCUMENTATION STRUCTURE
 
 ### Hierarchical Documentation Model
 
@@ -419,19 +363,19 @@ Table with dataset variants:
 
 #### 4. Workflow Overview
 
-ASCII flow diagram showing phase dependencies:
+Flow diagram showing phase dependencies:
 
 ```
 Phase 1: Data_Generation
-├── 01a_Runtime_Data.py ──┐
-├── 01b_Plan_Features.py ─┼──→ 02_Merge_Data.py → complete_dataset.csv
-└── 01c_Row_Features.py ──┘
+  01a_Runtime_Data.py
+  01b_Plan_Features.py   --> 02_Merge_Data.py --> complete_dataset.csv
+  01c_Row_Features.py
 
 Phase 2: Datasets
-01_Split_Train_Test.py → 02_Create_State_1.py
+  01_Split_Train_Test.py --> 02_Create_State_1.py
 
 Phase 3: Runtime_Prediction
-01_Forward_Selection.py → 02_Train_Model.py → 03_Summarize_Results.py
+  01_Forward_Selection.py --> 02_Train_Model.py --> 03_Summarize_Results.py
 ```
 
 #### 5. Phase Documentation
@@ -453,7 +397,9 @@ Per phase: Purpose, Input, Output, Details link:
 **Details:** See [Data_Generation/DOCS.md](Data_Generation/DOCS.md)
 ```
 
-**Keep it focused:** README explains WHAT happens at workflow level, DOCS explain HOW it happens at module level
+**Key Distinction:**
+- **README.md** = Meta-Workflow (WHAT): Wie Module zusammenhaengen, Phasen, Shared Infrastructure
+- **DOCS.md** = Modul-Details (HOW): Workflow im Modul, was Funktionen tun, Inputs/Outputs
 
 ---
 
@@ -468,7 +414,7 @@ Per phase: Purpose, Input, Output, Details link:
 
 **Required Sections:**
 1. **Shared Infrastructure** - Module-specific config (e.g., `ffs_config.py`), constants, functions
-2. **Workflow Execution Order** - Script sequence (00 → 01 → 02), dependencies, ASCII flow diagram
+2. **Workflow Execution Order** - Script sequence (01 → 02 → 03), dependencies
 3. **Script Documentation** - Per script (### NN - Script_Name.py):
    - **Purpose:** One sentence
    - **Workflow:** Step-by-step process
@@ -481,18 +427,7 @@ Per phase: Purpose, Input, Output, Details link:
 
 ---
 
-**Key principle:**
-- **README** = "How to RUN this workflow" (orchestration level)
-- **DOCS** = "How modules WORK" (implementation level)
-- **Hierarchy** = README references DOCS, never reverse
-
-**User Reading Flow:**
-1. README.md -> Understand tree structure + high-level workflow
-2. DOCS.md -> Understand granular workflow + script details
-
----
-
-## 13. PROJECT STRUCTURE
+## 11. PROJECT STRUCTURE
 
 **Dynamic, organized by workflow needs**
 
