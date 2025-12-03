@@ -10,17 +10,9 @@ LOTO (Leave-One-Template-Out) dataset preparation for dynamic workload evaluatio
 Dataset/
 ├── DOCS.md
 ├── 00_Clean_Dataset.py
-│   ├── clean_workflow()
-│   ├── load_dataset()
-│   ├── filter_templates()
-│   └── export_cleaned()
 ├── 01_Split_Dataset.py
-│   ├── split_workflow()
-│   ├── load_dataset()
-│   ├── get_unique_templates()
-│   └── create_splits()
 ├── cleaned_dataset.csv
-└── Q1/, Q3/, Q4/, Q5/, Q6/, Q7/, Q8/, Q9/, Q10/, Q12/, Q13/, Q14/, Q18/, Q19/
+└── Q1/, Q3/, ... Q19/
     ├── training.csv
     └── test.csv
 ```
