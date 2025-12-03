@@ -8,6 +8,7 @@ Runtime_Prediction/
 ├── A_01_Evaluate_Template.py
 ├── A_02_Compare_Templates.py
 ├── Online_1/                    [See DOCS.md]
+├── Operator_Level/              [See DOCS.md]
 └── Plan_Level/                  [See DOCS.md]
 ```
 
