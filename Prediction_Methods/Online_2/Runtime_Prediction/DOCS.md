@@ -84,18 +84,54 @@ python workflow.py Q1_100_seed_812199069 \
 
 **Workflow:**
 1. Extract unique query_file values from Test.csv
-2. Run workflow.py for each query in parallel (14 jobs)
+2. Run workflow.py for each query in batches of 14
+3. Log progress to output/progress.log
 
 **Inputs:**
 - Hardcoded paths to `../../Hybrid_7/Dataset/Baseline/` datasets
 
 **Outputs:**
 - Same as workflow.py, for all 420 test queries
+- `output/progress.log` - Progress log with timestamps
 
 **Usage:**
 ```bash
 ./batch_predict.sh
 ```
+
+**Monitor Progress:**
+```bash
+tail -f output/progress.log
+```
+
+---
+
+### A_01a_Query_Evaluation.py
+
+**Purpose:** Aggregate predictions and calculate MRE per template
+
+**Workflow:**
+1. Load all predictions_*.csv from input directory
+2. Extract root operators (depth=0)
+3. Calculate MRE per query
+4. Group by template and compute statistics
+5. Generate bar plot
+
+**Inputs:**
+- `predictions_dir` - Directory containing predictions_*.csv files (positional)
+
+**Outputs:**
+- `{output-dir}/overall_mre.csv` - Overall MRE metric
+- `{output-dir}/template_mre.csv` - MRE statistics per template
+- `{output-dir}/template_mre_plot.png` - Bar plot visualization
+
+**Usage:**
+```bash
+python A_01a_Query_Evaluation.py output/csv --output-dir Evaluation
+```
+
+**Variables:**
+- `--output-dir` - Output directory for evaluation results (required)
 
 ---
 
