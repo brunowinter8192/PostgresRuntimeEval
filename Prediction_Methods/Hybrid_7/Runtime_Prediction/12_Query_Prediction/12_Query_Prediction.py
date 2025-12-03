@@ -67,7 +67,7 @@ def run_prediction(
     all_predictions = predict_all_queries(
         df_test, operator_models, operator_features,
         pattern_models, pattern_features, pattern_info, pattern_order,
-        report
+        report, operator_model_dir, pattern_model_dir or ''
     )
 
     export_predictions(all_predictions, output_dir)

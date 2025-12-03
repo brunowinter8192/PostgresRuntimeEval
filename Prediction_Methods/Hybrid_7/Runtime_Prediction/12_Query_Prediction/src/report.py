@@ -193,16 +193,23 @@ class ReportBuilder:
 
             if node_id in prediction_cache:
                 cache = prediction_cache[node_id]
+
+                model_path = cache.get('model_path')
+                if model_path:
+                    self.lines.append(f'- **Model:** `{model_path}`')
+
                 input_features = cache.get('input_features', {})
 
                 if input_features:
-                    self.lines.append('- **Input Features:**')
+                    for target_name, features in input_features.items():
+                        if features:
+                            self.lines.append(f'- **Input ({target_name}):**')
 
-                    for k, v in sorted(input_features.items()):
-                        if isinstance(v, float):
-                            self.lines.append(f'  - {k}={v:.4f}')
-                        else:
-                            self.lines.append(f'  - {k}={v}')
+                            for k, v in sorted(features.items()):
+                                if isinstance(v, float):
+                                    self.lines.append(f'  - {k}={v:.4f}')
+                                else:
+                                    self.lines.append(f'  - {k}={v}')
 
             self.lines.append(f'- **Output:** st={p["predicted_startup_time"]:.2f}, rt={p["predicted_total_time"]:.2f}')
             self.lines.append('')
