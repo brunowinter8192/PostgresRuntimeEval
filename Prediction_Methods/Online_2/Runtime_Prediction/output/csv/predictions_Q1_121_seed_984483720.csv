@@ -1,0 +1,5 @@
+query_file;node_id;node_type;depth;parent_relationship;actual_startup_time;actual_total_time;predicted_startup_time;predicted_total_time;prediction_type;is_leaf
+Q1_121_seed_984483720;120;Seq Scan;4;Outer;9.289;641.923;1.9439783599028686;572.8910473536076;operator;True
+Q1_121_seed_984483720;118;Sort;2;Outer;1030.592;1030.595;1079.4291288747572;1080.3696451485446;pattern;
+Q1_121_seed_984483720;117;Gather Merge;1;Outer;1044.802;1050.654;1075.9355870429845;1080.4884125548458;operator;False
+Q1_121_seed_984483720;116;Aggregate;0;;1044.876;1050.733;1037.7930502910006;1052.2845239911821;operator;False

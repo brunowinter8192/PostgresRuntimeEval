@@ -1,2 +1,0 @@
-seed;n_features;final_mre;selected_features
-42;10;0.15159281054972845;p_rows, Nested_Loop_cnt, partial_mode_simple, p_width, jit_functions, Hash_Join_rows, Index_Scan_cnt, planning_time_ms, sort_key_count, Limit_cnt

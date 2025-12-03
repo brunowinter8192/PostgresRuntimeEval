@@ -1,2 +1,0 @@
-seed;n_features;final_mre;selected_features
-42;10;0.07456031844589914;subplan_count, Aggregate_cnt, initplan_count, Sort_cnt, jit_functions, Seq_Scan_rows, Index_Scan_cnt, Index_Only_Scan_rows, Hash_Join_rows, sort_key_columns

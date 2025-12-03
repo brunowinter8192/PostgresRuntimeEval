@@ -1,0 +1,1 @@
+{"features_exec": ["IndexScan_Inner_startup_cost", "NestedLoop_startup_cost"], "features_start": ["NestedLoop_np", "NestedLoop_total_cost", "SeqScan_Outer_np", "SeqScan_Outer_reltuples"]}

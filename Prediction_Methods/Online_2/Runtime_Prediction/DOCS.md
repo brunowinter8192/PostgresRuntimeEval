@@ -78,6 +78,27 @@ python workflow.py Q1_100_seed_812199069 \
 
 ---
 
+### batch_predict.sh
+
+**Purpose:** Run workflow.py for all test queries in parallel
+
+**Workflow:**
+1. Extract unique query_file values from Test.csv
+2. Run workflow.py for each query in parallel (14 jobs)
+
+**Inputs:**
+- Hardcoded paths to `../../Hybrid_7/Dataset/Baseline/` datasets
+
+**Outputs:**
+- Same as workflow.py, for all 420 test queries
+
+**Usage:**
+```bash
+./batch_predict.sh
+```
+
+---
+
 ## Source Modules (src/)
 
 ### src/tree.py
