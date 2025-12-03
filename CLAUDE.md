@@ -349,25 +349,19 @@ Per phase: Purpose, Input, Output, Details link:
 **Placement:**
 - **Location:** Directory root (e.g., `Data_Generation/`)
 - **Relationship:** Multiple DOCS can exist under one README
-- **Scope:** Tree to functions, every function documented
+- **Scope:** Tree to modules, every function documented in Module Documentation
 
 **Required Sections:**
 
 #### 1. Directory Structure
 
-Tree showing modules AND their functions:
+Tree showing modules (no functions in tree):
 
 ```
 Data_Generation/
 ├── DOCS.md
 ├── 01a_Runtime_Data.py
-│   ├── process_workflow()
-│   ├── load_queries()
-│   ├── execute_query()
-│   └── export_results()
 ├── 01b_Plan_Features.py
-│   ├── extract_workflow()
-│   └── parse_explain()
 └── csv/
 ```
 
