@@ -10,6 +10,7 @@ Leave-One-Template-Out (LOTO) evaluation workflow for TPC-H query runtime predic
 LOTO/
 ├── README.md                    # This file
 ├── Dataset/                     [See DOCS.md]
+├── Dataset_Operator/            [See DOCS.md]
 └── Runtime_Prediction/          [See DOCS.md]
 ```
 
