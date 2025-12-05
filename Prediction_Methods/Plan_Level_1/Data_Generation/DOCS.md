@@ -143,3 +143,31 @@ python 01c_Row_Features.py /path/to/queries --output-dir /custom/output
 ```bash
 python 02_Merge_Data.py csv/
 ```
+
+---
+
+## Analysis Scripts
+
+### A_01a - Explain_JSON.py
+
+**Purpose**: Export raw EXPLAIN JSON output for feature exploration and documentation
+
+**Workflow**:
+1. Connect to PostgreSQL database
+2. For each template (Q1-Q22, excluding Q15):
+   - Load first seed query file
+   - Run EXPLAIN (ANALYZE false, VERBOSE true, COSTS true, SUMMARY true, FORMAT JSON)
+   - Write complete JSON to markdown
+3. Export all results to single markdown file
+
+**Inputs**:
+- `query_dir` (positional): Directory containing Q* template folders with SQL files
+- `--output-dir` (required): Output directory for markdown file
+
+**Outputs**:
+- `md/A_01a_explain_json_export_{timestamp}.md`: Raw EXPLAIN JSON for each template
+
+**Usage**:
+```bash
+python A_01a_Explain_JSON.py /path/to/queries --output-dir md/
+```
