@@ -9,24 +9,9 @@ Hybrid_2/
 ├── mapping_config.py                        # Shared patterns, targets, and constants
 ├── README.md                                # Workflow documentation (THIS FILE)
 ├── Data_Generation/                         [See DOCS.md]
-│   ├── 01_Find_Patterns.py
-│   └── csv/
 ├── Datasets/                                [See DOCS.md]
-│   ├── 01_Extract_Patterns.py
-│   ├── 02_Aggregate_Patterns.py
-│   ├── 03_Clean_Patterns.py
-│   ├── A_01a_Verify_Extraction.py           # Analysis script
-│   ├── A_01b_Verify_Aggregation.py          # Analysis script
-│   └── Baseline_SVM/
 └── Runtime_Prediction/                      [See DOCS.md]
-    ├── ffs_config.py
-    ├── 01_Feature_Selection.py
-    ├── 02_Train_Models.py
-    ├── 03_Predict_Queries.py
-    ├── A_01a_Evaluate_Predictions.py        # Analysis script
-    ├── A_01b_Node_Evaluation.py             # Analysis script
-    ├── A_01c_Time_Analysis.py               # Analysis script
-    └── Baseline_SVM/
+
 ```
 
 ## External Dependencies
@@ -47,10 +32,12 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 **mapping_config.py** - Central configuration shared across all three phases
 
 **Constants:**
-- `PATTERNS` - Pattern folder names (e.g., Hash_Join_Seq_Scan_Outer_Hash_Inner)
 - `TARGET_TYPES` - Target variables (execution_time, start_time)
 - `NON_FEATURE_SUFFIXES` - Metadata column suffixes to exclude
 - `LEAF_OPERATORS` - Leaf node types (SeqScan, IndexScan, IndexOnlyScan)
+- `CHILD_ACTUAL_SUFFIXES` - Child actual time columns to remove
+- `CHILD_TIMING_SUFFIXES` - Child st/rt columns for leaf operators
+- `PARENT_CHILD_FEATURES` - Parent child timing feature column names
 - `FFS_SEED` - Random seed for cross-validation (42)
 - `FFS_MIN_FEATURES` - Minimum features to select (1)
 
@@ -58,7 +45,8 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 - `pattern_to_folder_name()` - Convert pattern string to folder format
 - `folder_name_to_pattern()` - Reverse conversion
 - `is_leaf_operator()` - Check if operator is leaf node
-- `get_target_column_name()` - Get column name from target type
+
+**Pattern Identification:** Patterns are identified by MD5 hash of their structure. Each pattern folder contains `pattern_info.json` with metadata (pattern_hash, pattern_string, folder_name, leaf_pattern, occurrence_count).
 
 **Used by:** Scripts in Data_Generation, Datasets, and Runtime_Prediction phases
 
@@ -118,29 +106,37 @@ The hybrid pattern-level prediction pipeline consists of three sequential phases
 - Identify all unique parent-child combinations (parent + outer child + inner child)
 - Starting from depth 0 (includes root-level patterns unlike Hybrid_1)
 - Count pattern occurrences across all queries
+- Compute MD5 hash for each pattern structure
 - No operator type filtering (all operator combinations considered)
 
-**Output:** Pattern inventory CSV with pattern names and occurrence counts
+**Output:** Pattern inventory CSV with pattern_hash, pattern names, and occurrence counts
 
 **See Data_Generation/DOCS.md for detailed script documentation**
 
 ### Phase 2: Datasets
 
-**Purpose:** Extract pattern instances and prepare pattern-specific training datasets
+**Purpose:** Split data and prepare operator-level and pattern-level training datasets
 
-**Input:** operator_dataset.csv and pattern inventory from Phase 1
+**Input:** operator_dataset.csv from Data_Generation
 
 **Process:**
-- Extract all instances of each pattern into separate folders
-- Verify extraction completeness and correctness
-- Aggregate parent and child rows into single feature vectors (parent features + child features)
-- Verify aggregation consistency
+- Template-stratified train/test split (120/30 per template, seed=42)
+- Extract operators into type-specific folders
+- Extract pattern instances into hash-named folders with pattern_info.json
+- Aggregate parent and child rows into single feature vectors
 - Clean features by removing unavailable columns (child actual times unknown at prediction)
 
-**Output:** Pattern-specific folders containing:
-- training.csv - Raw pattern instances
-- training_aggregated.csv - Parent+children combined
-- training_cleaned.csv - Production-ready features
+**Output Structure:**
+```
+Baseline_SVM/
+├── training.csv / test.csv
+├── operators/{Type}/training.csv
+└── patterns/{hash}/
+    ├── pattern_info.json
+    ├── training.csv
+    ├── training_aggregated.csv
+    └── training_cleaned.csv
+```
 
 **See Datasets/DOCS.md for detailed script documentation**
 

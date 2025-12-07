@@ -1,6 +1,0 @@
-feature;order
-GatherMerge_nt;1
-IncrementalSort_Outer_rt1;2
-IncrementalSort_Outer_rt2;3
-IncrementalSort_Outer_st1;4
-IncrementalSort_Outer_st2;5
