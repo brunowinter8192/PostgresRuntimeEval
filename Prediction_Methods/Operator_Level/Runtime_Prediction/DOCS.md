@@ -14,6 +14,10 @@ Runtime_Prediction/
 ├── 04a_Query_Evaluation.py            # Evaluate query-level predictions and create visualizations
 ├── 04b_Operator_Analysis.py           # Cross-evaluation of node type prediction accuracy
 ├── A_01a_Time_Statistics.py           # Statistical analysis of operator timing patterns
+├── A_01b_Template_Operators.py        # Count operators in specified templates
+├── A_01c_Operator_Distribution.py     # Histograms of operator time distributions
+├── A_01d_Depth_Propagation.py         # Depth propagation plots per template
+├── A_01e_Plan_Variability.py          # Analyze plan variability across templates
 ├── ffs_config.py                      # FFS-specific configuration (seed, params, features)
 ├── DOCS.md                            # This file
 ├── md/                                # MD reports for single query predictions
@@ -30,7 +34,11 @@ Runtime_Prediction/
 │       ├── overall_mre.csv
 │       ├── template_mre.csv
 │       ├── template_mre_plot.png
-│       └── csv/                       # Cross-evaluation CSVs
+│       ├── A_01a_time_statistics_*.csv
+│       ├── A_01b_template_operators_*.csv
+│       ├── A_01c_histogram_*.png
+│       ├── A_01d_depth_*.png
+│       └── A_01e_plan_variability_*.csv
 └── All_Templates_SVM/                 # All-templates dataset results (same structure)
 ```
 
@@ -108,8 +116,12 @@ template_mre.csv
 template_mre_plot.png
 ```
 
-**Analysis Script** (standalone, not part of main workflow):
-- `A_01a_Time_Statistics.py` - Operator time range analysis on training data
+**Analysis Scripts** (standalone, not part of main workflow):
+- `A_01a_Time_Statistics.py` - Operator time range analysis
+- `A_01b_Template_Operators.py` - Count operators in specified templates
+- `A_01c_Operator_Distribution.py` - Histograms of operator time distributions
+- `A_01d_Depth_Propagation.py` - Depth propagation plots per template
+- `A_01e_Plan_Variability.py` - Analyze plan variability across templates
 
 ---
 
@@ -315,7 +327,7 @@ python3 04b_Operator_Analysis.py \
 - `--output-dir` - Output directory for analysis results
 
 **Outputs**:
-- `Evaluation/operator_range_analysis_{timestamp}.csv` - Operator statistics with ranges
+- `Evaluation/A_01a_time_statistics_{timestamp}.csv` - Operator statistics with ranges
 
 **Usage**:
 ```bash
@@ -325,7 +337,111 @@ python3 A_01a_Time_Statistics.py <dataset_csv> --output-dir <output_dir>
 **Example**:
 ```bash
 python3 A_01a_Time_Statistics.py \
-    ../../Datasets/Baseline/03_training.csv \
+    ./Baseline_SVM/predictions.csv \
+    --output-dir ./Baseline_SVM
+```
+
+---
+
+### A_01b - A_01b_Template_Operators.py
+
+**Purpose**: Count operator occurrences in specified templates.
+
+**Inputs**:
+- `predictions_csv` - Path to predictions CSV
+- `--templates` - Comma-separated templates (e.g. "Q10,Q7,Q8")
+- `--output-dir` - Output directory
+
+**Outputs**:
+- `Evaluation/A_01b_template_operators_{templates}_{timestamp}.csv` - Operator counts sorted by occurrence
+
+**Usage**:
+```bash
+python3 A_01b_Template_Operators.py <predictions_csv> --templates <templates> --output-dir <output_dir>
+```
+
+**Example**:
+```bash
+python3 A_01b_Template_Operators.py \
+    ./Baseline_SVM/predictions.csv \
+    --templates "Q10,Q7,Q8" \
+    --output-dir ./Baseline_SVM
+```
+
+---
+
+### A_01c - A_01c_Operator_Distribution.py
+
+**Purpose**: Create histograms showing time distribution per operator.
+
+**Inputs**:
+- `predictions_csv` - Path to predictions CSV
+- `--output-dir` - Output directory
+
+**Outputs**:
+- `Evaluation/A_01c_histogram_startup_time_{timestamp}.png` - 13 subplots for startup time
+- `Evaluation/A_01c_histogram_total_time_{timestamp}.png` - 13 subplots for total time
+
+**Usage**:
+```bash
+python3 A_01c_Operator_Distribution.py <predictions_csv> --output-dir <output_dir>
+```
+
+**Example**:
+```bash
+python3 A_01c_Operator_Distribution.py \
+    ./Baseline_SVM/predictions.csv \
+    --output-dir ./Baseline_SVM
+```
+
+---
+
+### A_01d - A_01d_Depth_Propagation.py
+
+**Purpose**: Create depth propagation plots showing predicted vs actual time per depth level (averaged per template).
+
+**Inputs**:
+- `predictions_csv` - Path to predictions CSV
+- `--output-dir` - Output directory
+
+**Outputs**:
+- `Evaluation/A_01d_depth_{template}_{timestamp}.png` - One plot per template
+
+**Usage**:
+```bash
+python3 A_01d_Depth_Propagation.py <predictions_csv> --output-dir <output_dir>
+```
+
+**Example**:
+```bash
+python3 A_01d_Depth_Propagation.py \
+    ./Baseline_SVM/predictions.csv \
+    --output-dir ./Baseline_SVM
+```
+
+---
+
+### A_01e - A_01e_Plan_Variability.py
+
+**Purpose**: Analyze whether templates have consistent query plans or variations across seeds.
+
+**Inputs**:
+- `predictions_csv` - Path to dataset CSV (use raw dataset for full coverage)
+- `--output-dir` - Output directory
+
+**Outputs**:
+- `Evaluation/A_01e_plan_variability_summary_{timestamp}.csv` - Summary per template
+- `Evaluation/A_01e_plan_variability_detail_{timestamp}.csv` - Detail per query with plan signature
+
+**Usage**:
+```bash
+python3 A_01e_Plan_Variability.py <predictions_csv> --output-dir <output_dir>
+```
+
+**Example**:
+```bash
+python3 A_01e_Plan_Variability.py \
+    ../../Datasets/Raw/operator_dataset_20251102_140747.csv \
     --output-dir ./Baseline_SVM
 ```
 
