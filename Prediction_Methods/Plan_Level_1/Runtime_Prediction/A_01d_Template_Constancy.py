@@ -17,10 +17,10 @@ from mapping_config import METADATA_COLUMNS, PLAN_METADATA
 # ORCHESTRATOR
 
 # Create template-feature constancy matrix showing value stability per template
-def template_constancy_workflow(input_csv: Path, output_dir: Path) -> None:
+def template_constancy_workflow(input_csv: Path, output_dir: Path, features_file: Path = None) -> None:
     df = load_dataset(input_csv)
     df = validate_templates(df)
-    feature_cols = get_feature_columns(df)
+    feature_cols = get_feature_columns(df, features_file)
     templates = sorted(df[PLAN_METADATA[1]].unique())
     result_df = build_constancy_matrix(df, templates, feature_cols)
     export_matrix(result_df, output_dir)
@@ -40,9 +40,18 @@ def validate_templates(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-# Get feature columns excluding metadata
-def get_feature_columns(df: pd.DataFrame) -> list:
+# Get feature columns from file or fallback to all non-metadata columns
+def get_feature_columns(df: pd.DataFrame, features_file: Path = None) -> list:
+    if features_file:
+        return load_selected_features(features_file)
     return [col for col in df.columns if col not in METADATA_COLUMNS]
+
+
+# Load selected features from FFS summary CSV
+def load_selected_features(features_file: Path) -> list:
+    ffs_df = pd.read_csv(features_file, delimiter=';')
+    features_str = ffs_df['selected_features'].iloc[0]
+    return [f.strip() for f in features_str.split(',')]
 
 
 # Build constancy percentage matrix for all templates and features
@@ -87,7 +96,7 @@ def calculate_constancy_percentage(series: pd.Series) -> float:
 def export_matrix(result_df: pd.DataFrame, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_file = output_dir / f'08_template_feature_constancy_{timestamp}.csv'
+    output_file = output_dir / f'A_01d_template_feature_constancy_{timestamp}.csv'
     result_df.to_csv(output_file, sep=';')
 
 
@@ -95,6 +104,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create template-feature constancy matrix")
     parser.add_argument("input_csv", help="Input CSV file with features and template column")
     parser.add_argument("--output-dir", default=None, help="Output directory (default: script_dir/csv)")
+    parser.add_argument("--features-file", default=None, help="FFS summary CSV with selected_features column")
 
     args = parser.parse_args()
 
@@ -103,5 +113,6 @@ if __name__ == "__main__":
         output_path = Path(args.output_dir)
     else:
         output_path = Path(__file__).parent / 'csv'
+    features_path = Path(args.features_file) if args.features_file else None
 
-    template_constancy_workflow(input_path, output_path)
+    template_constancy_workflow(input_path, output_path, features_path)
