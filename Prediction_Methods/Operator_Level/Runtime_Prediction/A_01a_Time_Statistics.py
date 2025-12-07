@@ -97,7 +97,7 @@ def export_results(stats, output_dir):
     output_path.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = output_path / f'operator_range_analysis_{timestamp}.csv'
+    output_file = output_path / f'A_01a_time_statistics_{timestamp}.csv'
     stats.to_csv(output_file, index=False, sep=';')
 
 
