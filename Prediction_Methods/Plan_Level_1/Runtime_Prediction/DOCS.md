@@ -8,11 +8,12 @@ Runtime_Prediction/
 ├── 01_Forward_Selection.py              # Unified FFS with configurable model
 ├── 02_Train_Model.py                    # Unified training with configurable model
 ├── 03_Summarize_Results.py              # Aggregate predictions by template
-├── 04_Evaluation_Plot.py                # Create MRE bar plots
 ├── A_01a_Correlation_Analysis.py        # Analysis: Feature correlations
 ├── A_01b_Scatter_Plots.py               # Analysis: Feature vs runtime plots
-├── A_01c_Outlier_Analysis.py            # Analysis: IQR-based outlier detection
+├── A_01c_Outlier_Sparsity.py            # Analysis: IQR outliers + zero counts
 ├── A_01d_Template_Constancy.py          # Analysis: Feature constancy per template
+├── A_01e_Template_Feature_Values.py     # Analysis: Constant feature values per template
+├── A_01g_Evaluation_Plot.py             # Analysis: MRE bar plots
 ├── Baseline_SVM/                        # NuSVR outputs
 │   ├── SVM/                             # [FFS outputs]
 │   ├── Model/                           # [training outputs]
@@ -71,9 +72,9 @@ Uses configuration files from parent directory:
          ↓
   Trained model and predictions (Baseline_<Model>/<output_folder>/)
          ↓
-03_Summarize_Results.py → 04_Evaluation_Plot.py
+03_Summarize_Results.py
          ↓
-Optional: Analysis scripts (A_01a-d, parallel)
+Optional: Analysis scripts (A_01a-g, parallel)
 ```
 
 ### Example Workflow (SVM):
@@ -232,41 +233,7 @@ python 03_Summarize_Results.py Baseline_RandomForest/Random_Forest/02_prediction
 
 ---
 
-### 04 - Evaluation_Plot.py
-
-**Purpose**: Create MRE bar plot from template summary for visual performance analysis
-
-**Workflow**:
-1. Load template summary CSV
-2. Convert MRE to percentage
-3. Create bar chart with MRE (%) per template
-4. Add percentage labels on top of bars
-5. Save high-resolution plot to output directory
-
-**Inputs**:
-- `template_summary_csv` (positional): Template summary CSV from summarize results script
-
-**Outputs**:
-- `template_mre_plot.png`: Bar chart showing MRE per template (300 DPI)
-
-**Plot Style**:
-- Steelblue bars with black edges
-- Percentage labels on top
-- Grid lines for readability
-- 16x8 figure size
-
-**Usage**:
-```bash
-python 04_Evaluation_Plot.py Baseline_SVM/Evaluation/03_template_summary.csv
-python 04_Evaluation_Plot.py summary.csv --output-dir custom_plots/
-```
-
-**Variables**:
-- `--output-dir`: Output directory (default: Evaluation/)
-
----
-
-## Analysis Scripts (A_01a-d)
+## Analysis Scripts (A_01a-g)
 
 Analysis scripts are standalone tools, NOT part of the main workflow. They can be run in parallel as needed.
 
@@ -313,9 +280,9 @@ python A_01b_Scatter_Plots.py ../../Datasets/Baseline/training_data.csv
 
 ---
 
-### A_01c - Outlier_Analysis.py
+### A_01c - Outlier_Sparsity.py
 
-**Purpose**: Analyze feature outliers using IQR method and zero value distribution
+**Purpose**: Analyze feature outliers (IQR method) and sparsity (zero counts)
 
 **Inputs**:
 - `dataset_csv` (positional): Dataset CSV with features
@@ -326,7 +293,7 @@ python A_01b_Scatter_Plots.py ../../Datasets/Baseline/training_data.csv
 
 **Usage**:
 ```bash
-python A_01c_Outlier_Analysis.py ../../Datasets/Baseline/training_data.csv
+python A_01c_Outlier_Sparsity.py ../../Datasets/Baseline/training_data.csv
 ```
 
 **Variables**:
@@ -346,8 +313,54 @@ python A_01c_Outlier_Analysis.py ../../Datasets/Baseline/training_data.csv
 
 **Usage**:
 ```bash
+# All features
 python A_01d_Template_Constancy.py ../../Datasets/Baseline/training_data.csv
+
+# Only FFS-selected features
+python A_01d_Template_Constancy.py ../../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv
 ```
 
 **Variables**:
+- `--features-file`: FFS summary CSV with selected_features column (optional, default: all features)
 - `--output-dir`: Output directory
+
+---
+
+### A_01e - Template_Feature_Values.py
+
+**Purpose**: Create matrix showing constant feature values per template (excludes Q9 due to plan variability)
+
+**Inputs**:
+- `dataset_csv` (positional): Dataset CSV with features and template column
+
+**Outputs**:
+- `A_01e_template_feature_values_{timestamp}.csv`: Matrix (templates x features) with actual values
+
+**Usage**:
+```bash
+python A_01e_Template_Feature_Values.py ../../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv
+```
+
+**Variables**:
+- `--features-file` (required): FFS summary CSV with selected_features column
+- `--output-dir`: Output directory
+
+---
+
+### A_01g - Evaluation_Plot.py
+
+**Purpose**: Create MRE bar plot from template summary
+
+**Inputs**:
+- `template_summary_csv` (positional): Template summary CSV from 03_Summarize_Results.py
+
+**Outputs**:
+- `A_01g_template_mre_plot.png`: Bar chart showing MRE per template (300 DPI)
+
+**Usage**:
+```bash
+python A_01g_Evaluation_Plot.py Baseline_SVM/SVM/03_template_summary.csv
+```
+
+**Variables**:
+- `--output-dir`: Output directory (default: Evaluation/)
