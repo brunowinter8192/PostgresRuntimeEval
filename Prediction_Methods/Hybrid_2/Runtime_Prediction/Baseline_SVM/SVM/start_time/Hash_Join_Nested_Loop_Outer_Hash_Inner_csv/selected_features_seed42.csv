@@ -1,8 +1,0 @@
-feature;order
-HashJoin_startup_cost;1
-NestedLoop_Outer_plan_width;2
-HashJoin_total_cost;3
-NestedLoop_Outer_st1;4
-Hash_Inner_rt1;5
-HashJoin_nt2;6
-HashJoin_np;7
