@@ -16,6 +16,7 @@ Runtime_Prediction/
 ├── A_01a_Time_Statistics.py           # Statistical analysis of operator timing patterns
 ├── ffs_config.py                      # FFS-specific configuration (seed, params, features)
 ├── DOCS.md                            # This file
+├── md/                                # MD reports for single query predictions
 ├── Baseline_SVM/                      # Baseline dataset results
 │   ├── SVM/                           # Feature selection results
 │   │   ├── execution_time/            # Per-operator FFS results
@@ -189,26 +190,48 @@ python3 02_Train_Models.py \
 - `test_file` - Path to test dataset CSV
 - `overview_file` - Path to two_step_evaluation_overview.csv
 - `models_dir` - Directory with trained models
-- `--output-file` - Output CSV for predictions
+- `--output-file` - Output CSV for predictions (batch mode)
+- `--md-query` - Generate MD report for single query (optional)
 
 **Outputs**:
+
+*Batch Mode (--output-file):*
 - Predictions CSV with columns:
   - query_file, node_id, node_type, depth, parent_relationship, subplan_name
   - actual_startup_time, actual_total_time
   - predicted_startup_time, predicted_total_time
 
+*Single Query Mode (--md-query):*
+- `md/03_query_prediction_{query}_{timestamp}.md` - Detailed prediction report with:
+  - Input Summary (absolute paths to test file, overview, models)
+  - Query Tree visualization
+  - Prediction Chain (Bottom-Up) with model paths, input features, outputs per step
+  - Prediction Results table with MRE
+
 **Usage**:
 ```bash
+# Batch mode
 python3 03_Query_Prediction.py <test_file> <overview_file> <models_dir> --output-file <output_file>
+
+# Single query MD report
+python3 03_Query_Prediction.py <test_file> <overview_file> <models_dir> --md-query <query_file>
 ```
 
 **Example**:
 ```bash
+# Batch mode
 python3 03_Query_Prediction.py \
     ../../Datasets/Baseline/04b_test_cleaned.csv \
     ./Baseline_SVM/SVM/two_step_evaluation_overview.csv \
     ./Baseline_SVM/Model \
     --output-file ./Baseline_SVM/predictions.csv
+
+# Single query MD report
+python3 03_Query_Prediction.py \
+    ../../Datasets/Baseline/03_test.csv \
+    ./Baseline_SVM/SVM/two_step_evaluation_overview.csv \
+    ./Baseline_SVM/Model \
+    --md-query Q1_121_seed_984483720
 ```
 
 ---
