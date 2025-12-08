@@ -4,282 +4,287 @@
 
 ```
 Datasets/
-├── 01_Extract_Patterns.py             # Extract pattern occurrences from Operator_Level dataset
-├── 02_Aggregate_Patterns.py           # Aggregate operator rows to pattern rows
-├── 03_Clean_Aggregated.py             # Remove non-leaf timing features
-├── A_01a_Calculate_Operator_Counts.py # Calculate operators per pattern (initial setup)
-├── A_01b_Verify_Extraction.py         # Verify extraction row counts
-├── A_01c_Verify_Aggregation.py        # Verify aggregation row counts
-├── A_01d_Analyze_NaN.py               # Analyze NaN in cleaned datasets
-├── A_01e_Check_Training_NaN.py        # Analyze NaN in training datasets
-├── A_01f_Verify_Operator_Counts.py    # Verify operator counts per pattern
-├── A_01g_Show_Example_Instances.py    # Show example pattern instances
-├── A_01h_Check_Multiples.py           # Check operator count multiples
-├── A_01i_Check_Node_Types.py          # Check node type combinations
-├── Baseline/                           # Pattern datasets organized by hash
-│   ├── <pattern_hash_1>/
-│   │   ├── training.csv               # [outputs] Extracted operator-level data
-│   │   ├── training_aggregated.csv    # [outputs] Aggregated pattern-level data
-│   │   └── training_cleaned.csv       # [outputs] Cleaned data (leaf timing features only)
-│   ├── <pattern_hash_2>/
-│   │   └── ...
-│   └── ...                             # (72 pattern directories total)
-└── csv/                                # Verification reports
-    ├── A_01a_operator_counts_*.csv    # [outputs] Operator counts per pattern
-    ├── A_01b_verification_*.csv       # [outputs] Extraction verification
-    └── A_01c_verification_*.csv       # [outputs] Aggregation verification
+├── 01_Split_Train_Test.py             # Template-stratified train/test split
+├── 02_Extract_Operators.py            # Split by node_type into operators/
+├── 03_Extract_Patterns.py             # Extract patterns into patterns/<hash>/
+├── 04_Aggregate_Patterns.py           # Aggregate operator rows to pattern rows
+├── 05_Clean_Patterns.py               # Remove child actuals and leaf timing
+├── A_01a_Verify_Extraction.py         # Verify extraction row counts
+├── A_01b_Verify_Aggregation.py        # Verify aggregation row counts
+├── training.csv                       # [outputs] Training split
+├── test.csv                           # [outputs] Test split
+├── operators/                         # [outputs] Operator-specific datasets
+│   └── {operator_type}/training.csv
+├── patterns/                          # [outputs] Pattern datasets by hash
+│   └── <hash>/
+│       ├── training.csv
+│       ├── training_aggregated.csv
+│       ├── training_cleaned.csv
+│       └── pattern_info.json
+├── csv/                               # Verification reports
+│   ├── A_01a_extraction_verification_{timestamp}.csv
+│   └── A_01b_aggregation_verification.csv
+└── DOCS.md                            # This file
 ```
-
----
 
 ## Shared Infrastructure
 
 **Parent Module:** `../mapping_config.py`
-- `PATTERNS`: List of 72 pattern hash IDs (from Data_Generation mining)
-- `PATTERN_OPERATOR_COUNT`: Dict mapping pattern hash to operator count
-- `PATTERN_LEAF_TIMING_FEATURES`: Dict mapping pattern hash to leaf timing features to retain
-
----
+- `pattern_to_folder_name()` - Convert pattern string to folder name format
+- `is_passthrough_operator()` - Check if operator should be excluded
+- `LEAF_OPERATORS` - Operators that are typically plan leafs
+- `CHILD_ACTUAL_SUFFIXES` - Child actual timing columns to remove
+- `CHILD_TIMING_SUFFIXES` - Child predicted timing suffixes
+- `PARENT_CHILD_FEATURES` - Parent child timing features
 
 ## Workflow Execution Order
 
 ```
-01_Extract_Patterns.py
-    ↓ Extracts pattern occurrences → Baseline/<hash>/training.csv
-
-02_Aggregate_Patterns.py
-    ↓ Aggregates operators → Baseline/<hash>/training_aggregated.csv
-
-03_Clean_Aggregated.py
-    ↓ Removes non-leaf timing features → Baseline/<hash>/training_cleaned.csv
+Operator_Level Dataset
+    |
+    v
+01_Split_Train_Test.py
+    |
+    v
+training.csv + test.csv
+    |
+    +---> 02_Extract_Operators.py ---> operators/{type}/training.csv
+    |
+    v
+03_Extract_Patterns.py (requires pattern CSV from Data_Generation)
+    |
+    v
+patterns/<hash>/training.csv + pattern_info.json
+    |
+    v
+04_Aggregate_Patterns.py
+    |
+    v
+patterns/<hash>/training_aggregated.csv
+    |
+    v
+05_Clean_Patterns.py
+    |
+    v
+patterns/<hash>/training_cleaned.csv
 ```
 
 **Dependencies:**
-- 01 requires Data_Generation mining results + Operator_Level dataset
-- 02 requires 01 outputs + mapping_config.PATTERN_OPERATOR_COUNT
-- 03 requires 02 outputs + mapping_config.PATTERN_LEAF_TIMING_FEATURES
-
----
+- 01 requires: Operator_Level dataset
+- 02 requires: 01 output (training.csv)
+- 03 requires: 01 output + Data_Generation pattern CSV
+- 04 requires: 03 outputs (patterns/)
+- 05 requires: 04 outputs (training_aggregated.csv)
 
 ## Script Documentation
 
-### 01 - Extract_Patterns.py
+### 01 - Split_Train_Test.py
 
-**Purpose:** Extract pattern occurrences from Operator_Level dataset into separate folders
+**Purpose:** Create template-stratified train/test split
 
 **Workflow:**
-1. Load Operator_Level training dataset (operator-level features)
-2. Load pattern mining results (hash IDs, lengths, occurrence counts)
-3. For each query:
-   - Build tree structure from operators
-   - Search for all pattern occurrences
-   - Extract operator rows belonging to each pattern
-4. Group by pattern hash and export to `Baseline/<hash>/training.csv`
+1. Load operator dataset
+2. Extract template from query_file column
+3. Validate each template has expected query count
+4. Split queries per template (120 train, 30 test)
+5. Export training.csv and test.csv
 
 **Inputs:**
-- `input_file`: Path to Operator_Level dataset (e.g., `../../Operator_Level/Datasets/Baseline/training_cleaned.csv`)
-- `patterns_csv`: Path to Data_Generation mining CSV
-- `--output-dir`: Output directory (creates Baseline/ subdirectory)
+- `input_csv` - Path to Operator_Level dataset CSV
 
 **Outputs:**
-- `Baseline/<pattern_hash>/training.csv` (72 files):
-  - Columns: All operator-level features (node_type, depth, actual_startup_time, actual_total_time, st1, rt1, st2, rt2, etc.)
-  - Format: Semicolon-delimited CSV
-  - Rows: `operator_count * occurrence_count` per pattern
+- `training.csv` - Training split (120 queries per template)
+- `test.csv` - Test split (30 queries per template)
 
 **Usage:**
 ```bash
-python3 01_Extract_Patterns.py \
-  ../../Operator_Level/Datasets/Baseline/training_cleaned.csv \
-  ../Data_Generation/csv/01_patterns_20251123_170530.csv \
-  --output-dir .
+python3 01_Split_Train_Test.py <input_csv> --output-dir <output_directory> \
+  --train-size 120 --test-size 30 --seed 42
 ```
+
+**Variables:**
+- `--output-dir` (required): Output directory for split files
+- `--train-size` (optional, default=120): Queries per template for training
+- `--test-size` (optional, default=30): Queries per template for testing
+- `--seed` (optional, default=42): Random seed
 
 ---
 
-### 02 - Aggregate_Patterns.py
+### 02 - Extract_Operators.py
+
+**Purpose:** Split training data by node_type into operator-specific folders
+
+**Workflow:**
+1. Load training dataset
+2. Split by node_type column
+3. Create folder per operator type
+4. Export training.csv per operator
+
+**Inputs:**
+- `training_file` - Path to training.csv from 01
+
+**Outputs:**
+- `operators/{operator_type}/training.csv` - One file per operator type
+
+**Usage:**
+```bash
+python3 02_Extract_Operators.py <training_file> --output-dir <output_directory>
+```
+
+**Variables:**
+- `--output-dir` (required): Base directory for operator folders
+
+---
+
+### 03 - Extract_Patterns.py
+
+**Purpose:** Extract pattern occurrences from training data into hash-organized folders
+
+**Workflow:**
+1. Load training data and filter to main plan
+2. Build children map for each query
+3. For each pattern occurrence:
+   - Match parent + children against patterns
+   - Compute pattern hash
+   - Collect row indices
+4. For each unique pattern:
+   - Create patterns/<hash>/ folder
+   - Export training.csv with matched rows
+   - Create pattern_info.json with metadata
+
+**Inputs:**
+- `input_file` - Path to training.csv
+- `--output-dir` - Base directory for patterns/ folder
+
+**Outputs:**
+- `patterns/<hash>/training.csv` - Operator rows for this pattern
+- `patterns/<hash>/pattern_info.json` - Pattern metadata:
+  - pattern_hash: MD5 hash
+  - pattern_string: Human-readable pattern
+  - folder_name: Folder name format (e.g., `Hash_Join_Seq_Scan_Outer_Hash_Inner`)
+  - leaf_pattern: Boolean
+  - occurrence_count: Number of occurrences
+
+**Usage:**
+```bash
+python3 03_Extract_Patterns.py <training_file> --output-dir <output_directory>
+```
+
+**Variables:**
+- `--output-dir` (required): Output directory for pattern folders
+
+---
+
+### 04 - Aggregate_Patterns.py
 
 **Purpose:** Aggregate operator-level rows into pattern-level rows with hierarchical features
 
 **Workflow:**
-1. Load pattern hash and length from mining CSV
-2. Load operator count from mapping_config.PATTERN_OPERATOR_COUNT
-3. For each pattern:
-   - Read `Baseline/<hash>/training.csv`
-   - Group by query_file
-   - For each query: Chunk rows into groups of `operator_count`
-   - For each chunk:
-     - Build tree structure from operators
-     - Aggregate features with hierarchical prefixes
-     - Keep targets only for root node (actual_startup_time, actual_total_time)
-4. Export aggregated dataset
+1. Get all pattern folders from patterns/
+2. For each pattern:
+   - Load training.csv
+   - Load pattern_info.json for structure
+   - Build children map per query
+   - Match pattern structure and aggregate:
+     - Parent features get prefix (e.g., `HashJoin_`)
+     - Child features get hierarchical prefix (e.g., `SeqScan_Outer_`)
+   - Export training_aggregated.csv
 
 **Aggregation Logic:**
-- **Root node:** Features get prefix (e.g., `HashJoin_node_type`), targets unprefixed
-- **Child nodes:** Features get hierarchical prefix (e.g., `SeqScan_Outer_node_type`)
-- **Targets removed:** Child node targets excluded (only root keeps actual_startup_time, actual_total_time)
+- **Root node:** Features prefixed with cleaned node type
+- **Child nodes:** Features prefixed with node type + relationship
+- **Targets:** Only root keeps actual_startup_time, actual_total_time
 
 **Inputs:**
-- `pattern_csv`: Path to Data_Generation mining CSV
-- `patterns_dir`: Base directory containing Baseline/ folder
+- `patterns_dir` - Base directory containing patterns/ subfolder
 
 **Outputs:**
-- `Baseline/<pattern_hash>/training_aggregated.csv` (72 files):
-  - Columns: `query_file`, aggregated features with prefixes, `actual_startup_time`, `actual_total_time`
-  - Format: Semicolon-delimited CSV
-  - Rows: `occurrence_count` (one row per pattern occurrence)
+- `patterns/<hash>/training_aggregated.csv` - One row per pattern occurrence
 
 **Usage:**
 ```bash
-python3 02_Aggregate_Patterns.py \
-  ../Data_Generation/csv/01_patterns_20251123_170530.csv \
-  Baseline
+python3 04_Aggregate_Patterns.py <patterns_directory>
 ```
 
 ---
 
-### 03 - Clean_Aggregated.py
+### 05 - Clean_Patterns.py
 
-**Purpose:** Remove non-leaf timing features from aggregated datasets to prevent training on unavailable features
-
-**Rationale:**
-During bottom-up prediction, only pattern-leaf nodes have their children predicted separately (below the pattern). Non-leaf nodes within the pattern are consumed as a group, so their child predictions (st1, rt1, st2, rt2) will never be available at prediction time.
+**Purpose:** Remove child actual timing and leaf operator timing features
 
 **Workflow:**
-1. Load pattern hash list from mapping_config.PATTERNS
-2. For each pattern:
-   - Load `Baseline/<hash>/training_aggregated.csv`
-   - Load allowed timing features from `mapping_config.PATTERN_LEAF_TIMING_FEATURES[hash]`
-   - Identify all timing columns (ending with _st1, _rt1, _st2, _rt2)
-   - Drop all timing columns NOT in allowed list
-   - Export cleaned dataset
+1. For each pattern in patterns/:
+   - Load training_aggregated.csv
+   - Identify parent operator prefix
+   - Remove child actual timing columns (CHILD_ACTUAL_SUFFIXES)
+   - Remove parent child timing features (PARENT_CHILD_FEATURES)
+   - Remove leaf operator timing features (for operators in LEAF_OPERATORS)
+   - Export training_cleaned.csv
+
+**Cleaning Rules:**
+- Remove all `*_Outer_actual_startup_time`, `*_Outer_actual_total_time`, etc.
+- Remove parent's st1, rt1, st2, rt2 features
+- Remove child timing (st1, rt1, st2, rt2) for leaf operators (SeqScan, IndexScan, IndexOnlyScan)
 
 **Inputs:**
-- `dataset_base_dir`: Base directory containing pattern subdirectories (e.g., `Baseline/`)
+- `patterns_dir` - Base directory containing patterns/ subfolder
 
 **Outputs:**
-- `Baseline/<pattern_hash>/training_cleaned.csv` (72 files):
-  - Columns: Same as aggregated, except non-leaf timing features removed
-  - Format: Semicolon-delimited CSV
-  - Rows: Same as training_aggregated.csv (occurrence_count)
+- `patterns/<hash>/training_cleaned.csv` - Production-ready features
 
 **Usage:**
 ```bash
-python3 03_Clean_Aggregated.py Baseline/
+python3 05_Clean_Patterns.py <patterns_directory>
 ```
 
 ---
 
 ## Analysis Scripts
 
-Analysis scripts are standalone tools for verification and debugging. They are NOT part of the main workflow.
-
-### A_01a - Calculate_Operator_Counts.py
-
-**Purpose:** Calculate number of operators per pattern for verification and aggregation (initial setup)
-
-**Outputs:** `csv/A_01a_operator_counts_{timestamp}.csv`
-
-**Usage:**
-```bash
-python3 A_01a_Calculate_Operator_Counts.py \
-  ../Data_Generation/csv/01_patterns_*.csv \
-  . \
-  --output-dir .
-```
-
-**Post-Execution:** Manual step - copy operator counts to `mapping_config.PATTERN_OPERATOR_COUNT`
-
----
-
-### A_01b - Verify_Extraction.py
+### A_01a - Verify_Extraction.py
 
 **Purpose:** Verify extraction correctness by comparing expected vs actual row counts
 
-**Outputs:** `csv/A_01b_verification_{timestamp}.csv`
+**Inputs:**
+- `pattern_csv` - Pattern analysis CSV from Data_Generation
+- `patterns_dir` - Base directory containing patterns/ subfolder
+
+**Outputs:**
+- `csv/A_01a_extraction_verification_{timestamp}.csv`
 
 **Usage:**
 ```bash
-python3 A_01b_Verify_Extraction.py \
-  ../Data_Generation/csv/01_patterns_*.csv \
-  . \
-  --output-dir .
+python3 A_01a_Verify_Extraction.py <pattern_csv> <patterns_dir> --output-dir .
 ```
 
 ---
 
-### A_01c - Verify_Aggregation.py
+### A_01b - Verify_Aggregation.py
 
-**Purpose:** Verify aggregation correctness by comparing expected vs actual aggregated row counts
+**Purpose:** Verify aggregation correctness (one row per occurrence)
 
-**Outputs:** `csv/A_01c_verification_{timestamp}.csv`
+**Inputs:**
+- `pattern_csv` - Pattern analysis CSV from Data_Generation
+- `patterns_dir` - Base directory containing patterns/ subfolder
+
+**Outputs:**
+- `csv/A_01b_aggregation_verification.csv`
 
 **Usage:**
 ```bash
-python3 A_01c_Verify_Aggregation.py \
-  ../Data_Generation/csv/01_patterns_*.csv \
-  Baseline \
-  --output-dir .
+python3 A_01b_Verify_Aggregation.py <pattern_csv> <patterns_dir> --output-dir .
 ```
-
----
-
-### A_01d - Analyze_NaN.py
-
-**Purpose:** Analyze NaN values in FFS-relevant features of cleaned datasets
-
-**Outputs:** `A_01d_nan_analysis.md`
-
----
-
-### A_01e - Check_Training_NaN.py
-
-**Purpose:** Analyze NaN values in training.csv before aggregation
-
-**Outputs:** `A_01e_training_nan_analysis.md`
-
----
-
-### A_01f - Verify_Operator_Counts.py
-
-**Purpose:** Verify operator counts match expected PATTERN_OPERATOR_COUNT values
-
-**Outputs:** `A_01f_operator_count_verification.md`
-
----
-
-### A_01g - Show_Example_Instances.py
-
-**Purpose:** Show example pattern instances with different operator counts
-
-**Outputs:** `A_01g_example_instances_{pattern_hash}.md`
-
----
-
-### A_01h - Check_Multiples.py
-
-**Purpose:** Check if all query instances have operator counts that are multiples of expected
-
-**Outputs:** `A_01h_multiples_check.md`
-
----
-
-### A_01i - Check_Node_Types.py
-
-**Purpose:** Check node type + parent relationship combinations in dataset
-
-**Outputs:** `A_01i_node_types_{pattern_hash}.md`
 
 ---
 
 ## Notes
 
 **Pattern Organization:**
-- Patterns identified by MD5 hash of structure (node types + relationships)
-- Each pattern has dedicated folder: `Baseline/<hash>/`
-- Hash IDs stored in `mapping_config.PATTERNS` for consistency
+- Patterns identified by MD5 hash of structure
+- Each pattern has dedicated folder: `patterns/<hash>/`
+- `pattern_info.json` provides human-readable metadata
+- `build_pattern_hash_map()` in mapping_config.py maps folder names to hashes
 
 **Verification Reports:**
-- Timestamped CSVs track execution history
-- Manual review required: Check for MISMATCH status
+- Check for MISMATCH or MISSING status
 - 100% OK rate indicates pipeline correctness

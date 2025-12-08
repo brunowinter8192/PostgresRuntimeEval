@@ -1,5 +1,0 @@
-feature;order
-actual_startup_time;1
-GatherMerge_parallel_workers;2
-Sort_Outer_sel;3
-GatherMerge_sel;4

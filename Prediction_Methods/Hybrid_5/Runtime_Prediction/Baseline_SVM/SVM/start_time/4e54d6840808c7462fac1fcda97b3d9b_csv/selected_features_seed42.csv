@@ -1,6 +1,0 @@
-feature;order
-actual_total_time;1
-Aggregate_nt;2
-SeqScan_Outer_np;3
-SeqScan_Outer_reltuples;4
-Hash_Inner_sel;5
