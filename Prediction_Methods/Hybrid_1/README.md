@@ -8,25 +8,8 @@ ML-based runtime prediction for SQL queries using pattern-level SVM models that 
 Hybrid_1/
 ├── mapping_config.py                    # Shared patterns, targets, and constants
 ├── Data_Generation/                     [See DOCS.md]
-│   ├── csv/
-│   └── 01_Find_Patterns.py
 ├── Datasets/                            [See DOCS.md]
-│   ├── Baseline_SVM/
-│   ├── All_Templates_SVM/
-│   ├── 01_Extract_Patterns.py
-│   ├── 02_Aggregate_Patterns.py
-│   ├── 03_Clean_Patterns.py
-│   ├── A_01a_Verify_Extraction.py
-│   └── A_01b_Verify_Aggregation.py
 └── Runtime_Prediction/                  [See DOCS.md]
-    ├── Baseline_SVM/
-    ├── ffs_config.py
-    ├── 01_Feature_Selection.py
-    ├── 02_Train_Models.py
-    ├── 03_Predict_Queries.py
-    ├── A_01a_Evaluate_Predictions.py
-    ├── A_01b_Node_Evaluation.py
-    └── A_01c_Time_Analysis.py
 ```
 
 ## External Dependencies
@@ -52,6 +35,7 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 - `NON_FEATURE_SUFFIXES` - Metadata column suffixes to exclude
 - `LEAF_OPERATORS` - Leaf node types (SeqScan, IndexScan, IndexOnlyScan)
 - `REQUIRED_OPERATORS` - Operators required in patterns (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
+- `CHILD_FEATURES_TIMING` - Child timing features (st1, rt1, st2, rt2)
 - `FFS_SEED` - Random seed for cross-validation (42)
 - `FFS_MIN_FEATURES` - Minimum features to select (1)
 
@@ -84,14 +68,14 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 
 **Dateien:** `Operator_Level/Data_Generation/csv/operator_dataset_{ts}.csv`
 
-### Hybrid_1 vs Hybrid_2
+### Hybrid_1 vs Hybrid_2 vs Hybrid_3
 
-| Aspekt | Hybrid_1 | Hybrid_2 |
-|--------|----------|----------|
-| **Depth Check** | `if parent_depth < 1:` (Root ausgeschlossen) | `if parent_depth < 0:` (Root eingeschlossen) |
-| **Operator Filter** | REQUIRED_OPERATORS aktiv | Kein Filter (alle Operator-Typen) |
-| **Root Patterns** | Nein | Ja (z.B. Sort_Aggregate_Outer) |
-| **Pattern-Anzahl** | ~21 (gefiltert) | ~39 (ungefiltert) |
+| Aspekt | Hybrid_1 | Hybrid_2 | Hybrid_3 |
+|--------|----------|----------|----------|
+| **Depth Check** | `< 0` (Root inkl.) | `< 0` (Root inkl.) | `< 0` (Root inkl.) |
+| **Filter Type** | INCLUDE (REQUIRED_OPERATORS) | Keiner | EXCLUDE (PASSTHROUGH_OPERATORS) |
+| **MD5 Hash** | Ja | Ja | Nein |
+| **Pattern-Anzahl** | ~29 | ~31 | ~20 |
 
 ## Workflow Overview
 
@@ -111,37 +95,45 @@ The hybrid pattern-level prediction pipeline consists of three sequential phases
 
 ### Phase 1: Data_Generation
 
-**Purpose:** Discover and catalog all parent-child patterns in the training data
+**Purpose:** Discover and catalog all parent-child patterns in the training data with MD5 hash identification
 
-**Input:** Baseline or All Templates dataset (see Data Configuration section)
+**Input:** Operator dataset CSV
 
 **Process:**
 - Identify all unique parent-child combinations (parent + outer child + inner child)
-- Starting from depth 1 (excludes root-level patterns unlike Hybrid_2)
+- Starting from depth 0 (includes root-level patterns)
 - Filter patterns by REQUIRED_OPERATORS (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
+- Compute MD5 hash for each pattern structure
 - Count pattern occurrences across all queries
 
-**Output:** Pattern inventory CSV with pattern names and occurrence counts
+**Output:** Pattern inventory CSV with pattern_hash, pattern names, and occurrence counts
 
 **See Data_Generation/DOCS.md for detailed script documentation**
 
 ### Phase 2: Datasets
 
-**Purpose:** Extract pattern instances and prepare pattern-specific training datasets
+**Purpose:** Split data, extract operators and patterns, prepare training datasets
 
-**Input:** Baseline training data from `Operator_Level/Datasets/Baseline/04_training.csv` and pattern inventory from Phase 1
+**Input:** Operator dataset CSV
 
-**Process:**
-- Extract all instances of each pattern into separate folders
-- Verify extraction completeness and correctness
-- Aggregate parent and child rows into single feature vectors (parent features + child features)
-- Verify aggregation consistency
-- Clean features by removing unavailable columns (child actual times unknown at prediction)
+**Process (5-Script Pipeline):**
+1. Split into training/test sets (template-stratified, 120/30 per template)
+2. Extract operators to type-specific folders
+3. Extract patterns to MD5 hash folders with pattern_info.json
+4. Aggregate parent and child rows into single feature vectors
+5. Clean features by removing unavailable columns
 
-**Output:** Pattern-specific folders containing:
-- training.csv - Raw pattern instances
-- training_aggregated.csv - Parent+children combined
-- training_cleaned.csv - Production-ready features
+**Output:**
+```
+Baseline_SVM/
+├── training.csv, test.csv
+├── operators/{Type}/training.csv
+└── patterns/{hash}/
+    ├── pattern_info.json
+    ├── training.csv
+    ├── training_aggregated.csv
+    └── training_cleaned.csv
+```
 
 **See Datasets/DOCS.md for detailed script documentation**
 
@@ -150,7 +142,7 @@ The hybrid pattern-level prediction pipeline consists of three sequential phases
 **Purpose:** Train pattern-level models and perform hybrid bottom-up prediction
 
 **Input:**
-- Pattern training datasets from Phase 2
+- Pattern training datasets from Phase 2 (patterns/{hash}/training_cleaned.csv)
 - Operator-level models from Operator_Level (external dependency)
 
 **Process:**

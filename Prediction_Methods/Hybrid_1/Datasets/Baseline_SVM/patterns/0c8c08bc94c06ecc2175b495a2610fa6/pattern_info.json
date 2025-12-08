@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "0c8c08bc94c06ecc2175b495a2610fa6",
+  "pattern_string": "Hash \u2192 Seq Scan (Outer)",
+  "folder_name": "Hash_Seq_Scan_Outer",
+  "leaf_pattern": true,
+  "occurrence_count": 2400
+}

@@ -2,6 +2,7 @@
 
 # INFRASTRUCTURE
 import argparse
+import hashlib
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
@@ -43,7 +44,7 @@ def extract_all_patterns(df):
             parent_type = row['node_type']
             parent_node_id = row['node_id']
             
-            if parent_depth < 1:
+            if parent_depth < 0:
                 continue
             
             children = children_map[parent_node_id]
@@ -56,11 +57,13 @@ def extract_all_patterns(df):
                 continue
             
             is_leaf_pattern = all(len(children_map[child['node_id']]) == 0 for child in children)
-            
+
             pattern_key = format_pattern_key(parent_type, children)
-            
+            pattern_hash = compute_pattern_hash(parent_type, children)
+
             if pattern_key not in pattern_data:
                 pattern_data[pattern_key] = {
+                    'pattern_hash': pattern_hash,
                     'leaf_pattern': is_leaf_pattern,
                     'templates': {}
                 }
@@ -103,34 +106,50 @@ def build_children_map(query_ops):
 def format_pattern_key(parent_type, children):
     children_info = [(child['node_type'], child['relationship']) for child in children]
     children_sorted = sorted(children_info, key=lambda x: (0 if x[1] == 'Outer' else 1 if x[1] == 'Inner' else 2, x[0]))
-    
+
     if len(children_sorted) == 1:
         return f"{parent_type} → {children_sorted[0][0]} ({children_sorted[0][1]})"
     else:
         children_str = ', '.join([f"{ct} ({rel})" for ct, rel in children_sorted])
         return f"{parent_type} → [{children_str}]"
 
+
+# Compute MD5 hash for pattern structure
+def compute_pattern_hash(parent_type: str, children: list) -> str:
+    children_info = [(child['node_type'], child['relationship']) for child in children]
+    child_hashes = []
+    for ct, rel in children_info:
+        combined = f"{ct}:{rel}"
+        child_hashes.append(combined)
+
+    child_hashes.sort()
+    combined_string = parent_type + '|' + '|'.join(child_hashes)
+
+    return hashlib.md5(combined_string.encode()).hexdigest()
+
+
 # Create pattern matrix with template occurrence columns
 def create_pattern_matrix(pattern_data, df):
     all_templates = sorted(df['template'].unique())
-    
+
     rows = []
     for pattern_key, data in pattern_data.items():
         row = {
+            'pattern_hash': data['pattern_hash'],
             'pattern': pattern_key,
             'leaf_pattern': data['leaf_pattern']
         }
-        
+
         for template in all_templates:
             row[template] = data['templates'].get(template, 0)
-        
+
         row['total'] = sum(data['templates'].values())
         rows.append(row)
-    
+
     results_df = pd.DataFrame(rows)
     results_df = results_df.sort_values('total', ascending=False).reset_index(drop=True)
-    
-    cols = ['pattern', 'leaf_pattern', 'total'] + all_templates
+
+    cols = ['pattern_hash', 'pattern', 'leaf_pattern', 'total'] + all_templates
     return results_df[cols]
 
 # Save pattern matrix to CSV with timestamp
@@ -138,7 +157,7 @@ def export_results(results, output_dir):
     csv_dir = Path(output_dir) / 'csv'
     csv_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = csv_dir / f'01_baseline_patterns_depth1plus_{timestamp}.csv'
+    output_file = csv_dir / f'01_baseline_patterns_depth0plus_{timestamp}.csv'
     results.to_csv(output_file, sep=';', index=False)
 
 if __name__ == '__main__':

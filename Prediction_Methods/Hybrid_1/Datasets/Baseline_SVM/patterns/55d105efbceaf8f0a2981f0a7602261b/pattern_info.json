@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "55d105efbceaf8f0a2981f0a7602261b",
+  "pattern_string": "Incremental Sort \u2192 Nested Loop (Outer)",
+  "folder_name": "Incremental_Sort_Nested_Loop_Outer",
+  "leaf_pattern": false,
+  "occurrence_count": 120
+}

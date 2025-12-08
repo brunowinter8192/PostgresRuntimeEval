@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "9d4ade7456ba7df5d457fc282cd27ba8",
+  "pattern_string": "Hash Join \u2192 [Gather (Outer), Hash (Inner)]",
+  "folder_name": "Hash_Join_Gather_Outer_Hash_Inner",
+  "leaf_pattern": false,
+  "occurrence_count": 120
+}

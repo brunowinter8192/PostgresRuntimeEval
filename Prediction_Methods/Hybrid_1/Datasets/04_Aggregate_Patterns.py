@@ -2,9 +2,9 @@
 
 # INFRASTRUCTURE
 import argparse
+import json
 import pandas as pd
 from pathlib import Path
-import re
 
 
 # ORCHESTRATOR
@@ -16,10 +16,12 @@ def aggregate_patterns_workflow(patterns_base_dir: str) -> None:
 
 # FUNCTIONS
 
-# Get all pattern folders excluding csv output folder
+# Get all pattern folders from patterns subdirectory
 def get_pattern_folders(patterns_base_dir: str) -> list:
-    base_path = Path(patterns_base_dir)
-    return [d for d in base_path.iterdir() if d.is_dir() and d.name != 'csv']
+    patterns_path = Path(patterns_base_dir) / 'patterns'
+    if not patterns_path.exists():
+        return []
+    return [d for d in patterns_path.iterdir() if d.is_dir()]
 
 # Build map of direct children for each node
 def build_children_map(df):
@@ -55,6 +57,16 @@ def build_children_map(df):
 # Clean node type for column naming
 def clean_node_type(node_type):
     return node_type.replace(' ', '')
+
+
+# Load pattern info from JSON file
+def load_pattern_info(pattern_folder):
+    info_file = pattern_folder / 'pattern_info.json'
+    if not info_file.exists():
+        return None
+    with open(info_file, 'r') as f:
+        return json.load(f)
+
 
 # Parse pattern structure from folder name
 def parse_pattern_from_folder_name(folder_name):
@@ -136,37 +148,42 @@ def aggregate_rows(parent_row, children, df):
 # Process single pattern folder
 def process_pattern_folder(pattern_folder):
     training_file = pattern_folder / 'training.csv'
-    
+
     if not training_file.exists():
         return
-    
+
     df = pd.read_csv(training_file, delimiter=';')
-    
-    parent_pattern, children_patterns = parse_pattern_from_folder_name(pattern_folder.name)
+
+    pattern_info = load_pattern_info(pattern_folder)
+    if pattern_info is None:
+        return
+
+    folder_name = pattern_info['folder_name']
+    parent_pattern, children_patterns = parse_pattern_from_folder_name(folder_name)
     children_map = build_children_map(df)
-    
+
     aggregated_rows = []
     processed_nodes = set()
-    
+
     for idx, row in df.iterrows():
         node_id = row['node_id']
-        
+
         if node_id in processed_nodes:
             continue
-        
-        if row['depth'] < 1:
+
+        if row['depth'] < 0:
             continue
-        
+
         children = children_map.get(node_id, [])
-        
+
         if match_pattern(row, children, parent_pattern, children_patterns):
             aggregated_row = aggregate_rows(row, children, df)
             aggregated_rows.append(aggregated_row)
-            
+
             processed_nodes.add(node_id)
             for child in children:
                 processed_nodes.add(child['node_id'])
-    
+
     if aggregated_rows:
         result_df = pd.DataFrame(aggregated_rows)
         output_file = pattern_folder / 'training_aggregated.csv'
@@ -174,7 +191,7 @@ def process_pattern_folder(pattern_folder):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("patterns_dir", help="Base directory containing extracted pattern folders")
+    parser.add_argument("patterns_dir", help="Base directory containing patterns subfolder")
     args = parser.parse_args()
 
     aggregate_patterns_workflow(args.patterns_dir)
