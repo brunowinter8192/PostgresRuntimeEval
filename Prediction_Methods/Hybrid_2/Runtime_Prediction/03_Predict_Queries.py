@@ -8,10 +8,6 @@ import numpy as np
 from pathlib import Path
 import joblib
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-# From mapping_config.py: Pattern definitions
-from mapping_config import PATTERNS
-
 # ORCHESTRATOR
 
 # Execute bottom-up prediction workflow for all queries
@@ -234,7 +230,7 @@ def try_match_pattern_with_parent(parent_row, children_info, pattern_features, p
     if len(children_info) == 0:
         return None
     pattern_key = build_pattern_key(parent_row['node_type'], children_info)
-    if pattern_key not in PATTERNS:
+    if pattern_key is None:
         return None
     if pattern_key not in pattern_features:
         return None
