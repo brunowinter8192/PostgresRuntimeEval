@@ -1,31 +1,30 @@
-# Hybrid_5: Unrestricted Pattern Length with Occurrence Filtering
+# Hybrid_5: Depth-1 Patterns with Passthrough Filtering
 
-ML-based runtime prediction using patterns of arbitrary length with occurrence threshold. Removes length restrictions from pattern discovery, allowing patterns of 2-15 levels with minimum 120 occurrences. Focuses on accuracy improvement through complex pattern structures.
+ML-based runtime prediction using depth-1 patterns (Parent + Children) with passthrough operator filtering. Follows the same architecture as Hybrid_3 with hash-based pattern organization.
 
 ## Directory Structure
 
 ```
 Hybrid_5/
-├── mapping_config.py                    # Shared patterns, targets, features, operator counts
+├── mapping_config.py                    # Shared patterns, targets, features, helper functions
 ├── README.md                            # Workflow documentation (THIS FILE)
 ├── Data_Generation/                     [See DOCS.md]
 │   ├── 01_Find_Patterns.py
-│   ├── 02a_Extract_Pattern_Leafs.py
-│   ├── 02b_Identify_Pattern_Plan_Leafs.py
-│   ├── 03_Generate_Mapping.py
 │   └── csv/
 ├── Datasets/                            [See DOCS.md]
-│   ├── 01_Extract_Patterns.py
-│   ├── 02_Aggregate_Patterns.py
-│   ├── 03_Clean_Aggregated.py
-│   ├── A_01a-i (Analysis scripts)
-│   └── Baseline/<pattern_hash>/
+│   ├── 01_Split_Train_Test.py
+│   ├── 02_Extract_Operators.py
+│   ├── 03_Extract_Patterns.py
+│   ├── 04_Aggregate_Patterns.py
+│   ├── 05_Clean_Patterns.py
+│   ├── A_01a_Verify_Extraction.py
+│   ├── A_01b_Verify_Aggregation.py
+│   └── patterns/<hash>/
 └── Runtime_Prediction/                  [See DOCS.md]
     ├── ffs_config.py
-    ├── 01_Clean_FFS.py
-    ├── 02_Feature_Selection.py
-    ├── 03_Train_Models.py
-    ├── 04_Predict_Queries.py
+    ├── 01_Feature_Selection.py
+    ├── 02_Train_Models.py
+    ├── 03_Predict_Queries.py
     ├── A_01a_Evaluate_Predictions.py
     ├── A_01b_Node_Evaluation.py
     ├── A_01c_Time_Analysis.py
@@ -50,14 +49,20 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 **mapping_config.py** - Central configuration shared across all three phases
 
 **Constants:**
-- `PATTERNS` - **72 pattern hash IDs** (occurrence > 120, lengths 2-15)
-- `PATTERN_OPERATOR_COUNT` - Dict mapping pattern hash to operator count
-- `PATTERN_LEAF_TIMING_FEATURES` - Dict mapping pattern hash to leaf timing features
+- `PATTERNS` - List of pattern folder names (e.g., `Aggregate_Hash_Join_Outer`)
 - `TARGET_TYPES` - Target variables (execution_time, start_time)
-- `TARGET_NAME_MAP` - Target type to column name mapping
 - `NON_FEATURE_SUFFIXES` - Metadata column suffixes to exclude
+- `LEAF_OPERATORS` - Operators that are typically plan leafs
+- `PASSTHROUGH_OPERATORS` - Operators excluded from pattern roots
+- `CHILD_ACTUAL_SUFFIXES` - Child actual timing columns to remove
+- `CHILD_TIMING_SUFFIXES` - Child predicted timing suffixes
 - `FFS_SEED` - Random seed for cross-validation (42)
 - `FFS_MIN_FEATURES` - Minimum features to select (1)
+
+**Functions:**
+- `is_passthrough_operator()` - Check if operator is pass-through
+- `pattern_to_folder_name()` - Convert pattern string to folder name
+- `build_pattern_hash_map()` - Build pattern name to hash mapping from pattern_info.json
 
 **Used by:** All scripts across Data_Generation, Datasets, and Runtime_Prediction phases
 
@@ -74,120 +79,80 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 
 **Dateien:** `Operator_Level/Datasets/Baseline/04_training.csv` und `04_test.csv`
 
-### Hybrid Evolution: 1 → 2 → 3 → 4 → 5
-
-| Aspekt | Hybrid_1 | Hybrid_2 | Hybrid_3 | Hybrid_4 | Hybrid_5 |
-|--------|----------|----------|----------|----------|----------|
-| **Depth Check** | `< 1` (ohne Root) | `< 0` (mit Root) | `< 0` (mit Root) | `< 0` (mit Root) | `< 0` (mit Root) |
-| **Operator Filter** | REQUIRED_OPERATORS | Kein Filter | PT Filter (≥99%) | PT Filter (≥95%) | **Kein Filter** |
-| **PT Threshold** | N/A | N/A | 0.99 | 0.95 | **N/A** |
-| **PT Operators** | N/A | Als Parents | 5 excluded | 7 excluded | **Keine** |
-| **Pattern Length** | 2 | 2 | 2 | 2 | **2-15** |
-| **Pattern Filter** | N/A | N/A | N/A | N/A | **> 120 occurrences** |
-| **Pattern Count** | 21 | 31 | 20 | 20 | **72** |
-| **Model Count** | 42 (21×2) | 62 (31×2) | 40 (20×2) | 40 (20×2) | **144 (72×2)** |
-| **Prediction Types** | 2 (pattern, operator) | 2 (pattern, operator) | 3 (pattern, operator, passthrough) | 3 (pattern, operator, passthrough) | **2 (pattern, operator)** |
-| **Key Innovation** | Patterns mit Root | Alle Operators | PT Inheritance | Extended PT | **Unrestricted Length** |
-
 ## Pattern Concept
 
-**Definition:** Patterns are recurring structural combinations of operators (parent + children) extracted from query execution plans.
+**Definition:** Patterns are recurring structural combinations of operators (parent + direct children) extracted from query execution plans.
 
-**Hybrid_5 Pattern Discovery:**
-- **Length:** Unrestricted (2-15 levels deep)
-- **Filter:** Occurrence count > 120 across training dataset
-- **Result:** 72 patterns of varying complexity
-- **No Pass-Through filtering:** All operator types can be pattern roots
+**Depth-1 Patterns:**
+- Parent operator + immediate children only
+- No multi-level nesting within pattern
+- Children sorted by parent_relationship (Outer first, then Inner)
 
-**Pattern Length Concept:**
-- Length 2: Parent + 1 level of children
-- Length 3: Parent + children + grandchildren
-- Length 15: Deepest pattern (15 levels of hierarchy)
+**Passthrough Filtering:**
+Passthrough operators are excluded from pattern roots:
+- Incremental Sort, Merge Join, Limit, Sort, Hash
 
-**Examples:**
-- Simple (Length 2): `Hash Join → [Seq Scan (Outer), Hash (Inner)]`
-- Complex (Length 9): Multi-level nested joins with multiple operators
-- Complex (Length 15): Deepest discovered pattern structure
+**Hash-Based Organization:**
+- Each pattern stored in `patterns/<md5_hash>/` directory
+- `pattern_info.json` contains folder_name and metadata
+- `build_pattern_hash_map()` maps folder names to hashes
 
-**Pattern Distribution:**
-- Lengths 2-4: Most common (simple structures)
-- Lengths 5-9: Medium complexity
-- Lengths 10-15: Rare but captured (complex nested structures)
-
-## Pattern Plan Leaf Concept
-
-**Critical Distinction:**
-- **Pattern Leaf:** Deepest operator within pattern structure (no children in pattern)
-- **Plan Leaf:** Operator with no children in entire query plan
-- **Pattern+Plan Leaf:** Operator that is both
-
-**Issue:** Pattern+Plan Leafs have no children, so their child timing features (st1, rt1, st2, rt2) are always zero.
-
-**Solution:**
-1. `Data_Generation/02b_Identify_Pattern_Plan_Leafs.py` identifies which pattern leafs are plan leafs
-2. `Runtime_Prediction/01_Clean_FFS.py` removes child features for Pattern+Plan Leafs before training
-
-**Example:**
-Pattern `895c6e8c1a30a094329d71cef3111fbd` (Hash Join → [Seq Scan, Hash]):
-- `SeqScan_Outer` is Plan Leaf → Child features removed
-- `Hash_Inner` has children → Keep child features
+**Example Patterns:**
+- `Aggregate_Hash_Join_Outer` - Aggregate with Hash Join child
+- `Hash_Join_Seq_Scan_Outer_Hash_Inner` - Hash Join with Seq Scan and Hash children
 
 ## Workflow Overview
 
-**Phase 1 → Phase 2 → Phase 3**
+**Phase 1 -> Phase 2 -> Phase 3**
 
-1. **Data_Generation**: Discover patterns (length 2-15, occurrence > 120) → 72 patterns
+1. **Data_Generation**: Discover depth-1 patterns with passthrough filtering
 
-2. **Datasets**: Extract pattern instances → 72 pattern folders with aggregated features
+2. **Datasets**: Split train/test, extract patterns into hash-based folders
 
-3. **Runtime_Prediction**: Train 144 models (72×2), predict with 2-level fallback → pattern or operator
+3. **Runtime_Prediction**: Train pattern models, predict with bottom-up fallback
 
-**Hybrid Concept:** Groups parent+children into patterns (e.g., Hash_Join → Seq_Scan + Hash). Bottom-up prediction with 2 fallback levels:
-1. Pattern match → pattern model
-2. No match → operator model
-
-**Hybrid_5 Hypothesis:** Removing length restrictions and allowing complex patterns (2-15 levels) with occurrence filtering (> 120) improves prediction accuracy by capturing more structural context.
+**Hybrid Concept:** Groups parent+children into patterns. Bottom-up prediction with 3 fallback levels:
+1. Pattern match -> pattern model
+2. Passthrough operator -> inherit child prediction
+3. No match -> operator model
 
 ## Phase Documentation
 
 ### Phase 1: Data_Generation
 
-**Purpose:** Discover and catalog all parent-child patterns in the training data
+**Purpose:** Discover and catalog all depth-1 parent-children patterns in the training data
 
-**Input:** Baseline dataset (without Q2, Q11, Q16, Q22)
+**Input:** Operator_Level training dataset
 
 **Process:**
-- Identify all unique parent-child combinations of arbitrary length (2-15)
-- Starting from depth 0 (includes root-level patterns)
-- Count pattern occurrences across all queries
-- Filter by occurrence threshold (> 120)
-- No operator type filtering (all operator combinations considered)
+- Identify all unique parent-children combinations (depth-1 only)
+- Filter out passthrough operators as pattern roots
+- Compute MD5 hash for each pattern structure
+- Count pattern occurrences per template
 
 **Output:**
-- Pattern inventory CSV with pattern names and occurrence counts
-- Pattern leaf extraction (leaf nodes per pattern)
-- Pattern plan leaf mapping (pattern leafs that are also plan leafs)
-- PATTERN_LEAF_TIMING_FEATURES mapping for mapping_config.py
+- `csv/01_baseline_patterns_depth0plus_{timestamp}.csv`
 
 **See Data_Generation/DOCS.md for detailed script documentation**
 
 ### Phase 2: Datasets
 
-**Purpose:** Extract pattern instances and prepare pattern-specific training datasets
+**Purpose:** Split data and extract pattern instances into hash-organized folders
 
-**Input:** operator_dataset.csv and pattern inventory from Phase 1
+**Input:** Operator_Level dataset and pattern discovery from Phase 1
 
 **Process:**
-- Extract all instances of each pattern into separate folders (72 patterns)
-- Verify extraction completeness and correctness
-- Aggregate parent and child rows into single feature vectors (parent features + child features)
-- Verify aggregation consistency
-- Clean features by removing non-leaf timing features (prevent data leakage)
+1. Split train/test with template stratification (120/30 per template)
+2. Extract operators by node_type
+3. Extract pattern instances into `patterns/<hash>/` folders with pattern_info.json
+4. Aggregate parent+children rows into single feature vectors
+5. Clean features (remove child actuals, leaf timing)
 
 **Output:** Pattern-specific folders containing:
-- training.csv - Raw pattern instances
-- training_aggregated.csv - Parent+children combined
-- training_cleaned.csv - Production-ready features (only leaf timing features)
+- `training.csv` - Raw pattern instances
+- `training_aggregated.csv` - Parent+children combined
+- `training_cleaned.csv` - Production-ready features
+- `pattern_info.json` - Pattern metadata
 
 **See Datasets/DOCS.md for detailed script documentation**
 
@@ -200,18 +165,16 @@ Pattern `895c6e8c1a30a094329d71cef3111fbd` (Hash Join → [Seq Scan, Hash]):
 - Operator-level models from Operator_Level (external dependency)
 
 **Process:**
-- Clean FFS by removing Pattern+Plan Leaf child features
-- Perform forward feature selection for each pattern-target combination
+- Perform forward feature selection using `build_pattern_hash_map()`
 - Train pattern-level SVM models (NuSVR)
-- Execute hybrid bottom-up prediction on test queries:
-  - For operators matching a pattern → Use pattern model
-  - For unmatched operators → Use operator-level model (fallback)
-- Evaluate prediction accuracy by node type and template
+- Execute hybrid bottom-up prediction:
+  - Pattern match -> pattern model
+  - Passthrough -> inherit child prediction
+  - No match -> operator model
 
 **Output:**
-- SVM/two_step_evaluation_overview.csv (features and MRE per pattern-target)
-- Model/{target}/{pattern}/model.pkl (trained SVM models, 144 total)
-- predictions.csv with actual vs predicted times
-- Evaluation metrics (overall MRE, template MRE, node type analysis)
+- `SVM/two_step_evaluation_overview.csv`
+- `Model/{target}/{pattern}/model.pkl`
+- `predictions.csv`
 
 **See Runtime_Prediction/DOCS.md for detailed script documentation**

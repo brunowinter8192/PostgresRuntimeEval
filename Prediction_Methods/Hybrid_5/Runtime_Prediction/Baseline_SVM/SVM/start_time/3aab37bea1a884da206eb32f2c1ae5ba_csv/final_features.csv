@@ -1,9 +1,0 @@
-feature;order
-Hash_np;1
-Hash_nt2;2
-Hash_plan_width;3
-SeqScan_Outer_rt1;4
-SeqScan_Outer_rt2;5
-SeqScan_Outer_st1;6
-SeqScan_Outer_st2;7
-actual_startup_time;8

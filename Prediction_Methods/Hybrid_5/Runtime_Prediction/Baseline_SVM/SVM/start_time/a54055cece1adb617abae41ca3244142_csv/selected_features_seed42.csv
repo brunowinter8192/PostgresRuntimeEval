@@ -1,8 +1,0 @@
-feature;order
-actual_startup_time;1
-Hash_np;2
-Hash_nt2;3
-Hash_reltuples;4
-Hash_parallel_workers;5
-HashJoin_Outer_np;6
-HashJoin_Outer_reltuples;7
