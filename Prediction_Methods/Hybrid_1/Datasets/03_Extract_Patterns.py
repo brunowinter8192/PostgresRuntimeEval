@@ -2,9 +2,10 @@
 
 # INFRASTRUCTURE
 import argparse
+import hashlib
+import json
 import pandas as pd
 from pathlib import Path
-import re
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -15,8 +16,8 @@ from mapping_config import REQUIRED_OPERATORS, pattern_to_folder_name
 # ORCHESTRATOR
 def extract_patterns_workflow(input_file: str, output_base: str) -> None:
     df = load_training_data(input_file)
-    pattern_occurrences = identify_pattern_occurrences(df)
-    export_all_patterns(df, pattern_occurrences, output_base)
+    pattern_occurrences, pattern_leaf_status = identify_pattern_occurrences(df)
+    export_all_patterns(df, pattern_occurrences, pattern_leaf_status, output_base)
 
 
 # FUNCTIONS
@@ -54,42 +55,62 @@ def build_children_map(query_ops):
     
     return children_map
 
+# Compute MD5 hash for pattern structure
+def compute_pattern_hash(parent_type: str, children: list) -> str:
+    child_hashes = []
+    for child in children:
+        combined = f"{child[0]}:{child[1]}"
+        child_hashes.append(combined)
+
+    child_hashes.sort()
+    combined_string = parent_type + '|' + '|'.join(child_hashes)
+
+    return hashlib.md5(combined_string.encode()).hexdigest()
+
+
 # Identify all pattern occurrences with their row indices
 def identify_pattern_occurrences(df):
     pattern_rows = {}
-    
+    pattern_leaf_status = {}
+
     for query_file in df['query_file'].unique():
         query_ops = df[df['query_file'] == query_file].sort_values('node_id').reset_index(drop=False)
         children_map = build_children_map(query_ops)
-        
+
         for idx, row in query_ops.iterrows():
             parent_depth = row['depth']
             parent_type = row['node_type']
             parent_node_id = row['node_id']
             parent_df_index = row['index']
-            
-            if parent_depth < 1:
+
+            if parent_depth < 0:
                 continue
-            
+
             children = children_map[parent_node_id]
-            
+
             if len(children) == 0:
                 continue
-            
+
             pattern_operators = {parent_type} | {child['node_type'] for child in children}
             if not pattern_operators.intersection(REQUIRED_OPERATORS):
                 continue
-            
+
+            is_leaf_pattern = all(len(children_map.get(child['node_id'], [])) == 0 for child in children)
+
             children_info = [(child['node_type'], child['relationship']) for child in children]
             pattern_key = format_pattern_key(parent_type, children_info)
-            
-            if pattern_key not in pattern_rows:
-                pattern_rows[pattern_key] = []
-            
+            pattern_hash = compute_pattern_hash(parent_type, children_info)
+
+            composite_key = (pattern_hash, pattern_key)
+
+            if composite_key not in pattern_rows:
+                pattern_rows[composite_key] = []
+                pattern_leaf_status[composite_key] = is_leaf_pattern
+
             children_df_indices = [child['df_index'] for child in children]
-            pattern_rows[pattern_key].append([parent_df_index] + children_df_indices)
-    
-    return pattern_rows
+            pattern_rows[composite_key].append([parent_df_index] + children_df_indices)
+
+    return pattern_rows, pattern_leaf_status
 
 # Format pattern key based on parent type and children
 def format_pattern_key(parent_type, children):
@@ -102,21 +123,34 @@ def format_pattern_key(parent_type, children):
         return f"{parent_type} → [{children_str}]"
 
 # Export pattern dataset to dedicated folder
-def export_pattern_dataset(df, pattern_key, row_indices, output_base):
-    folder_name = pattern_to_folder_name(pattern_key)
-    pattern_dir = Path(output_base) / folder_name
+def export_pattern_dataset(df, pattern_hash, pattern_key, row_indices, is_leaf, output_base):
+    pattern_dir = Path(output_base) / 'patterns' / pattern_hash
     pattern_dir.mkdir(parents=True, exist_ok=True)
-    
+
     all_indices = [idx for occurrence in row_indices for idx in occurrence]
     pattern_df = df.loc[all_indices].sort_index()
-    
+
     output_file = pattern_dir / 'training.csv'
     pattern_df.to_csv(output_file, sep=';', index=False)
 
+    folder_name = pattern_to_folder_name(pattern_key)
+    pattern_info = {
+        'pattern_hash': pattern_hash,
+        'pattern_string': pattern_key,
+        'folder_name': folder_name,
+        'leaf_pattern': is_leaf,
+        'occurrence_count': len(row_indices)
+    }
+    info_file = pattern_dir / 'pattern_info.json'
+    with open(info_file, 'w') as f:
+        json.dump(pattern_info, f, indent=2)
+
+
 # Export all patterns to their respective folders
-def export_all_patterns(df, pattern_occurrences, output_base):
-    for pattern_key, row_indices in pattern_occurrences.items():
-        export_pattern_dataset(df, pattern_key, row_indices, output_base)
+def export_all_patterns(df, pattern_occurrences, pattern_leaf_status, output_base):
+    for (pattern_hash, pattern_key), row_indices in pattern_occurrences.items():
+        is_leaf = pattern_leaf_status.get((pattern_hash, pattern_key), False)
+        export_pattern_dataset(df, pattern_hash, pattern_key, row_indices, is_leaf, output_base)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

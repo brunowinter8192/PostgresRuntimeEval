@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "35d67ddd3f4faafcde899863b65f22bd",
+  "pattern_string": "Nested Loop \u2192 [Merge Join (Outer), Index Scan (Inner)]",
+  "folder_name": "Nested_Loop_Merge_Join_Outer_Index_Scan_Inner",
+  "leaf_pattern": false,
+  "occurrence_count": 120
+}

@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "167cab36b05bacf5ee7a803d0217ed7c",
+  "pattern_string": "Hash Join \u2192 [Index Only Scan (Outer), Hash (Inner)]",
+  "folder_name": "Hash_Join_Index_Only_Scan_Outer_Hash_Inner",
+  "leaf_pattern": false,
+  "occurrence_count": 120
+}
