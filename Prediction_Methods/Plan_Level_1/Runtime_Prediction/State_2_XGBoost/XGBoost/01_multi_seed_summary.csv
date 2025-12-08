@@ -1,6 +1,0 @@
-seed;n_features;final_mre;selected_features
-42;10;0.025515343746640513;p_tot_cost, Index_Scan_rows, op_count, Index_Only_Scan_rows, initplan_count, subplan_count, Incremental_Sort_cnt, Index_Only_Scan_cnt, workers_planned, group_key_count
-123;13;0.02573726582463824;p_tot_cost, Index_Scan_rows, sort_key_columns, initplan_count, max_tree_depth, sort_key_count, Index_Only_Scan_rows, Incremental_Sort_cnt, jit_functions, parallel_aware_count, workers_planned, partial_mode_simple, Nested_Loop_cnt
-456;13;0.025751729573384542;p_tot_cost, Index_Scan_rows, sort_key_columns, partial_mode_partial, subplan_count, Index_Only_Scan_cnt, partial_mode_finalize, Incremental_Sort_cnt, jit_functions, Index_Only_Scan_rows, partial_mode_simple, initplan_count, parallel_aware_count
-789;11;0.02572526942092133;p_st_cost, Index_Scan_rows, op_count, subplan_count, initplan_count, parallel_aware_count, sort_key_count, Gather_Merge_cnt, Sort_cnt, partial_mode_simple, jit_functions
-999;13;0.025689377507744852;p_tot_cost, Index_Scan_rows, op_count, subplan_count, Gather_Merge_cnt, sort_key_count, Index_Only_Scan_cnt, Index_Only_Scan_rows, partial_mode_simple, Limit_rows, Gather_cnt, Incremental_Sort_cnt, Nested_Loop_cnt

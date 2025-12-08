@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "c30c537b5ccb0971c3313ffa802156e0",
-  "pattern_string": "Hash \u2192 Index Only Scan (Outer)",
-  "folder_name": "Hash_Index_Only_Scan_Outer",
-  "leaf_pattern": true,
-  "occurrence_count": 120
-}

@@ -2,39 +2,28 @@
 
 # INFRASTRUCTURE
 
-PATTERNS = [
-    'Aggregate_Aggregate_Outer',
-    'Aggregate_Gather_Merge_Outer',
-    'Aggregate_Gather_Outer',
-    'Aggregate_Hash_Join_Outer',
-    'Aggregate_Index_Scan_Outer',
-    'Aggregate_Nested_Loop_Outer',
-    'Aggregate_Seq_Scan_Outer',
-    'Aggregate_Sort_Outer',
-    'Gather_Aggregate_Outer',
-    'Gather_Hash_Join_Outer',
-    'Gather_Merge_Aggregate_Outer',
-    'Gather_Merge_Incremental_Sort_Outer',
-    'Gather_Merge_Sort_Outer',
-    'Gather_Nested_Loop_Outer',
-    'Hash_Aggregate_Outer',
-    'Hash_Hash_Join_Outer',
-    'Hash_Index_Only_Scan_Outer',
-    'Hash_Join_Hash_Join_Outer_Hash_Inner',
-    'Hash_Join_Nested_Loop_Outer_Hash_Inner',
-    'Hash_Join_Seq_Scan_Outer_Hash_Inner',
-    'Hash_Seq_Scan_Outer',
-    'Incremental_Sort_Nested_Loop_Outer',
-    'Limit_Sort_Outer',
-    'Merge_Join_Sort_Outer_Sort_Inner',
-    'Nested_Loop_Hash_Join_Outer_Index_Scan_Inner',
-    'Nested_Loop_Merge_Join_Outer_Index_Scan_Inner',
-    'Nested_Loop_Seq_Scan_Outer_Index_Scan_Inner',
-    'Sort_Aggregate_Outer',
-    'Sort_Hash_Join_Outer',
-    'Sort_Nested_Loop_Outer',
-    'Sort_Seq_Scan_Outer'
+OPERATOR_FEATURES = [
+    'np', 'nt', 'nt1', 'nt2', 'sel',
+    'startup_cost', 'total_cost', 'plan_width',
+    'reltuples', 'parallel_workers'
 ]
+
+OPERATOR_TARGETS = [
+    'actual_startup_time',
+    'actual_total_time'
+]
+
+OPERATOR_METADATA = [
+    'query_file', 'node_id', 'node_type',
+    'depth', 'parent_relationship', 'subplan_name'
+]
+
+CHILD_FEATURES = ['st1', 'rt1', 'st2', 'rt2', 'nt1', 'nt2']
+
+TARGET_NAME_MAP = {
+    'execution_time': 'actual_total_time',
+    'start_time': 'actual_startup_time'
+}
 
 TARGET_TYPES = ['execution_time', 'start_time']
 
@@ -48,52 +37,29 @@ NON_FEATURE_SUFFIXES = [
     'actual_total_time'
 ]
 
-LEAF_OPERATORS = ['SeqScan', 'IndexScan', 'IndexOnlyScan']
+OPERATOR_CSV_TO_FOLDER = {
+    'Aggregate': 'Aggregate',
+    'Gather': 'Gather',
+    'Gather Merge': 'Gather_Merge',
+    'Hash': 'Hash',
+    'Hash Join': 'Hash_Join',
+    'Incremental Sort': 'Incremental_Sort',
+    'Index Only Scan': 'Index_Only_Scan',
+    'Index Scan': 'Index_Scan',
+    'Limit': 'Limit',
+    'Merge Join': 'Merge_Join',
+    'Nested Loop': 'Nested_Loop',
+    'Seq Scan': 'Seq_Scan',
+    'Sort': 'Sort'
+}
 
-CHILD_ACTUAL_SUFFIXES = [
-    '_Outer_actual_startup_time',
-    '_Outer_actual_total_time',
-    '_Inner_actual_startup_time',
-    '_Inner_actual_total_time'
-]
+OPERATORS_FOLDER_NAMES = list(OPERATOR_CSV_TO_FOLDER.values())
 
-CHILD_TIMING_SUFFIXES = [
-    '_Outer_st1', '_Outer_rt1', '_Outer_st2', '_Outer_rt2',
-    '_Inner_st1', '_Inner_rt1', '_Inner_st2', '_Inner_rt2'
-]
-
-PARENT_CHILD_FEATURES = ['_st1', '_rt1', '_st2', '_rt2']
-
-CHILD_FEATURES_TIMING = ['st1', 'rt1', 'st2', 'rt2']
-
-FFS_SEED = 42
-FFS_MIN_FEATURES = 1
+LEAF_OPERATORS = ['Seq Scan', 'Index Scan', 'Index Only Scan']
 
 
 # FUNCTIONS
 
-# Convert pattern string to folder name format
-def pattern_to_folder_name(pattern_str: str) -> str:
-    import re
-    clean = pattern_str.replace(' → ', '_')
-    clean = clean.replace('[', '').replace(']', '')
-    clean = clean.replace('(', '').replace(')', '')
-    clean = clean.replace(', ', '_')
-    clean = clean.replace(' ', '_')
-    clean = re.sub(r'_+', '_', clean)
-    return clean
-
-
-# Convert folder name back to pattern string format
-def folder_name_to_pattern(folder_name: str) -> str:
-    return folder_name.replace('_', ' ')
-
-
-# Check if operator type is a leaf node
-def is_leaf_operator(operator_type: str) -> bool:
-    return operator_type in LEAF_OPERATORS
-
-
-# Get target column name from target type
-def get_target_column_name(target_type: str) -> str:
-    return TARGET_NAME_MAP.get(target_type, target_type)
+# Convert operator CSV name to folder name format
+def csv_name_to_folder_name(csv_name):
+    return OPERATOR_CSV_TO_FOLDER.get(csv_name, csv_name.replace(' ', '_'))

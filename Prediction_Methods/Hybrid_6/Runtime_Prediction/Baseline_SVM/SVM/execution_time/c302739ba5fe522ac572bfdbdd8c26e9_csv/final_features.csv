@@ -1,9 +1,0 @@
-feature;order
-HashJoin_nt2;1
-HashJoin_sel;2
-HashJoin_startup_cost;3
-SeqScan_Outer_rt1;4
-SeqScan_Outer_rt2;5
-SeqScan_Outer_st1;6
-SeqScan_Outer_st2;7
-actual_total_time;8

@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;NestedLoop_Outer_rt1;True;0.0054128737407004275;1;NestedLoop_Outer_rt1
+2;Sort_nt;True;0.005085143605248041;2;NestedLoop_Outer_rt1, Sort_nt
+3;Sort_nt1;False;0.005141416802875921;2;NestedLoop_Outer_rt1, Sort_nt
+4;NestedLoop_Outer_nt;False;0.005141416802875921;2;NestedLoop_Outer_rt1, Sort_nt
+5;NestedLoop_Outer_nt1;False;0.005141416802875921;2;NestedLoop_Outer_rt1, Sort_nt
+6;Sort_total_cost;False;0.005166268666545646;2;NestedLoop_Outer_rt1, Sort_nt
+7;Sort_startup_cost;False;0.005166279775492513;2;NestedLoop_Outer_rt1, Sort_nt
+8;NestedLoop_Outer_total_cost;False;0.005166591712963493;2;NestedLoop_Outer_rt1, Sort_nt
+9;Sort_sel;False;0.005171311385420058;2;NestedLoop_Outer_rt1, Sort_nt
+10;Sort_plan_width;False;0.005171311385420058;2;NestedLoop_Outer_rt1, Sort_nt
+11;NestedLoop_Outer_nt2;False;0.005171311385420058;2;NestedLoop_Outer_rt1, Sort_nt
+12;NestedLoop_Outer_sel;False;0.005171311385420058;2;NestedLoop_Outer_rt1, Sort_nt
+13;NestedLoop_Outer_startup_cost;False;0.005171311385420058;2;NestedLoop_Outer_rt1, Sort_nt
+14;NestedLoop_Outer_plan_width;False;0.005171311385420058;2;NestedLoop_Outer_rt1, Sort_nt
+15;NestedLoop_Outer_st2;False;0.006494218666015508;2;NestedLoop_Outer_rt1, Sort_nt
+16;NestedLoop_Outer_rt2;False;0.006494218666015508;2;NestedLoop_Outer_rt1, Sort_nt
+17;NestedLoop_Outer_st1;False;0.009793683234397905;2;NestedLoop_Outer_rt1, Sort_nt
+18;Sort_np;False;0.0105263209495941;2;NestedLoop_Outer_rt1, Sort_nt
+19;Sort_nt2;False;0.0105263209495941;2;NestedLoop_Outer_rt1, Sort_nt
+20;Sort_reltuples;False;0.0105263209495941;2;NestedLoop_Outer_rt1, Sort_nt
+21;Sort_parallel_workers;False;0.0105263209495941;2;NestedLoop_Outer_rt1, Sort_nt
+22;NestedLoop_Outer_np;False;0.0105263209495941;2;NestedLoop_Outer_rt1, Sort_nt
+23;NestedLoop_Outer_reltuples;False;0.0105263209495941;2;NestedLoop_Outer_rt1, Sort_nt
+24;NestedLoop_Outer_parallel_workers;False;0.0105263209495941;2;NestedLoop_Outer_rt1, Sort_nt

@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "dca1cfbdd5b4746c9e9142420a19e9ed",
-  "pattern_string": "Nested Loop \u2192 [Gather (Outer), Index Scan (Inner)]",
-  "folder_name": "Nested_Loop_Gather_Outer_Index_Scan_Inner",
-  "leaf_pattern": false,
-  "occurrence_count": 120
-}

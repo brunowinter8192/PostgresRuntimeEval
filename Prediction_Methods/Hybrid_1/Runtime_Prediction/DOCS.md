@@ -8,48 +8,33 @@ Performs forward feature selection, trains pattern-level SVM models, and execute
 Runtime_Prediction/
 ├── ffs_config.py                       # SVM hyperparameters and FFS settings
 ├── 01_Feature_Selection.py             # Forward feature selection for patterns
+├── 01b_Feature_Selection_Operators.py  # Forward feature selection for operators
 ├── 02_Train_Models.py                  # Train SVM models for patterns
-├── 03_Predict_Queries.py               # Hybrid bottom-up prediction
+├── 02b_Train_Models_Operators.py       # Train SVM models for operators
+├── 03_Predict_Queries/                 # Hybrid bottom-up prediction (modular)
 ├── A_01a_Evaluate_Predictions.py       # [analysis] Query-level MRE evaluation
 ├── A_01b_Node_Evaluation.py            # [analysis] Node type evaluation by source
 ├── A_01c_Time_Analysis.py              # [analysis] Operator time range analysis
+├── md/                                 # [outputs] Query prediction MD reports
 └── Baseline_SVM/                       # [outputs] SVM baseline outputs
-    ├── SVM/                            # Feature selection results
-    │   ├── execution_time/{Pattern}_csv/
-    │   │   ├── ffs_results_seed42.csv
-    │   │   ├── selected_features_seed42.csv
-    │   │   └── final_features.csv
-    │   ├── start_time/{Pattern}_csv/
-    │   │   └── ... (same as execution_time)
-    │   └── two_step_evaluation_overview.csv
-    ├── Model/                          # Trained SVM models
-    │   ├── execution_time/{Pattern}/model.pkl
-    │   └── start_time/{Pattern}/model.pkl
-    └── Evaluation/                     # Prediction evaluation
+    ├── SVM/
+    │   ├── two_step_evaluation_overview.csv   # Pattern FFS results
+    │   ├── operator_overview.csv               # Operator FFS results
+    │   ├── execution_time/
+    │   │   ├── {pattern_hash}_csv/            # Pattern FFS
+    │   │   └── operators/{type}_csv/          # Operator FFS
+    │   └── start_time/...
+    ├── Model/
+    │   ├── execution_time/
+    │   │   ├── {pattern_hash}/model.pkl       # Pattern models
+    │   │   └── operators/{type}/model.pkl     # Operator models
+    │   └── start_time/...
+    └── Evaluation/
         ├── predictions.csv
         ├── overall_mre.csv
         ├── template_mre.csv
-        ├── template_mre_plot.png
-        ├── operator_range_analysis_{ts}.csv
-        └── csv/
-            ├── pattern_mean_mre_total_pct_{ts}.csv
-            ├── pattern_mean_mre_startup_pct_{ts}.csv
-            ├── operator_mean_mre_total_pct_{ts}.csv
-            └── operator_mean_mre_startup_pct_{ts}.csv
+        └── csv/...
 ```
-
-## External Dependencies
-
-**Operator_Level Models (Fallback):**
-```
-Operator_Level/Runtime_Prediction/Baseline_SVM/
-├── Model/
-│   ├── execution_time/{operator_type}/model.pkl
-│   └── start_time/{operator_type}/model.pkl
-└── SVM/two_step_evaluation_overview.csv
-```
-
-Used as fallback for operators not matching any pattern.
 
 ## Shared Infrastructure
 
@@ -59,7 +44,6 @@ Used as fallback for operators not matching any pattern.
 - `SVM_PARAMS` - NuSVR hyperparameters (kernel, nu, C, gamma, cache_size)
 
 **Constants from mapping_config.py:**
-- `PATTERNS` - List of pattern folder names
 - `TARGET_TYPES` - ['execution_time', 'start_time']
 - `NON_FEATURE_SUFFIXES` - Columns to exclude from features
 - `FFS_SEED` - Random seed for cross-validation (42)
@@ -68,11 +52,13 @@ Used as fallback for operators not matching any pattern.
 ## Workflow Execution Order
 
 ```
-01 - Feature_Selection  [Pattern datasets → SVM/ FFS results + overview CSV]
+01  - Feature_Selection           [Pattern datasets → SVM/ FFS results]
+01b - Feature_Selection_Operators [Operator datasets → SVM/operators/ FFS results]
      ↓
-02 - Train_Models       [Overview + Pattern datasets → Model/ directory]
+02  - Train_Models                [Pattern overview → Model/{pattern}/model.pkl]
+02b - Train_Models_Operators      [Operator overview → Model/operators/{type}/model.pkl]
      ↓
-03 - Predict_Queries    [Test data + Pattern + Operator Models → predictions.csv]
+03  - Predict_Queries             [Test data + All models → predictions.csv]
 ```
 
 ## Analysis Scripts
@@ -118,6 +104,38 @@ python 01_Feature_Selection.py Baseline_SVM --output-dir Baseline_SVM
 
 ---
 
+### 01b - Feature_Selection_Operators.py
+
+**Purpose:** Perform two-step forward feature selection for all operator-target combinations
+
+**Workflow:**
+1. For each operator-target combination:
+   - Load training data
+   - Extract available features (exclude metadata and targets)
+   - Perform forward feature selection with stratified CV
+   - Select features that improve MRE
+2. Add missing child timing features (st1, rt1, st2, rt2)
+3. Export FFS results, selected features, and overview
+
+**Inputs:**
+- `dataset_dir` - Directory containing operator training datasets (positional)
+
+**Outputs:**
+- `{output-dir}/SVM/{target}/operators/{Operator}_csv/ffs_results_seed42.csv`
+- `{output-dir}/SVM/{target}/operators/{Operator}_csv/selected_features_seed42.csv`
+- `{output-dir}/SVM/{target}/operators/{Operator}_csv/final_features.csv`
+- `{output-dir}/SVM/operator_overview.csv`
+
+**Usage:**
+```bash
+python 01b_Feature_Selection_Operators.py ../Datasets/Baseline_SVM --output-dir Baseline_SVM
+```
+
+**Variables:**
+- `--output-dir` - Output directory for FFS results and overview (required)
+
+---
+
 ### 02 - Train_Models.py
 
 **Purpose:** Train SVM models for each pattern-target combination
@@ -147,44 +165,110 @@ python 02_Train_Models.py Baseline_SVM SVM/two_step_evaluation_overview.csv --ou
 
 ---
 
-### 03 - Predict_Queries.py
+### 02b - Train_Models_Operators.py
+
+**Purpose:** Train SVM models for each operator-target combination
+
+**Workflow:**
+1. Load operator feature selection overview
+2. For each operator-target combination:
+   - Load training data
+   - Extract final selected features
+   - Train NuSVR model with MaxAbsScaler
+   - Save model pipeline to pickle file
+
+**Inputs:**
+- `dataset_dir` - Path to directory with operator training datasets (positional)
+- `overview_file` - Path to operator_overview.csv (positional)
+
+**Outputs:**
+- `{output-dir}/Model/{target}/operators/{Operator}/model.pkl` per operator-target
+
+**Usage:**
+```bash
+python 02b_Train_Models_Operators.py ../Datasets/Baseline_SVM Baseline_SVM/SVM/operator_overview.csv --output-dir Baseline_SVM
+```
+
+**Variables:**
+- `--output-dir` - Path to output directory (required)
+
+---
+
+### 03 - Predict_Queries/
 
 **Purpose:** Execute hybrid bottom-up prediction on test queries
+
+**Structure:** Modular directory with entry-point and src/ modules.
+
+```
+03_Predict_Queries/
+├── 03_Predict_Queries.py    # Entry point
+└── src/
+    ├── tree.py              # QueryNode class, hash computation
+    ├── io.py                # Load/export functions
+    ├── prediction.py        # Prediction logic
+    └── report.py            # MD report generation
+```
+
+**Algorithm (Child-to-Parent Bottom-Up Pattern Matching):**
+1. Start at deepest depth, iterate up to depth 0
+2. For each operator: Look UP to parent
+3. Try to form pattern: Parent + all direct children
+4. Pattern matched -> Prediction for parent, parent + children consumed
+5. No pattern -> Operator fallback for single node
+6. Predicted values become child features (st1/rt1/st2/rt2) for higher levels
 
 **Workflow:**
 1. Load test data and model overviews
 2. For each query in test set:
-   - Build execution tree from operators
+   - Build execution tree from operators (QueryNode)
    - Traverse bottom-up (leaves to root)
    - For each operator:
-     - If parent matches pattern → use pattern model
-     - Else → use operator-level fallback model
-   - Propagate child predictions to parent features
+     - Compute pattern hash, check if pattern model exists
+     - If pattern matched -> use pattern model
+     - Else -> use operator-level fallback model
+   - Propagate child predictions to parent features (using node_id as cache key)
 3. Export predictions with actual vs predicted times
 
 **Inputs:**
 - `test_file` - Path to baseline test.csv (positional)
+- `dataset_dir` - Path to Datasets directory containing patterns/ folder (positional)
 - `pattern_overview` - Path to pattern overview CSV (positional)
-- `operator_overview` - Path to operator overview CSV from Operator_Level (positional)
+- `operator_overview` - Path to operator overview CSV (positional)
 - `pattern_model_dir` - Path to Pattern model directory (positional)
-- `operator_model_dir` - Path to Operator model directory from Operator_Level (positional)
+- `operator_model_dir` - Path to Operator model directory (positional)
 
 **Outputs:**
 - `{output-dir}/predictions.csv`
   - Columns: query_file, node_id, node_type, prediction_type (pattern/operator), actual_startup_time, predicted_startup_time, actual_total_time, predicted_total_time
+- `{output-dir}/md/03_query_prediction_{query}_{timestamp}.md` (when using --md-query)
+  - Algorithm description, query tree, prediction chain, results table
 
 **Usage:**
 ```bash
-python 03_Predict_Queries.py ../../Operator_Level/Datasets/Baseline/04_test.csv \
+# All queries
+python 03_Predict_Queries/03_Predict_Queries.py ../Datasets/Baseline_SVM/test.csv \
+  ../Datasets/Baseline_SVM \
   Baseline_SVM/SVM/two_step_evaluation_overview.csv \
-  ../../Operator_Level/Runtime_Prediction/Baseline_SVM/SVM/two_step_evaluation_overview.csv \
+  Baseline_SVM/SVM/operator_overview.csv \
   Baseline_SVM/Model \
-  ../../Operator_Level/Runtime_Prediction/Baseline_SVM/Model \
+  Baseline_SVM/Model \
   --output-dir Baseline_SVM/Evaluation
+
+# Single query with MD report
+python 03_Predict_Queries/03_Predict_Queries.py ../Datasets/Baseline_SVM/test.csv \
+  ../Datasets/Baseline_SVM \
+  Baseline_SVM/SVM/two_step_evaluation_overview.csv \
+  Baseline_SVM/SVM/operator_overview.csv \
+  Baseline_SVM/Model \
+  Baseline_SVM/Model \
+  --output-dir Baseline_SVM/Evaluation \
+  --md-query Q10_121.sql
 ```
 
 **Variables:**
 - `--output-dir` - Path to output directory for predictions (required)
+- `--md-query` - Generate MD report for single query
 
 ---
 

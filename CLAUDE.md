@@ -257,7 +257,7 @@ CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']                # Known at prediction
 
 | Term | Definition | Example |
 |------|------------|---------|
-| **Workflow** | Top-level directory containing a complete pipeline | `Plan_Level_1/` |
+| **Workflow** | README.md level directory containing a complete INDEPENDENT pipeline | `Plan_Level/` |
 | **Directory** | Subdirectory within a workflow (a phase) | `Data_Generation/` |
 | **Module** | Python script (`.py` file) | `01a_Runtime_Data.py` |
 | **Function** | Python function within a module | `load_queries()` |

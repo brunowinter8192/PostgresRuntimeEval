@@ -57,8 +57,8 @@ def train_single_model(operator, target, dataset_dir, overview_df, output_dir):
 
 # Load training data for operator from CSV file
 def load_training_data(dataset_dir, operator):
-    operator_dir = Path(dataset_dir) / operator
-    training_file = operator_dir / f'{operator}.csv'
+    operator_dir = Path(dataset_dir) / f'04a_{operator}'
+    training_file = operator_dir / f'04a_{operator}.csv'
     return pd.read_csv(training_file, delimiter=';')
 
 

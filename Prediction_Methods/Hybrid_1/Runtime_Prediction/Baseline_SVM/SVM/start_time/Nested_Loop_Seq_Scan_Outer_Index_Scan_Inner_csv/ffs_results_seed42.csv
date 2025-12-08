@@ -1,0 +1,31 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;NestedLoop_total_cost;True;0.2804810402008506;1;NestedLoop_total_cost
+2;SeqScan_Outer_np;True;0.278053094119244;2;NestedLoop_total_cost, SeqScan_Outer_np
+3;SeqScan_Outer_total_cost;True;0.2780481506916173;3;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost
+4;SeqScan_Outer_reltuples;True;0.2778410644786331;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+5;NestedLoop_plan_width;False;0.27847837099050576;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+6;NestedLoop_np;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+7;NestedLoop_reltuples;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+8;NestedLoop_parallel_workers;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+9;SeqScan_Outer_nt1;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+10;SeqScan_Outer_nt2;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+11;SeqScan_Outer_startup_cost;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+12;SeqScan_Outer_parallel_workers;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+13;IndexScan_Inner_nt1;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+14;IndexScan_Inner_nt2;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+15;IndexScan_Inner_parallel_workers;False;0.2792175210181623;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+16;NestedLoop_nt1;False;0.27981668235913276;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+17;SeqScan_Outer_nt;False;0.27981668235913276;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+18;NestedLoop_startup_cost;False;0.28010903563725786;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+19;IndexScan_Inner_startup_cost;False;0.28010903563725786;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+20;IndexScan_Inner_total_cost;False;0.2804392591876861;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+21;IndexScan_Inner_sel;False;0.2805103130748732;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+22;IndexScan_Inner_np;False;0.2805818910697603;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+23;IndexScan_Inner_reltuples;False;0.28066019832492856;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+24;SeqScan_Outer_sel;False;0.2817335796366618;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+25;NestedLoop_nt;False;0.29273334883509045;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+26;NestedLoop_nt2;False;0.29292048677465143;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+27;IndexScan_Inner_nt;False;0.29292048677465143;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+28;SeqScan_Outer_plan_width;False;0.2988564508353154;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+29;IndexScan_Inner_plan_width;False;0.29938499308169153;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples
+30;NestedLoop_sel;False;0.2995184234400039;4;NestedLoop_total_cost, SeqScan_Outer_np, SeqScan_Outer_total_cost, SeqScan_Outer_reltuples

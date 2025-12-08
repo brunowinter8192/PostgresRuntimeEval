@@ -1,0 +1,15 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;nt1;True;0.6419848307745394;1;nt1
+2;st2;True;0.6384080610055101;2;nt1, st2
+3;rt2;True;0.6370886886160855;3;nt1, st2, rt2
+4;nt;False;0.6378671008103552;3;nt1, st2, rt2
+5;nt2;False;0.6388127959806222;3;nt1, st2, rt2
+6;rt1;False;0.6402643040177315;3;nt1, st2, rt2
+7;np;False;0.6410246060687894;3;nt1, st2, rt2
+8;reltuples;False;0.6410246060687894;3;nt1, st2, rt2
+9;parallel_workers;False;0.6410246060687894;3;nt1, st2, rt2
+10;plan_width;False;0.6423357628534059;3;nt1, st2, rt2
+11;st1;False;0.6518935462580867;3;nt1, st2, rt2
+12;startup_cost;False;0.65222229247223;3;nt1, st2, rt2
+13;sel;False;0.6528521169574717;3;nt1, st2, rt2
+14;total_cost;False;0.6544994804390563;3;nt1, st2, rt2

@@ -31,8 +31,8 @@ def forward_selection_workflow(input_csv: Path, output_dir: Path, model_key: str
     y = df[PLAN_TARGET]
     template_ids = extract_template_ids(df)
 
-    all_seed_results, feature_counter = run_multi_seed_selection(X, y, feature_cols, template_ids, model_config)
-    export_results(all_seed_results, feature_counter, output_dir)
+    all_seed_results, feature_counter, progress_df = run_multi_seed_selection(X, y, feature_cols, template_ids, model_config)
+    export_results(all_seed_results, feature_counter, progress_df, output_dir)
 
 
 # FUNCTIONS
@@ -65,10 +65,14 @@ def extract_template_id(template_str) -> int:
 def run_multi_seed_selection(X: pd.DataFrame, y: pd.Series, feature_cols: list, template_ids: np.ndarray, model_config: dict) -> tuple:
     all_seed_results = []
     feature_counter = {}
+    all_progress = []
 
     for seed in FFS_CONFIG['seeds']:
         cv = StratifiedKFold(n_splits=FFS_CONFIG['n_splits'], shuffle=True, random_state=seed)
         selected_features, results_df = forward_selection(X, y, feature_cols, template_ids, cv, model_config)
+
+        results_df['seed'] = seed
+        all_progress.append(results_df)
 
         final_mre = results_df.iloc[-1]['mre']
         n_features = len(selected_features)
@@ -84,7 +88,8 @@ def run_multi_seed_selection(X: pd.DataFrame, y: pd.Series, feature_cols: list, 
         for feature in selected_features:
             feature_counter[feature] = feature_counter.get(feature, 0) + 1
 
-    return all_seed_results, feature_counter
+    progress_df = pd.concat(all_progress, ignore_index=True)
+    return all_seed_results, feature_counter, progress_df
 
 
 # Forward selection algorithm with minimum features constraint
@@ -168,11 +173,14 @@ def mean_relative_error(y_true, y_pred) -> float:
 
 
 # Export all results to CSV files with semicolon delimiter
-def export_results(all_seed_results: list, feature_counter: dict, output_dir: Path) -> None:
-    output_dir.mkdir(exist_ok=True)
+def export_results(all_seed_results: list, feature_counter: dict, progress_df: pd.DataFrame, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    progress_file = output_dir / '01_ffs_progress.csv'
+    progress_df.to_csv(progress_file, sep=';', index=False)
 
     summary_df = pd.DataFrame(all_seed_results)
-    summary_file = output_dir / '01_multi_seed_summary.csv'
+    summary_file = output_dir / '01_ffs_summary.csv'
     summary_df.to_csv(summary_file, sep=';', index=False)
 
     sorted_features = sorted(feature_counter.items(), key=lambda x: x[1], reverse=True)
@@ -185,7 +193,7 @@ def export_results(all_seed_results: list, feature_counter: dict, output_dir: Pa
         for feat, cnt in sorted_features
     ]
     stability_df = pd.DataFrame(stability_data)
-    stability_file = output_dir / '01_feature_stability.csv'
+    stability_file = output_dir / '01_ffs_stability.csv'
     stability_df.to_csv(stability_file, sep=';', index=False)
 
 
@@ -193,7 +201,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Forward feature selection with configurable model")
     parser.add_argument("input_csv", help="Input CSV file with features and runtime")
     parser.add_argument("--model", choices=['svm', 'random_forest', 'xgboost'], required=True, help="Model to use for feature selection")
-    parser.add_argument("--output-dir", default=None, help="Output directory for results (default: Baseline_<model>/<output_folder>)")
+    parser.add_argument("--output-dir", default=None, help="Output directory for results (default: Baseline_<model>/FFS)")
 
     args = parser.parse_args()
 
@@ -201,7 +209,6 @@ if __name__ == "__main__":
     if args.output_dir:
         output_path = Path(args.output_dir)
     else:
-        model_output_folder = MODEL_REGISTRY[args.model]['output_folder']
-        output_path = Path(__file__).parent / f'Baseline_{MODEL_REGISTRY[args.model]["name"]}' / model_output_folder
+        output_path = Path(__file__).parent / f'Baseline_{MODEL_REGISTRY[args.model]["name"]}' / 'FFS'
 
     forward_selection_workflow(input_path, output_path, args.model)

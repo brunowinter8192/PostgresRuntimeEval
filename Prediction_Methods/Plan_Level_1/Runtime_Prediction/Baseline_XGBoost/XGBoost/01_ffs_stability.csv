@@ -1,0 +1,5 @@
+feature;count;percentage
+p_st_cost;1;100.0
+op_count;1;100.0
+Index_Scan_rows;1;100.0
+subplan_count;1;100.0

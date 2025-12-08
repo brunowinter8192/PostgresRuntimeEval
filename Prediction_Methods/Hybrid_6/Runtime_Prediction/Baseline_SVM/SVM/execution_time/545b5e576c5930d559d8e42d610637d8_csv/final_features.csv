@@ -1,8 +1,0 @@
-feature;order
-Hash_Inner_sel;1
-SeqScan_Outer_np;2
-SeqScan_Outer_rt1;3
-SeqScan_Outer_rt2;4
-SeqScan_Outer_st1;5
-SeqScan_Outer_st2;6
-actual_total_time;7

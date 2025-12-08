@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 # From mapping_config.py: Metadata column names for stratification
@@ -45,9 +46,15 @@ def split_by_template(df: pd.DataFrame, train_size: int, test_size: int, random_
 
     for template in sorted(df[PLAN_METADATA[1]].unique()):
         template_df = df[df[PLAN_METADATA[1]] == template].copy()
-        template_df = template_df.sample(frac=1, random_state=random_seed).reset_index(drop=True)
-        train_dfs.append(template_df.iloc[:train_size])
-        test_dfs.append(template_df.iloc[train_size:train_size + test_size])
+        train_df, test_df = train_test_split(
+            template_df,
+            train_size=train_size,
+            test_size=test_size,
+            random_state=random_seed,
+            shuffle=True
+        )
+        train_dfs.append(train_df)
+        test_dfs.append(test_df)
 
     return pd.concat(train_dfs, ignore_index=True), pd.concat(test_dfs, ignore_index=True)
 

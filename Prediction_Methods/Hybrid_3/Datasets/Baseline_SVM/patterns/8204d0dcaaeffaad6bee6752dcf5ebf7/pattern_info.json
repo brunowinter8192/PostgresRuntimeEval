@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "8204d0dcaaeffaad6bee6752dcf5ebf7",
-  "pattern_string": "Aggregate \u2192 Sort (Outer)",
-  "folder_name": "Aggregate_Sort_Outer",
-  "leaf_pattern": false,
-  "occurrence_count": 360
-}

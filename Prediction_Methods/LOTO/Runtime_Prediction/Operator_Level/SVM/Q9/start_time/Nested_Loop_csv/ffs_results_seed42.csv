@@ -1,0 +1,15 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;plan_width;True;1.8809898896893213;1;plan_width
+2;nt2;True;1.2368297738488572;2;plan_width, nt2
+3;nt1;True;0.786942846217061;3;plan_width, nt2, nt1
+4;rt2;True;0.6691310002700577;4;plan_width, nt2, nt1, rt2
+5;st2;True;0.5881838284160172;5;plan_width, nt2, nt1, rt2, st2
+6;np;False;0.649854054267844;5;plan_width, nt2, nt1, rt2, st2
+7;reltuples;False;0.649854054267844;5;plan_width, nt2, nt1, rt2, st2
+8;parallel_workers;False;0.649854054267844;5;plan_width, nt2, nt1, rt2, st2
+9;sel;False;0.7065098481548855;5;plan_width, nt2, nt1, rt2, st2
+10;nt;False;0.7230273090881246;5;plan_width, nt2, nt1, rt2, st2
+11;rt1;False;0.7301079208149658;5;plan_width, nt2, nt1, rt2, st2
+12;total_cost;False;0.7664435366801594;5;plan_width, nt2, nt1, rt2, st2
+13;st1;False;0.832969624475087;5;plan_width, nt2, nt1, rt2, st2
+14;startup_cost;False;0.8444007559430571;5;plan_width, nt2, nt1, rt2, st2

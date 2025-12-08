@@ -11,13 +11,13 @@ Runtime_Prediction/
 ├── 01_Forward_Selection.py           # Two-step forward feature selection for all operators
 ├── 02_Train_Models.py                 # Train SVM models for all operator-target combinations
 ├── 03_Query_Prediction.py             # Bottom-up prediction workflow on test set
-├── 04a_Query_Evaluation.py            # Evaluate query-level predictions and create visualizations
-├── 04b_Operator_Analysis.py           # Cross-evaluation of node type prediction accuracy
 ├── A_01a_Time_Statistics.py           # Statistical analysis of operator timing patterns
 ├── A_01b_Template_Operators.py        # Count operators in specified templates
 ├── A_01c_Operator_Distribution.py     # Histograms of operator time distributions
 ├── A_01d_Depth_Propagation.py         # Depth propagation plots per template
 ├── A_01e_Plan_Variability.py          # Analyze plan variability across templates
+├── A_01f_Query_Evaluation.py          # Query-level MRE evaluation and template bar chart
+├── A_01g_Operator_Analysis.py         # Cross-evaluation of MRE per node type and template
 ├── ffs_config.py                      # FFS-specific configuration (seed, params, features)
 ├── DOCS.md                            # This file
 ├── md/                                # MD reports for single query predictions
@@ -31,14 +31,16 @@ Runtime_Prediction/
 │   │   └── start_time/{Operator}/model.pkl
 │   ├── predictions.csv                # Predictions on test set
 │   └── Evaluation/                    # Evaluation outputs
-│       ├── overall_mre.csv
-│       ├── template_mre.csv
-│       ├── template_mre_plot.png
 │       ├── A_01a_time_statistics_*.csv
 │       ├── A_01b_template_operators_*.csv
 │       ├── A_01c_histogram_*.png
 │       ├── A_01d_depth_*.png
-│       └── A_01e_plan_variability_*.csv
+│       ├── A_01e_plan_variability_*.csv
+│       ├── A_01f_overall_mre.csv
+│       ├── A_01f_template_mre.csv
+│       ├── A_01f_template_mre_plot.png
+│       ├── A_01g_mre_total_pct_*.csv
+│       └── A_01g_mre_startup_pct_*.csv
 └── All_Templates_SVM/                 # All-templates dataset results (same structure)
 ```
 
@@ -105,15 +107,6 @@ Model/{target}/{operator}/model.pkl
 [03] 03_Query_Prediction.py
    |
 predictions.csv
-   |
-   +---------------------------+
-   |                           |
-[04a] 04a_Query_Evaluation.py  [04b] 04b_Operator_Analysis.py
-   |                           |
-Evaluation/                    Evaluation/csv/
-overall_mre.csv                node_type_mean_mre_*.csv
-template_mre.csv
-template_mre_plot.png
 ```
 
 **Analysis Scripts** (standalone, not part of main workflow):
@@ -122,6 +115,8 @@ template_mre_plot.png
 - `A_01c_Operator_Distribution.py` - Histograms of operator time distributions
 - `A_01d_Depth_Propagation.py` - Depth propagation plots per template
 - `A_01e_Plan_Variability.py` - Analyze plan variability across templates
+- `A_01f_Query_Evaluation.py` - Query-level MRE evaluation and template bar chart
+- `A_01g_Operator_Analysis.py` - Cross-evaluation of MRE per node type and template
 
 ---
 
@@ -244,70 +239,6 @@ python3 03_Query_Prediction.py \
     ./Baseline_SVM/SVM/two_step_evaluation_overview.csv \
     ./Baseline_SVM/Model \
     --md-query Q1_121_seed_984483720
-```
-
----
-
-### 04a - 04a_Query_Evaluation.py
-
-**Purpose**: Query-level prediction evaluation and visualization at root operator level.
-
-**Workflow**:
-1. Extract root operators (depth=0) from predictions
-2. Calculate overall Mean Relative Error (MRE)
-3. Calculate per-template statistics
-4. Generate CSV metrics and bar chart visualization
-
-**Inputs**:
-- `predictions_csv` - Path to predictions CSV from 03_Query_Prediction.py
-- `--output-dir` - Output directory for evaluation results
-
-**Outputs**:
-- `Evaluation/overall_mre.csv` - Query-level aggregated error metrics
-- `Evaluation/template_mre.csv` - Per-template MRE statistics
-- `Evaluation/template_mre_plot.png` - Bar chart visualization of template performance
-
-**Usage**:
-```bash
-python3 04a_Query_Evaluation.py <predictions_csv> --output-dir <output_dir>
-```
-
-**Example**:
-```bash
-python3 04a_Query_Evaluation.py \
-    ./Baseline_SVM/predictions.csv \
-    --output-dir ./Baseline_SVM
-```
-
----
-
-### 04b - 04b_Operator_Analysis.py
-
-**Purpose**: Cross-evaluation of MRE per node type and template.
-
-**Workflow**:
-1. Calculate MRE for total time and startup time
-2. Create pivot tables: Node Type x Template
-3. Export mean MRE % per combination
-
-**Inputs**:
-- `predictions_csv` - Path to predictions CSV
-- `--output-dir` - Output directory for evaluation results
-
-**Outputs**:
-- `Evaluation/csv/node_type_mean_mre_total_pct_{timestamp}.csv` - Total time MRE %
-- `Evaluation/csv/node_type_mean_mre_startup_pct_{timestamp}.csv` - Startup time MRE %
-
-**Usage**:
-```bash
-python3 04b_Operator_Analysis.py <predictions_csv> --output-dir <output_dir>
-```
-
-**Example**:
-```bash
-python3 04b_Operator_Analysis.py \
-    ./Baseline_SVM/predictions.csv \
-    --output-dir ./Baseline_SVM
 ```
 
 ---
@@ -442,6 +373,70 @@ python3 A_01e_Plan_Variability.py <predictions_csv> --output-dir <output_dir>
 ```bash
 python3 A_01e_Plan_Variability.py \
     ../../Datasets/Raw/operator_dataset_20251102_140747.csv \
+    --output-dir ./Baseline_SVM
+```
+
+---
+
+### A_01f - A_01f_Query_Evaluation.py
+
+**Purpose**: Query-level prediction evaluation and visualization at root operator level.
+
+**Workflow**:
+1. Extract root operators (depth=0) from predictions
+2. Calculate overall Mean Relative Error (MRE)
+3. Calculate per-template statistics
+4. Generate CSV metrics and bar chart visualization
+
+**Inputs**:
+- `predictions_csv` - Path to predictions CSV
+- `--output-dir` - Output directory for evaluation results
+
+**Outputs**:
+- `Evaluation/A_01f_overall_mre.csv` - Query-level aggregated error metrics
+- `Evaluation/A_01f_template_mre.csv` - Per-template MRE statistics
+- `Evaluation/A_01f_template_mre_plot.png` - Bar chart visualization of template performance
+
+**Usage**:
+```bash
+python3 A_01f_Query_Evaluation.py <predictions_csv> --output-dir <output_dir>
+```
+
+**Example**:
+```bash
+python3 A_01f_Query_Evaluation.py \
+    ./Baseline_SVM/predictions.csv \
+    --output-dir ./Baseline_SVM
+```
+
+---
+
+### A_01g - A_01g_Operator_Analysis.py
+
+**Purpose**: Cross-evaluation of MRE per node type and template.
+
+**Workflow**:
+1. Calculate MRE for total time and startup time
+2. Create pivot tables: Node Type x Template
+3. Export mean MRE % per combination
+
+**Inputs**:
+- `predictions_csv` - Path to predictions CSV
+- `--output-dir` - Output directory for evaluation results
+
+**Outputs**:
+- `Evaluation/A_01g_mre_total_pct_{timestamp}.csv` - Total time MRE %
+- `Evaluation/A_01g_mre_startup_pct_{timestamp}.csv` - Startup time MRE %
+
+**Usage**:
+```bash
+python3 A_01g_Operator_Analysis.py <predictions_csv> --output-dir <output_dir>
+```
+
+**Example**:
+```bash
+python3 A_01g_Operator_Analysis.py \
+    ./Baseline_SVM/predictions.csv \
     --output-dir ./Baseline_SVM
 ```
 

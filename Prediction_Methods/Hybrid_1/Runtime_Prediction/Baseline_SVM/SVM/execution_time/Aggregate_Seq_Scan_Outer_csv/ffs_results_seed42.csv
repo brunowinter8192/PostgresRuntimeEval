@@ -1,0 +1,21 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Aggregate_nt1;True;0.028663723270459907;1;Aggregate_nt1
+2;SeqScan_Outer_nt;True;0.028663723270459907;2;Aggregate_nt1, SeqScan_Outer_nt
+3;SeqScan_Outer_sel;True;0.028663723270459907;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+4;Aggregate_plan_width;False;0.028666999729180243;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+5;Aggregate_nt;False;0.02866916942107981;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+6;Aggregate_sel;False;0.028675198429242644;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+7;SeqScan_Outer_plan_width;False;0.028725986617901343;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+8;Aggregate_total_cost;False;0.02879704529709819;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+9;Aggregate_startup_cost;False;0.028797045519789732;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+10;SeqScan_Outer_total_cost;False;0.028823178154129325;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+11;SeqScan_Outer_np;False;0.028843025406485385;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+12;SeqScan_Outer_reltuples;False;0.028843025406485385;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+13;Aggregate_np;False;0.02884950693670792;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+14;Aggregate_nt2;False;0.02884950693670792;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+15;Aggregate_reltuples;False;0.02884950693670792;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+16;Aggregate_parallel_workers;False;0.02884950693670792;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+17;SeqScan_Outer_nt1;False;0.02884950693670792;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+18;SeqScan_Outer_nt2;False;0.02884950693670792;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+19;SeqScan_Outer_startup_cost;False;0.02884950693670792;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel
+20;SeqScan_Outer_parallel_workers;False;0.02884950693670792;3;Aggregate_nt1, SeqScan_Outer_nt, SeqScan_Outer_sel

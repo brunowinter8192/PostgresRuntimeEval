@@ -1,5 +1,5 @@
 ---
-description: Structured planning workflow for clarifying user intent before implementation
+description: Complex tasks which require structured refining before implementing. Tasks where the goal is not completely clear when adressing the task. 
 argument-hint: [User Prompt]
 ---
 
@@ -81,12 +81,17 @@ Analyze user's answer → repeat Step 1-2 until WHAT is clear
 
 ## Phase 4: Write Plan
 
-### Step 1: Write Plan.md
-Write the Plan.md with:
+### Step 1: Write to System Plan File
+Write your plan to the **system-provided plan file** (the path shown in the Plan Mode system message, e.g. `~/.claude/plans/<random-name>.md`).
+
+**DO NOT** create a `Plan.md` in the project directory.
+
+Content:
 - Clear implementation steps
-- Files to modify
+- Files to modify/ create
 - Expected outcome
 
+### Step 2: Exit Plan Mode
 Call ExitPlanMode
 
 ---

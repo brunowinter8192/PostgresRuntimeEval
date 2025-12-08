@@ -292,15 +292,3 @@ for node_type in OPERATOR_TYPES:
 **Edge case:** Operator not in plan -> _cnt = 0, _rows = 0
 
 ---
-
-## Feature Summary
-
-| Category | Count | Features |
-|----------|-------|----------|
-| Root Metrics | 4 | p_st_cost, p_tot_cost, p_rows, p_width |
-| Structural | 8 | op_count, workers_planned, parallel_aware_count, max_tree_depth, planning_time_ms, jit_functions, subplan_count, initplan_count |
-| Strategy | 6 | strategy_*, partial_mode_* |
-| Key | 4 | group_key_*, sort_key_* |
-| Result | 2 | row_count, byte_count |
-| Operator | 26 | 13 operators x 2 metrics |
-| **Total** | **50** | |

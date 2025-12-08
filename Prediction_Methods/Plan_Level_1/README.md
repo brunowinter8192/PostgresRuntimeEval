@@ -6,35 +6,11 @@ Plan-level runtime prediction for TPC-H queries using ML-based feature selection
 
 ```
 Plan_Level_1/
-├── mapping_config.py                    # Shared configuration
-├── README.md                            # Workflow documentation (THIS FILE)
-├── Data_Generation/                     [See DOCS.md]
-│   ├── 01a_Runtime_Data.py
-│   ├── 01b_Plan_Features.py
-│   ├── 01c_Row_Features.py
-│   ├── 02_Merge_Data.py
-│   ├── features.md                      # Feature documentation
-│   ├── targets.md                       # Target documentation
-│   └── csv/
-├── Datasets/                            [See DOCS.md]
-│   ├── 01_Split_Train_Test.py
-│   ├── 02_Create_State_1.py
-│   ├── Baseline/
-│   ├── State_1/
-│   └── State_2/
-└── Runtime_Prediction/                  [See DOCS.md]
-    ├── ffs_config.py
-    ├── 01_Forward_Selection.py
-    ├── 02_Train_Model.py
-    ├── 03_Summarize_Results.py
-    ├── 04_Evaluation_Plot.py
-    ├── A_01a_Correlation_Analysis.py
-    ├── A_01b_Scatter_Plots.py
-    ├── A_01c_Outlier_Analysis.py
-    ├── A_01d_Template_Constancy.py
-    ├── Baseline_SVM/
-    ├── Baseline_RandomForest/
-    └── Baseline_XGBoost/
+├── mapping_config.py                     # Shared configuration
+├── README.md                             # Workflow documentation (THIS FILE)
+├── Data_Generation/                      [See DOCS.md]
+├── Datasets/                             [See DOCS.md]
+└── Runtime_Prediction/                   [See DOCS.md]
 ```
 
 ## Shared Infrastructure
@@ -98,7 +74,7 @@ Phase 3: Runtime_Prediction
 - Stratified 80/20 train/test split (by template)
 - Dataset transformations (State_1: feature reduction)
 
-**Output:** Train/test CSVs in Baseline/, State_1/, State_2/ directories
+**Output:** Train/test CSVs in Baseline/, State_1/ directories
 
 **Details:** See [Datasets/DOCS.md](Datasets/DOCS.md)
 

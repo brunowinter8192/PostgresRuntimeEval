@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "9609a2d38f71aa9fed029d3760850027",
+  "pattern_string": "Sort -> Aggregate -> Gather Merge -> Incremental Sort (Outer) (Outer) (Outer)",
+  "folder_name": "Sort_->_Aggregate_->_Gather_Merge_->_Incremental_Sort_Outer_Outer_Outer",
+  "pattern_length": 4,
+  "occurrence_count": 150
+}

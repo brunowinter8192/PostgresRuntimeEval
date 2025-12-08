@@ -67,11 +67,3 @@ TPC-H template number of the query.
 **Note:** Q15 is excluded (CREATE VIEW not supported)
 
 ---
-
-## Summary
-
-| Type | Column | Description |
-|------|--------|-------------|
-| Target | runtime | Query execution time in ms (cold cache) |
-| Metadata | query_file | SQL filename |
-| Metadata | template | TPC-H template (Q1-Q22) |

@@ -5,11 +5,6 @@ import argparse
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
-import sys
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
-# From mapping_config.py: Pattern to folder name conversion
-from mapping_config import pattern_to_folder_name
 
 
 # ORCHESTRATOR
@@ -24,7 +19,8 @@ def verify_extraction(pattern_csv: str, patterns_base_dir: str, output_dir: str)
 # Load pattern data from find_all_patterns.py output
 def load_pattern_data(pattern_csv: str) -> pd.DataFrame:
     df = pd.read_csv(pattern_csv, delimiter=';')
-    return df[['pattern', 'leaf_pattern', 'total']]
+    return df[['pattern_hash', 'pattern', 'leaf_pattern', 'total']]
+
 
 # Count operators in pattern string
 def count_operators_in_pattern(pattern_str):
@@ -35,6 +31,7 @@ def count_operators_in_pattern(pattern_str):
     else:
         return 2
 
+
 # Count rows in pattern CSV file
 def count_pattern_rows(pattern_folder):
     csv_file = pattern_folder / 'training.csv'
@@ -43,23 +40,25 @@ def count_pattern_rows(pattern_folder):
     df = pd.read_csv(csv_file, delimiter=';')
     return len(df)
 
+
 # Verify all patterns against extracted CSVs
 def verify_all_patterns(pattern_data, patterns_base_dir):
     results = []
-    
+    patterns_path = Path(patterns_base_dir) / 'patterns'
+
     for _, row in pattern_data.iterrows():
+        pattern_hash = row['pattern_hash']
         pattern_str = row['pattern']
         total_occurrences = row['total']
         leaf_pattern = row['leaf_pattern']
-        
+
         num_operators = count_operators_in_pattern(pattern_str)
         expected_rows = total_occurrences * num_operators
-        
-        folder_name = pattern_to_folder_name(pattern_str)
-        pattern_folder = Path(patterns_base_dir) / folder_name
-        
+
+        pattern_folder = patterns_path / pattern_hash
+
         actual_rows = count_pattern_rows(pattern_folder)
-        
+
         if actual_rows is None:
             match = False
             status = 'MISSING'
@@ -69,8 +68,9 @@ def verify_all_patterns(pattern_data, patterns_base_dir):
         else:
             match = False
             status = 'MISMATCH'
-        
+
         results.append({
+            'pattern_hash': pattern_hash,
             'pattern': pattern_str,
             'leaf_pattern': leaf_pattern,
             'total_occurrences': total_occurrences,
@@ -80,8 +80,9 @@ def verify_all_patterns(pattern_data, patterns_base_dir):
             'match': match,
             'status': status
         })
-    
+
     return pd.DataFrame(results)
+
 
 # Export verification results to CSV
 def export_results(results, output_dir):
@@ -91,10 +92,11 @@ def export_results(results, output_dir):
     output_file = csv_dir / f'A_01a_extraction_verification_{timestamp}.csv'
     results.to_csv(output_file, sep=';', index=False)
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("pattern_csv", help="Path to pattern analysis CSV from find_all_patterns.py")
-    parser.add_argument("patterns_dir", help="Base directory containing extracted pattern folders")
+    parser.add_argument("patterns_dir", help="Base directory containing patterns subfolder")
     parser.add_argument("--output-dir", required=True, help="Output directory for verification results")
     args = parser.parse_args()
 

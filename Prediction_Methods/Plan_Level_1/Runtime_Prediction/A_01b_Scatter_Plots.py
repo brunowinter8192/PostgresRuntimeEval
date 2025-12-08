@@ -11,16 +11,16 @@ import pandas as pd
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))  # Plan_Level_1
-# From mapping_config.py: Metadata columns and target
-from mapping_config import METADATA_COLUMNS, PLAN_TARGET
+# From mapping_config.py: Target column name
+from mapping_config import PLAN_TARGET
 
 
 # ORCHESTRATOR
 
-# Create scatter plots of all features versus runtime
-def scatter_plots_workflow(input_csv: Path, output_dir: Path) -> None:
+# Create scatter plots of FFS-selected features versus runtime
+def scatter_plots_workflow(input_csv: Path, ffs_csv: Path, output_dir: Path) -> None:
     df = load_dataset(input_csv)
-    feature_cols = get_feature_columns(df)
+    feature_cols = load_ffs_features(ffs_csv)
     create_scatter_plot_grid(df, feature_cols, output_dir)
 
 
@@ -31,9 +31,12 @@ def load_dataset(input_csv: Path) -> pd.DataFrame:
     return pd.read_csv(input_csv, delimiter=';')
 
 
-# Get feature columns excluding metadata
-def get_feature_columns(df: pd.DataFrame) -> list:
-    return [col for col in df.columns if col not in METADATA_COLUMNS]
+# Load selected features from FFS summary CSV
+def load_ffs_features(ffs_csv: Path, seed: int = 42) -> list:
+    df = pd.read_csv(ffs_csv, delimiter=';')
+    row = df[df['seed'] == seed].iloc[0]
+    features_str = row['selected_features']
+    return [f.strip() for f in features_str.split(',')]
 
 
 # Create grid of scatter plots for all features
@@ -66,22 +69,24 @@ def create_scatter_plot_grid(df: pd.DataFrame, feature_cols: list, output_dir: P
 
     output_dir.mkdir(exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_path = output_dir / f'06_scatter_plots_{timestamp}.png'
+    output_path = output_dir / f'A_01b_scatter_plots_{timestamp}.png'
     plt.savefig(output_path, dpi=150, bbox_inches='tight')
     plt.close()
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Create scatter plots of features versus runtime")
+    parser = argparse.ArgumentParser(description="Create scatter plots of FFS-selected features versus runtime")
     parser.add_argument("input_csv", help="Input CSV file with features and runtime")
+    parser.add_argument("--ffs-csv", required=True, help="FFS summary CSV with selected_features")
     parser.add_argument("--output-dir", default=None, help="Output directory (default: script_dir)")
 
     args = parser.parse_args()
 
     input_path = Path(args.input_csv)
+    ffs_path = Path(args.ffs_csv)
     if args.output_dir:
         output_path = Path(args.output_dir)
     else:
         output_path = Path(__file__).parent
 
-    scatter_plots_workflow(input_path, output_path)
+    scatter_plots_workflow(input_path, ffs_path, output_path)
