@@ -1,0 +1,15 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;plan_width;True;0.5544527282184727;1;plan_width
+2;nt1;True;0.3718846523324533;2;plan_width, nt1
+3;np;True;0.3596635926225421;3;plan_width, nt1, np
+4;startup_cost;True;0.3058784091208631;4;plan_width, nt1, np, startup_cost
+5;reltuples;True;0.2976324378683639;5;plan_width, nt1, np, startup_cost, reltuples
+6;nt2;True;0.29431416676072997;6;plan_width, nt1, np, startup_cost, reltuples, nt2
+7;parallel_workers;False;0.30156020858716037;6;plan_width, nt1, np, startup_cost, reltuples, nt2
+8;st1;False;0.30156020858716037;6;plan_width, nt1, np, startup_cost, reltuples, nt2
+9;rt1;False;0.30156020858716037;6;plan_width, nt1, np, startup_cost, reltuples, nt2
+10;st2;False;0.30156020858716037;6;plan_width, nt1, np, startup_cost, reltuples, nt2
+11;rt2;False;0.30156020858716037;6;plan_width, nt1, np, startup_cost, reltuples, nt2
+12;total_cost;False;0.39740986085352353;6;plan_width, nt1, np, startup_cost, reltuples, nt2
+13;sel;False;0.409623086875583;6;plan_width, nt1, np, startup_cost, reltuples, nt2
+14;nt;False;0.41008976499921934;6;plan_width, nt1, np, startup_cost, reltuples, nt2

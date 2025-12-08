@@ -57,7 +57,7 @@ def find_high_correlations(X: pd.DataFrame, threshold: float) -> list:
 def export_correlations(high_corr_pairs: list, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    high_corr_file = output_dir / f'05_feature_correlations_{timestamp}.csv'
+    high_corr_file = output_dir / f'A_01a_feature_correlations_{timestamp}.csv'
     pd.DataFrame(high_corr_pairs).to_csv(high_corr_file, sep=';', index=False)
 
 

@@ -1,6 +1,0 @@
-node_type (Operator Mean MRE Total Time %);Q1;Q10;Q13;Q18;Q3;Q6;Q7;Q8;Q9
-Gather;;7.42;;;2.6;;;;
-Index Only Scan;;;3.9;;;;;;
-Index Scan;;;;66.56;;;15.22;;
-Nested Loop;;;;57.34;;;;;
-Seq Scan;30.74;;;76.92;4.35;4.06;;5.87;78.62

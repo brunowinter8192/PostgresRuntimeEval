@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "e7c1415efbefc3f974a3c6a9ed450571",
-  "pattern_string": "Hash Join \u2192 [Nested Loop (Outer), Hash (Inner)]",
-  "folder_name": "Hash_Join_Nested_Loop_Outer_Hash_Inner",
-  "leaf_pattern": false,
-  "occurrence_count": 720
-}

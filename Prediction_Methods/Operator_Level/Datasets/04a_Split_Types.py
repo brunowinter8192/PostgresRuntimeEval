@@ -47,8 +47,9 @@ def export_node_types(node_type_dfs, base_dir):
         node_type_dir = base_path / prefixed_folder
         node_type_dir.mkdir(exist_ok=True, parents=True)
 
+        export_df = node_df.drop(columns=['template'], errors='ignore')
         output_csv = node_type_dir / f'04a_{folder_name}.csv'
-        node_df.to_csv(output_csv, index=False, sep=';')
+        export_df.to_csv(output_csv, index=False, sep=';')
 
 
 if __name__ == "__main__":

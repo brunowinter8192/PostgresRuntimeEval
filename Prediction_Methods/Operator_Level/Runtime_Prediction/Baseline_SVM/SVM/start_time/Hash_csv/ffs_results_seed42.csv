@@ -1,15 +1,3 @@
-iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
-1;startup_cost;True;121.58999280637904;1;startup_cost
-2;total_cost;True;121.58999280637904;2;startup_cost, total_cost
-3;np;False;124.9325016589622;2;startup_cost, total_cost
-4;nt2;False;124.9325016589622;2;startup_cost, total_cost
-5;reltuples;False;124.9325016589622;2;startup_cost, total_cost
-6;parallel_workers;False;124.9325016589622;2;startup_cost, total_cost
-7;st2;False;124.9325016589622;2;startup_cost, total_cost
-8;rt2;False;124.9325016589622;2;startup_cost, total_cost
-9;nt;False;126.66004433858276;2;startup_cost, total_cost
-10;nt1;False;126.66004433858276;2;startup_cost, total_cost
-11;rt1;False;135.90731963095322;2;startup_cost, total_cost
-12;st1;False;159.79062510478312;2;startup_cost, total_cost
-13;plan_width;False;202.18525055102955;2;startup_cost, total_cost
-14;sel;False;233.89463907876862;2;startup_cost, total_cost
+iteration;feature_added;mre;n_features;features
+1;startup_cost;120.39779748685342;1;startup_cost
+2;total_cost;120.39779748685342;2;startup_cost, total_cost

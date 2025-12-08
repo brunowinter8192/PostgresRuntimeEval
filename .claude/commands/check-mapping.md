@@ -1,29 +1,60 @@
+---
+description: Analyze mapping_config.py usage across workflow directory
+---
+
 # Check Mapping
 
 Analyze mapping_config.py usage across all scripts in a workflow directory.
 
 **Target:** $ARGUMENTS (directory containing mapping_config.py)
 
-## Workflow
+---
 
-### Phase 1: Analyse
+## Step Indicator Rule
 
-1. Read mapping_config.py in target directory
-2. Extract all mapping values (strings, lists of strings)
-3. Find all Python scripts in target directory (recursive)
-4. For each script:
-   a. Identify imports from mapping_config
-   b. Scan for hardcoded string values that match mapping values
+**MANDATORY:** Every response in this workflow MUST start with:
+`Phase X, Step Y: [Step-Name]`
 
-### Phase 2: Questions
+---
 
-Ask user clarifying questions about:
-- Unclear mapping purposes
-- Ambiguous usage patterns
+## Phase 1: Context Loading
 
-### Phase 3: Assessment
+### Step 1: Read README.md
+Read README.md in $ARGUMENTS directory. Extract directory structure only.
 
-Present findings to user:
+### Step 2: Identify DOCS.md Files
+List all DOCS.md files found in subdirectories.
+
+### Step 3: Read mapping_config.py
+Extract all mapping exports (variables, lists, dicts).
+
+-> Go to Phase 2
+
+---
+
+## Phase 2: Deep Analysis
+
+### Step 1: Spawn Subagents
+For each DOCS.md identified in Phase 1:
+- Spawn one Explore subagent
+- Subagent scope: Directory containing that DOCS.md
+- Subagent task: Analyze mapping_config usage in all .py files
+
+### Step 2: Subagent Reports
+Each subagent returns:
+- **Unclear mapping purposes:** Mappings imported but usage intent unclear
+- **Ambiguous usage patterns:** Hardcoded values vs mapping inconsistencies
+
+### Step 3: Consolidate
+Main Agent merges all subagent reports.
+
+-> Go to Phase 3
+
+---
+
+## Phase 3: Assessment
+
+### Step 1: Present Findings
 
 **A. Current Mapping Usage**
 
@@ -44,34 +75,35 @@ Rule: MAPPING -> DIRECT USE, not MAPPING_A -> MAPPING_B -> MAPPING_C
 
 Values that appear hardcoded in multiple scripts but could use existing mappings.
 
-**E. Inkonsistenzen**
+**E. Inconsistencies**
 
 Scripts that hardcode values which ARE defined in mapping_config but don't import them.
 
-### Phase 4: Recommendation
+**STOP** - Present findings and wait for user remarks.
 
-Present concrete recommendations:
-- Mappings to remove (unused or chain-only)
-- Scripts to fix (should use existing mappings)
-- New mappings to add (if hardcoded values appear in 2+ scripts)
+**CRITICAL:** If user requests adjustments, return to Step 1 and regenerate findings accordingly.
 
-### Phase 5: User Confirmation
+-> Go to Phase 4
 
-Wait for explicit user confirmation before any changes.
+---
 
-### Phase 6: Implementation
+## Phase 4: Plan
 
-If approved:
-1. Remove unused mappings from mapping_config.py
-2. Update scripts to use existing mappings
-3. Add new mappings if requested
+### Step 1: Write Plan
 
-### Phase 7: Report
+Write your plan to the **system-provided plan file** (the path shown in the Plan Mode system message, e.g. `~/.claude/plans/<random-name>.md`).
 
-Present final report:
-- Mappings removed
-- Mappings added
-- Scripts updated
+**DO NOT** create a `Plan.md` in the project directory.
+
+Content:
+- Mappings to remove
+- Mappings to add
+- Scripts to update
+
+### Step 2: Exit
+Call ExitPlanMode
+
+---
 
 ## Principle
 

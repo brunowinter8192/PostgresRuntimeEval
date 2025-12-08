@@ -1,0 +1,9 @@
+iteration;feature_added;mre;n_features;features;seed
+1;Sort_rows;0.027983986875980547;1;Sort_rows;42
+2;jit_functions;0.02664594805813549;2;Sort_rows, jit_functions;42
+3;p_rows;0.026612113988164116;3;Sort_rows, jit_functions, p_rows;42
+4;Limit_cnt;0.026610629409052754;4;Sort_rows, jit_functions, p_rows, Limit_cnt;42
+5;partial_mode_simple;0.02661022967452458;5;Sort_rows, jit_functions, p_rows, Limit_cnt, partial_mode_simple;42
+6;Gather_Merge_rows;0.026608030985228397;6;Sort_rows, jit_functions, p_rows, Limit_cnt, partial_mode_simple, Gather_Merge_rows;42
+7;workers_planned;0.026606266931449546;7;Sort_rows, jit_functions, p_rows, Limit_cnt, partial_mode_simple, Gather_Merge_rows, workers_planned;42
+8;strategy_plain;0.026602887413891406;8;Sort_rows, jit_functions, p_rows, Limit_cnt, partial_mode_simple, Gather_Merge_rows, workers_planned, strategy_plain;42

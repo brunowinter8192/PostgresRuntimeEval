@@ -78,8 +78,8 @@ def process_operator_target(operator, target, dataset_dir, output_dir):
 
 # Load training data for specified operator
 def load_operator_data(dataset_dir, operator):
-    operator_dir = Path(dataset_dir) / operator
-    training_file = operator_dir / f'{operator}.csv'
+    operator_dir = Path(dataset_dir) / f'04a_{operator}'
+    training_file = operator_dir / f'04a_{operator}.csv'
     return pd.read_csv(training_file, delimiter=';')
 
 
@@ -136,26 +136,17 @@ def perform_forward_selection(X, y, template_ids, cv):
         if should_add:
             selected.append(best_feature)
             best_score = best_new_score
-            
+            remaining.remove(best_feature)
+
             results.append({
                 'iteration': iteration,
-                'feature_tested': best_feature,
-                'was_selected': True,
+                'feature_added': best_feature,
                 'mre': best_new_score,
-                'n_features_selected': len(selected),
-                'selected_features': ', '.join(selected)
+                'n_features': len(selected),
+                'features': ', '.join(selected)
             })
         else:
-            results.append({
-                'iteration': iteration,
-                'feature_tested': best_feature,
-                'was_selected': False,
-                'mre': best_new_score,
-                'n_features_selected': len(selected),
-                'selected_features': ', '.join(selected) if selected else ''
-            })
-        
-        remaining.remove(best_feature)
+            break
     
     return selected, pd.DataFrame(results)
 

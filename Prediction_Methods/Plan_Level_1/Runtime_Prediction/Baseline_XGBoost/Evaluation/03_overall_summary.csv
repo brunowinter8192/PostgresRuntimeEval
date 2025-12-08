@@ -1,0 +1,2 @@
+mean_actual_ms;std_actual_ms;mean_predicted_ms;overall_mre;n_queries;n_templates
+1096.1119098806337;623.2604502081059;1098.8071172807017;0.02596304526614735;570;19

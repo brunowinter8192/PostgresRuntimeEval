@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "3591cc4b7cfa0b81cdda213b75821b42",
-  "pattern_string": "Aggregate \u2192 Hash Join (Outer)",
-  "folder_name": "Aggregate_Hash_Join_Outer",
-  "leaf_pattern": false,
-  "occurrence_count": 491
-}

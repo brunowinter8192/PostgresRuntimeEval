@@ -1,0 +1,2 @@
+seed;n_features;final_mre;selected_features
+42;8;0.026602887413891406;Sort_rows, jit_functions, p_rows, Limit_cnt, partial_mode_simple, Gather_Merge_rows, workers_planned, strategy_plain

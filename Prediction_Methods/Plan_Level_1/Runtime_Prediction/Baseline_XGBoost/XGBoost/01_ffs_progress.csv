@@ -1,0 +1,5 @@
+iteration;feature_added;mre;n_features;features;seed
+1;p_st_cost;0.030005799663211607;1;p_st_cost;42
+2;op_count;0.028082542035355373;2;p_st_cost, op_count;42
+3;Index_Scan_rows;0.027293031847931064;3;p_st_cost, op_count, Index_Scan_rows;42
+4;subplan_count;0.026793341494687883;4;p_st_cost, op_count, Index_Scan_rows, subplan_count;42

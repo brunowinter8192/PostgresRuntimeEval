@@ -68,10 +68,10 @@ def export_metrics(overall_mre, template_stats, output_dir):
         'percentage': [overall_mre * 100]
     })
     
-    overall_file = output_path / 'overall_mre.csv'
+    overall_file = output_path / 'A_01f_overall_mre.csv'
     overall_df.to_csv(overall_file, index=False, sep=';')
-    
-    template_file = output_path / 'template_mre.csv'
+
+    template_file = output_path / 'A_01f_template_mre.csv'
     template_stats.to_csv(template_file, sep=';')
 
 
@@ -116,7 +116,7 @@ def create_mre_plot(template_stats):
 
 # Save plot to file
 def save_plot(fig, output_dir):
-    plot_file = Path(output_dir) / 'Evaluation' / 'template_mre_plot.png'
+    plot_file = Path(output_dir) / 'Evaluation' / 'A_01f_template_mre_plot.png'
     plot_file.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(plot_file, dpi=300, bbox_inches='tight')
     plt.close(fig)

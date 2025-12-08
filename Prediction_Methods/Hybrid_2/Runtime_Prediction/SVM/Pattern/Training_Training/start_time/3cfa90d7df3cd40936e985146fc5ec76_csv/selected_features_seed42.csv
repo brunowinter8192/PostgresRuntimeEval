@@ -1,0 +1,4 @@
+feature;order
+HashJoin_Outer_total_cost;1
+HashJoin_Outer_rt2;2
+HashJoin_Outer_st2;3

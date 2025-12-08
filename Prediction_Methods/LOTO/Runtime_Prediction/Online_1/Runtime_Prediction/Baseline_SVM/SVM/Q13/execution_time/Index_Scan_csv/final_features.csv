@@ -1,7 +1,0 @@
-feature;order
-plan_width;1
-nt1;2
-reltuples;3
-startup_cost;4
-nt2;5
-parallel_workers;6

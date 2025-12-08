@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "8c69a96821b806df875c7263ed9b54c0",
-  "pattern_string": "Aggregate \u2192 Index Scan (Outer)",
-  "folder_name": "Aggregate_Index_Scan_Outer",
-  "leaf_pattern": true,
-  "occurrence_count": 120
-}

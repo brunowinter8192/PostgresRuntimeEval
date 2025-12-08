@@ -9,8 +9,8 @@ No hardcoded feature lists - all features are determined through FFS and stored 
 
 # Forward feature selection parameters
 FFS_CONFIG = {
-    'min_features': 10,           # Minimum features to select before stopping
-    'seeds': [42, 123, 456, 789, 999],  # Random seeds for cross-validation
+    'min_features': 1,            # Minimum features to select before stopping
+    'seeds': [42],                # Random seed for cross-validation
     'n_splits': 5                 # Number of CV folds
 }
 

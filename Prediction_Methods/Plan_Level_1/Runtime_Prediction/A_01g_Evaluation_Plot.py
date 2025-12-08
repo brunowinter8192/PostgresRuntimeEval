@@ -66,7 +66,7 @@ def create_mre_plot(df: pd.DataFrame):
 # Save plot to file
 def save_plot(fig, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
-    plot_file = output_dir / 'template_mre_plot.png'
+    plot_file = output_dir / 'A_01g_template_mre_plot.png'
     fig.savefig(plot_file, dpi=300, bbox_inches='tight')
     plt.close(fig)
 

@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "a1e0f3f70404a3b04ef0c3b6f679d98a",
-  "pattern_string": "Hash Join \u2192 [Seq Scan (Outer), Hash (Inner)]",
-  "folder_name": "Hash_Join_Seq_Scan_Outer_Hash_Inner",
-  "leaf_pattern": false,
-  "occurrence_count": 3011
-}

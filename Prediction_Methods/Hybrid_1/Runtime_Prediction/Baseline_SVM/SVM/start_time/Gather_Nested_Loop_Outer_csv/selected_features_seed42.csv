@@ -1,0 +1,10 @@
+feature;order
+NestedLoop_Outer_st1;1
+NestedLoop_Outer_nt1;2
+NestedLoop_Outer_sel;3
+NestedLoop_Outer_total_cost;4
+Gather_total_cost;5
+Gather_nt1;6
+Gather_plan_width;7
+Gather_parallel_workers;8
+NestedLoop_Outer_nt2;9

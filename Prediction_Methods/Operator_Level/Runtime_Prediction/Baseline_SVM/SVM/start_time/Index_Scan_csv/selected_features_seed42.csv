@@ -1,4 +1,6 @@
 feature;order
 plan_width;1
 reltuples;2
-sel;3
+nt;3
+startup_cost;4
+total_cost;5

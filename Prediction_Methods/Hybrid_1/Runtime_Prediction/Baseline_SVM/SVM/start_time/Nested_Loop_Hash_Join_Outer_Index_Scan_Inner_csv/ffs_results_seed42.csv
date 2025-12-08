@@ -1,0 +1,35 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;HashJoin_Outer_total_cost;True;0.06566362736232298;1;HashJoin_Outer_total_cost
+2;HashJoin_Outer_rt2;True;0.03770855269707055;2;HashJoin_Outer_total_cost, HashJoin_Outer_rt2
+3;HashJoin_Outer_st2;True;0.03346590364386236;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+4;NestedLoop_startup_cost;False;0.038850393160383426;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+5;HashJoin_Outer_startup_cost;False;0.03885094245402906;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+6;HashJoin_Outer_st1;False;0.04028618639284252;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+7;NestedLoop_total_cost;False;0.0405282709499317;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+8;NestedLoop_np;False;0.04073411575238497;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+9;NestedLoop_reltuples;False;0.04073411575238497;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+10;NestedLoop_parallel_workers;False;0.04073411575238497;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+11;HashJoin_Outer_np;False;0.04073411575238497;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+12;HashJoin_Outer_reltuples;False;0.04073411575238497;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+13;HashJoin_Outer_parallel_workers;False;0.04073411575238497;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+14;IndexScan_Inner_nt1;False;0.04073411575238497;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+15;IndexScan_Inner_nt2;False;0.04073411575238497;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+16;IndexScan_Inner_parallel_workers;False;0.04073411575238497;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+17;HashJoin_Outer_rt1;False;0.04271688658693006;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+18;IndexScan_Inner_startup_cost;False;0.04460259330019262;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+19;IndexScan_Inner_sel;False;0.04482954898255402;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+20;HashJoin_Outer_nt2;False;0.045281193394335895;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+21;HashJoin_Outer_sel;False;0.046528478367835475;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+22;IndexScan_Inner_reltuples;False;0.049185116567046064;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+23;IndexScan_Inner_np;False;0.049258946050235716;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+24;HashJoin_Outer_nt1;False;0.050415823645405644;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+25;NestedLoop_nt;False;0.051314198307909786;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+26;NestedLoop_plan_width;False;0.055650597145214795;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+27;NestedLoop_sel;False;0.05610294834959952;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+28;HashJoin_Outer_plan_width;False;0.06067288201057277;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+29;IndexScan_Inner_total_cost;False;0.06104230194717852;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+30;IndexScan_Inner_plan_width;False;0.06277279303882898;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+31;NestedLoop_nt2;False;0.06486015489153166;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+32;IndexScan_Inner_nt;False;0.06486015489153166;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+33;NestedLoop_nt1;False;0.08539386719556098;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2
+34;HashJoin_Outer_nt;False;0.08539386719556098;3;HashJoin_Outer_total_cost, HashJoin_Outer_rt2, HashJoin_Outer_st2

@@ -7,7 +7,7 @@ Datasets/
 ├── DOCS.md                              # This file
 ├── 01_Filter_Templates.py               # Remove templates with InitPlan/SubPlan operators
 ├── 02_Child_Features.py                 # Add child operator timing features
-├── 03_Split_Data.py                     # Split dataset into training and test sets by seed ranges
+├── 03_Split_Data.py                     # Template-stratified query-level train/test split
 ├── 04a_Split_Types.py                   # Split training data by node type into separate folders
 ├── 04b_Clean_Test.py                    # Remove child features from test dataset
 ├── A_01a_InitSub_Analysis.py            # Analysis script for InitPlan/SubPlan template identification
@@ -159,26 +159,29 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 
 ### 03_Split_Data.py
 
-**Purpose**: Split dataset into training and test sets using seed-based partitioning per template
+**Purpose**: Split dataset into training and test sets using template-stratified query-level split
 
 **Input**:
 - `input_file` (positional): Path to operator dataset with child features CSV (output from script 02)
 
 **Variables** (via argparse):
 - `--output-dir`: Output directory for training and test datasets (required)
+- `--train-size`: Queries per template for training (default: 120)
+- `--test-size`: Queries per template for testing (default: 30)
+- `--seed`: Random seed for reproducibility (default: 42)
 
 **Output**:
-- `03_training.csv` (semicolon-delimited): Training dataset with first 120 seeds per template
+- `03_training.csv` (semicolon-delimited): Training dataset (120 queries per template)
   - Same schema as input dataset
-- `03_test.csv` (semicolon-delimited): Test dataset with last 30 seeds per template
+- `03_test.csv` (semicolon-delimited): Test dataset (30 queries per template)
   - Same schema as input dataset
 
 **Important Notes**:
-- Each template is split independently to ensure balanced representation
-- Training set: seeds 0-119 per template (120 seeds)
-- Test set: seeds 120-149 per template (30 seeds)
-- Seed ranges are extracted from query_file naming pattern (e.g., Q01_005_seed_...)
-- Template and seed columns are temporary and removed from final output
+- Split occurs at query-level (query_file), not operator-row level
+- All operators from a query stay together in either training or test set
+- Template-stratified: Each template contributes equal number of queries to both sets
+- Prevents data leakage where operators from same query appear in both sets
+- With 14 templates: 1680 training queries, 420 test queries
 
 ---
 

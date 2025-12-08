@@ -1,0 +1,4 @@
+feature;order
+Aggregate_nt1;1
+SeqScan_Outer_nt;2
+SeqScan_Outer_sel;3

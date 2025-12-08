@@ -73,11 +73,11 @@ def export_results(cross_total, cross_startup, output_dir):
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
     cross_total.index.name = 'node_type (Mean MRE Total Time %)'
-    output_file_total = output_path / f'node_type_mean_mre_total_pct_{timestamp}.csv'
+    output_file_total = output_path / f'A_01g_mre_total_pct_{timestamp}.csv'
     cross_total.to_csv(output_file_total, sep=';')
 
     cross_startup.index.name = 'node_type (Mean MRE Startup Time %)'
-    output_file_startup = output_path / f'node_type_mean_mre_startup_pct_{timestamp}.csv'
+    output_file_startup = output_path / f'A_01g_mre_startup_pct_{timestamp}.csv'
     cross_startup.to_csv(output_file_startup, sep=';')
 
 

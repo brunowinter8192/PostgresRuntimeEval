@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "ca5f585490fbfc3ad32574fd06aecae2",
-  "pattern_string": "Gather Merge \u2192 Incremental Sort (Outer)",
-  "folder_name": "Gather_Merge_Incremental_Sort_Outer",
-  "leaf_pattern": false,
-  "occurrence_count": 120
-}

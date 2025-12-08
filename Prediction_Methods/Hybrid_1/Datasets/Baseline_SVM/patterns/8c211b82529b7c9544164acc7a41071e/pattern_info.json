@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "8c211b82529b7c9544164acc7a41071e",
-  "pattern_string": "Aggregate \u2192 Seq Scan (Outer)",
-  "folder_name": "Aggregate_Seq_Scan_Outer",
-  "leaf_pattern": true,
-  "occurrence_count": 360
-}

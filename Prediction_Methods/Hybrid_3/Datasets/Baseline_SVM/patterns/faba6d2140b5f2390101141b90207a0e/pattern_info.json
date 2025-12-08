@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "faba6d2140b5f2390101141b90207a0e",
-  "pattern_string": "Gather \u2192 Seq Scan (Outer)",
-  "folder_name": "Gather_Seq_Scan_Outer",
-  "leaf_pattern": true,
-  "occurrence_count": 120
-}
