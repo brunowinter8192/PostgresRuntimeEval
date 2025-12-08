@@ -2,30 +2,6 @@
 
 # INFRASTRUCTURE
 
-PATTERNS = [
-    'Hash_Join_Seq_Scan_Outer_Hash_Inner',
-    'Hash_Seq_Scan_Outer',
-    'Hash_Hash_Join_Outer',
-    'Hash_Join_Nested_Loop_Outer_Hash_Inner',
-    'Nested_Loop_Hash_Join_Outer_Index_Scan_Inner',
-    'Sort_Hash_Join_Outer',
-    'Nested_Loop_Seq_Scan_Outer_Index_Scan_Inner',
-    'Gather_Aggregate_Outer',
-    'Aggregate_Hash_Join_Outer',
-    'Aggregate_Gather_Outer',
-    'Aggregate_Seq_Scan_Outer',
-    'Hash_Join_Hash_Join_Outer_Hash_Inner',
-    'Aggregate_Nested_Loop_Outer',
-    'Sort_Nested_Loop_Outer',
-    'Incremental_Sort_Nested_Loop_Outer',
-    'Nested_Loop_Merge_Join_Outer_Index_Scan_Inner',
-    'Hash_Aggregate_Outer',
-    'Sort_Seq_Scan_Outer',
-    'Gather_Nested_Loop_Outer',
-    'Gather_Hash_Join_Outer',
-    'Hash_Index_Only_Scan_Outer'
-]
-
 TARGET_TYPES = ['execution_time', 'start_time']
 
 NON_FEATURE_SUFFIXES = [
@@ -34,6 +10,7 @@ NON_FEATURE_SUFFIXES = [
     '_depth',
     '_parent_relationship',
     '_subplan_name',
+    '_template',
     'actual_startup_time',
     'actual_total_time'
 ]
@@ -41,6 +18,15 @@ NON_FEATURE_SUFFIXES = [
 LEAF_OPERATORS = ['SeqScan', 'IndexScan', 'IndexOnlyScan']
 
 REQUIRED_OPERATORS = {'Gather', 'Hash', 'Hash Join', 'Nested Loop', 'Seq Scan'}
+
+PASSTHROUGH_OPERATORS = {
+    'Incremental Sort',
+    'Gather Merge',
+    'Gather',
+    'Sort',
+    'Limit',
+    'Merge Join'
+}
 
 CHILD_ACTUAL_SUFFIXES = [
     '_Outer_actual_startup_time',
@@ -76,11 +62,11 @@ def pattern_to_folder_name(pattern_str: str) -> str:
     return clean
 
 
-# Convert folder name back to pattern string format
-def folder_name_to_pattern(folder_name: str) -> str:
-    return folder_name.replace('_', ' ')
-
-
 # Check if operator type is a leaf node
 def is_leaf_operator(operator_type: str) -> bool:
     return operator_type in LEAF_OPERATORS
+
+
+# Check if operator type is passthrough
+def is_passthrough_operator(operator_type: str) -> bool:
+    return operator_type in PASSTHROUGH_OPERATORS

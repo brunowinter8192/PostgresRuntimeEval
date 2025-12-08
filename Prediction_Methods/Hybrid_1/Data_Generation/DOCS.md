@@ -1,96 +1,91 @@
 # Data_Generation - Pattern Discovery
 
-Discovers and catalogs all parent-child operator patterns from the operator dataset with MD5 hash identification. Applies REQUIRED_OPERATORS filter to focus on patterns containing specific operator types.
+Discovers and catalogs all parent-child operator patterns from the operator dataset with MD5 hash identification. Supports multi-length patterns and optional filtering.
 
 ## Directory Structure
 
 ```
 Data_Generation/
-├── 01_Find_Patterns.py                            # Pattern discovery script
-└── csv/                                           # [outputs]
-    └── 01_baseline_patterns_depth0plus_{ts}.csv   # Pattern inventory with occurrences
+├── 01_Find_Patterns.py                   # Pattern discovery (all lengths)
+├── 02_Passthrough_Analysis.py            # Operator passthrough ratio analysis
+└── csv/                                  # [outputs]
+    ├── 01_patterns_{ts}.csv              # Pattern inventory with occurrences
+    └── 02_passthrough_analysis_{ts}.csv  # Operator passthrough ratios
 ```
 
-**Input data (external):** `Operator_Level/Data_Generation/operator_dataset_{ts}.csv`
+**Input data (external):** `Operator_Level/Datasets/Baseline/01_operator_dataset_cleaned.csv`
 
 ## Shared Infrastructure
 
 **Constants from mapping_config.py:**
-- `REQUIRED_OPERATORS` - Operators that must appear in patterns (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
-
-## Configuration Parameters
-
-### In-Script Configuration (01_Find_Patterns.py)
-
-**Depth Check (Line 47):**
-```python
-if parent_depth < 0:  # All patterns from depth 0+ (root included)
-    continue
-```
-
-**Operator Filter (Line 55-57):**
-```python
-pattern_operators = {parent_type} | {child['node_type'] for child in children}
-if not pattern_operators.intersection(REQUIRED_OPERATORS):
-    continue
-# REQUIRED_OPERATORS = {'Gather', 'Hash', 'Hash Join', 'Nested Loop', 'Seq Scan'}
-# This is Hybrid_1's INCLUDE filter (pattern must contain at least one required operator)
-```
-
-**MD5 Hash Computation (Lines 117-128):**
-```python
-def compute_pattern_hash(parent_type: str, children: list) -> str:
-    # Creates deterministic hash from pattern structure
-    # Format: parent_type|child1_type:child1_rel|child2_type:child2_rel
-```
-
-## Hybrid Differences
-
-| Aspect | Hybrid_1 | Hybrid_2 | Hybrid_3 |
-|--------|----------|----------|----------|
-| Depth Check | `< 0` (root included) | `< 0` (root included) | `< 0` (root included) |
-| Filter Type | INCLUDE (REQUIRED_OPERATORS) | None | EXCLUDE (PASSTHROUGH_OPERATORS) |
-| MD5 Hash | Yes | Yes | No |
-| Pattern Count | ~21 | ~31 | ~20 |
+- `REQUIRED_OPERATORS` - Operators for INCLUDE filter (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
+- `PASSTHROUGH_OPERATORS` - Operators for EXCLUDE filter (Incremental Sort, Gather Merge, Gather, Sort, Limit, Merge Join)
 
 ## Workflow Execution Order
 
 ```
-01 - Find_Patterns
-     ↓
-Pattern inventory CSV with MD5 hashes
+01 - Find_Patterns         [operator_dataset.csv -> pattern inventory CSV]
+
+02 - Passthrough_Analysis  [operator_dataset.csv -> passthrough ratios CSV]
 ```
 
-Single script phase. Input dataset must exist before execution.
+Scripts are independent. 02 is optional analysis for determining passthrough operators.
 
 ## Script Documentation
 
 ### 01 - Find_Patterns.py
 
-**Purpose:** Identify all unique parent-child patterns, compute MD5 hashes, and count occurrences per template
+**Purpose:** Discover all unique patterns at all lengths (2 to max_depth+1), compute MD5 hashes, count occurrences
 
 **Workflow:**
 1. Load operator dataset and filter to main plan (exclude SubPlan nodes)
-2. Extract template identifier from query filenames
-3. Build parent-child relationship map for each query
-4. Identify patterns by grouping parent with immediate children
-5. Filter patterns to include only those with REQUIRED_OPERATORS
-6. Compute MD5 hash for each pattern structure
-7. Count pattern occurrences per template
-8. Export pattern matrix with hashes and template breakdown
+2. Build tree structure for each query
+3. For each node, iterate through all possible pattern lengths
+4. Compute MD5 hash for each pattern at each length
+5. Count pattern occurrences across all queries
+6. Export pattern inventory sorted by size
 
 **Inputs:**
 - `input_file` - Path to operator dataset CSV (positional)
 
 **Outputs:**
-- `csv/01_baseline_patterns_depth0plus_{timestamp}.csv`
-  - Columns: pattern_hash, pattern, leaf_pattern, total, Q1, Q3, Q4, ... (per template)
-  - Pattern format: "Parent -> [Child1 (Outer), Child2 (Inner)]"
-  - Hash format: 32-character MD5 hexdigest
+- `csv/01_patterns_{timestamp}.csv`
+  - Columns: pattern_hash, pattern_string, pattern_length, operator_count, occurrence_count, example_query_file
+  - pattern_length: Number of depth levels (see README Terminology)
+  - operator_count: Total nodes in pattern (Size)
 
 **Usage:**
 ```bash
 python 01_Find_Patterns.py operator_dataset.csv --output-dir .
+```
+
+**Variables:**
+- `--output-dir` - Output directory for CSV results (required)
+
+---
+
+### 02 - Passthrough_Analysis.py
+
+**Purpose:** Analyze which operators have execution time approximately equal to their children (passthrough behavior)
+
+**Workflow:**
+1. Load operator dataset
+2. Build parent-child map for each query
+3. For each parent with children: compute ratio = parent_time / max(children_time)
+4. Group by operator type, calculate mean ratio
+5. Export sorted by ratio (lowest = most passthrough)
+
+**Inputs:**
+- `input_file` - Path to operator dataset CSV (positional)
+
+**Outputs:**
+- `csv/02_passthrough_analysis_{timestamp}.csv`
+  - Columns: node_type, instance_count, mean_parent_time, mean_max_child_time, ratio_pct
+  - ratio_pct ~100% indicates passthrough behavior
+
+**Usage:**
+```bash
+python 02_Passthrough_Analysis.py operator_dataset.csv --output-dir .
 ```
 
 **Variables:**

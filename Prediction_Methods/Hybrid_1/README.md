@@ -2,6 +2,29 @@
 
 ML-based runtime prediction for SQL queries using pattern-level SVM models that group parent operators with their children as single prediction units.
 
+## Terminology
+
+**Length:** Number of depth levels a pattern spans (vertical depth)
+- Length 2: Parent → Child (depths 0,1)
+- Length 3: Parent → Child → Grandchild (depths 0,1,2)
+
+**Size:** Number of operators in a pattern (all nodes including branches)
+- `Hash Join → Seq Scan` has Length 2, Size 2
+- `Hash Join → [Seq Scan, Hash → Seq Scan]` has Length 3, Size 4
+
+**Passthrough Operators:** Operators with execution time approximately equal to their slowest child (~100-102% ratio). These operators primarily forward data without significant own computation.
+
+Based on analysis (`02_Passthrough_Analysis.py`):
+
+| Operator | Ratio | Classification |
+|----------|-------|----------------|
+| Incremental Sort | 100.00% | Passthrough |
+| Gather Merge | 100.97% | Passthrough |
+| Gather | 101.48% | Passthrough |
+| Sort | 101.67% | Passthrough |
+| Limit | 101.78% | Passthrough |
+| Merge Join | 102.24% | Passthrough |
+
 ## Directory Structure
 
 ```
@@ -12,38 +35,24 @@ Hybrid_1/
 └── Runtime_Prediction/                  [See DOCS.md]
 ```
 
-## External Dependencies
-
-**Operator_Level Models (Fallback):**
-```
-Operator_Level/Runtime_Prediction/Baseline_SVM/
-├── Model/
-│   ├── execution_time/{operator_type}/model.pkl
-│   └── start_time/{operator_type}/model.pkl
-└── SVM/two_step_evaluation_overview.csv
-```
-
-This hybrid approach uses operator-level models from Operator_Level as fallback for operators not matching any pattern. Models are referenced from their original location, not copied.
-
 ## Shared Infrastructure
 
 **mapping_config.py** - Central configuration shared across all three phases
 
 **Constants:**
-- `PATTERNS` - Pattern folder names (e.g., Hash_Join_Seq_Scan_Outer_Hash_Inner)
 - `TARGET_TYPES` - Target variables (execution_time, start_time)
 - `NON_FEATURE_SUFFIXES` - Metadata column suffixes to exclude
 - `LEAF_OPERATORS` - Leaf node types (SeqScan, IndexScan, IndexOnlyScan)
-- `REQUIRED_OPERATORS` - Operators required in patterns (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
+- `REQUIRED_OPERATORS` - Operators for INCLUDE filter (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
+- `PASSTHROUGH_OPERATORS` - Operators for EXCLUDE filter (Incremental Sort, Gather Merge, Gather, Sort, Limit, Merge Join)
 - `CHILD_FEATURES_TIMING` - Child timing features (st1, rt1, st2, rt2)
 - `FFS_SEED` - Random seed for cross-validation (42)
 - `FFS_MIN_FEATURES` - Minimum features to select (1)
 
 **Functions:**
 - `pattern_to_folder_name()` - Convert pattern string to folder format
-- `folder_name_to_pattern()` - Reverse conversion
 - `is_leaf_operator()` - Check if operator is leaf node
-- `get_target_column_name()` - Get column name from target type
+- `is_passthrough_operator()` - Check if operator is passthrough
 
 **Used by:** Scripts in Data_Generation, Datasets, and Runtime_Prediction phases
 
@@ -68,15 +77,6 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 
 **Dateien:** `Operator_Level/Data_Generation/csv/operator_dataset_{ts}.csv`
 
-### Hybrid_1 vs Hybrid_2 vs Hybrid_3
-
-| Aspekt | Hybrid_1 | Hybrid_2 | Hybrid_3 |
-|--------|----------|----------|----------|
-| **Depth Check** | `< 0` (Root inkl.) | `< 0` (Root inkl.) | `< 0` (Root inkl.) |
-| **Filter Type** | INCLUDE (REQUIRED_OPERATORS) | Keiner | EXCLUDE (PASSTHROUGH_OPERATORS) |
-| **MD5 Hash** | Ja | Ja | Nein |
-| **Pattern-Anzahl** | ~29 | ~31 | ~20 |
-
 ## Workflow Overview
 
 The hybrid pattern-level prediction pipeline consists of three sequential phases:
@@ -89,7 +89,7 @@ The hybrid pattern-level prediction pipeline consists of three sequential phases
 
 3. **Runtime_Prediction**: Train pattern-level SVM models, perform hybrid bottom-up prediction (pattern models for matched patterns, operator models for fallback) → Produces predictions and evaluation results
 
-**Hybrid Concept:** Instead of predicting each operator individually, this approach groups parent operators with their immediate children into "patterns" (e.g., Hash_Join with Seq_Scan outer and Hash inner). Models are trained on these aggregated units. Operators not matching any pattern use fallback operator-level models from the Operator_Level workflow.
+**Hybrid Concept:** Instead of predicting each operator individually, this approach groups parent operators with their immediate children into "patterns" (e.g., Hash_Join with Seq_Scan outer and Hash inner). Models are trained on these aggregated units. Operators not matching any pattern use fallback operator-level models trained within Hybrid_1.
 
 ## Phase Documentation
 
@@ -139,24 +139,37 @@ Baseline_SVM/
 
 ### Phase 3: Runtime_Prediction
 
-**Purpose:** Train pattern-level models and perform hybrid bottom-up prediction
+**Purpose:** Train pattern-level and operator-level models, perform hybrid bottom-up prediction
 
 **Input:**
 - Pattern training datasets from Phase 2 (patterns/{hash}/training_cleaned.csv)
-- Operator-level models from Operator_Level (external dependency)
+- Operator training datasets from Phase 2 (operators/{type}/training.csv)
 
 **Process:**
-- Perform forward feature selection for each pattern-target combination
-- Train pattern-level SVM models (NuSVR)
+- Perform forward feature selection for patterns (01_Feature_Selection.py)
+- Perform forward feature selection for operators (01b_Feature_Selection_Operators.py)
+- Train pattern-level SVM models (02_Train_Models.py)
+- Train operator-level SVM models (02b_Train_Models_Operators.py)
 - Execute hybrid bottom-up prediction on test queries:
   - For operators matching a pattern → Use pattern model
   - For unmatched operators → Use operator-level model (fallback)
 - Evaluate prediction accuracy by node type and template
 
 **Output:**
-- SVM/two_step_evaluation_overview.csv (features and MRE per pattern-target)
-- Model/{target}/{pattern}/model.pkl (trained SVM models)
-- predictions.csv with actual vs predicted times
-- Evaluation metrics (overall MRE, template MRE, node type analysis)
+```
+Baseline_SVM/
+├── SVM/
+│   ├── two_step_evaluation_overview.csv   (Pattern FFS results)
+│   ├── operator_overview.csv               (Operator FFS results)
+│   ├── execution_time/
+│   │   ├── {pattern_hash}_csv/            (Pattern FFS)
+│   │   └── operators/{type}_csv/          (Operator FFS)
+│   └── start_time/...
+└── Model/
+    ├── execution_time/
+    │   ├── {pattern_hash}/model.pkl       (Pattern models)
+    │   └── operators/{type}/model.pkl     (Operator models)
+    └── start_time/...
+```
 
 **See Runtime_Prediction/DOCS.md for detailed script documentation**

@@ -33,7 +33,8 @@ Datasets/
 
 **Constants from mapping_config.py:**
 - `LEAF_OPERATORS` - Leaf node types (SeqScan, IndexScan, IndexOnlyScan)
-- `REQUIRED_OPERATORS` - Operators required in patterns (INCLUDE filter)
+- `REQUIRED_OPERATORS` - Operators for INCLUDE filter (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
+- `PASSTHROUGH_OPERATORS` - Operators for EXCLUDE filter (Incremental Sort, Gather Merge, Gather, Sort, Limit, Merge Join)
 - `CHILD_ACTUAL_SUFFIXES` - Child actual time columns to remove
 - `CHILD_TIMING_SUFFIXES` - Child st/rt columns for leaf operators
 - `PARENT_CHILD_FEATURES` - Parent timing feature column names (st1, rt1, st2, rt2)
@@ -122,15 +123,16 @@ python 02_Extract_Operators.py Baseline_SVM/training.csv --output-dir Baseline_S
 
 ### 03 - Extract_Patterns.py
 
-**Purpose:** Extract pattern instances to MD5 hash-named folders with metadata
+**Purpose:** Extract pattern instances to MD5 hash-named folders with metadata. Supports multi-length patterns and configurable filters.
 
 **Workflow:**
 1. Load training data and filter to main plan
-2. Build parent-child relationship map
-3. Apply REQUIRED_OPERATORS filter
-4. Compute MD5 hash for each pattern
-5. Create folder per pattern hash
-6. Export training.csv and pattern_info.json
+2. Build tree structure for each query
+3. Apply filter based on --filter parameter
+4. For each node at specified --length (or all lengths if 0)
+5. Compute MD5 hash for each pattern
+6. Collect all row indices for pattern instances
+7. Export training.csv and pattern_info.json per pattern
 
 **Inputs:**
 - `input_file` - Path to training CSV (positional)
@@ -145,18 +147,27 @@ python 02_Extract_Operators.py Baseline_SVM/training.csv --output-dir Baseline_S
   "pattern_hash": "a1b2c3d4...",
   "pattern_string": "Hash Join -> [Seq Scan (Outer), Hash (Inner)]",
   "folder_name": "Hash_Join_Seq_Scan_Outer_Hash_Inner",
-  "leaf_pattern": true,
+  "pattern_length": 2,
   "occurrence_count": 150
 }
 ```
 
 **Usage:**
 ```bash
-python 03_Extract_Patterns.py Baseline_SVM/training.csv --output-dir Baseline_SVM
+# All patterns, no filter
+python 03_Extract_Patterns.py training.csv --output-dir approach_3 --length 0 --filter none
+
+# Length 2 patterns with REQUIRED_OPERATORS filter
+python 03_Extract_Patterns.py training.csv --output-dir approach_1 --length 2 --filter required_operators
+
+# Length 2 patterns excluding passthrough parents
+python 03_Extract_Patterns.py training.csv --output-dir approach_2 --length 2 --filter no_passthrough
 ```
 
 **Variables:**
 - `--output-dir` - Base directory for pattern folders (required)
+- `--length` - Pattern length to extract: 0 = all lengths, N = specific length (default: 0)
+- `--filter` - Filter type: `none`, `required_operators`, `no_passthrough` (default: none)
 
 ---
 
