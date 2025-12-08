@@ -14,12 +14,11 @@ from mapping_config import REQUIRED_OPERATORS, PASSTHROUGH_OPERATORS, pattern_to
 
 
 class QueryNode:
-    def __init__(self, node_type: str, parent_relationship: str, depth: int, node_id: int, df_index: int):
+    def __init__(self, node_type: str, parent_relationship: str, depth: int, node_id: int):
         self.node_type = node_type
         self.parent_relationship = parent_relationship
         self.depth = depth
         self.node_id = node_id
-        self.df_index = df_index
         self.children = []
 
     def add_child(self, child_node):
@@ -52,8 +51,7 @@ def build_tree_from_dataframe(query_ops: pd.DataFrame):
             node_type=row['node_type'],
             parent_relationship=row['parent_relationship'] if pd.notna(row['parent_relationship']) else '',
             depth=row['depth'],
-            node_id=row['node_id'],
-            df_index=row['original_index']
+            node_id=row['node_id']
         )
         nodes[row['node_id']] = node
 
@@ -131,16 +129,17 @@ def generate_pattern_string_at_length(node, remaining_length: int) -> str:
     return f"{node.node_type} -> [{children_combined}]"
 
 
-# Collect all df_indices for a pattern at specific length
-def collect_indices_at_length(node, remaining_length: int) -> list:
+# Extract node IDs of all nodes in pattern up to specified length
+def extract_pattern_node_ids(node, remaining_length: int) -> list:
     if remaining_length == 1 or len(node.children) == 0:
-        return [node.df_index]
+        return [node.node_id]
 
-    indices = [node.df_index]
+    node_ids = [node.node_id]
     for child in node.children:
-        indices.extend(collect_indices_at_length(child, remaining_length - 1))
+        child_ids = extract_pattern_node_ids(child, remaining_length - 1)
+        node_ids.extend(child_ids)
 
-    return indices
+    return node_ids
 
 
 # Check if pattern passes the specified filter
@@ -165,8 +164,7 @@ def extract_patterns_at_lengths(df: pd.DataFrame, max_depth: int, target_length:
     pattern_data = {}
 
     for query_file in df['query_file'].unique():
-        query_ops = df[df['query_file'] == query_file].sort_values('node_id').reset_index(drop=False)
-        query_ops = query_ops.rename(columns={'index': 'original_index'})
+        query_ops = df[df['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
 
         root, nodes = build_tree_from_dataframe(query_ops)
         if root is None:
@@ -192,7 +190,8 @@ def extract_patterns_at_lengths(df: pd.DataFrame, max_depth: int, target_length:
 
                 pattern_hash = compute_pattern_hash_at_length(node, pattern_length)
                 pattern_string = generate_pattern_string_at_length(node, pattern_length)
-                indices = collect_indices_at_length(node, pattern_length)
+                pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
+                pattern_rows = query_ops[query_ops['node_id'].isin(pattern_node_ids)]
 
                 if pattern_hash not in pattern_data:
                     pattern_data[pattern_hash] = {
@@ -201,22 +200,27 @@ def extract_patterns_at_lengths(df: pd.DataFrame, max_depth: int, target_length:
                         'occurrences': []
                     }
 
-                pattern_data[pattern_hash]['occurrences'].append(indices)
+                pattern_data[pattern_hash]['occurrences'].append(pattern_rows)
 
     return pattern_data
 
 
 # Export all patterns to their respective folders
 def export_all_patterns(df: pd.DataFrame, pattern_data: dict, output_base: str) -> None:
+    pattern_inventory = []
+
     for pattern_hash, data in pattern_data.items():
+        if len(data['occurrences']) == 0:
+            continue
+
         pattern_dir = Path(output_base) / 'patterns' / pattern_hash
         pattern_dir.mkdir(parents=True, exist_ok=True)
 
-        all_indices = [idx for occurrence in data['occurrences'] for idx in occurrence]
-        pattern_df = df.loc[all_indices].sort_index()
+        combined_df = pd.concat(data['occurrences'], ignore_index=True)
+        operator_count = len(data['occurrences'][0]) if data['occurrences'] else 0
 
         output_file = pattern_dir / 'training.csv'
-        pattern_df.to_csv(output_file, sep=';', index=False)
+        combined_df.to_csv(output_file, sep=';', index=False)
 
         folder_name = pattern_to_folder_name(data['pattern_string'])
         pattern_info = {
@@ -229,6 +233,19 @@ def export_all_patterns(df: pd.DataFrame, pattern_data: dict, output_base: str) 
         info_file = pattern_dir / 'pattern_info.json'
         with open(info_file, 'w') as f:
             json.dump(pattern_info, f, indent=2)
+
+        pattern_inventory.append({
+            'pattern_hash': pattern_hash,
+            'pattern_string': data['pattern_string'],
+            'pattern_length': data['pattern_length'],
+            'operator_count': operator_count,
+            'occurrence_count': len(data['occurrences'])
+        })
+
+    if pattern_inventory:
+        inventory_df = pd.DataFrame(pattern_inventory)
+        inventory_file = Path(output_base) / 'patterns.csv'
+        inventory_df.to_csv(inventory_file, sep=';', index=False)
 
 
 if __name__ == '__main__':

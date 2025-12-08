@@ -16,17 +16,20 @@ Datasets/
 └── Baseline_SVM/                       # [outputs] SVM baseline outputs
     ├── training.csv                    # Training split
     ├── test.csv                        # Test split
-    ├── operators/                      # Operator-level datasets
+    ├── Operators/                      # Operator-level datasets (13 types)
     │   ├── Hash_Join/training.csv
     │   └── Seq_Scan/training.csv
-    └── patterns/                       # Pattern datasets by MD5 hash
-        ├── a1b2c3d4.../
-        │   ├── pattern_info.json       # Pattern metadata
-        │   ├── training.csv            # Raw pattern instances
-        │   ├── training_aggregated.csv # Parent+children combined
-        │   └── training_cleaned.csv    # Production-ready features
-        └── e5f6g7h8.../
-            └── ...
+    ├── approach_1/                     # required_operators, length 2 (21 patterns)
+    │   ├── patterns.csv                # Pattern inventory for this approach
+    │   └── patterns/{hash}/
+    │       ├── pattern_info.json
+    │       ├── training.csv
+    │       ├── training_aggregated.csv
+    │       └── training_cleaned.csv
+    ├── approach_2/                     # no_passthrough, length 2 (18 patterns)
+    ├── approach_3/                     # none, all lengths (372 patterns)
+    ├── approach_4/                     # no_passthrough, all lengths (191 patterns)
+    └── Verification/approach_X/csv/    # Verification results per approach
 ```
 
 ## Shared Infrastructure
@@ -131,13 +134,14 @@ python 02_Extract_Operators.py Baseline_SVM/training.csv --output-dir Baseline_S
 3. Apply filter based on --filter parameter
 4. For each node at specified --length (or all lengths if 0)
 5. Compute MD5 hash for each pattern
-6. Collect all row indices for pattern instances
-7. Export training.csv and pattern_info.json per pattern
+6. Extract pattern rows by node_id matching
+7. Export training.csv, pattern_info.json per pattern, and patterns.csv inventory
 
 **Inputs:**
 - `input_file` - Path to training CSV (positional)
 
 **Outputs:**
+- `{output-dir}/patterns.csv` - Pattern inventory for aggregation step
 - `{output-dir}/patterns/{hash}/training.csv` - Pattern instances
 - `{output-dir}/patterns/{hash}/pattern_info.json` - Pattern metadata
 
@@ -173,25 +177,29 @@ python 03_Extract_Patterns.py training.csv --output-dir approach_2 --length 2 --
 
 ### 04 - Aggregate_Patterns.py
 
-**Purpose:** Aggregate parent and child rows into single feature vectors
+**Purpose:** Aggregate parent and child rows into single feature vectors using recursive tree aggregation
 
 **Workflow:**
-1. Load pattern_info.json for each pattern hash folder
-2. Load training.csv for each pattern
-3. Parse pattern structure from folder_name in metadata
-4. Match parent-child groups in data
-5. Combine features: parent_prefix + col, child_prefix + rel + col
-6. Export training_aggregated.csv
+1. Load pattern inventory CSV with pattern_hash, pattern_length, operator_count
+2. For each pattern in inventory:
+   - Load training.csv from pattern folder
+   - Build tree structure per query using operator_count for chunking
+   - Recursively aggregate subtree into single row
+   - Parent features: `{NodeType}_{col}`
+   - Child features: `{NodeType}_{Relationship}_{col}`
+   - Target columns (actual_startup_time, actual_total_time) at root level
+3. Export training_aggregated.csv
 
 **Inputs:**
-- `patterns_dir` - Base directory containing patterns subfolder (positional)
+- `pattern_csv` - Path to pattern inventory CSV (positional)
+- `patterns_dir` - Base directory containing patterns/ subfolder (positional)
 
 **Outputs:**
 - `{patterns_dir}/patterns/{hash}/training_aggregated.csv` per pattern
 
 **Usage:**
 ```bash
-python 04_Aggregate_Patterns.py Baseline_SVM
+python 04_Aggregate_Patterns.py Baseline_SVM/approach_1/patterns.csv Baseline_SVM/approach_1
 ```
 
 ---
@@ -228,8 +236,8 @@ python 05_Clean_Patterns.py Baseline_SVM
 **Purpose:** Verify extraction completeness by comparing expected vs actual row counts
 
 **Workflow:**
-1. Load pattern inventory from find_all_patterns output
-2. Calculate expected rows (occurrences x operators per pattern)
+1. Load pattern inventory CSV (columns: pattern_hash, pattern_string, operator_count, occurrence_count)
+2. Calculate expected rows (occurrence_count x operator_count per pattern)
 3. Count actual rows in each pattern folder
 4. Report match/mismatch/missing status
 
@@ -239,10 +247,11 @@ python 05_Clean_Patterns.py Baseline_SVM
 
 **Outputs:**
 - `{output-dir}/csv/A_01a_extraction_verification_{timestamp}.csv`
+  - Columns: pattern_hash, pattern_string, total_occurrences, num_operators, expected_rows, actual_rows, match, status
 
 **Usage:**
 ```bash
-python A_01a_Verify_Extraction.py baseline_patterns.csv Baseline_SVM --output-dir Baseline_SVM
+python A_01a_Verify_Extraction.py Baseline_SVM/approach_1/patterns.csv Baseline_SVM/approach_1 --output-dir Baseline_SVM/Verification/approach_1
 ```
 
 ---
@@ -252,9 +261,9 @@ python A_01a_Verify_Extraction.py baseline_patterns.csv Baseline_SVM --output-di
 **Purpose:** Verify aggregation correctness by comparing row counts
 
 **Workflow:**
-1. Load pattern inventory
+1. Load pattern inventory CSV (columns: pattern_hash, pattern_string, occurrence_count)
 2. Count rows in training_aggregated.csv per pattern
-3. Compare with expected occurrence count
+3. Compare with occurrence_count
 4. Report verification status
 
 **Inputs:**
@@ -263,8 +272,9 @@ python A_01a_Verify_Extraction.py baseline_patterns.csv Baseline_SVM --output-di
 
 **Outputs:**
 - `{output-dir}/csv/A_01b_aggregation_verification.csv`
+  - Columns: pattern_hash, pattern_string, total_occurrences, aggregated_rows, match, status
 
 **Usage:**
 ```bash
-python A_01b_Verify_Aggregation.py baseline_patterns.csv Baseline_SVM --output-dir Baseline_SVM
+python A_01b_Verify_Aggregation.py Baseline_SVM/approach_1/patterns.csv Baseline_SVM/approach_1 --output-dir Baseline_SVM/Verification/approach_1
 ```
