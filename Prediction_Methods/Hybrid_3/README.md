@@ -8,22 +8,8 @@ ML-based runtime prediction with pass-through operator inheritance. Reduces mode
 Hybrid_3/
 ├── mapping_config.py                    # Shared patterns, targets, PT operators
 ├── Data_Generation/                     [See DOCS.md]
-│   ├── 01_Find_Patterns.py
-│   └── A_01a_Compare_Patterns.py
 ├── Datasets/                            [See DOCS.md]
-│   ├── 01_Extract_Patterns.py
-│   ├── 02_Aggregate_Patterns.py
-│   ├── 03_Clean_Patterns.py
-│   ├── A_01a_Verify_Extraction.py
-│   └── A_01b_Verify_Aggregation.py
 └── Runtime_Prediction/                  [See DOCS.md]
-    ├── ffs_config.py
-    ├── 01_Feature_Selection.py
-    ├── 02_Train_Models.py
-    ├── 03_Predict_Queries.py            # Includes PT inheritance logic
-    ├── A_01a_Evaluate_Predictions.py
-    ├── A_01b_Node_Evaluation.py         # Includes PT evaluation
-    └── A_01c_Time_Analysis.py
 ```
 
 ## External Dependencies
@@ -57,7 +43,7 @@ This hybrid approach uses operator-level models from Operator_Level as fallback 
 - `folder_name_to_pattern()` - Reverse conversion
 - `is_leaf_operator()` - Check if operator is leaf node
 - `is_passthrough_operator()` - **Check if operator is pass-through**
-- `get_target_column_name()` - Get column name from target type
+- `build_pattern_hash_map()` - Build pattern name to hash mapping from pattern_info.json files
 
 **Used by:** All scripts across Data_Generation, Datasets, and Runtime_Prediction phases
 
@@ -151,21 +137,25 @@ Result: Limit and Sort predictions = Aggregate prediction (perfect inheritance, 
 
 ### Phase 2: Datasets
 
-**Purpose:** Extract pattern instances and prepare pattern-specific training datasets
+**Purpose:** Split data, extract operators and patterns, prepare pattern-specific training datasets
 
-**Input:** operator_dataset.csv and pattern inventory from Phase 1
+**Input:** operator_dataset.csv from Operator_Level
 
-**Process:**
-- Extract all instances of each pattern into separate folders
-- Verify extraction completeness and correctness
-- Aggregate parent and child rows into single feature vectors (parent features + child features)
-- Verify aggregation consistency
-- Clean features by removing unavailable columns (child actual times unknown at prediction)
+**Process (5-step pipeline):**
+1. Split into train/test (template-stratified)
+2. Extract operators to `/operators/{type}/` folders
+3. Extract patterns to `/patterns/{hash}/` folders with pattern_info.json
+4. Aggregate parent and child rows into single feature vectors
+5. Clean features by removing unavailable columns
 
-**Output:** Pattern-specific folders containing:
-- training.csv - Raw pattern instances
-- training_aggregated.csv - Parent+children combined
-- training_cleaned.csv - Production-ready features
+**Output:**
+- `training.csv`, `test.csv` - Train/test split
+- `operators/{type}/training.csv` - Per-operator datasets
+- `patterns/{hash}/` folders containing:
+  - `pattern_info.json` - Hash, pattern string, folder name, leaf status
+  - `training.csv` - Raw pattern instances
+  - `training_aggregated.csv` - Parent+children combined
+  - `training_cleaned.csv` - Production-ready features
 
 **See Datasets/DOCS.md for detailed script documentation**
 

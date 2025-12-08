@@ -11,8 +11,8 @@ from sklearn.pipeline import Pipeline
 import joblib
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-# From mapping_config.py: Pattern definitions and target types
-from mapping_config import PATTERNS, TARGET_TYPES
+# From mapping_config.py: Pattern definitions, target types and hash mapping
+from mapping_config import TARGET_TYPES, build_pattern_hash_map
 # From ffs_config.py: SVM parameters
 from ffs_config import SVM_PARAMS
 
@@ -20,10 +20,11 @@ from ffs_config import SVM_PARAMS
 
 # Train models for all pattern-target combinations
 def train_all_patterns(dataset_dir, overview_file, output_dir):
+    pattern_hash_map = build_pattern_hash_map(dataset_dir)
     overview_df = load_overview(overview_file)
-    for pattern in PATTERNS:
+    for pattern in pattern_hash_map.keys():
         for target in TARGET_TYPES:
-            train_single_model(pattern, target, dataset_dir, overview_df, output_dir)
+            train_single_model(pattern, target, dataset_dir, overview_df, output_dir, pattern_hash_map)
 
 # FUNCTIONS
 
@@ -32,11 +33,11 @@ def load_overview(overview_file):
     return pd.read_csv(overview_file, delimiter=';')
 
 # Train model for single pattern-target combination
-def train_single_model(pattern, target, dataset_dir, overview_df, output_dir):
+def train_single_model(pattern, target, dataset_dir, overview_df, output_dir, pattern_hash_map):
     features = get_selected_features(overview_df, pattern, target)
     if not features:
         return
-    df_train = load_training_data(dataset_dir, pattern)
+    df_train = load_training_data(dataset_dir, pattern, pattern_hash_map)
     X, y = prepare_training_data(df_train, features, target)
     pipeline = create_and_train_pipeline(X, y)
     save_model(pipeline, pattern, target, output_dir)
@@ -51,9 +52,10 @@ def get_selected_features(overview_df, pattern, target):
         return []
     return [f.strip() for f in features_str.split(',')]
 
-# Load cleaned training data for pattern from CSV
-def load_training_data(dataset_dir, pattern):
-    pattern_dir = Path(dataset_dir) / pattern
+# Load cleaned training data for pattern using hash mapping
+def load_training_data(dataset_dir, pattern, pattern_hash_map):
+    pattern_hash = pattern_hash_map[pattern]
+    pattern_dir = Path(dataset_dir) / 'patterns' / pattern_hash
     training_file = pattern_dir / 'training_cleaned.csv'
     return pd.read_csv(training_file, delimiter=';')
 

@@ -9,8 +9,8 @@ from pathlib import Path
 import joblib
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-# From mapping_config.py: Pattern definitions and pass-through operator detection
-from mapping_config import PATTERNS, is_passthrough_operator
+# From mapping_config.py: Pass-through operator detection
+from mapping_config import is_passthrough_operator
 
 # ORCHESTRATOR
 
@@ -270,8 +270,6 @@ def try_match_pattern_with_parent(parent_row, children_info, pattern_features, p
     if len(children_info) == 0:
         return None
     pattern_key = build_pattern_key(parent_row['node_type'], children_info)
-    if pattern_key not in PATTERNS:
-        return None
     if pattern_key not in pattern_features:
         return None
     pattern_data = pattern_features[pattern_key]
