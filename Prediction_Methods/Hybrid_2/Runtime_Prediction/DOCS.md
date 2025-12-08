@@ -53,11 +53,12 @@ Used as fallback for operators not matching any pattern.
 - `SVM_PARAMS` - NuSVR hyperparameters (kernel, nu, C, gamma, cache_size)
 
 **Constants from mapping_config.py:**
-- `PATTERNS` - List of pattern folder names
 - `TARGET_TYPES` - ['execution_time', 'start_time']
 - `NON_FEATURE_SUFFIXES` - Columns to exclude from features
 - `FFS_SEED` - Random seed for cross-validation (42)
 - `FFS_MIN_FEATURES` - Minimum features to select (1)
+
+**Pattern Discovery:** Patterns are discovered dynamically from `patterns/` folder by reading `pattern_info.json` files. No hardcoded pattern list required.
 
 ## Workflow Execution Order
 
@@ -102,7 +103,7 @@ A_01c - Time_Analysis         [operator_dataset.csv -> Operator range statistics
 - `{output-dir}/SVM/{target}/{Pattern}_csv/selected_features_seed42.csv`
 - `{output-dir}/SVM/{target}/{Pattern}_csv/final_features.csv`
 - `{output-dir}/SVM/two_step_evaluation_overview.csv`
-  - Columns: pattern, target, ffs_feature_count, missing_child_count, final_feature_count, mre_ffs, mre_final, mre_delta, features
+  - Columns: pattern_hash, pattern, target, ffs_feature_count, missing_child_count, final_feature_count, mre_ffs, mre_final, mre_delta, ffs_features, missing_child_features, final_features
 
 **Usage:**
 ```bash
