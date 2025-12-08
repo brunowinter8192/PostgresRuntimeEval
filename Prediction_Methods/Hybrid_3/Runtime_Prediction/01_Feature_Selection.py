@@ -14,8 +14,8 @@ from sklearn.metrics import make_scorer
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-# From mapping_config.py: Pattern definitions
-from mapping_config import PATTERNS, TARGET_TYPES, NON_FEATURE_SUFFIXES
+# From mapping_config.py: Pattern definitions and hash mapping
+from mapping_config import PATTERNS, TARGET_TYPES, NON_FEATURE_SUFFIXES, build_pattern_hash_map
 # From ffs_config.py: FFS configuration and SVM parameters
 from ffs_config import SEED, MIN_FEATURES, SVM_PARAMS
 
@@ -23,31 +23,33 @@ from ffs_config import SEED, MIN_FEATURES, SVM_PARAMS
 
 # Run two-step feature selection workflow for all patterns
 def run_two_step_workflow(dataset_dir: str, output_dir: str) -> None:
+    pattern_hash_map = build_pattern_hash_map(dataset_dir)
     ffs_results = {}
 
-    for pattern in PATTERNS:
+    for pattern in pattern_hash_map.keys():
         for target in TARGET_TYPES:
-            selected_features = run_ffs_for_pattern(pattern, target, dataset_dir, output_dir)
+            selected_features = run_ffs_for_pattern(pattern, target, dataset_dir, output_dir, pattern_hash_map)
             ffs_results[(pattern, target)] = selected_features
-    
-    overview_data = process_all_patterns_two_step(ffs_results, dataset_dir, output_dir)
+
+    overview_data = process_all_patterns_two_step(ffs_results, dataset_dir, output_dir, pattern_hash_map)
     export_overview(overview_data, output_dir)
 
 
 # FUNCTIONS
 
 # Run forward feature selection and return selected features
-def run_ffs_for_pattern(pattern: str, target: str, dataset_dir: str, output_dir: str) -> list:
-    df = load_pattern_data(dataset_dir, pattern)
+def run_ffs_for_pattern(pattern: str, target: str, dataset_dir: str, output_dir: str, pattern_hash_map: dict) -> list:
+    df = load_pattern_data(dataset_dir, pattern, pattern_hash_map)
     X, y, template_ids = prepare_features_and_target(df, target)
     cv = create_cv_splitter()
     selected_features, results_df = perform_forward_selection(X, y, template_ids, cv)
     export_ffs_results(selected_features, results_df, pattern, target, output_dir)
     return selected_features
 
-# Load cleaned training data for pattern
-def load_pattern_data(dataset_dir, pattern):
-    pattern_dir = Path(dataset_dir) / pattern
+# Load cleaned training data for pattern using hash mapping
+def load_pattern_data(dataset_dir, pattern, pattern_hash_map):
+    pattern_hash = pattern_hash_map[pattern]
+    pattern_dir = Path(dataset_dir) / 'patterns' / pattern_hash
     training_file = pattern_dir / 'training_cleaned.csv'
     return pd.read_csv(training_file, delimiter=';')
 
@@ -192,25 +194,25 @@ def export_ffs_results(selected_features, results_df, pattern, target, output_di
     selected_df.to_csv(selected_file, index=False, sep=';')
 
 # Process all patterns with two-step evaluation
-def process_all_patterns_two_step(ffs_results, dataset_dir, output_dir):
+def process_all_patterns_two_step(ffs_results, dataset_dir, output_dir, pattern_hash_map):
     overview_data = []
-    
-    for pattern in PATTERNS:
+
+    for pattern in pattern_hash_map.keys():
         for target in TARGET_TYPES:
-            result = evaluate_pattern_two_step(pattern, target, ffs_results, dataset_dir, output_dir)
+            result = evaluate_pattern_two_step(pattern, target, ffs_results, dataset_dir, output_dir, pattern_hash_map)
             if result:
                 overview_data.append(result)
-    
+
     return overview_data
 
 # Evaluate single pattern with two-step approach
-def evaluate_pattern_two_step(pattern, target, ffs_results, dataset_dir, output_dir):
+def evaluate_pattern_two_step(pattern, target, ffs_results, dataset_dir, output_dir, pattern_hash_map):
     ffs_selected = ffs_results.get((pattern, target), [])
-    
+
     if not ffs_selected:
         return None
-    
-    df = load_pattern_data(dataset_dir, pattern)
+
+    df = load_pattern_data(dataset_dir, pattern, pattern_hash_map)
     X, y, template_ids = prepare_features_and_target(df, target)
     cv = create_cv_splitter()
     

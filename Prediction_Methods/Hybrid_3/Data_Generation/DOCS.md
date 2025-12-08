@@ -16,7 +16,8 @@ Data_Generation/
 
 ## Shared Infrastructure
 
-No external dependencies. All pattern discovery logic is self-contained.
+**Functions from mapping_config.py:**
+- `is_passthrough_operator()` - Check if operator is pass-through (used to filter PT parents)
 
 ## Configuration Parameters
 
@@ -47,16 +48,14 @@ if parent_depth < 1:  # Nur Patterns ab Depth 1 (Root ausgeschlossen)
 
 ### Output Naming
 
-- Hybrid_3: `baseline_patterns_depth0plus_{ts}.csv` (20 patterns, PT parents excluded)
-- Hybrid_2: `baseline_patterns_depth0plus_{ts}.csv` (31 patterns, all operators)
+- Hybrid_3: `01_baseline_patterns_depth0plus_{ts}.csv` (20 patterns, PT parents excluded)
+- Hybrid_2: `01_baseline_patterns_depth0plus_{ts}.csv` (31 patterns, all operators)
 - Hybrid_1: `baseline_patterns_depth1plus_{ts}.csv`
 
 ## Workflow Execution Order
 
 ```
-01 - Find_Patterns
-     ↓
-csv/01_baseline_patterns_depth0plus_{ts}.csv
+01 - Find_Patterns    [operator_dataset.csv -> csv/01_baseline_patterns_depth0plus_{ts}.csv]
 ```
 
 Single script phase. Input dataset referenced via argparse.
@@ -80,8 +79,9 @@ Single script phase. Input dataset referenced via argparse.
 - `input_file` - Path to operator dataset CSV (positional)
 
 **Outputs:**
-- `csv/baseline_patterns_depth0plus_{timestamp}.csv`
-  - Columns: pattern, leaf_pattern, total, Q1, Q3, Q4, ... (per template)
+- `csv/01_baseline_patterns_depth0plus_{timestamp}.csv`
+  - Columns: **pattern_hash**, pattern, leaf_pattern, total, Q1, Q3, Q4, ... (per template)
+  - `pattern_hash` - MD5 hash of pattern structure (used for folder naming in Datasets)
   - Pattern format: "Parent → [Child1 (Outer), Child2 (Inner)]"
   - Includes root-level patterns (depth 0) in addition to child patterns
   - Hybrid_3: 20 patterns (PT parent patterns excluded)

@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "dbf06554631f3fffefd3e07c1f1052ba",
+  "pattern_string": "Nested Loop \u2192 [Nested Loop (Outer), Index Scan (Inner)]",
+  "folder_name": "Nested_Loop_Nested_Loop_Outer_Index_Scan_Inner",
+  "leaf_pattern": false,
+  "occurrence_count": 240
+}

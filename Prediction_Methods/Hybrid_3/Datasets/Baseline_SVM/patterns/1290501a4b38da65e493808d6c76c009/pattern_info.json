@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "1290501a4b38da65e493808d6c76c009",
+  "pattern_string": "Aggregate \u2192 Nested Loop (Outer)",
+  "folder_name": "Aggregate_Nested_Loop_Outer",
+  "leaf_pattern": false,
+  "occurrence_count": 229
+}
