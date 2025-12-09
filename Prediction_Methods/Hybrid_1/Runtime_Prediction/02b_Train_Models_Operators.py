@@ -58,7 +58,7 @@ def get_selected_features(overview_df, operator, target):
 
 # Load training data for operator from CSV
 def load_training_data(dataset_dir, operator):
-    operator_dir = Path(dataset_dir) / 'operators' / operator
+    operator_dir = Path(dataset_dir) / operator
     training_file = operator_dir / 'training.csv'
     return pd.read_csv(training_file, delimiter=';')
 

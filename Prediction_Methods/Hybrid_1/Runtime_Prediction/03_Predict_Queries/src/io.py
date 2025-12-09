@@ -1,6 +1,5 @@
 # INFRASTRUCTURE
 
-import json
 import pandas as pd
 import joblib
 from pathlib import Path
@@ -10,111 +9,102 @@ from pathlib import Path
 
 # Load test data from CSV
 def load_test_data(test_file: str) -> pd.DataFrame:
-    return pd.read_csv(test_file, delimiter=';')
+    df = pd.read_csv(test_file, delimiter=';')
+    return df[df['subplan_name'].isna() | (df['subplan_name'] == '')]
 
 
-# Load pattern features from overview CSV with hash mapping
-def load_pattern_features(overview_file: str, dataset_dir: str) -> dict:
+# Load pattern info from patterns.csv sorted by length descending
+def load_pattern_info(patterns_csv: str) -> tuple:
+    df = pd.read_csv(patterns_csv, delimiter=';')
+    df_sorted = df.sort_values('pattern_length', ascending=False)
+    pattern_order = df_sorted['pattern_hash'].tolist()
+
+    info = {}
+    for _, row in df_sorted.iterrows():
+        info[row['pattern_hash']] = {
+            'length': int(row['pattern_length']),
+            'pattern_string': row['pattern_string']
+        }
+
+    return info, pattern_order
+
+
+# Load pattern features from FFS overview for given patterns
+def load_pattern_features(overview_file: str, pattern_hashes: list) -> dict:
     df = pd.read_csv(overview_file, delimiter=';')
-    folder_to_hash = build_folder_to_hash_mapping(dataset_dir)
-
-    pattern_dict = {}
+    pattern_set = set(pattern_hashes)
+    features = {}
 
     for _, row in df.iterrows():
-        folder_name = row['pattern']
-        pattern_hash = folder_to_hash.get(folder_name)
+        pattern_hash = row['pattern_hash']
 
-        if pattern_hash is None:
+        if pattern_hash not in pattern_set:
             continue
 
-        if pattern_hash not in pattern_dict:
-            pattern_dict[pattern_hash] = {'folder_name': folder_name}
+        if pattern_hash not in features:
+            features[pattern_hash] = {}
 
         target = row['target']
-        final_features = [f.strip() for f in row['final_features'].split(',')]
-        missing_child = []
-        if pd.notna(row['missing_child_features']) and row['missing_child_features'].strip():
-            missing_child = [f.strip() for f in row['missing_child_features'].split(',')]
+        features_str = row['final_features']
 
-        pattern_dict[pattern_hash][target] = {
-            'final_features': final_features,
-            'missing_child_features': missing_child
-        }
+        if pd.isna(features_str) or features_str.strip() == '':
+            features[pattern_hash][target] = []
+        else:
+            features[pattern_hash][target] = [f.strip() for f in features_str.split(',')]
 
-    return pattern_dict
+    return features
 
 
-# Build folder_name to hash mapping from pattern_info.json files
-def build_folder_to_hash_mapping(dataset_dir: str) -> dict:
-    patterns_path = Path(dataset_dir) / 'patterns'
-    mapping = {}
-
-    if not patterns_path.exists():
-        return mapping
-
-    for folder in patterns_path.iterdir():
-        if folder.is_dir():
-            info_file = folder / 'pattern_info.json'
-            if info_file.exists():
-                with open(info_file, 'r') as f:
-                    info = json.load(f)
-                mapping[info['folder_name']] = folder.name
-
-    return mapping
-
-
-# Load operator features from overview CSV
-def load_operator_features(operator_file: str) -> dict:
-    df = pd.read_csv(operator_file, delimiter=';')
-    operator_dict = {}
-
-    for _, row in df.iterrows():
-        operator = row['operator']
-
-        if operator not in operator_dict:
-            operator_dict[operator] = {}
-
-        target = row['target']
-        final_features = [f.strip() for f in row['final_features'].split(',')]
-
-        operator_dict[operator][target] = {
-            'final_features': final_features
-        }
-
-    return operator_dict
-
-
-# Load pattern models from directory (stored by folder_name)
-def load_pattern_models(model_dir: str, pattern_features: dict) -> dict:
+# Load pattern models from Model/Patterns/{target}/{hash}/model.pkl
+def load_pattern_models(model_dir: str, pattern_hashes: list) -> dict:
     models = {'execution_time': {}, 'start_time': {}}
-    model_path = Path(model_dir)
+    model_path = Path(model_dir) / 'Patterns'
 
-    for pattern_hash, data in pattern_features.items():
-        folder_name = data['folder_name']
-
+    for pattern_hash in pattern_hashes:
         for target in ['execution_time', 'start_time']:
-            model_file = model_path / target / folder_name / 'model.pkl'
+            model_file = model_path / target / pattern_hash / 'model.pkl'
+
             if model_file.exists():
                 models[target][pattern_hash] = joblib.load(model_file)
 
     return models
 
 
-# Load operator models from directory
+# Load operator features from overview CSV
+def load_operator_features(operator_file: str) -> dict:
+    df = pd.read_csv(operator_file, delimiter=';')
+    features = {'execution_time': {}, 'start_time': {}}
+
+    for _, row in df.iterrows():
+        operator = row['operator']
+        target = row['target']
+        features_str = row['final_features']
+
+        if pd.isna(features_str) or features_str.strip() == '':
+            continue
+
+        features[target][operator] = [f.strip() for f in features_str.split(',')]
+
+    return features
+
+
+# Load operator models from directory structure
 def load_operator_models(model_dir: str) -> dict:
     models = {'execution_time': {}, 'start_time': {}}
     model_path = Path(model_dir)
 
     for target in ['execution_time', 'start_time']:
-        operators_dir = model_path / target / 'operators'
-        if not operators_dir.exists():
+        target_dir = model_path / target / 'operators'
+
+        if not target_dir.exists():
             continue
 
-        for operator_dir in operators_dir.iterdir():
-            if operator_dir.is_dir():
-                model_file = operator_dir / 'model.pkl'
+        for op_dir in target_dir.iterdir():
+            if op_dir.is_dir():
+                model_file = op_dir / 'model.pkl'
+
                 if model_file.exists():
-                    models[target][operator_dir.name] = joblib.load(model_file)
+                    models[target][op_dir.name] = joblib.load(model_file)
 
     return models
 
@@ -136,10 +126,10 @@ def create_prediction_result(row, pred_start: float, pred_exec: float, predictio
     }
 
 
-# Export predictions to CSV
+# Export predictions to CSV file
 def export_predictions(predictions: list, output_dir: str) -> None:
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    df_predictions = pd.DataFrame(predictions)
-    df_predictions.to_csv(output_path / 'predictions.csv', sep=';', index=False)
+    df = pd.DataFrame(predictions)
+    df.to_csv(output_path / 'predictions.csv', sep=';', index=False)

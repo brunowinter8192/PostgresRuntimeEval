@@ -25,7 +25,7 @@ def build_tree_from_dataframe(query_ops: pd.DataFrame) -> QueryNode:
     root = None
     min_depth = query_ops['depth'].min()
 
-    for _, row in query_ops.iterrows():
+    for idx, row in query_ops.iterrows():
         node = QueryNode(
             node_type=row['node_type'],
             parent_relationship=row['parent_relationship'] if pd.notna(row['parent_relationship']) else '',
@@ -37,10 +37,9 @@ def build_tree_from_dataframe(query_ops: pd.DataFrame) -> QueryNode:
         if row['depth'] == min_depth:
             root = node
 
-    for idx in range(len(query_ops)):
-        current_row = query_ops.iloc[idx]
-        current_node = nodes[current_row['node_id']]
-        current_depth = current_row['depth']
+    for idx, row in query_ops.iterrows():
+        current_node = nodes[row['node_id']]
+        current_depth = row['depth']
 
         for j in range(idx + 1, len(query_ops)):
             next_row = query_ops.iloc[j]
@@ -54,7 +53,7 @@ def build_tree_from_dataframe(query_ops: pd.DataFrame) -> QueryNode:
     return root
 
 
-# Extract all nodes from tree as flat list
+# Extract all nodes from tree recursively
 def extract_all_nodes(node: QueryNode) -> list:
     nodes = [node]
 
@@ -64,20 +63,99 @@ def extract_all_nodes(node: QueryNode) -> list:
     return nodes
 
 
-# Compute MD5 hash for depth-1 pattern (parent + direct children)
-def compute_pattern_hash(node: QueryNode) -> str:
-    if len(node.children) == 0:
-        return None
+# Get direct children from full query ops by node ID
+def get_children_from_full_query(full_query_ops: pd.DataFrame, parent_node_id: int) -> list:
+    parent_row = full_query_ops[full_query_ops['node_id'] == parent_node_id]
+
+    if parent_row.empty:
+        return []
+
+    parent_depth = parent_row.iloc[0]['depth']
+    parent_idx = parent_row.index[0]
+    children = []
+
+    for idx in range(parent_idx + 1, len(full_query_ops)):
+        row = full_query_ops.iloc[idx]
+
+        if row['depth'] == parent_depth + 1:
+            children.append(row)
+        elif row['depth'] <= parent_depth:
+            break
+
+    return children
+
+
+# Compute MD5 hash for pattern subtree structure
+def compute_pattern_hash(node: QueryNode, remaining_length: int) -> str:
+    if remaining_length == 1 or len(node.children) == 0:
+        return hashlib.md5(node.node_type.encode()).hexdigest()
 
     child_hashes = []
+
     for child in node.children:
-        combined = f"{child.node_type}:{child.parent_relationship}"
+        child_hash = compute_pattern_hash(child, remaining_length - 1)
+        combined = f"{child_hash}:{child.parent_relationship}"
         child_hashes.append(combined)
 
     child_hashes.sort()
     combined_string = node.node_type + '|' + '|'.join(child_hashes)
 
     return hashlib.md5(combined_string.encode()).hexdigest()
+
+
+# Check if node has subtree of required depth
+def has_children_at_length(node: QueryNode, pattern_length: int) -> bool:
+    if pattern_length == 1:
+        return True
+
+    if pattern_length == 2:
+        return len(node.children) > 0
+
+    if len(node.children) == 0:
+        return False
+
+    return any(has_children_at_length(child, pattern_length - 1) for child in node.children)
+
+
+# Extract all node IDs in pattern subtree
+def extract_pattern_node_ids(node: QueryNode, remaining_length: int) -> list:
+    if remaining_length == 1 or len(node.children) == 0:
+        return [node.node_id]
+
+    node_ids = [node.node_id]
+
+    for child in node.children:
+        child_ids = extract_pattern_node_ids(child, remaining_length - 1)
+        node_ids.extend(child_ids)
+
+    return node_ids
+
+
+# Build pattern assignments matching patterns to query nodes
+def build_pattern_assignments(all_nodes: list, pattern_info: dict, pattern_order: list) -> tuple:
+    consumed_nodes = set()
+    pattern_assignments = {}
+
+    for pattern_hash in pattern_order:
+        if pattern_hash not in pattern_info:
+            continue
+
+        info = pattern_info[pattern_hash]
+        pattern_length = info['length']
+
+        for node in all_nodes:
+            if node.node_id in consumed_nodes:
+                continue
+            if not has_children_at_length(node, pattern_length):
+                continue
+
+            computed_hash = compute_pattern_hash(node, pattern_length)
+            if computed_hash == pattern_hash:
+                pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
+                consumed_nodes.update(pattern_node_ids)
+                pattern_assignments[node.node_id] = pattern_hash
+
+    return consumed_nodes, pattern_assignments
 
 
 # Build query tree string for visualization
