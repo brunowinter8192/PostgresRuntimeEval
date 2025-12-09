@@ -124,16 +124,20 @@ The hybrid pattern-level prediction pipeline consists of three sequential phases
 5. Clean features by removing unavailable columns
 
 **Output:**
-```
-Baseline_SVM/
-├── training.csv, test.csv
-├── operators/{Type}/training.csv
-└── patterns/{hash}/
-    ├── pattern_info.json
-    ├── training.csv
-    ├── training_aggregated.csv
-    └── training_cleaned.csv
-```
+- `training.csv` / `test.csv` - Template-stratified train/test split
+- `Operators/{Type}/training.csv` - Operator-specific training datasets (13 types)
+- `approach_X/patterns.csv` - Pattern inventory with hash, string, length, occurrence count
+- `approach_X/patterns/{hash}/` - Pattern folders with training.csv, training_aggregated.csv, training_cleaned.csv, pattern_info.json
+- `Verification/` - Extraction and aggregation verification results
+
+**Pattern Filtering Approaches:**
+
+| Approach | Filter | Length | Patterns |
+|----------|--------|--------|----------|
+| 1 | `required_operators` | 2 | 21 |
+| 2 | `no_passthrough` | 2 | 18 |
+| 3 | `none` | all | 372 |
+| 4 | `no_passthrough` | all | 191 |
 
 **See Datasets/DOCS.md for detailed script documentation**
 
@@ -156,20 +160,10 @@ Baseline_SVM/
 - Evaluate prediction accuracy by node type and template
 
 **Output:**
-```
-Baseline_SVM/
-├── SVM/
-│   ├── two_step_evaluation_overview.csv   (Pattern FFS results)
-│   ├── operator_overview.csv               (Operator FFS results)
-│   ├── execution_time/
-│   │   ├── {pattern_hash}_csv/            (Pattern FFS)
-│   │   └── operators/{type}_csv/          (Operator FFS)
-│   └── start_time/...
-└── Model/
-    ├── execution_time/
-    │   ├── {pattern_hash}/model.pkl       (Pattern models)
-    │   └── operators/{type}/model.pkl     (Operator models)
-    └── start_time/...
-```
+- `SVM/Patterns/two_step_evaluation_overview.csv` - Pattern FFS results with selected features per pattern-target
+- `SVM/Operators/operator_overview.csv` - Operator FFS results with selected features per operator-target
+- `Model/Patterns/{target}/{hash}/model.pkl` - Trained pattern SVM models (381 patterns x 2 targets)
+- `Model/{target}/operators/{type}/model.pkl` - Trained operator SVM models (13 operators x 2 targets)
+- `Predictions/approach_X/predictions.csv` - Hybrid predictions per approach with pattern/operator/passthrough types
 
 **See Runtime_Prediction/DOCS.md for detailed script documentation**

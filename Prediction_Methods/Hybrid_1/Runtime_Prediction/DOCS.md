@@ -196,7 +196,7 @@ python 02b_Train_Models_Operators.py ../Datasets/Baseline_SVM Baseline_SVM/SVM/o
 
 ### 03 - Predict_Queries/
 
-**Purpose:** Execute hybrid bottom-up prediction on test queries
+**Purpose:** Execute hybrid bottom-up prediction on test queries with multi-depth pattern matching
 
 **Structure:** Modular directory with entry-point and src/ modules.
 
@@ -204,71 +204,68 @@ python 02b_Train_Models_Operators.py ../Datasets/Baseline_SVM Baseline_SVM/SVM/o
 03_Predict_Queries/
 ├── 03_Predict_Queries.py    # Entry point
 └── src/
-    ├── tree.py              # QueryNode class, hash computation
-    ├── io.py                # Load/export functions
-    ├── prediction.py        # Prediction logic
+    ├── tree.py              # QueryNode class, multi-depth hash, pattern assignment
+    ├── io.py                # Load patterns.csv, models, features
+    ├── prediction.py        # Two-phase prediction, passthrough logic
     └── report.py            # MD report generation
 ```
 
-**Algorithm (Child-to-Parent Bottom-Up Pattern Matching):**
-1. Start at deepest depth, iterate up to depth 0
-2. For each operator: Look UP to parent
-3. Try to form pattern: Parent + all direct children
-4. Pattern matched -> Prediction for parent, parent + children consumed
-5. No pattern -> Operator fallback for single node
-6. Predicted values become child features (st1/rt1/st2/rt2) for higher levels
+**Algorithm (Two-Phase Multi-Depth Pattern Matching):**
 
-**Workflow:**
-1. Load test data and model overviews
-2. For each query in test set:
-   - Build execution tree from operators (QueryNode)
-   - Traverse bottom-up (leaves to root)
-   - For each operator:
-     - Compute pattern hash, check if pattern model exists
-     - If pattern matched -> use pattern model
-     - Else -> use operator-level fallback model
-   - Propagate child predictions to parent features (using node_id as cache key)
-3. Export predictions with actual vs predicted times
+Phase 1 - Pattern Assignment:
+1. Load patterns from patterns.csv, sort by pattern_length descending
+2. For each pattern (longest first):
+   - Find all query nodes matching the pattern hash
+   - Mark matched nodes as consumed (prevents overlap)
+   - Assign pattern to root node of match
+
+Phase 2 - Bottom-Up Prediction:
+1. Traverse nodes by depth (deepest first)
+2. For each node:
+   - If assigned to pattern -> use pattern model for root prediction
+   - Else if passthrough enabled AND node is passthrough operator -> copy child prediction
+   - Else -> use operator model
+3. Cache predictions for child feature propagation (st1/rt1/st2/rt2)
+
+**Passthrough Operators:** Incremental Sort, Gather Merge, Gather, Sort, Limit, Merge Join
+When --passthrough flag is set, these operators copy their child's prediction if not part of a pattern.
 
 **Inputs:**
 - `test_file` - Path to baseline test.csv (positional)
-- `dataset_dir` - Path to Datasets directory containing patterns/ folder (positional)
-- `pattern_overview` - Path to pattern overview CSV (positional)
-- `operator_overview` - Path to operator overview CSV (positional)
-- `pattern_model_dir` - Path to Pattern model directory (positional)
-- `operator_model_dir` - Path to Operator model directory (positional)
+- `patterns_csv` - Path to patterns.csv with pattern_hash and pattern_length (positional)
+- `pattern_overview` - Path to pattern FFS overview (two_step_evaluation_overview.csv) (positional)
+- `operator_overview` - Path to operator overview (operator_overview.csv) (positional)
+- `model_dir` - Path to Model directory (positional)
 
 **Outputs:**
 - `{output-dir}/predictions.csv`
-  - Columns: query_file, node_id, node_type, prediction_type (pattern/operator), actual_startup_time, predicted_startup_time, actual_total_time, predicted_total_time
-- `{output-dir}/md/03_query_prediction_{query}_{timestamp}.md` (when using --md-query)
-  - Algorithm description, query tree, prediction chain, results table
+  - Columns: query_file, node_id, node_type, depth, parent_relationship, subplan_name, actual_startup_time, actual_total_time, predicted_startup_time, predicted_total_time, prediction_type (pattern/operator/passthrough)
 
 **Usage:**
 ```bash
-# All queries
-python 03_Predict_Queries/03_Predict_Queries.py ../Datasets/Baseline_SVM/test.csv \
-  ../Datasets/Baseline_SVM \
-  Baseline_SVM/SVM/two_step_evaluation_overview.csv \
-  Baseline_SVM/SVM/operator_overview.csv \
+# All queries for approach_1
+python 03_Predict_Queries/03_Predict_Queries.py \
+  ../Datasets/Baseline_SVM/test.csv \
+  ../Datasets/Baseline_SVM/approach_1/patterns.csv \
+  Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
+  Baseline_SVM/SVM/Operators/operator_overview.csv \
   Baseline_SVM/Model \
-  Baseline_SVM/Model \
-  --output-dir Baseline_SVM/Evaluation
+  --output-dir Baseline_SVM/Predictions/approach_1
 
-# Single query with MD report
-python 03_Predict_Queries/03_Predict_Queries.py ../Datasets/Baseline_SVM/test.csv \
-  ../Datasets/Baseline_SVM \
-  Baseline_SVM/SVM/two_step_evaluation_overview.csv \
-  Baseline_SVM/SVM/operator_overview.csv \
+# With passthrough enabled
+python 03_Predict_Queries/03_Predict_Queries.py \
+  ../Datasets/Baseline_SVM/test.csv \
+  ../Datasets/Baseline_SVM/approach_2/patterns.csv \
+  Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
+  Baseline_SVM/SVM/Operators/operator_overview.csv \
   Baseline_SVM/Model \
-  Baseline_SVM/Model \
-  --output-dir Baseline_SVM/Evaluation \
-  --md-query Q10_121.sql
+  --output-dir Baseline_SVM/Predictions/approach_2 \
+  --passthrough
 ```
 
 **Variables:**
 - `--output-dir` - Path to output directory for predictions (required)
-- `--md-query` - Generate MD report for single query
+- `--passthrough` - Enable passthrough for non-pattern passthrough operators (optional)
 
 ---
 

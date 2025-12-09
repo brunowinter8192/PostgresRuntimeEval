@@ -44,7 +44,7 @@ def run_two_step_workflow(dataset_dir: str, output_dir: str) -> None:
 
 # Discover operators from operators folder
 def discover_operators(dataset_dir: str) -> list:
-    operators_path = Path(dataset_dir) / 'operators'
+    operators_path = Path(dataset_dir)
     operators = []
 
     if not operators_path.exists():
@@ -71,7 +71,7 @@ def run_ffs_for_operator(operator: str, target: str, dataset_dir: str, output_di
 
 # Load training data for operator
 def load_operator_data(dataset_dir, operator):
-    operator_dir = Path(dataset_dir) / 'operators' / operator
+    operator_dir = Path(dataset_dir) / operator
     training_file = operator_dir / 'training.csv'
     return pd.read_csv(training_file, delimiter=';')
 

@@ -65,7 +65,7 @@ def train_single_model(pattern_folder_name, pattern_hash, target, dataset_dir, o
     df_train = load_training_data(dataset_dir, pattern_hash)
     X, y = prepare_training_data(df_train, features, target)
     pipeline = create_and_train_pipeline(X, y)
-    save_model(pipeline, pattern_folder_name, target, output_dir)
+    save_model(pipeline, pattern_hash, target, output_dir)
 
 
 # Extract selected features from overview for pattern-target combination
@@ -96,11 +96,7 @@ def prepare_training_data(df_train, features, target):
 
 # Identify target column based on target type
 def identify_target_column(df, target):
-    target_suffix = '_actual_startup_time' if target == 'start_time' else '_actual_total_time'
-    for col in df.columns:
-        if col.endswith(target_suffix) and '_Outer_' not in col and '_Inner_' not in col:
-            return col
-    return None
+    return 'actual_startup_time' if target == 'start_time' else 'actual_total_time'
 
 
 # Create and train SVM pipeline with scaling
@@ -120,8 +116,8 @@ def create_and_train_pipeline(X, y):
 
 
 # Save trained model pipeline to disk
-def save_model(pipeline, pattern_folder_name, target, output_dir):
-    model_dir = Path(output_dir) / 'Model' / target / pattern_folder_name
+def save_model(pipeline, pattern_hash, target, output_dir):
+    model_dir = Path(output_dir) / 'Model' / target / pattern_hash
     model_dir.mkdir(parents=True, exist_ok=True)
     model_file = model_dir / 'model.pkl'
     joblib.dump(pipeline, model_file)
