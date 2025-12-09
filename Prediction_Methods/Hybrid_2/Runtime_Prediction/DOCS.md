@@ -13,9 +13,9 @@
 Phase 1: Operator Baseline (on Training_Training/Training_Test)
 01 (FFS) -> 02 (Train) -> 04 (Predict) -> A_02a/A_02b
 
-Phase 2: Pattern Preparation
-05 (Pattern FFS) -> 06 -> 07 -> 08 (Error_Baseline) -+
-                                 09 (Pretrain)       -+-> parallel
+Phase 2: Pattern Preparation (FFS features inherited from Training_Full)
+06 -> 07 -> 08 (Error_Baseline) -+
+             09 (Pretrain)       -+-> parallel
 
 Phase 3: Pattern Selection (parallel, independent)
 10_Pattern_Selection/ --strategy frequency -+
@@ -106,56 +106,6 @@ python3 02_Operator_Train.py ../Dataset/Operators/Training_Full SVM/Operator/Tra
 **Usage:**
 ```
 python3 04_Query_Prediction.py ../Dataset/Training_Test.csv SVM/Operator/two_step_evaluation_overview.csv Model/Operator --output-file Evaluation/Operator_Training_Test/predictions.csv
-```
-
----
-
-### 05 - Pattern_FFS.py
-
-**Purpose:** Forward feature selection for each pattern with two-step evaluation.
-
-**Workflow:**
-1. Load pattern list from 01_patterns_*.csv
-2. For each pattern: load training_cleaned.csv from Patterns/{hash}/
-3. Run FFS with pattern-specific features
-4. Identify missing child features (complex naming: {Op}_{Outer/Inner}_{st1/rt1/...})
-5. Filter out child features for LEAF_OPERATORS (Seq Scan, Index Scan, Index Only Scan)
-6. Export final features
-
-**Inputs:**
-- `patterns_csv`: Path to Data_Generation/csv/01_patterns_*.csv
-- `dataset_dir`: Path to Dataset/Patterns/
-
-**Outputs:**
-- `{output-dir}/Pattern/{target}/{hash}_csv/final_features.csv`
-- `{output-dir}/Pattern/pattern_ffs_overview.csv`
-
-**Usage:**
-```
-python3 05_Pattern_FFS.py ../Data_Generation/csv/01_patterns_*.csv ../Dataset/Patterns --output-dir SVM
-```
-
----
-
-### 05b - Clean_Pattern_FFS.py
-
-**Purpose:** Remove child features (st1/rt1/st2/rt2) for LEAF_OPERATORS from pattern_ffs_overview.csv.
-
-**Workflow:**
-1. Load pattern_ffs_overview.csv
-2. For each pattern: filter out child features belonging to Seq Scan, Index Scan, Index Only Scan
-3. Update final_features and final_feature_count
-4. Export cleaned CSV
-
-**Inputs:**
-- `input_file`: Path to pattern_ffs_overview.csv
-
-**Outputs:**
-- Cleaned pattern_ffs_overview.csv (in-place or new file)
-
-**Usage:**
-```
-python3 05b_Clean_Pattern_FFS.py SVM/Pattern/Training_Training/pattern_ffs_overview.csv --output-file SVM/Pattern/Training_Training/pattern_ffs_overview.csv
 ```
 
 ---
@@ -252,7 +202,6 @@ python3 08_Error_Baseline.py Pattern_Selection/06_*.csv Evaluation/Operator_Trai
 - `{output-dir}/{hash}/model_execution_time.pkl`
 - `{output-dir}/{hash}/model_start_time.pkl`
 - `{output-dir}/{hash}/features.json`
-- `{output-dir}/pretrain_summary.csv`
 
 **Variables:**
 - `--n-jobs`: Parallel jobs (-1 = all cores)

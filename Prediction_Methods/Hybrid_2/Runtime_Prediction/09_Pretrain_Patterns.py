@@ -46,7 +46,7 @@ def pretrain_all_patterns(
 
     trainable_patterns = filter_trainable_patterns(patterns_metadata, pattern_ffs)
 
-    results = Parallel(n_jobs=n_jobs, verbose=10)(
+    Parallel(n_jobs=n_jobs, verbose=10)(
         delayed(train_single_pattern)(
             row['pattern_hash'],
             int(row['pattern_length']),
@@ -57,8 +57,6 @@ def pretrain_all_patterns(
         )
         for _, row in trainable_patterns.iterrows()
     )
-
-    export_pretrain_summary(results, output_dir)
 
 
 # FUNCTIONS
@@ -199,26 +197,6 @@ def save_pattern_model(
             'features_exec': features_exec,
             'features_start': features_start
         }, f)
-
-
-# Export pretrain summary
-def export_pretrain_summary(results: list, output_dir: str) -> None:
-    output_path = Path(output_dir)
-    output_path.mkdir(parents=True, exist_ok=True)
-
-    df = pd.DataFrame(results)
-    df.to_csv(output_path / 'pretrain_summary.csv', sep=';', index=False)
-
-    success_count = len([r for r in results if r['status'] == 'SUCCESS'])
-    failed_count = len([r for r in results if r['status'] == 'FAILED'])
-
-    summary = pd.DataFrame([{
-        'total_patterns': len(results),
-        'success': success_count,
-        'failed': failed_count,
-        'success_rate': success_count / len(results) if results else 0
-    }])
-    summary.to_csv(output_path / 'pretrain_overview.csv', sep=';', index=False)
 
 
 # Build tree from flat DataFrame
