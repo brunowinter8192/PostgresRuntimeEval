@@ -98,7 +98,7 @@ def load_pattern_features(ffs_file: str, pattern_models: dict) -> dict:
     features = {}
 
     for _, row in df.iterrows():
-        pattern_hash = row['pattern']
+        pattern_hash = row['pattern_hash']
 
         if pattern_hash not in pattern_models:
             continue
@@ -123,8 +123,8 @@ def load_pattern_info(selected_patterns_file: str, pattern_metadata_file: str) -
 
     pattern_order = df_selected['pattern_hash'].tolist()
 
-    df_merged = df_selected.merge(
-        df_metadata[['pattern_hash', 'pattern_length', 'operator_count']],
+    df_merged = df_selected[['pattern_hash']].merge(
+        df_metadata[['pattern_hash', 'pattern_string', 'pattern_length', 'operator_count']],
         on='pattern_hash',
         how='left'
     )
@@ -134,7 +134,8 @@ def load_pattern_info(selected_patterns_file: str, pattern_metadata_file: str) -
     for _, row in df_merged.iterrows():
         info[row['pattern_hash']] = {
             'length': int(row['pattern_length']),
-            'operator_count': int(row['operator_count'])
+            'operator_count': int(row['operator_count']),
+            'pattern_string': row['pattern_string'] if pd.notna(row['pattern_string']) else 'N/A'
         }
 
     return info, pattern_order

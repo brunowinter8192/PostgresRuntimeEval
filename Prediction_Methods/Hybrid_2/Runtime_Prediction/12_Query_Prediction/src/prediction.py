@@ -22,6 +22,9 @@ from src.tree import (
 # From io.py: Create prediction result
 from src.io import create_prediction_result
 
+# From report.py: MD report export
+from src.report import export_md_report
+
 
 # FUNCTIONS
 
@@ -34,7 +37,7 @@ def predict_all_queries(
     pattern_features: dict,
     pattern_info: dict,
     pattern_order: list,
-    report=None,
+    output_dir: str = '',
     operator_model_dir: str = '',
     pattern_model_dir: str = ''
 ) -> list:
@@ -43,7 +46,7 @@ def predict_all_queries(
     for query_file in df_test['query_file'].unique():
         query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
 
-        predictions, prediction_cache, consumed_nodes, pattern_assignments = predict_single_query(
+        predictions, steps, consumed_nodes, pattern_assignments = predict_single_query(
             query_ops, operator_models, operator_features,
             pattern_models, pattern_features, pattern_info, pattern_order,
             operator_model_dir, pattern_model_dir
@@ -51,13 +54,11 @@ def predict_all_queries(
 
         all_predictions.extend(predictions)
 
-        if report:
-            report.set_query_data(query_file, query_ops, consumed_nodes, pattern_assignments, pattern_info)
-            report.add_pattern_assignments_section()
-            report.add_query_tree_section()
-            report.add_prediction_results(predictions)
-            report.add_prediction_chain(predictions, prediction_cache, pattern_assignments, consumed_nodes, pattern_info)
-            report.save()
+        if output_dir:
+            export_md_report(
+                query_file, query_ops, predictions, steps,
+                consumed_nodes, pattern_assignments, pattern_info, output_dir
+            )
 
     return all_predictions
 
@@ -84,6 +85,8 @@ def predict_single_query(
 
     prediction_cache = {}
     predictions = []
+    steps = []
+    step_counter = 1
 
     for node in nodes_by_depth:
         if node.node_id in consumed_nodes and node.node_id not in pattern_assignments:
@@ -104,6 +107,25 @@ def predict_single_query(
 
             row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
             predictions.append(create_prediction_result(row, result['start'], result['exec'], 'pattern'))
+
+            consumed_children = []
+            for nid in pattern_node_ids:
+                if nid != node.node_id:
+                    child_row = query_ops[query_ops['node_id'] == nid].iloc[0]
+                    consumed_children.append((nid, child_row['node_type']))
+
+            steps.append({
+                'step': step_counter,
+                'depth': node.depth,
+                'prediction_type': 'pattern',
+                'node_id': node.node_id,
+                'node_type': node.node_type,
+                'pattern_hash': pattern_hash,
+                'pattern_string': info.get('pattern_string', 'N/A'),
+                'consumed_children': consumed_children,
+                'predicted_startup_time': result['start'],
+                'predicted_total_time': result['exec']
+            })
         else:
             result = predict_operator(
                 node, query_ops, operator_models, operator_features, prediction_cache, operator_model_dir
@@ -114,7 +136,20 @@ def predict_single_query(
             row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
             predictions.append(create_prediction_result(row, result['start'], result['exec'], 'operator'))
 
-    return predictions, prediction_cache, consumed_nodes, pattern_assignments
+            steps.append({
+                'step': step_counter,
+                'depth': node.depth,
+                'prediction_type': 'operator',
+                'node_id': node.node_id,
+                'node_type': node.node_type,
+                'reason': 'No pattern match',
+                'predicted_startup_time': result['start'],
+                'predicted_total_time': result['exec']
+            })
+
+        step_counter += 1
+
+    return predictions, steps, consumed_nodes, pattern_assignments
 
 
 # Predict using pattern model
@@ -129,14 +164,9 @@ def predict_pattern(node: QueryNode, query_ops: pd.DataFrame, model: dict, predi
     pred_exec = model['execution_time'].predict(X_exec)[0]
     pred_start = model['start_time'].predict(X_start)[0]
 
-    input_features_exec = {f: aggregated.get(f, 0) for f in model['features_exec']}
-    input_features_start = {f: aggregated.get(f, 0) for f in model['features_start']}
-
     return {
         'start': pred_start,
-        'exec': pred_exec,
-        'input_features': {'execution_time': input_features_exec, 'start_time': input_features_start},
-        'model_path': f'{model_dir}/{pattern_hash}'
+        'exec': pred_exec
     }
 
 
@@ -145,7 +175,7 @@ def predict_operator(node: QueryNode, query_ops: pd.DataFrame, operator_models: 
     op_name = csv_name_to_folder_name(node.node_type)
 
     if op_name not in operator_models['execution_time'] or op_name not in operator_models['start_time']:
-        return {'start': 0.0, 'exec': 0.0, 'input_features': {}, 'model_path': None}
+        return {'start': 0.0, 'exec': 0.0}
 
     row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
     features = build_operator_features(row, node, prediction_cache)
@@ -157,7 +187,7 @@ def predict_operator(node: QueryNode, query_ops: pd.DataFrame, operator_models: 
     start_feature_names = operator_features['start_time'].get(op_name, [])
 
     if not exec_feature_names or not start_feature_names:
-        return {'start': 0.0, 'exec': 0.0, 'input_features': {}, 'model_path': None}
+        return {'start': 0.0, 'exec': 0.0}
 
     X_exec = pd.DataFrame([[features.get(f, 0) for f in exec_feature_names]], columns=exec_feature_names)
     X_start = pd.DataFrame([[features.get(f, 0) for f in start_feature_names]], columns=start_feature_names)
@@ -165,14 +195,9 @@ def predict_operator(node: QueryNode, query_ops: pd.DataFrame, operator_models: 
     pred_exec = model_exec.predict(X_exec)[0]
     pred_start = model_start.predict(X_start)[0]
 
-    input_features_exec = {f: features.get(f, 0) for f in exec_feature_names}
-    input_features_start = {f: features.get(f, 0) for f in start_feature_names}
-
     return {
         'start': pred_start,
-        'exec': pred_exec,
-        'input_features': {'execution_time': input_features_exec, 'start_time': input_features_start},
-        'model_path': f'{operator_model_dir}/{{execution_time,start_time}}/{op_name}/model.pkl'
+        'exec': pred_exec
     }
 
 
