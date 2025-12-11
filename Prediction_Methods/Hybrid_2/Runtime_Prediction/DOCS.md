@@ -262,11 +262,11 @@ Combines frequency and current prediction error. After each SELECTED/REJECTED de
 - `test_file`: Validation data (Training_Test.csv)
 - `operator_model_dir`: Pre-trained operator models (Model/Operator/)
 - `operator_ffs_dir`: Operator FFS results (SVM/Operator/)
-- `--pattern-occurrences-file`: Required for error strategy (06_test_pattern_occurrences_*.csv)
+- `--pattern-occurrences-file`: Required for all strategies (06_test_pattern_occurrences_*.csv)
 - `--min-error-threshold`: Min avg_mre to consider pattern (default: 0.1, size/frequency only)
 
 **Min Error Threshold (Paper Section 5.3.4):**
-Patterns with avg_mre < threshold are skipped for size/frequency strategies. Prevents low-error patterns from consuming nodes that could be better served by high-error patterns. Error strategy does not use this filter (error_score naturally deprioritizes low-error patterns).
+Patterns with avg_mre < threshold are skipped for size/frequency strategies. avg_mre is calculated **dynamically** based on current predictions (updated after each SELECTED pattern). Error strategy does not use this filter (error_score naturally deprioritizes low-error patterns).
 
 **Outputs:**
 - `{pattern_hash}/predictions.csv`: Per-pattern node-level predictions
@@ -280,7 +280,7 @@ Patterns with avg_mre < threshold are skipped for size/frequency strategies. Pre
 ```bash
 python3 10_Pattern_Selection/10_Pattern_Selection.py \
     --strategy frequency \
-    Pattern_Selection/06_patterns_by_frequency.csv \
+    Pattern_Selection/07_patterns_by_frequency.csv \
     SVM/Pattern/Training_Training/pattern_ffs_overview.csv \
     ../Dataset/Baseline/Training_Training.csv \
     ../Dataset/Baseline/Training_Test.csv \
@@ -288,7 +288,8 @@ python3 10_Pattern_Selection/10_Pattern_Selection.py \
     SVM/Operator/Training_Training \
     --pattern-output-dir Pattern_Selection/Frequency \
     --model-dir Model/Selected_Pattern/Frequency \
-    --pretrained-dir Model/Patterns/Training_Training
+    --pretrained-dir Model/Patterns/Training_Training \
+    --pattern-occurrences-file Pattern_Selection/06_test_pattern_occurrences_*.csv
 ```
 
 **Usage (Dynamic - Error):**
