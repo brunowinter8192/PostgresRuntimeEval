@@ -1,7 +1,0 @@
-feature;order
-HashJoin_nt;1
-HashJoin_startup_cost;2
-SeqScan_Outer_rt1;3
-SeqScan_Outer_rt2;4
-SeqScan_Outer_st1;5
-SeqScan_Outer_st2;6

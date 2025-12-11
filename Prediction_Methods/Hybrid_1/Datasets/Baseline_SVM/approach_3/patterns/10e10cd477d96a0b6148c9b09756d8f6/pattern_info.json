@@ -3,5 +3,5 @@
   "pattern_string": "Gather -> Aggregate -> Seq Scan (Outer) (Outer)",
   "folder_name": "Gather_->_Aggregate_->_Seq_Scan_Outer_Outer",
   "pattern_length": 3,
-  "occurrence_count": 150
+  "occurrence_count": 120
 }

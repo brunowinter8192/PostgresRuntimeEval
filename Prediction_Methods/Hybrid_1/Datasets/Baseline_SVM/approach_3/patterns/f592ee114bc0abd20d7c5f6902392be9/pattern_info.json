@@ -3,5 +3,5 @@
   "pattern_string": "Sort -> Aggregate -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Index Only Scan (Outer) (Inner)] (Outer) (Outer) (Outer)",
   "folder_name": "Sort_->_Aggregate_->_Aggregate_->_Hash_Join_->_Seq_Scan_Outer_Hash_->_Index_Only_Scan_Outer_Inner_Outer_Outer_Outer",
   "pattern_length": 6,
-  "occurrence_count": 150
+  "occurrence_count": 120
 }

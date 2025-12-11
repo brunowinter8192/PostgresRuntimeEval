@@ -1,0 +1,29 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Aggregate_rt1;True;0.003864126237866946;1;Aggregate_rt1
+2;Aggregate_nt;True;0.0033641691182026657;2;Aggregate_rt1, Aggregate_nt
+3;Aggregate_nt1;True;0.0030989551764936526;3;Aggregate_rt1, Aggregate_nt, Aggregate_nt1
+4;Aggregate_Outer_total_cost;True;0.003056076341433056;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+5;Aggregate_sel;False;0.003062729052034699;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+6;Aggregate_plan_width;False;0.003062729052034699;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+7;Aggregate_Outer_nt;False;0.003062729052034699;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+8;Aggregate_Outer_plan_width;False;0.003062729052034699;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+9;Aggregate_Outer_startup_cost;False;0.00306444015369801;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+10;Aggregate_startup_cost;False;0.0030647054805145006;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+11;Aggregate_total_cost;False;0.0030649008838588452;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+12;Aggregate_Outer_sel;False;0.0030913219864352275;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+13;Aggregate_Outer_nt1;False;0.003103029182244223;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+14;Aggregate_st1;False;0.0033031875667495305;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+15;Aggregate_Outer_rt1;False;0.005674110903577492;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+16;Aggregate_Outer_st1;False;0.016529422811192716;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+17;Aggregate_np;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+18;Aggregate_nt2;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+19;Aggregate_reltuples;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+20;Aggregate_parallel_workers;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+21;Aggregate_st2;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+22;Aggregate_rt2;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+23;Aggregate_Outer_np;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+24;Aggregate_Outer_nt2;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+25;Aggregate_Outer_reltuples;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+26;Aggregate_Outer_parallel_workers;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+27;Aggregate_Outer_st2;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost
+28;Aggregate_Outer_rt2;False;0.01724551348811512;4;Aggregate_rt1, Aggregate_nt, Aggregate_nt1, Aggregate_Outer_total_cost

@@ -1,0 +1,77 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Sort_rt1;True;0.003015551461765616;1;Sort_rt1
+2;Sort_sel;True;0.0025138421258193546;2;Sort_rt1, Sort_sel
+3;Sort_plan_width;True;0.0023213695769229476;3;Sort_rt1, Sort_sel, Sort_plan_width
+4;HashJoin_Outer_nt;True;0.002237441156623043;4;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt
+5;HashJoin_Outer_nt1;True;0.002206297726844473;5;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1
+6;HashJoin_Outer_nt2;True;0.002187569089239596;6;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2
+7;Sort_total_cost;True;0.002173396199431533;7;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost
+8;HashJoin_Outer_sel;True;0.0021641213669068935;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+9;Sort_startup_cost;False;0.0021673540382247916;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+10;HashJoin_Outer_startup_cost;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+11;HashJoin_Outer_total_cost;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+12;HashJoin_Outer_plan_width;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+13;NestedLoop_Outer_nt;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+14;NestedLoop_Outer_nt1;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+15;NestedLoop_Outer_nt2;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+16;NestedLoop_Outer_sel;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+17;NestedLoop_Outer_startup_cost;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+18;NestedLoop_Outer_total_cost;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+19;NestedLoop_Outer_plan_width;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+20;IndexScan_Inner_np;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+21;IndexScan_Inner_nt;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+22;IndexScan_Inner_sel;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+23;IndexScan_Inner_startup_cost;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+24;IndexScan_Inner_total_cost;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+25;IndexScan_Inner_plan_width;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+26;IndexScan_Inner_reltuples;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+27;Hash_Inner_nt;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+28;Hash_Inner_nt1;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+29;Hash_Inner_sel;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+30;Hash_Inner_startup_cost;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+31;Hash_Inner_total_cost;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+32;Hash_Inner_plan_width;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+33;SeqScan_Outer_np;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+34;SeqScan_Outer_nt;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+35;SeqScan_Outer_sel;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+36;SeqScan_Outer_total_cost;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+37;SeqScan_Outer_plan_width;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+38;SeqScan_Outer_reltuples;False;0.0021681936277616553;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+39;NestedLoop_Outer_rt2;False;0.005833867919029635;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+40;HashJoin_Outer_rt1;False;0.006017978750346936;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+41;NestedLoop_Outer_rt1;False;0.006221384427143566;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+42;NestedLoop_Outer_st2;False;0.006639706921461874;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+43;Sort_nt;False;0.010331196163536241;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+44;Sort_nt1;False;0.010331196163536241;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+45;Sort_st1;False;0.010641097909798298;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+46;NestedLoop_Outer_st1;False;0.011425781600979817;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+47;HashJoin_Outer_rt2;False;0.011438366516895011;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+48;HashJoin_Outer_st2;False;0.011438390960172313;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+49;Hash_Inner_rt1;False;0.012631345968688982;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+50;Hash_Inner_st1;False;0.012634501987844327;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+51;HashJoin_Outer_st1;False;0.012841417650017317;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+52;Sort_np;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+53;Sort_nt2;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+54;Sort_reltuples;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+55;Sort_parallel_workers;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+56;Sort_st2;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+57;Sort_rt2;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+58;HashJoin_Outer_np;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+59;HashJoin_Outer_reltuples;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+60;HashJoin_Outer_parallel_workers;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+61;NestedLoop_Outer_np;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+62;NestedLoop_Outer_reltuples;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+63;NestedLoop_Outer_parallel_workers;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+64;IndexScan_Inner_nt1;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+65;IndexScan_Inner_nt2;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+66;IndexScan_Inner_parallel_workers;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+67;Hash_Inner_np;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+68;Hash_Inner_nt2;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+69;Hash_Inner_reltuples;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+70;Hash_Inner_parallel_workers;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+71;Hash_Inner_st2;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+72;Hash_Inner_rt2;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+73;SeqScan_Outer_nt1;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+74;SeqScan_Outer_nt2;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+75;SeqScan_Outer_startup_cost;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel
+76;SeqScan_Outer_parallel_workers;False;0.012873629950518401;8;Sort_rt1, Sort_sel, Sort_plan_width, HashJoin_Outer_nt, HashJoin_Outer_nt1, HashJoin_Outer_nt2, Sort_total_cost, HashJoin_Outer_sel

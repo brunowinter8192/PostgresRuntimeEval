@@ -1,0 +1,11 @@
+feature;order
+GatherMerge_nt;1
+GatherMerge_rt1;2
+IncrementalSort_Outer_rt1;3
+IncrementalSort_Outer_rt2;4
+IncrementalSort_Outer_st1;5
+IncrementalSort_Outer_st2;6
+NestedLoop_Outer_rt1;7
+NestedLoop_Outer_rt2;8
+NestedLoop_Outer_st1;9
+NestedLoop_Outer_st2;10

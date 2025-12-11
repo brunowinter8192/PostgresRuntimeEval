@@ -1,0 +1,11 @@
+feature;order
+HashJoin_Outer_rt1;1
+HashJoin_Outer_rt2;2
+HashJoin_Outer_st1;3
+HashJoin_Outer_st2;4
+HashJoin_sel;5
+HashJoin_total_cost;6
+Hash_Inner_rt1;7
+Hash_Inner_rt2;8
+Hash_Inner_st1;9
+Hash_Inner_st2;10

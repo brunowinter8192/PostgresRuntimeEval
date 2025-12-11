@@ -3,5 +3,5 @@
   "pattern_string": "Sort -> Hash Join -> [Nested Loop (Outer), Hash (Inner)] (Outer)",
   "folder_name": "Sort_->_Hash_Join_->_Nested_Loop_Outer_Hash_Inner_Outer",
   "pattern_length": 3,
-  "occurrence_count": 450
+  "occurrence_count": 360
 }

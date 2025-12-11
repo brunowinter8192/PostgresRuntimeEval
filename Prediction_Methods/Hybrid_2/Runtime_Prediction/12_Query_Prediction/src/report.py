@@ -15,15 +15,17 @@ def export_md_report(
     consumed_nodes: set,
     pattern_assignments: dict,
     pattern_info: dict,
-    output_dir: str
+    output_dir: str,
+    plan_hash: str = ''
 ) -> None:
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
     md_dir = Path(output_dir) / 'md'
     md_dir.mkdir(parents=True, exist_ok=True)
 
-    query_name = query_file.replace('.sql', '')
-    md_file = md_dir / f'12_{query_name}_{timestamp}.md'
+    template = query_file.split('_')[0]
+    hash_suffix = f'_{plan_hash[:8]}' if plan_hash else ''
+    md_file = md_dir / f'12_{template}{hash_suffix}_{timestamp}.md'
 
     lines = build_report_lines(query_file, df_query, predictions, steps, consumed_nodes, pattern_assignments, pattern_info)
 

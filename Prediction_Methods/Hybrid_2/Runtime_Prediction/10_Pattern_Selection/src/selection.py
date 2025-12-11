@@ -28,7 +28,8 @@ def run_static_selection(
     operator_ffs: dict,
     output_dir: str,
     model_dir: str,
-    pretrained_dir: str
+    pretrained_dir: str,
+    min_error_threshold: float = 0.1
 ) -> None:
     baseline_mre = 0.2297
     selected_pattern_models = {}
@@ -40,6 +41,13 @@ def run_static_selection(
         pattern_string = pattern_row['pattern_string']
         pattern_length = int(pattern_row['pattern_length'])
         operator_count = int(pattern_row['operator_count'])
+        avg_mre = pattern_row.get('avg_mre', 1.0)
+
+        if avg_mre < min_error_threshold:
+            selection_log.append(create_log_entry(
+                pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_LOW_ERROR', idx
+            ))
+            continue
 
         if pattern_hash not in pattern_ffs:
             selection_log.append(create_log_entry(
@@ -71,17 +79,18 @@ def run_static_selection(
             selected_pattern_models[pattern_hash] = pattern_model
             selected_pattern_info[pattern_hash] = {'length': pattern_length, 'operator_count': operator_count}
             save_pattern_model(model_dir, pattern_hash, pattern_model)
-            old_baseline = baseline_mre
+            log_baseline = baseline_mre
             baseline_mre = new_mre
-            delta = old_baseline - new_mre
+            delta = log_baseline - new_mre
         else:
             status = 'REJECTED'
+            log_baseline = baseline_mre
             delta = new_mre - baseline_mre
 
         export_pattern_results(output_dir, pattern_hash, pattern_string, predictions, new_mre, status)
 
         selection_log.append(create_log_entry(
-            pattern_hash, pattern_string, baseline_mre, new_mre, delta, status, idx
+            pattern_hash, pattern_string, log_baseline, new_mre, delta, status, idx
         ))
 
     export_selection_summary(output_dir, selection_log)
@@ -163,18 +172,19 @@ def run_error_selection(
             selected_pattern_models[pattern_hash] = pattern_model
             selected_pattern_info[pattern_hash] = {'length': pattern_length, 'operator_count': operator_count}
             save_pattern_model(model_dir, pattern_hash, pattern_model)
-            old_baseline = baseline_mre
+            log_baseline = baseline_mre
             baseline_mre = new_mre
-            delta = old_baseline - new_mre
+            delta = log_baseline - new_mre
             current_predictions = new_predictions
         else:
             status = 'REJECTED'
+            log_baseline = baseline_mre
             delta = new_mre - baseline_mre
 
         export_pattern_results(output_dir, pattern_hash, pattern_string, new_predictions, new_mre, status)
 
         selection_log.append(create_log_entry(
-            pattern_hash, pattern_string, baseline_mre, new_mre, delta, status, iteration
+            pattern_hash, pattern_string, log_baseline, new_mre, delta, status, iteration
         ))
 
         iteration += 1

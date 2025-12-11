@@ -1,0 +1,12 @@
+feature;order
+MergeJoin_nt;1
+MergeJoin_rt1;2
+MergeJoin_st1;3
+Sort_Inner_rt1;4
+Sort_Inner_rt2;5
+Sort_Inner_st1;6
+Sort_Inner_st2;7
+Sort_Outer_rt1;8
+Sort_Outer_rt2;9
+Sort_Outer_st1;10
+Sort_Outer_st2;11

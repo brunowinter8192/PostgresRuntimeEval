@@ -3,5 +3,5 @@
   "pattern_string": "Aggregate -> Aggregate (Outer)",
   "folder_name": "Aggregate_->_Aggregate_Outer",
   "pattern_length": 2,
-  "occurrence_count": 150
+  "occurrence_count": 120
 }

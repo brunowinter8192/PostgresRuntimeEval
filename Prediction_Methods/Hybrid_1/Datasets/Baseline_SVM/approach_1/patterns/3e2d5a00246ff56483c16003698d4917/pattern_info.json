@@ -2,6 +2,6 @@
   "pattern_hash": "3e2d5a00246ff56483c16003698d4917",
   "pattern_string": "Sort -> Hash Join (Outer)",
   "folder_name": "Sort_->_Hash_Join_Outer",
-  "pattern_length": 1,
-  "occurrence_count": 600
+  "pattern_length": 2,
+  "occurrence_count": 480
 }

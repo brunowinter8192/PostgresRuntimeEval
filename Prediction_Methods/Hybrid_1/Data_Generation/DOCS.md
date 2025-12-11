@@ -1,6 +1,6 @@
 # Data_Generation - Pattern Discovery
 
-Discovers and catalogs all parent-child operator patterns from the operator dataset with MD5 hash identification. Supports multi-length patterns and optional filtering.
+Discovers and catalogs all parent-child operator patterns from the operator dataset with MD5 hash identification. Extracts all patterns without filtering - filtering happens in Phase 2 (Datasets).
 
 ## Directory Structure
 
@@ -13,13 +13,7 @@ Data_Generation/
     └── 02_passthrough_analysis_{ts}.csv  # Operator passthrough ratios
 ```
 
-**Input data (external):** `Operator_Level/Datasets/Baseline/01_operator_dataset_cleaned.csv`
-
-## Shared Infrastructure
-
-**Constants from mapping_config.py:**
-- `REQUIRED_OPERATORS` - Operators for INCLUDE filter (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
-- `PASSTHROUGH_OPERATORS` - Operators for EXCLUDE filter (Incremental Sort, Gather Merge, Gather, Sort, Limit, Merge Join)
+**Input data (external):** `Operator_Level/Datasets/Baseline/04_training.csv`
 
 ## Workflow Execution Order
 

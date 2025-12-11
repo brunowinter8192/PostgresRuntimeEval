@@ -1,2 +1,0 @@
-pattern_hash;pattern_string;mre;mre_pct;status
-32b96b54863453fb4222169db9b2c217;Aggregate -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Index Only Scan (Outer) (Inner)] (Outer) (Outer);0.060855272525667234;6.085527252566723;REJECTED

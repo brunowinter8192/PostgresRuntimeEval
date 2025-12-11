@@ -3,5 +3,5 @@
   "pattern_string": "Hash -> Hash Join (Outer)",
   "folder_name": "Hash_->_Hash_Join_Outer",
   "pattern_length": 2,
-  "occurrence_count": 1069
+  "occurrence_count": 851
 }

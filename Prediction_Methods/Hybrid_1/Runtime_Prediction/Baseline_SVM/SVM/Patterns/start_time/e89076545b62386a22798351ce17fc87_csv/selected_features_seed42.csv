@@ -1,0 +1,9 @@
+feature;order
+Aggregate_st1;1
+Aggregate_nt;2
+Aggregate_nt1;3
+Aggregate_sel;4
+Aggregate_startup_cost;5
+Aggregate_total_cost;6
+Aggregate_plan_width;7
+GatherMerge_Outer_nt;8

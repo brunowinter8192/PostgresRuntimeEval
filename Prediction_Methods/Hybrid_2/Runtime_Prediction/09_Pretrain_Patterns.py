@@ -67,7 +67,7 @@ def load_pattern_ffs(pattern_ffs_file: str) -> dict:
     features = {}
 
     for _, row in df.iterrows():
-        pattern_hash = row['pattern']
+        pattern_hash = row['pattern_hash']
         target = row['target']
 
         if pattern_hash not in features:

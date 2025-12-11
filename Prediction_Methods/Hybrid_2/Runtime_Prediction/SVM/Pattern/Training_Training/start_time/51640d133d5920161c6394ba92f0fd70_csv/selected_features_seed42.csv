@@ -1,8 +1,0 @@
-feature;order
-Hash_Inner_rt1;1
-Aggregate_nt;2
-HashJoin_Outer_sel;3
-Aggregate_plan_width;4
-Gather_Outer_sel;5
-Gather_Outer_plan_width;6
-Gather_Outer_parallel_workers;7

@@ -1,5 +1,0 @@
-feature;order
-SeqScan_Outer_reltuples;1
-NestedLoop_total_cost;2
-SeqScan_Outer_np;3
-NestedLoop_np;4

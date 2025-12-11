@@ -16,7 +16,8 @@ from src.tree import (
     extract_all_nodes,
     get_children_from_full_query,
     extract_pattern_node_ids,
-    build_pattern_assignments
+    build_pattern_assignments,
+    compute_plan_hash
 )
 
 # From io.py: Create prediction result
@@ -42,9 +43,13 @@ def predict_all_queries(
     pattern_model_dir: str = ''
 ) -> list:
     all_predictions = []
+    reported_plans = set()
 
     for query_file in df_test['query_file'].unique():
         query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
+
+        plan_hash = compute_plan_hash(query_ops)
+        should_report = output_dir and plan_hash not in reported_plans
 
         predictions, steps, consumed_nodes, pattern_assignments = predict_single_query(
             query_ops, operator_models, operator_features,
@@ -54,10 +59,11 @@ def predict_all_queries(
 
         all_predictions.extend(predictions)
 
-        if output_dir:
+        if should_report:
+            reported_plans.add(plan_hash)
             export_md_report(
                 query_file, query_ops, predictions, steps,
-                consumed_nodes, pattern_assignments, pattern_info, output_dir
+                consumed_nodes, pattern_assignments, pattern_info, output_dir, plan_hash
             )
 
     return all_predictions
@@ -106,7 +112,7 @@ def predict_single_query(
                 prediction_cache[nid] = result
 
             row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
-            predictions.append(create_prediction_result(row, result['start'], result['exec'], 'pattern'))
+            predictions.append(create_prediction_result(row, result['start'], result['exec'], 'pattern', pattern_hash))
 
             consumed_children = []
             for nid in pattern_node_ids:

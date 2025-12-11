@@ -10,11 +10,14 @@ from pathlib import Path
 # ORCHESTRATOR
 
 # Evaluate predictions and generate metrics
-def evaluate_predictions_workflow(predictions_file, output_dir):
+def evaluate_predictions_workflow(predictions_file, output_dir, compare_file=None):
     df = load_predictions(predictions_file)
     root_ops = extract_root_operators(df)
     overall_mre = calculate_overall_mre(root_ops)
     template_stats = calculate_template_stats(root_ops)
+    if compare_file:
+        comparison_df = load_comparison(compare_file)
+        template_stats = add_comparison_columns(template_stats, comparison_df)
     export_metrics(overall_mre, template_stats, output_dir)
     create_and_save_plot(template_stats, output_dir)
 
@@ -50,6 +53,25 @@ def calculate_template_stats(root_ops):
     template_stats['mean_mre_pct'] = template_stats['mean_mre'] * 100
     template_stats = template_stats[['mean_mre_pct', 'mean_mre', 'std_mre', 'query_count', 'mean_predicted_ms', 'mean_actual_ms']]
     template_stats = template_stats.sort_index()
+    return template_stats
+
+
+# Load comparison CSV for baseline MRE values
+def load_comparison(compare_file):
+    df = pd.read_csv(compare_file, delimiter=';', index_col='template')
+    return df
+
+
+# Add comparison columns with delta calculation
+def add_comparison_columns(template_stats, comparison_df):
+    template_stats['baseline_mre_pct'] = template_stats.index.map(
+        lambda t: comparison_df.loc[t, 'mean_mre_pct'] if t in comparison_df.index else np.nan
+    )
+    template_stats['delta_mre_pct'] = template_stats['baseline_mre_pct'] - template_stats['mean_mre_pct']
+    template_stats['delta_formula'] = template_stats.apply(
+        lambda row: f"{row['baseline_mre_pct']:.2f} - {row['mean_mre_pct']:.2f} = {row['delta_mre_pct']:.2f}",
+        axis=1
+    )
     return template_stats
 
 # Save overall and template metrics to CSV
@@ -106,6 +128,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Evaluate query-level predictions')
     parser.add_argument('predictions_file', help='Path to predictions.csv')
     parser.add_argument('--output-dir', required=True, help='Path to output directory')
+    parser.add_argument('--compare', help='Path to comparison template_mre.csv (e.g., Operator baseline)')
     args = parser.parse_args()
 
-    evaluate_predictions_workflow(args.predictions_file, args.output_dir)
+    evaluate_predictions_workflow(args.predictions_file, args.output_dir, args.compare)

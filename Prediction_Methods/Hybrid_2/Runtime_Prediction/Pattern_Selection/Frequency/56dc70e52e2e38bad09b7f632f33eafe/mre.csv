@@ -1,2 +1,0 @@
-pattern_hash;pattern_string;mre;mre_pct;status
-56dc70e52e2e38bad09b7f632f33eafe;Merge Join -> [Sort (Outer), Sort (Inner)];0.08770006607711196;8.770006607711196;REJECTED

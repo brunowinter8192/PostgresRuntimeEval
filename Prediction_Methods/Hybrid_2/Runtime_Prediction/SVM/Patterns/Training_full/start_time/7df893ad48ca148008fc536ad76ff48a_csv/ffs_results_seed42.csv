@@ -1,0 +1,29 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Hash_rt1;True;1.181855151894153;1;Hash_rt1
+2;HashJoin_Outer_nt1;True;0.9045835700436535;2;Hash_rt1, HashJoin_Outer_nt1
+3;HashJoin_Outer_startup_cost;True;0.7380759340688632;3;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost
+4;Hash_np;True;0.737159889357238;4;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np
+5;Hash_nt2;True;0.7304167611069493;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+6;Hash_reltuples;False;0.7327166690048036;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+7;Hash_parallel_workers;False;0.7327166690048036;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+8;Hash_st2;False;0.7327166690048036;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+9;Hash_rt2;False;0.7327166690048036;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+10;HashJoin_Outer_np;False;0.7327166690048036;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+11;HashJoin_Outer_reltuples;False;0.7327166690048036;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+12;HashJoin_Outer_parallel_workers;False;0.7327166690048036;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+13;HashJoin_Outer_nt2;False;0.8612048553236784;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+14;HashJoin_Outer_rt1;False;0.9119156514641045;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+15;HashJoin_Outer_st2;False;1.0319773578734686;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+16;HashJoin_Outer_rt2;False;1.0322303161430084;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+17;Hash_startup_cost;False;1.1748796677853772;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+18;Hash_total_cost;False;1.1748796677853772;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+19;HashJoin_Outer_total_cost;False;1.1748796677853772;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+20;Hash_st1;False;1.24827263370538;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+21;HashJoin_Outer_sel;False;2.5909074863291304;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+22;Hash_nt;False;2.8002748944010953;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+23;Hash_nt1;False;2.8002748944010953;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+24;HashJoin_Outer_nt;False;2.8002748944010953;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+25;HashJoin_Outer_st1;False;16.035424936806102;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+26;Hash_plan_width;False;37.04910030293108;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+27;HashJoin_Outer_plan_width;False;37.04910030293108;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2
+28;Hash_sel;False;39.69688341823106;5;Hash_rt1, HashJoin_Outer_nt1, HashJoin_Outer_startup_cost, Hash_np, Hash_nt2

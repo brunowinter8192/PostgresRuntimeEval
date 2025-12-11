@@ -1,1 +1,0 @@
-{"features_exec": ["Aggregate_plan_width", "HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2", "NestedLoop_Outer_total_cost"], "features_start": ["Aggregate_plan_width", "HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2", "HashJoin_Outer_startup_cost"]}

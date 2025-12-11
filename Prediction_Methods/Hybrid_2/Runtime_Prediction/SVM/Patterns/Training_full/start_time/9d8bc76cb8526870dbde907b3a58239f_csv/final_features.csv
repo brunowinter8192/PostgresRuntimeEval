@@ -1,0 +1,16 @@
+feature;order
+HashJoin_Outer_nt2;1
+HashJoin_Outer_rt1;2
+HashJoin_Outer_rt2;3
+HashJoin_Outer_st1;4
+HashJoin_Outer_st2;5
+Hash_Inner_nt;6
+Hash_Inner_nt1;7
+Hash_Inner_rt1;8
+Hash_Inner_rt2;9
+Hash_Inner_st1;10
+Hash_Inner_st2;11
+NestedLoop_nt;12
+NestedLoop_st1;13
+SeqScan_Outer_nt;14
+SeqScan_Outer_sel;15

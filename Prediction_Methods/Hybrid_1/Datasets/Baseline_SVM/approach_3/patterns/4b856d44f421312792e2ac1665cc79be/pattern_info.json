@@ -3,5 +3,5 @@
   "pattern_string": "Nested Loop -> [Merge Join (Outer), Index Scan (Inner)]",
   "folder_name": "Nested_Loop_->_Merge_Join_Outer_Index_Scan_Inner",
   "pattern_length": 2,
-  "occurrence_count": 150
+  "occurrence_count": 120
 }

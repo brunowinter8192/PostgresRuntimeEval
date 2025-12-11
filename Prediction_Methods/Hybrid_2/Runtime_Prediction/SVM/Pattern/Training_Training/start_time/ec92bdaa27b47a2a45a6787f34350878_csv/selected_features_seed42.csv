@@ -1,4 +1,0 @@
-feature;order
-HashJoin_nt;1
-HashJoin_Outer_startup_cost;2
-Hash_Inner_startup_cost;3

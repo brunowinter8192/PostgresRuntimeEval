@@ -1,1 +1,0 @@
-{"features_exec": ["GatherMerge_np", "GatherMerge_nt", "GatherMerge_nt1", "Sort_Outer_nt", "Sort_Outer_nt1"], "features_start": ["GatherMerge_np", "GatherMerge_nt2", "GatherMerge_startup_cost"]}

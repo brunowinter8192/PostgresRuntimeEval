@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Hash_rt1;True;0.2665222518031981;1;Hash_rt1
+2;Hash_plan_width;True;0.2504050719644545;2;Hash_rt1, Hash_plan_width
+3;SeqScan_Outer_np;True;0.16172906242667656;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+4;Hash_np;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+5;Hash_nt2;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+6;Hash_reltuples;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+7;Hash_parallel_workers;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+8;Hash_st2;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+9;Hash_rt2;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+10;SeqScan_Outer_nt1;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+11;SeqScan_Outer_nt2;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+12;SeqScan_Outer_startup_cost;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+13;SeqScan_Outer_parallel_workers;False;0.19920258110469352;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+14;Hash_st1;False;0.21548058652406912;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+15;Hash_startup_cost;False;0.24583003037333678;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+16;Hash_total_cost;False;0.24583003037333678;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+17;SeqScan_Outer_total_cost;False;0.24583003037333678;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+18;SeqScan_Outer_reltuples;False;0.2880528958189731;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+19;SeqScan_Outer_plan_width;False;0.446820347682637;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+20;Hash_nt;False;0.46449094532020013;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+21;Hash_nt1;False;0.46449094532020013;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+22;SeqScan_Outer_nt;False;0.46449094532020013;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+23;SeqScan_Outer_sel;False;0.6991690000908738;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np
+24;Hash_sel;False;1.4902158600573587;3;Hash_rt1, Hash_plan_width, SeqScan_Outer_np

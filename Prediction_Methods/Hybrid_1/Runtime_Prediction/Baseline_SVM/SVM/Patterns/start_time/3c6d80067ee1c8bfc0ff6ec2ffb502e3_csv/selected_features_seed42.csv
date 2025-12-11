@@ -1,0 +1,8 @@
+feature;order
+Sort_Outer_rt1;1
+GatherMerge_parallel_workers;2
+Sort_Outer_sel;3
+NestedLoop_Outer_nt2;4
+Hash_Inner_sel;5
+Hash_Inner_plan_width;6
+GatherMerge_sel;7

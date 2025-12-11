@@ -16,20 +16,10 @@ def verify_extraction(pattern_csv: str, patterns_base_dir: str, output_dir: str)
 
 # FUNCTIONS
 
-# Load pattern data from find_all_patterns.py output
+# Load pattern data from 01_Find_Patterns.py output
 def load_pattern_data(pattern_csv: str) -> pd.DataFrame:
     df = pd.read_csv(pattern_csv, delimiter=';')
-    return df[['pattern_hash', 'pattern', 'leaf_pattern', 'total']]
-
-
-# Count operators in pattern string
-def count_operators_in_pattern(pattern_str):
-    if '[' in pattern_str:
-        children = pattern_str.split('[')[1].split(']')[0]
-        num_children = len([c for c in children.split(',') if c.strip()])
-        return num_children + 1
-    else:
-        return 2
+    return df[['pattern_hash', 'pattern_string', 'operator_count', 'occurrence_count']]
 
 
 # Count rows in pattern CSV file
@@ -48,11 +38,10 @@ def verify_all_patterns(pattern_data, patterns_base_dir):
 
     for _, row in pattern_data.iterrows():
         pattern_hash = row['pattern_hash']
-        pattern_str = row['pattern']
-        total_occurrences = row['total']
-        leaf_pattern = row['leaf_pattern']
+        pattern_str = row['pattern_string']
+        total_occurrences = row['occurrence_count']
+        num_operators = row['operator_count']
 
-        num_operators = count_operators_in_pattern(pattern_str)
         expected_rows = total_occurrences * num_operators
 
         pattern_folder = patterns_path / pattern_hash
@@ -71,8 +60,7 @@ def verify_all_patterns(pattern_data, patterns_base_dir):
 
         results.append({
             'pattern_hash': pattern_hash,
-            'pattern': pattern_str,
-            'leaf_pattern': leaf_pattern,
+            'pattern_string': pattern_str,
             'total_occurrences': total_occurrences,
             'num_operators': num_operators,
             'expected_rows': expected_rows,

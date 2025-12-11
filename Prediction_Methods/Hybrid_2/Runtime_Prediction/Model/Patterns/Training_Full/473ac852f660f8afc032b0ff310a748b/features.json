@@ -1,1 +1,0 @@
-{"features_exec": ["Hash_Inner_rt1", "Hash_Inner_rt2", "Hash_Inner_st1", "Hash_Inner_st2", "NestedLoop_total_cost"], "features_start": ["Hash_Inner_rt1", "Hash_Inner_rt2", "Hash_Inner_st1", "Hash_Inner_st2", "NestedLoop_nt2", "SeqScan_Outer_nt"]}

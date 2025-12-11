@@ -52,7 +52,7 @@ def mine_patterns_iteratively(df: pd.DataFrame, max_depth: int) -> dict:
         all_nodes = extract_all_nodes(root)
 
         for node in all_nodes:
-            for pattern_length in range(2, max_depth + 1):
+            for pattern_length in range(2, max_depth + 2):
                 if not has_children_at_length(node, pattern_length):
                     break
 

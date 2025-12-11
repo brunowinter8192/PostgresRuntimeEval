@@ -1,0 +1,10 @@
+feature;order
+Aggregate_rt1;1
+Aggregate_plan_width;2
+GatherMerge_Outer_plan_width;3
+GatherMerge_Outer_parallel_workers;4
+Aggregate_total_cost;5
+Sort_Outer_sel;6
+Sort_Outer_plan_width;7
+GatherMerge_Outer_total_cost;8
+HashJoin_Outer_nt;9

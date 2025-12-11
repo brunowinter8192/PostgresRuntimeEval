@@ -1,0 +1,6 @@
+feature;order
+GatherMerge_st1;1
+GatherMerge_nt;2
+Aggregate_Outer_startup_cost;3
+Aggregate_Outer_nt1;4
+GatherMerge_rt1;5

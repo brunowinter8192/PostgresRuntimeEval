@@ -1,2 +1,0 @@
-pattern_hash;pattern_string;mre;mre_pct;status
-d3e76c7bc82fad9a84c5806c6fbcd6ce;Nested Loop -> [Merge Join -> [Sort -> Hash Join -> [Seq Scan (Outer), Hash -> Aggregate -> Index Scan (Outer) (Outer) (Inner)] (Outer) (Outer), Sort -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)];0.09450033273547537;9.450033273547536;SELECTED

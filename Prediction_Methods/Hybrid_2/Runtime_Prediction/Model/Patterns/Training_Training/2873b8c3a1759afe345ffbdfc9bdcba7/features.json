@@ -1,1 +1,0 @@
-{"features_exec": ["HashJoin_nt2", "Hash_Inner_nt", "Hash_Inner_nt1", "SeqScan_Outer_nt"], "features_start": ["Hash_Inner_sel", "NestedLoop_Outer_sel"]}

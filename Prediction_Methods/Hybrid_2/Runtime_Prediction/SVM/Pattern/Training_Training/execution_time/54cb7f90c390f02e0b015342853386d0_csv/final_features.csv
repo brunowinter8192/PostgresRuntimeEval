@@ -1,6 +1,0 @@
-feature;order
-Hash_plan_width;1
-SeqScan_Outer_rt1;2
-SeqScan_Outer_rt2;3
-SeqScan_Outer_st1;4
-SeqScan_Outer_st2;5

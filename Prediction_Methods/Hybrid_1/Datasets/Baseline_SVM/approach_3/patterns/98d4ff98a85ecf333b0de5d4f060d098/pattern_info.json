@@ -3,5 +3,5 @@
   "pattern_string": "Gather Merge -> Sort -> Hash Join (Outer) (Outer)",
   "folder_name": "Gather_Merge_->_Sort_->_Hash_Join_Outer_Outer",
   "pattern_length": 3,
-  "occurrence_count": 300
+  "occurrence_count": 240
 }

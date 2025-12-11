@@ -1,0 +1,15 @@
+feature;order
+np;1
+nt;2
+nt1;3
+nt2;4
+parallel_workers;5
+plan_width;6
+reltuples;7
+rt1;8
+rt2;9
+sel;10
+st1;11
+st2;12
+startup_cost;13
+total_cost;14

@@ -3,5 +3,5 @@
   "pattern_string": "Limit -> Sort -> Aggregate -> Gather -> Hash Join -> [Hash Join (Outer), Hash (Inner)] (Outer) (Outer) (Outer) (Outer)",
   "folder_name": "Limit_->_Sort_->_Aggregate_->_Gather_->_Hash_Join_->_Hash_Join_Outer_Hash_Inner_Outer_Outer_Outer_Outer",
   "pattern_length": 6,
-  "occurrence_count": 150
+  "occurrence_count": 120
 }

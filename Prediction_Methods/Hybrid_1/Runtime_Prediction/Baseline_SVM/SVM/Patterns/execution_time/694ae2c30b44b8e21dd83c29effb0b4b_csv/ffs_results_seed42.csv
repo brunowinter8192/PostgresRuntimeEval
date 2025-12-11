@@ -1,0 +1,29 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Gather_rt1;True;0.00419093316191862;1;Gather_rt1
+2;NestedLoop_Outer_total_cost;True;0.0037520657124603305;2;Gather_rt1, NestedLoop_Outer_total_cost
+3;Gather_total_cost;False;0.004160962528086636;2;Gather_rt1, NestedLoop_Outer_total_cost
+4;Gather_nt;False;0.004213949895577844;2;Gather_rt1, NestedLoop_Outer_total_cost
+5;Gather_nt1;False;0.004214010881836002;2;Gather_rt1, NestedLoop_Outer_total_cost
+6;NestedLoop_Outer_nt;False;0.004214010881836002;2;Gather_rt1, NestedLoop_Outer_total_cost
+7;NestedLoop_Outer_sel;False;0.004271152704406062;2;Gather_rt1, NestedLoop_Outer_total_cost
+8;NestedLoop_Outer_startup_cost;False;0.004281193107467135;2;Gather_rt1, NestedLoop_Outer_total_cost
+9;Gather_startup_cost;False;0.004281737400294678;2;Gather_rt1, NestedLoop_Outer_total_cost
+10;Gather_sel;False;0.004286636750385411;2;Gather_rt1, NestedLoop_Outer_total_cost
+11;Gather_plan_width;False;0.0042867949362188715;2;Gather_rt1, NestedLoop_Outer_total_cost
+12;Gather_parallel_workers;False;0.0042867949362188715;2;Gather_rt1, NestedLoop_Outer_total_cost
+13;NestedLoop_Outer_nt2;False;0.0042867949362188715;2;Gather_rt1, NestedLoop_Outer_total_cost
+14;NestedLoop_Outer_plan_width;False;0.0042867949362188715;2;Gather_rt1, NestedLoop_Outer_total_cost
+15;NestedLoop_Outer_nt1;False;0.004474718569713497;2;Gather_rt1, NestedLoop_Outer_total_cost
+16;NestedLoop_Outer_rt1;False;0.0052353240955715;2;Gather_rt1, NestedLoop_Outer_total_cost
+17;NestedLoop_Outer_st2;False;0.005698460532350393;2;Gather_rt1, NestedLoop_Outer_total_cost
+18;NestedLoop_Outer_rt2;False;0.006011184523728287;2;Gather_rt1, NestedLoop_Outer_total_cost
+19;NestedLoop_Outer_st1;False;0.009528478648033141;2;Gather_rt1, NestedLoop_Outer_total_cost
+20;Gather_st1;False;0.010025525652397307;2;Gather_rt1, NestedLoop_Outer_total_cost
+21;Gather_np;False;0.011542886903905366;2;Gather_rt1, NestedLoop_Outer_total_cost
+22;Gather_nt2;False;0.011542886903905366;2;Gather_rt1, NestedLoop_Outer_total_cost
+23;Gather_reltuples;False;0.011542886903905366;2;Gather_rt1, NestedLoop_Outer_total_cost
+24;Gather_st2;False;0.011542886903905366;2;Gather_rt1, NestedLoop_Outer_total_cost
+25;Gather_rt2;False;0.011542886903905366;2;Gather_rt1, NestedLoop_Outer_total_cost
+26;NestedLoop_Outer_np;False;0.011542886903905366;2;Gather_rt1, NestedLoop_Outer_total_cost
+27;NestedLoop_Outer_reltuples;False;0.011542886903905366;2;Gather_rt1, NestedLoop_Outer_total_cost
+28;NestedLoop_Outer_parallel_workers;False;0.011542886903905366;2;Gather_rt1, NestedLoop_Outer_total_cost

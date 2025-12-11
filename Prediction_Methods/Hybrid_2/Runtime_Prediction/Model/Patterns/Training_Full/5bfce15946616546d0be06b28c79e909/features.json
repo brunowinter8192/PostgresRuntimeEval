@@ -1,1 +1,0 @@
-{"features_exec": ["HashJoin_Outer_plan_width", "HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2", "NestedLoop_plan_width"], "features_start": ["HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2"]}

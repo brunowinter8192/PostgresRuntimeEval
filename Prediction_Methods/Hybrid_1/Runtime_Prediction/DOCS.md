@@ -15,6 +15,7 @@ Runtime_Prediction/
 ├── A_01a_Evaluate_Predictions.py       # [analysis] Query-level MRE evaluation
 ├── A_01b_Node_Evaluation.py            # [analysis] Node type evaluation by source
 ├── A_01c_Time_Analysis.py              # [analysis] Operator time range analysis
+├── A_01d_Depth_Propagation.py          # [analysis] Depth propagation visualization
 ├── md/                                 # [outputs] Query prediction MD reports
 └── Baseline_SVM/                       # [outputs] SVM baseline outputs
     ├── SVM/
@@ -64,9 +65,10 @@ Runtime_Prediction/
 ## Analysis Scripts
 
 ```
-A_01a - Evaluate_Predictions  [predictions.csv → MRE metrics]
+A_01a - Evaluate_Predictions  [predictions.csv → MRE metrics, optional baseline comparison]
 A_01b - Node_Evaluation       [predictions.csv → Node type analysis by source]
 A_01c - Time_Analysis         [operator_dataset.csv → Operator range statistics]
+A_01d - Depth_Propagation     [predictions.csv → Depth propagation plots per plan]
 ```
 
 ## Script Documentation
@@ -213,8 +215,8 @@ python 02b_Train_Models_Operators.py ../Datasets/Baseline_SVM Baseline_SVM/SVM/o
 **Algorithm (Two-Phase Multi-Depth Pattern Matching):**
 
 Phase 1 - Pattern Assignment:
-1. Load patterns from patterns.csv, sort by pattern_length descending
-2. For each pattern (longest first):
+1. Load patterns from patterns.csv, sort by pattern_length descending, then occurrence_count descending
+2. For each pattern (longest first, ties broken by frequency):
    - Find all query nodes matching the pattern hash
    - Mark matched nodes as consumed (prevents overlap)
    - Assign pattern to root node of match
@@ -239,7 +241,9 @@ When --passthrough flag is set, these operators copy their child's prediction if
 
 **Outputs:**
 - `{output-dir}/predictions.csv`
-  - Columns: query_file, node_id, node_type, depth, parent_relationship, subplan_name, actual_startup_time, actual_total_time, predicted_startup_time, predicted_total_time, prediction_type (pattern/operator/passthrough)
+  - Columns: query_file, node_id, node_type, depth, parent_relationship, subplan_name, actual_startup_time, actual_total_time, predicted_startup_time, predicted_total_time, prediction_type (pattern/operator/passthrough), pattern_hash
+- `{output-dir}/patterns.csv` - Pattern usage summary (pattern_hash, usage_count, node_types)
+- `{output-dir}/md/03_{template}_{plan_hash[:8]}_{timestamp}.md` - One MD report per unique plan structure (with --report flag)
 
 **Usage:**
 ```bash
@@ -266,19 +270,21 @@ python 03_Predict_Queries/03_Predict_Queries.py \
 **Variables:**
 - `--output-dir` - Path to output directory for predictions (required)
 - `--passthrough` - Enable passthrough for non-pattern passthrough operators (optional)
+- `--report` - Generate MD report for first query of each unique plan structure (optional)
 
 ---
 
 ### A_01a - Evaluate_Predictions.py
 
-**Purpose:** Evaluate query-level prediction accuracy using MRE
+**Purpose:** Evaluate query-level prediction accuracy using MRE, optionally compare against baseline
 
 **Workflow:**
 1. Load predictions
 2. Calculate MRE per query (sum actuals vs sum predictions)
 3. Group by template for template-level analysis
 4. Calculate overall MRE
-5. Generate template MRE plot
+5. If --compare: Load baseline MRE, calculate delta (baseline - hybrid)
+6. Generate template MRE plot
 
 **Inputs:**
 - `predictions_file` - Path to predictions.csv (positional)
@@ -286,15 +292,21 @@ python 03_Predict_Queries/03_Predict_Queries.py \
 **Outputs:**
 - `{output-dir}/overall_mre.csv`
 - `{output-dir}/template_mre.csv`
+  - Additional columns when --compare used: baseline_mre_pct, delta_mre_pct, delta_formula
 - `{output-dir}/template_mre_plot.png`
 
 **Usage:**
 ```bash
+# Basic evaluation
 python A_01a_Evaluate_Predictions.py Baseline_SVM/Evaluation/predictions.csv --output-dir Baseline_SVM/Evaluation
+
+# With baseline comparison
+python A_01a_Evaluate_Predictions.py Baseline_SVM/Evaluation/predictions.csv --output-dir Baseline_SVM/Evaluation --compare ../../Operator_Level/Runtime_Prediction/Baseline_SVM/Evaluation/A_01f_template_mre.csv
 ```
 
 **Variables:**
 - `--output-dir` - Path to output directory (required)
+- `--compare` - Path to baseline template_mre.csv for delta calculation (optional)
 
 ---
 
@@ -353,3 +365,31 @@ python A_01c_Time_Analysis.py ../../Operator_Level/Datasets/Baseline/03_training
 
 **Variables:**
 - `--output-dir` - Output directory for analysis results (required)
+
+---
+
+### A_01d - Depth_Propagation.py
+
+**Purpose:** Visualize actual vs predicted times across depth levels per query plan
+
+**Workflow:**
+1. Load structure CSV for correct plan hash calculation
+2. Load predictions
+3. Compute plan_hash per query from structure (based on node_type, depth, parent_relationship)
+4. Group by plan_hash and depth, calculate mean actual/predicted times
+5. Generate line plot with automatic label positioning (adjustText)
+
+**Inputs:**
+- `structure_csv` - Path to structure CSV (test.csv) for correct plan hash calculation (positional)
+- `predictions_csv` - Path to predictions.csv (positional)
+
+**Outputs:**
+- `{output-dir}/A_01d_depth_{template}_{plan_hash[:8]}.png` per unique plan within template
+
+**Usage:**
+```bash
+python A_01d_Depth_Propagation.py ../Datasets/Baseline_SVM/test.csv Baseline_SVM/Predictions/approach_1/predictions.csv --output-dir Baseline_SVM/Evaluation/approach_1
+```
+
+**Variables:**
+- `--output-dir` - Output directory (required)

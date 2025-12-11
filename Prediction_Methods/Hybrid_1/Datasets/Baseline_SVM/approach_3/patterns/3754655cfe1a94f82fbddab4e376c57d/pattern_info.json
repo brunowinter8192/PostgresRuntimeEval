@@ -3,5 +3,5 @@
   "pattern_string": "Aggregate -> Sort (Outer)",
   "folder_name": "Aggregate_->_Sort_Outer",
   "pattern_length": 2,
-  "occurrence_count": 300
+  "occurrence_count": 240
 }

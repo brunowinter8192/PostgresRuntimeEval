@@ -1,7 +1,0 @@
-feature;order
-HashJoin_Outer_rt1;1
-Sort_nt;2
-Sort_nt1;3
-Sort_sel;4
-Sort_plan_width;5
-Aggregate_Outer_plan_width;6

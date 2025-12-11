@@ -168,7 +168,7 @@ def extract_pattern_node_ids(node, remaining_length: int) -> list:
 
 # Export pattern datasets to separate directories
 def export_pattern_datasets(pattern_datasets: dict, output_dir: str) -> None:
-    patterns_dir = Path(output_dir) / 'Patterns'
+    patterns_dir = Path(output_dir)
 
     for pattern_hash, dataframes in pattern_datasets.items():
         if len(dataframes) == 0:

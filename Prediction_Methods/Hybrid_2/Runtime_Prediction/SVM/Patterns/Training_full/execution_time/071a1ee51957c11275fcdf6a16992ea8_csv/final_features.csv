@@ -1,0 +1,11 @@
+feature;order
+Aggregate_rt1;1
+Gather_Outer_rt1;2
+Gather_Outer_rt2;3
+Gather_Outer_st1;4
+Gather_Outer_st2;5
+NestedLoop_Outer_rt1;6
+NestedLoop_Outer_rt2;7
+NestedLoop_Outer_st1;8
+NestedLoop_Outer_st2;9
+NestedLoop_Outer_total_cost;10

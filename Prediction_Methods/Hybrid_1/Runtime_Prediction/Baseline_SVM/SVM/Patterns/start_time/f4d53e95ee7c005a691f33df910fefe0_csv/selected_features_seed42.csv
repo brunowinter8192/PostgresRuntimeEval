@@ -1,0 +1,9 @@
+feature;order
+Gather_st1;1
+Gather_startup_cost;2
+HashJoin_Outer_rt1;3
+Gather_plan_width;4
+Gather_parallel_workers;5
+Gather_sel;6
+HashJoin_Outer_nt2;7
+HashJoin_Outer_sel;8

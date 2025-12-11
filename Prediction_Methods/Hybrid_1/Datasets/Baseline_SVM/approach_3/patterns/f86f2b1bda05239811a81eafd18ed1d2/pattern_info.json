@@ -3,5 +3,5 @@
   "pattern_string": "Sort -> Aggregate -> Nested Loop (Outer) (Outer)",
   "folder_name": "Sort_->_Aggregate_->_Nested_Loop_Outer_Outer",
   "pattern_length": 3,
-  "occurrence_count": 150
+  "occurrence_count": 120
 }

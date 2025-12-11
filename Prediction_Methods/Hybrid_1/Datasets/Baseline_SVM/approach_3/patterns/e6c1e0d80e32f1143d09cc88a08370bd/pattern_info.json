@@ -3,5 +3,5 @@
   "pattern_string": "Gather Merge -> Aggregate -> Sort (Outer) (Outer)",
   "folder_name": "Gather_Merge_->_Aggregate_->_Sort_Outer_Outer",
   "pattern_length": 3,
-  "occurrence_count": 300
+  "occurrence_count": 240
 }

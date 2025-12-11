@@ -1,76 +1,51 @@
 # INFRASTRUCTURE
 
+import sys
 from datetime import datetime
 from pathlib import Path
 
-# From tree.py: Build query tree string
-from src.tree import build_query_tree_string
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+# From mapping_config.py: Passthrough operators
+from mapping_config import PASSTHROUGH_OPERATORS
 
 
 # FUNCTIONS
 
-# Format feature values for MD output
-def format_feature_values(feature_dict: dict) -> str:
-    parts = []
-    for k, v in feature_dict.items():
-        if isinstance(v, float):
-            parts.append(f'{k}={v:.4f}')
-        else:
-            parts.append(f'{k}={v}')
-    return ', '.join(parts)
-
-
 # Export MD report for single query prediction
 def export_md_report(
     query_file: str,
-    test_file: str,
-    pattern_overview_file: str,
-    operator_overview_file: str,
-    pattern_model_dir: str,
-    operator_model_dir: str,
     df_query,
     predictions: list,
     steps: list,
-    output_dir: str
+    consumed_nodes: set,
+    pattern_assignments: dict,
+    pattern_info: dict,
+    output_dir: str,
+    plan_hash: str = ''
 ) -> None:
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    timestamp_display = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     md_dir = Path(output_dir) / 'md'
     md_dir.mkdir(parents=True, exist_ok=True)
 
-    query_name = query_file.replace('.sql', '')
-    md_file = md_dir / f'03_query_prediction_{query_name}_{timestamp}.md'
+    template = query_file.split('_')[0]
+    hash_suffix = f'_{plan_hash[:8]}' if plan_hash else ''
+    md_file = md_dir / f'03_{template}{hash_suffix}_{timestamp}.md'
 
-    lines = build_report_lines(
-        query_file, timestamp_display, test_file, pattern_overview_file,
-        operator_overview_file, pattern_model_dir, operator_model_dir,
-        df_query, predictions, steps
-    )
+    lines = build_report_lines(query_file, df_query, predictions, steps, consumed_nodes, pattern_assignments, pattern_info)
 
     with open(md_file, 'w') as f:
         f.write('\n'.join(lines))
 
 
 # Build all report lines
-def build_report_lines(
-    query_file: str,
-    timestamp: str,
-    test_file: str,
-    pattern_overview_file: str,
-    operator_overview_file: str,
-    pattern_model_dir: str,
-    operator_model_dir: str,
-    df_query,
-    predictions: list,
-    steps: list
-) -> list:
+def build_report_lines(query_file: str, df_query, predictions: list, steps: list, consumed_nodes: set, pattern_assignments: dict, pattern_info: dict) -> list:
     lines = []
 
-    lines.extend(build_header_section(query_file, timestamp))
-    lines.extend(build_algorithm_section())
-    lines.extend(build_input_section(test_file, pattern_overview_file, operator_overview_file, pattern_model_dir, operator_model_dir))
-    lines.extend(build_tree_section(df_query))
+    lines.extend(build_header_section(query_file))
+    lines.extend(build_pattern_summary_section(pattern_assignments, pattern_info))
+    lines.extend(build_tree_section(df_query, consumed_nodes, pattern_assignments))
     lines.extend(build_chain_section(steps))
     lines.extend(build_results_section(predictions))
 
@@ -78,7 +53,8 @@ def build_report_lines(
 
 
 # Build header section
-def build_header_section(query_file: str, timestamp: str) -> list:
+def build_header_section(query_file: str) -> list:
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     return [
         '# Query Prediction Report (Hybrid_1)',
         '',
@@ -88,46 +64,55 @@ def build_header_section(query_file: str, timestamp: str) -> list:
     ]
 
 
-# Build algorithm section
-def build_algorithm_section() -> list:
-    return [
-        '## Algorithm',
-        '',
-        'Child-to-Parent Bottom-Up Pattern Matching:',
-        '1. Start bei tiefster depth, iteriere bis depth 0',
-        '2. Fuer jeden Operator: Schaue zu Parent HOCH',
-        '3. Versuche Pattern zu bilden: Parent + alle direkten Children',
-        '4. Pattern matched -> Prediction fuer Parent, Parent + Children consumed',
-        '5. Kein Pattern -> Operator-Fallback fuer einzelnen Node',
-        '6. Predicted Values werden Child-Features (st1/rt1/st2/rt2) fuer hoehere Ebenen',
-        ''
-    ]
+# Build pattern summary section
+def build_pattern_summary_section(pattern_assignments: dict, pattern_info: dict) -> list:
+    lines = ['## Pattern Assignments', '']
+
+    if not pattern_assignments:
+        lines.append('No patterns matched.')
+        lines.append('')
+        return lines
+
+    lines.append(f'**Total Patterns Matched:** {len(pattern_assignments)}')
+    lines.append('')
+    lines.append('| Root Node | Pattern Hash | Pattern String |')
+    lines.append('|-----------|--------------|----------------|')
+
+    for node_id, pattern_hash in sorted(pattern_assignments.items()):
+        info = pattern_info.get(pattern_hash, {})
+        pattern_string = info.get('pattern_string', 'N/A')
+        lines.append(f'| {node_id} | {pattern_hash[:12]}... | {pattern_string} |')
+
+    lines.append('')
+    return lines
 
 
-# Build input summary section
-def build_input_section(test_file: str, pattern_overview: str, operator_overview: str, pattern_dir: str, operator_dir: str) -> list:
-    return [
-        '## Input Summary',
-        '',
-        f'- **Test File:** {Path(test_file).resolve()}',
-        f'- **Pattern Overview:** {Path(pattern_overview).resolve()}',
-        f'- **Operator Overview:** {Path(operator_overview).resolve()}',
-        f'- **Pattern Models:** {Path(pattern_dir).resolve()}',
-        f'- **Operator Models:** {Path(operator_dir).resolve()}',
-        ''
-    ]
+# Build query tree section with pattern markers
+def build_tree_section(df_query, consumed_nodes: set, pattern_assignments: dict) -> list:
+    lines = ['## Query Tree', '', '```']
 
+    min_depth = df_query['depth'].min()
 
-# Build query tree section
-def build_tree_section(df_query) -> list:
-    return [
-        '## Query Tree',
-        '',
-        '```',
-        build_query_tree_string(df_query),
-        '```',
-        ''
-    ]
+    for _, row in df_query.iterrows():
+        depth = row['depth']
+        indent = '  ' * (depth - min_depth)
+        node_type = row['node_type']
+        node_id = row['node_id']
+
+        marker = ''
+        if node_id in pattern_assignments:
+            marker = ' [PATTERN ROOT]'
+        elif node_id in consumed_nodes:
+            marker = ' [consumed]'
+        elif node_type in PASSTHROUGH_OPERATORS:
+            marker = ' [PASSTHROUGH]'
+
+        suffix = ' - ROOT' if depth == min_depth else ''
+        lines.append(f'{indent}Node {node_id} ({node_type}){marker}{suffix}')
+
+    lines.append('```')
+    lines.append('')
+    return lines
 
 
 # Build prediction chain section
@@ -136,49 +121,29 @@ def build_chain_section(steps: list) -> list:
 
     for step in steps:
         if step['prediction_type'] == 'pattern':
-            lines.extend(build_pattern_step(step))
+            lines.append(f"### Step {step['step']} (depth {step['depth']}): Pattern Match")
+            lines.append('')
+            lines.append(f"- **Pattern:** {step['pattern_string']}")
+            lines.append(f"- **Hash:** {step['pattern_hash']}")
+            lines.append(f"- **Root:** Node {step['parent_node_id']} ({step['parent_node_type']})")
+            consumed_str = ', '.join([f"Node {nid} ({ntype})" for nid, ntype in step['consumed_children']])
+            if consumed_str:
+                lines.append(f"- **Consumed Children:** {consumed_str}")
+        elif step['prediction_type'] == 'passthrough':
+            lines.append(f"### Step {step['step']} (depth {step['depth']}): Passthrough")
+            lines.append('')
+            lines.append(f"- **Node:** {step['node_id']} ({step['node_type']})")
+            lines.append(f"- **Reason:** {step['reason']}")
         else:
-            lines.extend(build_operator_step(step))
+            lines.append(f"### Step {step['step']} (depth {step['depth']}): Operator Fallback")
+            lines.append('')
+            lines.append(f"- **Node:** {step['node_id']} ({step['node_type']})")
+            lines.append(f"- **Reason:** {step['reason']}")
 
-        lines.append(f"- **Model (execution_time):** {step['model_path_exec']}")
-        lines.append(f"- **Model (start_time):** {step['model_path_start']}")
-        lines.append('')
-        lines.append(f"**Features (execution_time):** {', '.join(step['features_exec'])}")
-        lines.append(f"**Input:** {format_feature_values(step['input_values_exec'])}")
-        lines.append('')
-        lines.append(f"**Features (start_time):** {', '.join(step['features_start'])}")
-        lines.append(f"**Input:** {format_feature_values(step['input_values_start'])}")
-        lines.append('')
-        lines.append(f"**Output:** predicted_startup_time={step['predicted_startup_time']:.2f}, predicted_total_time={step['predicted_total_time']:.2f}")
+        lines.append(f"- **Output:** st={step['predicted_startup_time']:.2f}, rt={step['predicted_total_time']:.2f}")
         lines.append('')
 
     return lines
-
-
-# Build pattern step lines
-def build_pattern_step(step: dict) -> list:
-    lines = [
-        f"### Step {step['step']} (depth {step['depth']}): Pattern Match",
-        '',
-        f"- **Pattern:** {step['pattern_folder']} ({step['pattern_hash']})",
-    ]
-
-    consumed_str = ', '.join([f"Node {nid} ({ntype})" for nid, ntype in step['consumed_children']])
-    lines.append(f"- **Consumed:** Node {step['parent_node_id']} ({step['parent_node_type']}), {consumed_str}")
-    lines.append(f"- **Prediction for:** Node {step['parent_node_id']} ({step['parent_node_type']})")
-
-    return lines
-
-
-# Build operator step lines
-def build_operator_step(step: dict) -> list:
-    reason = step.get('reason', 'No pattern match available')
-    return [
-        f"### Step {step['step']} (depth {step['depth']}): Operator Fallback",
-        '',
-        f"- **Node:** {step['node_id']} ({step['node_type']})",
-        f"- **Reason:** {reason}"
-    ]
 
 
 # Build prediction results section
@@ -186,25 +151,19 @@ def build_results_section(predictions: list) -> list:
     lines = [
         '## Prediction Results',
         '',
-        '| Node | Type | Depth | Pred Type | Actual ST | Actual RT | Pred ST | Pred RT | MRE ST (%) | MRE RT (%) |',
-        '|------|------|-------|-----------|-----------|-----------|---------|---------|------------|------------|'
+        '| Node | Type | Depth | Pred Type | Actual RT | Pred RT | MRE (%) |',
+        '|------|------|-------|-----------|-----------|---------|---------|'
     ]
 
-    for pred in predictions:
-        actual_st = pred['actual_startup_time']
+    for pred in sorted(predictions, key=lambda x: x['depth']):
         actual_rt = pred['actual_total_time']
-        pred_st = pred['predicted_startup_time']
         pred_rt = pred['predicted_total_time']
-
-        mre_st = abs(actual_st - pred_st) / actual_st * 100 if actual_st > 0 else 0
         mre_rt = abs(actual_rt - pred_rt) / actual_rt * 100 if actual_rt > 0 else 0
 
         lines.append(
             f"| {pred['node_id']} | {pred['node_type']} | {pred['depth']} | {pred['prediction_type']} "
-            f"| {actual_st:.2f} | {actual_rt:.2f} | {pred_st:.2f} | {pred_rt:.2f} "
-            f"| {mre_st:.1f} | {mre_rt:.1f} |"
+            f"| {actual_rt:.2f} | {pred_rt:.2f} | {mre_rt:.1f} |"
         )
 
     lines.append('')
-
     return lines

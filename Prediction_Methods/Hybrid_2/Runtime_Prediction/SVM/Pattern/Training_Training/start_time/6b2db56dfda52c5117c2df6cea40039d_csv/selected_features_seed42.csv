@@ -1,8 +1,0 @@
-feature;order
-HashJoin_Outer_rt1;1
-Aggregate_plan_width;2
-NestedLoop_Outer_nt2;3
-NestedLoop_Outer_sel;4
-NestedLoop_Outer_plan_width;5
-HashJoin_Outer_nt2;6
-HashJoin_Outer_sel;7

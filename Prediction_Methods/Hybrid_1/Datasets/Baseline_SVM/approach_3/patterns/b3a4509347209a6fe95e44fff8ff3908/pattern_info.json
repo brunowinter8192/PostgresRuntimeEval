@@ -3,5 +3,5 @@
   "pattern_string": "Sort -> Aggregate -> Gather (Outer) (Outer)",
   "folder_name": "Sort_->_Aggregate_->_Gather_Outer_Outer",
   "pattern_length": 3,
-  "occurrence_count": 450
+  "occurrence_count": 360
 }

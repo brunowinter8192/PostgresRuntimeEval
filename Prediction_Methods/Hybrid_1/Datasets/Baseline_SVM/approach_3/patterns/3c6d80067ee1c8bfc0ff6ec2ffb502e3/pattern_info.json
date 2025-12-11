@@ -3,5 +3,5 @@
   "pattern_string": "Gather Merge -> Sort -> Hash Join -> [Nested Loop (Outer), Hash (Inner)] (Outer) (Outer)",
   "folder_name": "Gather_Merge_->_Sort_->_Hash_Join_->_Nested_Loop_Outer_Hash_Inner_Outer_Outer",
   "pattern_length": 4,
-  "occurrence_count": 300
+  "occurrence_count": 240
 }
