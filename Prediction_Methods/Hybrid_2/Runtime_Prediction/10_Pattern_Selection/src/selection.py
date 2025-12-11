@@ -18,9 +18,34 @@ from src.prediction import load_or_train_pattern_model, predict_all_queries
 
 # FUNCTIONS
 
+# Calculate avg MRE for a pattern based on current predictions
+def calculate_pattern_avg_mre(
+    pattern_hash: str,
+    predictions: list,
+    pattern_occurrences: pd.DataFrame
+) -> float:
+    occurrences = pattern_occurrences[pattern_occurrences['pattern_hash'] == pattern_hash]
+
+    pred_lookup = {}
+    for p in predictions:
+        key = (p['query_file'], p['node_id'])
+        if p['actual_total_time'] > 0:
+            mre = abs(p['predicted_total_time'] - p['actual_total_time']) / p['actual_total_time']
+            pred_lookup[key] = mre
+
+    mre_values = []
+    for _, occ in occurrences.iterrows():
+        key = (occ['query_file'], occ['root_node_id'])
+        if key in pred_lookup:
+            mre_values.append(pred_lookup[key])
+
+    return np.mean(mre_values) if mre_values else 1.0
+
+
 # Run static selection for frequency/size strategies
 def run_static_selection(
     sorted_patterns: pd.DataFrame,
+    pattern_occurrences: pd.DataFrame,
     pattern_ffs: dict,
     df_training: pd.DataFrame,
     df_test: pd.DataFrame,
@@ -36,12 +61,19 @@ def run_static_selection(
     selected_pattern_info = {}
     selection_log = []
 
+    current_predictions = predict_all_queries(
+        df_test, operator_models, operator_ffs, {}, pattern_ffs, {}
+    )
+
     for idx, pattern_row in sorted_patterns.iterrows():
         pattern_hash = pattern_row['pattern_hash']
         pattern_string = pattern_row['pattern_string']
         pattern_length = int(pattern_row['pattern_length'])
         operator_count = int(pattern_row['operator_count'])
-        avg_mre = pattern_row.get('avg_mre', 1.0)
+
+        avg_mre = calculate_pattern_avg_mre(
+            pattern_hash, current_predictions, pattern_occurrences
+        )
 
         if avg_mre < min_error_threshold:
             selection_log.append(create_log_entry(
@@ -82,6 +114,7 @@ def run_static_selection(
             log_baseline = baseline_mre
             baseline_mre = new_mre
             delta = log_baseline - new_mre
+            current_predictions = predictions
         else:
             status = 'REJECTED'
             log_baseline = baseline_mre

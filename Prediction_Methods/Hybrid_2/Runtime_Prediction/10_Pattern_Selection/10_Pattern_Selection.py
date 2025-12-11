@@ -49,15 +49,16 @@ def run_pattern_selection(
     df_training = load_training_data(training_file)
     df_test = load_test_data(test_file)
 
+    pattern_occurrences = load_pattern_occurrences(pattern_occurrences_file)
+
     if strategy == 'error':
-        pattern_occurrences = load_pattern_occurrences(pattern_occurrences_file)
         run_error_selection(
             sorted_patterns, pattern_occurrences, pattern_ffs, df_training, df_test,
             operator_models, operator_ffs, output_dir, model_dir, pretrained_dir
         )
     else:
         run_static_selection(
-            sorted_patterns, pattern_ffs, df_training, df_test,
+            sorted_patterns, pattern_occurrences, pattern_ffs, df_training, df_test,
             operator_models, operator_ffs, output_dir, model_dir, pretrained_dir,
             min_error_threshold
         )
@@ -75,12 +76,9 @@ if __name__ == '__main__':
     parser.add_argument('--pattern-output-dir', required=True, help='Per-pattern results output directory')
     parser.add_argument('--model-dir', required=True, help='Model output directory')
     parser.add_argument('--pretrained-dir', default=None, help='Path to pretrained models')
-    parser.add_argument('--pattern-occurrences-file', default=None, help='Path to 05_test_pattern_occurrences_*.csv (required for error strategy)')
+    parser.add_argument('--pattern-occurrences-file', required=True, help='Path to 05_test_pattern_occurrences_*.csv')
     parser.add_argument('--min-error-threshold', type=float, default=0.1, help='Min avg_mre threshold for size/frequency (default: 0.1)')
     args = parser.parse_args()
-
-    if args.strategy == 'error' and not args.pattern_occurrences_file:
-        parser.error('--pattern-occurrences-file is required for error strategy')
 
     run_pattern_selection(
         args.strategy,
