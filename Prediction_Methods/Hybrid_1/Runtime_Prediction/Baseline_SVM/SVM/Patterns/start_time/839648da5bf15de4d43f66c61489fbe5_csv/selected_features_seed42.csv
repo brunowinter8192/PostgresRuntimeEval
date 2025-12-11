@@ -1,0 +1,5 @@
+feature;order
+GatherMerge_rt1;1
+GatherMerge_plan_width;2
+GatherMerge_parallel_workers;3
+HashJoin_Outer_sel;4

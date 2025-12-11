@@ -3,5 +3,5 @@
   "pattern_string": "Merge Join -> [Sort (Outer), Sort (Inner)]",
   "folder_name": "Merge_Join_->_Sort_Outer_Sort_Inner",
   "pattern_length": 2,
-  "occurrence_count": 150
+  "occurrence_count": 120
 }

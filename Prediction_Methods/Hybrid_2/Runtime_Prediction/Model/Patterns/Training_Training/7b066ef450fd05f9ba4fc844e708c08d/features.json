@@ -1,1 +1,0 @@
-{"features_exec": ["Gather_Outer_nt1", "HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2"], "features_start": ["Gather_Outer_nt1", "HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2"]}

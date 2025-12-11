@@ -2,6 +2,6 @@
   "pattern_hash": "7d4e78be851232c5a0cc7a0cf9df4593",
   "pattern_string": "Hash Join -> [Hash Join (Outer), Hash (Inner)]",
   "folder_name": "Hash_Join_->_Hash_Join_Outer_Hash_Inner",
-  "pattern_length": 1,
-  "occurrence_count": 300
+  "pattern_length": 2,
+  "occurrence_count": 240
 }

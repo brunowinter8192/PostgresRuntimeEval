@@ -1,4 +1,0 @@
-feature;order
-HashJoin_Outer_rt1;1
-NestedLoop_Outer_startup_cost;2
-GatherMerge_plan_width;3

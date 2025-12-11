@@ -2,6 +2,6 @@
   "pattern_hash": "deb558a9002117c419af6559ba19ef08",
   "pattern_string": "Hash -> Index Only Scan (Outer)",
   "folder_name": "Hash_->_Index_Only_Scan_Outer",
-  "pattern_length": 1,
-  "occurrence_count": 150
+  "pattern_length": 2,
+  "occurrence_count": 120
 }

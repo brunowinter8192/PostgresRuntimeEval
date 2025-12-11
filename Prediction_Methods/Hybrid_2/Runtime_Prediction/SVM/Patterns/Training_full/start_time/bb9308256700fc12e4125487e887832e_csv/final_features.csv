@@ -1,0 +1,15 @@
+feature;order
+HashJoin_Outer_rt1;1
+HashJoin_Outer_rt2;2
+HashJoin_Outer_st1;3
+HashJoin_Outer_st2;4
+HashJoin_np;5
+HashJoin_parallel_workers;6
+HashJoin_reltuples;7
+HashJoin_sel;8
+HashJoin_st1;9
+Hash_Inner_rt1;10
+Hash_Inner_rt2;11
+Hash_Inner_sel;12
+Hash_Inner_st1;13
+Hash_Inner_st2;14

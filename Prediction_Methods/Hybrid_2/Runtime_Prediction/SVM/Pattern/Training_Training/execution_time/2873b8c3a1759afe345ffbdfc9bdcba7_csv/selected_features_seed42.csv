@@ -1,5 +1,0 @@
-feature;order
-HashJoin_nt2;1
-SeqScan_Outer_nt;2
-Hash_Inner_nt;3
-Hash_Inner_nt1;4

@@ -1,0 +1,7 @@
+feature;order
+Aggregate_rt1;1
+NestedLoop_Outer_rt1;2
+NestedLoop_Outer_rt2;3
+NestedLoop_Outer_sel;4
+NestedLoop_Outer_st1;5
+NestedLoop_Outer_st2;6

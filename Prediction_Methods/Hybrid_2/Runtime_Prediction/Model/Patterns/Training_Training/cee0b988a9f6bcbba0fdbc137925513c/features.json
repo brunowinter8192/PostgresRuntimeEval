@@ -1,1 +1,0 @@
-{"features_exec": ["HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2", "HashJoin_np", "HashJoin_nt", "HashJoin_nt1"], "features_start": ["HashJoin_Outer_rt1", "HashJoin_Outer_rt2", "HashJoin_Outer_st1", "HashJoin_Outer_st2", "HashJoin_np", "HashJoin_nt", "HashJoin_nt1"]}

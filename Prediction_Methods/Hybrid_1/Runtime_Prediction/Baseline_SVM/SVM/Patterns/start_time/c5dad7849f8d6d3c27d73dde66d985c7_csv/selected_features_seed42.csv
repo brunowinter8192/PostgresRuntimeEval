@@ -1,0 +1,7 @@
+feature;order
+HashJoin_st1;1
+HashJoin_nt2;2
+HashJoin_Outer_sel;3
+HashJoin_startup_cost;4
+HashJoin_sel;5
+HashJoin_total_cost;6

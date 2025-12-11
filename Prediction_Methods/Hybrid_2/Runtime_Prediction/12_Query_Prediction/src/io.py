@@ -142,7 +142,7 @@ def load_pattern_info(selected_patterns_file: str, pattern_metadata_file: str) -
 
 
 # Create prediction result dictionary
-def create_prediction_result(row, pred_start: float, pred_exec: float, prediction_type: str) -> dict:
+def create_prediction_result(row, pred_start: float, pred_exec: float, prediction_type: str, pattern_hash: str = None) -> dict:
     return {
         'query_file': row['query_file'],
         'node_id': row['node_id'],
@@ -154,7 +154,8 @@ def create_prediction_result(row, pred_start: float, pred_exec: float, predictio
         'actual_total_time': row['actual_total_time'],
         'predicted_startup_time': pred_start,
         'predicted_total_time': pred_exec,
-        'prediction_type': prediction_type
+        'prediction_type': prediction_type,
+        'pattern_hash': pattern_hash
     }
 
 
@@ -165,3 +166,21 @@ def export_predictions(predictions: list, output_dir: str) -> None:
 
     df = pd.DataFrame(predictions)
     df.to_csv(output_path / 'predictions.csv', sep=';', index=False)
+
+    export_pattern_usage(df, output_path)
+
+
+# Export pattern usage summary to separate CSV
+def export_pattern_usage(df: pd.DataFrame, output_path: Path) -> None:
+    pattern_df = df[df['pattern_hash'].notna()].copy()
+
+    if pattern_df.empty:
+        return
+
+    usage = pattern_df.groupby('pattern_hash').agg(
+        usage_count=('pattern_hash', 'count'),
+        node_types=('node_type', lambda x: ', '.join(sorted(x.unique())))
+    ).reset_index()
+
+    usage = usage.sort_values('usage_count', ascending=False)
+    usage.to_csv(output_path / 'patterns.csv', sep=';', index=False)

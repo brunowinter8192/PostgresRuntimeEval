@@ -329,25 +329,27 @@ python3 A_01c_Operator_Distribution.py \
 
 ### A_01d - A_01d_Depth_Propagation.py
 
-**Purpose**: Create depth propagation plots showing predicted vs actual time per depth level (averaged per template).
+**Purpose**: Create depth propagation plots showing predicted vs actual time per depth level (averaged per plan hash within template).
 
 **Inputs**:
+- `structure_csv` - Path to structure CSV (test.csv) for correct plan hash calculation
 - `predictions_csv` - Path to predictions CSV
 - `--output-dir` - Output directory
 
 **Outputs**:
-- `Evaluation/A_01d_depth_{template}_{timestamp}.png` - One plot per template
+- `{output-dir}/A_01d_depth_{template}_{plan_hash[:8]}.png` - One plot per unique plan within template
 
 **Usage**:
 ```bash
-python3 A_01d_Depth_Propagation.py <predictions_csv> --output-dir <output_dir>
+python3 A_01d_Depth_Propagation.py <structure_csv> <predictions_csv> --output-dir <output_dir>
 ```
 
 **Example**:
 ```bash
 python3 A_01d_Depth_Propagation.py \
+    ../Datasets/Baseline/03_test.csv \
     ./Baseline_SVM/predictions.csv \
-    --output-dir ./Baseline_SVM
+    --output-dir ./Baseline_SVM/Evaluation
 ```
 
 ---

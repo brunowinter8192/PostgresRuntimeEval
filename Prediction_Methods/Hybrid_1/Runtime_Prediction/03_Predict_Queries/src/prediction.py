@@ -41,10 +41,10 @@ def predict_all_queries(
     for query_file in df_test['query_file'].unique():
         query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
 
-        predictions = predict_single_query(
+        predictions, _, _, _ = predict_single_query(
             query_ops, operator_models, operator_features,
             pattern_models, pattern_features, pattern_info, pattern_order,
-            passthrough
+            passthrough, collect_steps=False
         )
 
         all_predictions.extend(predictions)
@@ -61,8 +61,9 @@ def predict_single_query(
     pattern_features: dict,
     pattern_info: dict,
     pattern_order: list,
-    passthrough: bool = False
-) -> list:
+    passthrough: bool = False,
+    collect_steps: bool = False
+) -> tuple:
     root = build_tree_from_dataframe(query_ops)
     all_nodes = extract_all_nodes(root)
     nodes_by_depth = sorted(all_nodes, key=lambda n: n.depth, reverse=True)
@@ -73,12 +74,15 @@ def predict_single_query(
 
     prediction_cache = {}
     predictions = []
+    steps = []
+    step_num = 0
 
     for node in nodes_by_depth:
         if node.node_id in consumed_nodes and node.node_id not in pattern_assignments:
             continue
 
         row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
+        step_num += 1
 
         if node.node_id in pattern_assignments:
             pattern_hash = pattern_assignments[node.node_id]
@@ -93,12 +97,39 @@ def predict_single_query(
             for nid in pattern_node_ids:
                 prediction_cache[nid] = result
 
-            predictions.append(create_prediction_result(row, result['start'], result['exec'], 'pattern'))
+            predictions.append(create_prediction_result(row, result['start'], result['exec'], 'pattern', pattern_hash))
+
+            if collect_steps:
+                consumed_children = [(c.node_id, c.node_type) for c in node.children]
+                steps.append({
+                    'step': step_num,
+                    'depth': node.depth,
+                    'prediction_type': 'pattern',
+                    'pattern_hash': pattern_hash,
+                    'pattern_string': info.get('pattern_string', ''),
+                    'parent_node_id': node.node_id,
+                    'parent_node_type': node.node_type,
+                    'consumed_children': consumed_children,
+                    'predicted_startup_time': result['start'],
+                    'predicted_total_time': result['exec']
+                })
         else:
             if passthrough and is_passthrough_node(node):
                 result = predict_passthrough(node, prediction_cache)
                 prediction_cache[node.node_id] = result
                 predictions.append(create_prediction_result(row, result['start'], result['exec'], 'passthrough'))
+
+                if collect_steps:
+                    steps.append({
+                        'step': step_num,
+                        'depth': node.depth,
+                        'prediction_type': 'passthrough',
+                        'node_id': node.node_id,
+                        'node_type': node.node_type,
+                        'reason': 'Passthrough operator - copying child prediction',
+                        'predicted_startup_time': result['start'],
+                        'predicted_total_time': result['exec']
+                    })
             else:
                 result = predict_operator(
                     node, query_ops, operator_models, operator_features, prediction_cache
@@ -106,7 +137,19 @@ def predict_single_query(
                 prediction_cache[node.node_id] = result
                 predictions.append(create_prediction_result(row, result['start'], result['exec'], 'operator'))
 
-    return predictions
+                if collect_steps:
+                    steps.append({
+                        'step': step_num,
+                        'depth': node.depth,
+                        'prediction_type': 'operator',
+                        'node_id': node.node_id,
+                        'node_type': node.node_type,
+                        'reason': 'No pattern match',
+                        'predicted_startup_time': result['start'],
+                        'predicted_total_time': result['exec']
+                    })
+
+    return predictions, steps, consumed_nodes, pattern_assignments
 
 
 # Check if node is a passthrough operator

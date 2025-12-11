@@ -1,0 +1,5 @@
+feature;order
+MergeJoin_rt1;1
+MergeJoin_nt;2
+Sort_Outer_rt1;3
+MergeJoin_st1;4

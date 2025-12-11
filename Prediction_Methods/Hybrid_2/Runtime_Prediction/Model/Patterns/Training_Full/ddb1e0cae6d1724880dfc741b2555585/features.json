@@ -1,1 +1,0 @@
-{"features_exec": ["GatherMerge_Outer_rt1", "GatherMerge_Outer_rt2", "GatherMerge_Outer_st1", "GatherMerge_Outer_st2"], "features_start": ["Aggregate_Outer_startup_cost", "GatherMerge_Outer_rt1", "GatherMerge_Outer_rt2", "GatherMerge_Outer_st1", "GatherMerge_Outer_st2", "GatherMerge_Outer_startup_cost"]}

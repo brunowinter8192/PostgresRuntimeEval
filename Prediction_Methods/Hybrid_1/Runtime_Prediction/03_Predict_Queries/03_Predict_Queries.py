@@ -20,7 +20,13 @@ from src.io import (
 )
 
 # From prediction.py: Prediction functions
-from src.prediction import predict_all_queries
+from src.prediction import predict_all_queries, predict_single_query
+
+# From report.py: MD report generation
+from src.report import export_md_report
+
+# From tree.py: Plan hash computation
+from src.tree import compute_plan_hash
 
 
 # ORCHESTRATOR
@@ -33,7 +39,8 @@ def run_prediction(
     operator_overview_file: str,
     model_dir: str,
     output_dir: str,
-    passthrough: bool = False
+    passthrough: bool = False,
+    report: bool = False
 ) -> None:
     df_test = load_test_data(test_file)
 
@@ -44,11 +51,50 @@ def run_prediction(
     operator_features = load_operator_features(operator_overview_file)
     operator_models = load_operator_models(model_dir)
 
-    all_predictions = predict_all_queries(
-        df_test, operator_models, operator_features,
-        pattern_models, pattern_features, pattern_info, pattern_order,
-        passthrough
-    )
+    if report:
+        run_with_reports(
+            df_test, operator_models, operator_features,
+            pattern_models, pattern_features, pattern_info, pattern_order,
+            passthrough, output_dir
+        )
+    else:
+        all_predictions = predict_all_queries(
+            df_test, operator_models, operator_features,
+            pattern_models, pattern_features, pattern_info, pattern_order,
+            passthrough
+        )
+        export_predictions(all_predictions, output_dir)
+
+
+# Run predictions with MD reports for first query of each unique plan
+def run_with_reports(
+    df_test, operator_models, operator_features,
+    pattern_models, pattern_features, pattern_info, pattern_order,
+    passthrough, output_dir
+) -> None:
+    all_predictions = []
+    reported_plans = set()
+
+    for query_file in df_test['query_file'].unique():
+        query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
+
+        plan_hash = compute_plan_hash(query_ops)
+        should_report = plan_hash not in reported_plans
+
+        predictions, steps, consumed_nodes, pattern_assignments = predict_single_query(
+            query_ops, operator_models, operator_features,
+            pattern_models, pattern_features, pattern_info, pattern_order,
+            passthrough, collect_steps=should_report
+        )
+
+        all_predictions.extend(predictions)
+
+        if should_report:
+            reported_plans.add(plan_hash)
+            export_md_report(
+                query_file, query_ops, predictions, steps,
+                consumed_nodes, pattern_assignments, pattern_info, output_dir, plan_hash
+            )
 
     export_predictions(all_predictions, output_dir)
 
@@ -62,6 +108,7 @@ if __name__ == '__main__':
     parser.add_argument('model_dir', help='Path to Model directory')
     parser.add_argument('--output-dir', required=True, help='Path to output directory for predictions')
     parser.add_argument('--passthrough', action='store_true', help='Enable passthrough for non-pattern passthrough operators')
+    parser.add_argument('--report', action='store_true', help='Generate MD report for first query of each template')
     args = parser.parse_args()
 
     run_prediction(
@@ -71,5 +118,6 @@ if __name__ == '__main__':
         args.operator_overview,
         args.model_dir,
         args.output_dir,
-        args.passthrough
+        args.passthrough,
+        args.report
     )

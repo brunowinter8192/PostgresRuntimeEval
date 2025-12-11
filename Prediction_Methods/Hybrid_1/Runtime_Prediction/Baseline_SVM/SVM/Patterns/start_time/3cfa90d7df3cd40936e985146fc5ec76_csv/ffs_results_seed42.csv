@@ -1,0 +1,39 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;NestedLoop_st1;True;0.02265648617239674;1;NestedLoop_st1
+2;HashJoin_Outer_st2;True;0.014899271828209274;2;NestedLoop_st1, HashJoin_Outer_st2
+3;HashJoin_Outer_rt2;True;0.01450982591801191;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+4;NestedLoop_np;False;0.014529506746874324;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+5;NestedLoop_reltuples;False;0.014529506746874324;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+6;NestedLoop_parallel_workers;False;0.014529506746874324;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+7;HashJoin_Outer_np;False;0.014529506746874324;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+8;HashJoin_Outer_reltuples;False;0.014529506746874324;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+9;HashJoin_Outer_parallel_workers;False;0.014529506746874324;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+10;IndexScan_Inner_nt1;False;0.014529506746874324;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+11;IndexScan_Inner_nt2;False;0.014529506746874324;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+12;IndexScan_Inner_parallel_workers;False;0.014529506746874324;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+13;NestedLoop_total_cost;False;0.0159008247200531;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+14;HashJoin_Outer_total_cost;False;0.019372849928958595;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+15;NestedLoop_sel;False;0.020431115105986532;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+16;NestedLoop_startup_cost;False;0.02405185093434798;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+17;HashJoin_Outer_startup_cost;False;0.024052757349165045;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+18;HashJoin_Outer_sel;False;0.02460649589019146;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+19;IndexScan_Inner_startup_cost;False;0.026755441554234195;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+20;HashJoin_Outer_plan_width;False;0.027609391663240786;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+21;NestedLoop_plan_width;False;0.02816243179411875;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+22;HashJoin_Outer_nt2;False;0.02877571171665148;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+23;HashJoin_Outer_st1;False;0.030273178810360474;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+24;HashJoin_Outer_rt1;False;0.03200489163826767;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+25;HashJoin_Outer_nt1;False;0.032199326000031586;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+26;NestedLoop_rt1;False;0.03292050841868572;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+27;NestedLoop_rt2;False;0.03443769353777395;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+28;IndexScan_Inner_sel;False;0.03493604459325844;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+29;NestedLoop_st2;False;0.035557165101488875;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+30;IndexScan_Inner_reltuples;False;0.040501331029867776;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+31;IndexScan_Inner_np;False;0.040603760457314425;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+32;NestedLoop_nt;False;0.044095456573872045;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+33;IndexScan_Inner_plan_width;False;0.04708470073223875;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+34;IndexScan_Inner_total_cost;False;0.04717151572674734;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+35;NestedLoop_nt2;False;0.05468796283759216;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+36;IndexScan_Inner_nt;False;0.05468796283759216;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+37;NestedLoop_nt1;False;0.05799911268696929;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2
+38;HashJoin_Outer_nt;False;0.05799911268696929;3;NestedLoop_st1, HashJoin_Outer_st2, HashJoin_Outer_rt2

@@ -12,6 +12,7 @@ Datasets/
 ├── 04b_Clean_Test.py                    # Remove child features from test dataset
 ├── A_01a_InitSub_Analysis.py            # Analysis script for InitPlan/SubPlan template identification
 ├── A_01b_Leaf_Validation.py             # Validation script for Scan leaf node structure
+├── A_01e_Verify_Plans.py                # Verify plan hash distribution across datasets
 ├── Raw/                                 # Raw input data
 │   └── operator_dataset_*.csv           # Input from Data_Generation
 └── Baseline/                            # Output directory for all generated CSV files
@@ -32,6 +33,7 @@ Datasets/
 Analysis Scripts (Optional):
 A_01a_InitSub_Analysis.py     # Identify templates with InitPlan/SubPlan
 A_01b_Leaf_Validation.py      # Validate Scan leaf node structure
+A_01e_Verify_Plans.py         # Verify plan hash distribution
 
 Main Workflow:
 01_Filter_Templates.py ──> 02_Child_Features.py ──> 03_Split_Data.py
@@ -226,3 +228,24 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 - Child features must be removed from test set as they would not be available at prediction time
 - Training set retains child features for model training
 - This ensures realistic evaluation conditions where child operator timings are unknown during inference
+
+---
+
+### A_01e_Verify_Plans.py
+
+**Purpose**: Verify plan hash distribution across training and test datasets to ensure all unique plans are represented in both sets
+
+**Input**:
+- `dataset_csv` (positional): Path to dataset CSV (training.csv or test.csv)
+
+**Variables** (via argparse):
+- `--output-dir`: Output directory for distribution results (required)
+
+**Output**:
+- `plan_hash_distribution.csv` (semicolon-delimited): Plan hash counts per template
+  - Columns: template, plan_hash, query_count, plan_hash_short
+
+**Important Notes**:
+- Run on both training.csv and test.csv to compare distributions
+- Useful for identifying templates with multiple query plan variants (e.g., Q9 has 2 different plans)
+- Helps ensure train/test split preserves all plan variants

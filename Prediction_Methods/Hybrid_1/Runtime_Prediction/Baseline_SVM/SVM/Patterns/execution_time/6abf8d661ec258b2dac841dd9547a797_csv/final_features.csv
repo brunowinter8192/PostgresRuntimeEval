@@ -1,0 +1,14 @@
+feature;order
+Aggregate_Outer_rt1;1
+Aggregate_Outer_rt2;2
+Aggregate_Outer_st1;3
+Aggregate_Outer_st2;4
+Gather_Outer_rt1;5
+Gather_Outer_rt2;6
+Gather_Outer_st1;7
+Gather_Outer_st2;8
+HashJoin_Outer_rt1;9
+HashJoin_Outer_rt2;10
+HashJoin_Outer_st1;11
+HashJoin_Outer_st2;12
+Sort_rt1;13

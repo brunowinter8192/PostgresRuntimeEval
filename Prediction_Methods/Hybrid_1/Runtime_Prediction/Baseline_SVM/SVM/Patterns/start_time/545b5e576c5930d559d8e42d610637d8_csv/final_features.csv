@@ -1,0 +1,14 @@
+feature;order
+HashJoin_Outer_plan_width;1
+HashJoin_Outer_rt1;2
+HashJoin_Outer_rt2;3
+HashJoin_Outer_st1;4
+HashJoin_Outer_st2;5
+HashJoin_plan_width;6
+HashJoin_rt2;7
+HashJoin_st1;8
+Hash_Inner_rt1;9
+Hash_Inner_rt2;10
+Hash_Inner_st1;11
+Hash_Inner_st2;12
+SeqScan_Outer_np;13

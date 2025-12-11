@@ -1,1 +1,0 @@
-{"features_exec": ["HashJoin_startup_cost"], "features_start": ["HashJoin_nt", "IndexScan_Inner_total_cost", "NestedLoop_Outer_nt1", "NestedLoop_Outer_startup_cost"]}

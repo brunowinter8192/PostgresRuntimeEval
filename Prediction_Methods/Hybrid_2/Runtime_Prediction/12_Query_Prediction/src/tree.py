@@ -156,3 +156,11 @@ def build_pattern_assignments(all_nodes: list, pattern_info: dict, pattern_order
                 pattern_assignments[node.node_id] = pattern_hash
 
     return consumed_nodes, pattern_assignments
+
+
+# Compute hash for unique plan structure (operator types + depths + relationships)
+def compute_plan_hash(query_ops: pd.DataFrame) -> str:
+    sorted_ops = query_ops.sort_values('node_id')
+    structure = [(row['node_type'], row['depth'], row['parent_relationship'])
+                 for _, row in sorted_ops.iterrows()]
+    return hashlib.md5(str(structure).encode()).hexdigest()

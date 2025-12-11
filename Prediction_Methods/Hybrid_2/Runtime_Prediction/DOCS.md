@@ -11,7 +11,7 @@
 
 ```
 Phase 1: Operator Baseline (on Training_Training/Training_Test)
-01 (FFS) -> 02 (Train) -> 04 (Predict) -> A_02a/A_02b
+01 (FFS) -> 02 (Train) -> 04 (Predict) -> A_02a
 
 Phase 2: Pattern Preparation (FFS features inherited from Training_Full)
 06 -> 07 -> 08 (Error_Baseline) -+
@@ -19,11 +19,11 @@ Phase 2: Pattern Preparation (FFS features inherited from Training_Full)
 
 Phase 3: Pattern Selection (parallel, independent)
 10_Pattern_Selection/ --strategy frequency -+
-10_Pattern_Selection/ --strategy size      -+-> A_01a/A_01b per selection
+10_Pattern_Selection/ --strategy size      -+-> A_01a per selection
 10_Pattern_Selection/ --strategy error     -+
 
 Phase 4: Final Training + Prediction (on Training.csv/Test.csv)
-11a (Operators) -> 11b (Patterns per method) -> 12_Query_Prediction/ -> A_01a/A_01b (Evaluation)
+11a (Operators) -> 11b (Patterns per method) -> 12_Query_Prediction/ -> A_01a (Evaluation)
 
 Phase 5: Parameter Analysis (parallel, standalone)
 A_02a-A_02c, A_03a
@@ -136,24 +136,34 @@ python3 06_Extract_Test_Patterns.py ../Dataset/Baseline/Training_Test.csv ../Dat
 
 ### 07 - Order_Patterns.py
 
-**Purpose:** Order patterns by two strategies for greedy selection.
+**Purpose:** Order patterns by two strategies for greedy selection, including avg_mre for threshold filtering.
 
 **Workflow:**
 1. Load test pattern occurrences from 06
-2. Aggregate by pattern: count occurrences
-3. Sort by SIZE: operator_count ASC, occurrence_count DESC
-4. Sort by FREQUENCY: occurrence_count DESC, operator_count ASC
+2. Load operator predictions to calculate avg_mre per pattern
+3. Aggregate by pattern: count occurrences, calculate avg_mre
+4. Sort by SIZE and FREQUENCY strategies
+
+**Sorting Strategies:**
+
+| Strategy | Primary | Secondary | Tiebreaker |
+|----------|---------|-----------|------------|
+| Size | operator_count ASC | occurrence_count DESC | pattern_hash ASC |
+| Frequency | occurrence_count DESC | operator_count ASC | pattern_hash ASC |
+
+**Tiebreaker:** `pattern_hash` (alphabetisch) garantiert deterministische Reihenfolge bei gleichen Werten.
 
 **Inputs:**
 - `occurrences_file`: Path to 06_test_pattern_occurrences_*.csv
+- `--operator-predictions`: Path to operator predictions CSV (for avg_mre calculation)
 
 **Outputs:**
-- `07_patterns_by_size.csv`
-- `07_patterns_by_frequency.csv`
+- `07_patterns_by_size.csv` (includes avg_mre column)
+- `07_patterns_by_frequency.csv` (includes avg_mre column)
 
 **Usage:**
 ```
-python3 07_Order_Patterns.py Pattern_Selection/06_test_pattern_occurrences_*.csv --output-dir Pattern_Selection
+python3 07_Order_Patterns.py Pattern_Selection/06_test_pattern_occurrences_*.csv --operator-predictions Evaluation/Operator_Training_Training_on_Test/predictions.csv --output-dir Pattern_Selection
 ```
 
 ---
@@ -215,11 +225,87 @@ python3 09_Pretrain_Patterns.py SVM/Pattern/pattern_ffs_overview.csv Pattern_Sel
 
 ### 10 - Pattern_Selection/
 
-**Purpose:** Greedy pattern selection with configurable strategy (frequency/size/error).
+**Purpose:** Greedy pattern selection for runtime prediction improvement. Iteratively evaluates patterns and selects those that improve MRE over operator-only baseline.
 
-**Structure:** Modular directory with entry-point and src/ modules.
+**Structure:**
+```
+10_Pattern_Selection/
+├── 10_Pattern_Selection.py     # Entry-point (argparse + orchestrator)
+└── src/
+    ├── tree.py                 # Tree building + pattern hashing
+    ├── io.py                   # Load/export functions
+    ├── prediction.py           # Training + prediction + aggregation
+    ├── selection.py            # Selection strategies
+    └── DOCS.md                 # Function documentation
+```
 
-**Details:** [10_Pattern_Selection/README.md](10_Pattern_Selection/README.md)
+**Baseline:** Operator-only prediction on Training_Test = 22.97% MRE. Selection accepts patterns that improve this baseline.
+
+**Selection Strategies:**
+
+| Strategy | Description | Pattern Order |
+|----------|-------------|---------------|
+| `frequency` | Static: iterate by occurrence count | 06_patterns_by_frequency.csv |
+| `size` | Static: iterate by pattern size | 06_patterns_by_size.csv |
+| `error` | Dynamic: re-rank by current error | 10_patterns_by_error.csv |
+
+**Error-Score Formula (error strategy):**
+```
+error_score = occurrence_count * avg_mre
+```
+Combines frequency and current prediction error. After each SELECTED/REJECTED decision, error scores are recalculated based on updated predictions.
+
+**Inputs:**
+- `sorted_patterns_file`: Patterns ranked by strategy (07_patterns_by_*.csv or 08_patterns_by_error.csv)
+- `pattern_ffs_file`: Pattern feature selection results (pattern_ffs_overview.csv)
+- `training_file`: Training data (Training_Training.csv)
+- `test_file`: Validation data (Training_Test.csv)
+- `operator_model_dir`: Pre-trained operator models (Model/Operator/)
+- `operator_ffs_dir`: Operator FFS results (SVM/Operator/)
+- `--pattern-occurrences-file`: Required for error strategy (06_test_pattern_occurrences_*.csv)
+- `--min-error-threshold`: Min avg_mre to consider pattern (default: 0.1, size/frequency only)
+
+**Min Error Threshold (Paper Section 5.3.4):**
+Patterns with avg_mre < threshold are skipped for size/frequency strategies. Prevents low-error patterns from consuming nodes that could be better served by high-error patterns. Error strategy does not use this filter (error_score naturally deprioritizes low-error patterns).
+
+**Outputs:**
+- `{pattern_hash}/predictions.csv`: Per-pattern node-level predictions
+- `{pattern_hash}/mre.csv`: Per-pattern MRE summary
+- `{pattern_hash}/status.txt`: SELECTED/REJECTED/SKIPPED_NO_FFS/SKIPPED_LOW_ERROR
+- `selection_log.csv`: Full iteration log with all patterns
+- `selected_patterns.csv`: Filtered log (SELECTED only) - **used as pattern_order in 12_Query_Prediction**
+- `selection_summary.csv`: Aggregate counts and final MRE
+
+**Usage (Static - Frequency):**
+```bash
+python3 10_Pattern_Selection/10_Pattern_Selection.py \
+    --strategy frequency \
+    Pattern_Selection/06_patterns_by_frequency.csv \
+    SVM/Pattern/Training_Training/pattern_ffs_overview.csv \
+    ../Dataset/Baseline/Training_Training.csv \
+    ../Dataset/Baseline/Training_Test.csv \
+    Model/Operator/Training_Training \
+    SVM/Operator/Training_Training \
+    --pattern-output-dir Pattern_Selection/Frequency \
+    --model-dir Model/Selected_Pattern/Frequency \
+    --pretrained-dir Model/Patterns/Training_Training
+```
+
+**Usage (Dynamic - Error):**
+```bash
+python3 10_Pattern_Selection/10_Pattern_Selection.py \
+    --strategy error \
+    Pattern_Selection/08_patterns_by_error.csv \
+    SVM/Pattern/Training_Training/pattern_ffs_overview.csv \
+    ../Dataset/Baseline/Training_Training.csv \
+    ../Dataset/Baseline/Training_Test.csv \
+    Model/Operator/Training_Training \
+    SVM/Operator/Training_Training \
+    --pattern-output-dir Pattern_Selection/Error \
+    --model-dir Model/Selected_Pattern/Error \
+    --pretrained-dir Model/Patterns/Training_Training \
+    --pattern-occurrences-file Pattern_Selection/06_test_pattern_occurrences_*.csv
+```
 
 ---
 
@@ -285,11 +371,62 @@ python3 11b_Train_Final_Patterns.py Selected_Patterns/Pattern_Freq/selected_patt
 
 ### 12 - Query_Prediction/
 
-**Purpose:** Bottom-up query prediction using operator and pattern models with MD report generation.
+**Purpose:** Bottom-up query prediction using operator and pattern models. Generates per-query MD reports showing prediction steps.
 
-**Structure:** Modular directory with entry-point and src/ modules.
+**Structure:**
+```
+12_Query_Prediction/
+├── 12_Query_Prediction.py      # Entry-point (argparse + orchestrator)
+└── src/
+    ├── tree.py                 # Tree building + pattern matching
+    ├── prediction.py           # Prediction logic + feature aggregation
+    ├── io.py                   # Load/export functions
+    ├── report.py               # MD report generation
+    └── DOCS.md                 # Function documentation
+```
 
-**Details:** [12_Query_Prediction/README.md](12_Query_Prediction/README.md)
+**Pattern-Matching Priority:**
+- `pattern_order` is read from `selected_patterns.csv` (selection order from 10_Pattern_Selection)
+- `build_pattern_assignments()` iterates patterns in this order: **first match wins**
+- If Pattern A (position 1) and Pattern B (position 5) both match Node X, Pattern A is used
+- Matched nodes are "consumed" and unavailable for later patterns
+
+**Inputs:**
+- `test_file`: Query operators to predict (Test.csv)
+- `operator_model_dir`: Pre-trained operator models (Model/Operators_Training/)
+- `operator_overview_file`: Feature overview (two_step_evaluation_overview.csv)
+- `--pattern-model-dir`: Path to pattern models (optional)
+- `--pattern-ffs-file`: Path to pattern FFS overview (optional)
+- `--selected-patterns`: Path to selected_patterns.csv (optional)
+- `--pattern-metadata`: Path to pattern metadata CSV (optional)
+
+**Outputs:**
+- `predictions.csv`: Node-level predictions with actual/predicted times, pattern_hash column
+- `patterns.csv`: Pattern usage summary (pattern_hash, usage_count, node_types)
+- `md/12_{template}_{plan_hash[:8]}_{timestamp}.md`: One MD report per unique plan structure
+
+**Usage (Operator-Only):**
+```bash
+python3 12_Query_Prediction/12_Query_Prediction.py \
+    ../Dataset/Test.csv \
+    Model/Operators_Training \
+    SVM/Operator/two_step_evaluation_overview.csv \
+    --output-dir Evaluation/Operator_Only
+```
+
+**Usage (Pattern-Enhanced):**
+```bash
+python3 12_Query_Prediction/12_Query_Prediction.py \
+    ../Dataset/Test.csv \
+    Model/Operators_Training \
+    SVM/Operator/two_step_evaluation_overview.csv \
+    --strategy frequency \
+    --pattern-model-dir Model/Selected_Pattern/Frequency \
+    --pattern-ffs-file SVM/Pattern/pattern_ffs_overview.csv \
+    --selected-patterns Pattern_Selection/Frequency/selected_patterns.csv \
+    --pattern-metadata Pattern_Selection/07_patterns_by_frequency.csv \
+    --output-dir Evaluation/Pattern_Frequency
+```
 
 ---
 
@@ -314,30 +451,6 @@ python3 11b_Train_Final_Patterns.py Selected_Patterns/Pattern_Freq/selected_patt
 **Usage:**
 ```
 python3 A_02a_Query_Evaluation.py Evaluation/Operator_Training_Test/predictions.csv --output-dir Evaluation/Operator_Training_Test
-```
-
----
-
-### A_01b - Operator_Analysis.py
-
-**Purpose:** Cross-tabulation of MRE by node_type and template.
-
-**Workflow:**
-1. Load predictions.csv
-2. Calculate MRE for all operators
-3. Create pivot tables (node_type x template)
-4. Export for total_time and startup_time
-
-**Inputs:**
-- `predictions_csv`: Any predictions.csv
-
-**Outputs:**
-- `{output-dir}/node_type_mean_mre_total_pct_{timestamp}.csv`
-- `{output-dir}/node_type_mean_mre_startup_pct_{timestamp}.csv`
-
-**Usage:**
-```
-python3 A_02b_Operator_Analysis.py Evaluation/Operator_Training_Test/predictions.csv --output-dir Evaluation/Operator_Training_Test
 ```
 
 ---

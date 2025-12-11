@@ -26,10 +26,10 @@ class QueryNode:
 
 
 # ORCHESTRATOR
-def extract_patterns_workflow(input_file: str, output_base: str, target_length: int, filter_type: str) -> None:
+def extract_patterns_workflow(input_file: str, output_base: str, target_length: int, require_operators: bool, no_passthrough: bool) -> None:
     df = load_training_data(input_file)
     max_depth = int(df['depth'].max())
-    pattern_data = extract_patterns_at_lengths(df, max_depth, target_length, filter_type)
+    pattern_data = extract_patterns_at_lengths(df, max_depth, target_length, require_operators, no_passthrough)
     export_all_patterns(df, pattern_data, output_base)
 
 
@@ -142,25 +142,24 @@ def extract_pattern_node_ids(node, remaining_length: int) -> list:
     return node_ids
 
 
-# Check if pattern passes the specified filter
-def passes_filter(node, filter_type: str) -> bool:
-    if filter_type == 'none':
-        return True
-
-    if filter_type == 'required_operators':
+# Check if pattern passes all active filters
+def passes_filter(node, require_operators: bool, no_passthrough: bool) -> bool:
+    if require_operators:
         operators = {node.node_type}
         for child in node.children:
             operators.add(child.node_type)
-        return bool(operators.intersection(REQUIRED_OPERATORS))
+        if not operators.intersection(REQUIRED_OPERATORS):
+            return False
 
-    if filter_type == 'no_passthrough':
-        return node.node_type not in PASSTHROUGH_OPERATORS
+    if no_passthrough:
+        if node.node_type in PASSTHROUGH_OPERATORS:
+            return False
 
     return True
 
 
 # Extract patterns at specified lengths
-def extract_patterns_at_lengths(df: pd.DataFrame, max_depth: int, target_length: int, filter_type: str) -> dict:
+def extract_patterns_at_lengths(df: pd.DataFrame, max_depth: int, target_length: int, require_operators: bool, no_passthrough: bool) -> dict:
     pattern_data = {}
 
     for query_file in df['query_file'].unique():
@@ -176,7 +175,7 @@ def extract_patterns_at_lengths(df: pd.DataFrame, max_depth: int, target_length:
             if node.depth < 0:
                 continue
 
-            if not passes_filter(node, filter_type):
+            if not passes_filter(node, require_operators, no_passthrough):
                 continue
 
             if target_length == 0:
@@ -253,8 +252,8 @@ if __name__ == '__main__':
     parser.add_argument("input_file", help="Path to operator dataset CSV")
     parser.add_argument("--output-dir", required=True, help="Base output directory for pattern folders")
     parser.add_argument("--length", type=int, default=0, help="Pattern length (0 = all lengths, N = specific length)")
-    parser.add_argument("--filter", choices=['required_operators', 'no_passthrough', 'none'],
-                        default='none', help="Filter type for patterns")
+    parser.add_argument("--required-operators", action="store_true", help="Filter to patterns containing required operators")
+    parser.add_argument("--no-passthrough", action="store_true", help="Exclude patterns with passthrough parent operators")
     args = parser.parse_args()
 
-    extract_patterns_workflow(args.input_file, args.output_dir, args.length, args.filter)
+    extract_patterns_workflow(args.input_file, args.output_dir, args.length, args.required_operators, args.no_passthrough)

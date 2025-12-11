@@ -11,24 +11,26 @@ Datasets/
 ├── 03_Extract_Patterns.py              # Extract patterns to hash folders
 ├── 04_Aggregate_Patterns.py            # Combine parent+children into single rows
 ├── 05_Clean_Patterns.py                # Remove unavailable features
+├── 06_Filter_Patterns.py               # Filter patterns by approach criteria
 ├── A_01a_Verify_Extraction.py          # [analysis] Verify extraction completeness
 ├── A_01b_Verify_Aggregation.py         # [analysis] Verify aggregation correctness
 └── Baseline_SVM/                       # [outputs] SVM baseline outputs
     ├── training.csv                    # Training split
     ├── test.csv                        # Test split
-    ├── Operators/                      # Operator-level datasets (13 types)
+    ├── operators/                      # Operator-level datasets (13 types)
     │   ├── Hash_Join/training.csv
     │   └── Seq_Scan/training.csv
-    ├── approach_1/                     # required_operators, length 2 (21 patterns)
-    │   ├── patterns.csv                # Pattern inventory for this approach
+    ├── approach_1/                     
+    │   ├── patterns.csv                
+    │   ├── patterns_filtered.csv       
     │   └── patterns/{hash}/
     │       ├── pattern_info.json
     │       ├── training.csv
     │       ├── training_aggregated.csv
     │       └── training_cleaned.csv
-    ├── approach_2/                     # no_passthrough, length 2 (18 patterns)
-    ├── approach_3/                     # none, all lengths (372 patterns)
-    ├── approach_4/                     # no_passthrough, all lengths (191 patterns)
+    ├── approach_2/                     
+    ├── approach_3/                    
+    ├── approach_4/                    
     └── Verification/approach_X/csv/    # Verification results per approach
 ```
 
@@ -42,11 +44,11 @@ Datasets/
 - `CHILD_TIMING_SUFFIXES` - Child st/rt columns for leaf operators
 - `PARENT_CHILD_FEATURES` - Parent timing feature column names (st1, rt1, st2, rt2)
 
-**Input data (external):** `Operator_Level/Data_Generation/operator_dataset_{ts}.csv`
+**Input data (external):** `Operator_Level/Datasets/Baseline/04_training.csv`
 
 ## Workflow Execution Order
 
-**Main Pipeline (01-05):**
+**Main Pipeline (01-06):**
 ```
 01 - Split_Train_Test     [operator_dataset.csv -> training.csv, test.csv]
      |
@@ -57,6 +59,8 @@ Datasets/
 04 - Aggregate_Patterns   [patterns/{hash}/ -> training_aggregated.csv per pattern]
      |
 05 - Clean_Patterns       [patterns/{hash}/ -> training_cleaned.csv per pattern]
+     |
+06 - Filter_Patterns      [Data_Generation patterns CSV -> approach_X/patterns_filtered.csv]
 ```
 
 **Analysis Scripts (A_):**
@@ -131,7 +135,7 @@ python 02_Extract_Operators.py Baseline_SVM/training.csv --output-dir Baseline_S
 **Workflow:**
 1. Load training data and filter to main plan
 2. Build tree structure for each query
-3. Apply filter based on --filter parameter
+3. Apply filters based on --required-operators and --no-passthrough flags
 4. For each node at specified --length (or all lengths if 0)
 5. Compute MD5 hash for each pattern
 6. Extract pattern rows by node_id matching
@@ -158,20 +162,24 @@ python 02_Extract_Operators.py Baseline_SVM/training.csv --output-dir Baseline_S
 
 **Usage:**
 ```bash
-# All patterns, no filter
-python 03_Extract_Patterns.py training.csv --output-dir approach_3 --length 0 --filter none
+# Approach 1: Length 2, required operators only
+python 03_Extract_Patterns.py training.csv --output-dir approach_1 --length 2 --required-operators
 
-# Length 2 patterns with REQUIRED_OPERATORS filter
-python 03_Extract_Patterns.py training.csv --output-dir approach_1 --length 2 --filter required_operators
+# Approach 2: Length 2, required operators, no passthrough parents
+python 03_Extract_Patterns.py training.csv --output-dir approach_2 --length 2 --required-operators --no-passthrough
 
-# Length 2 patterns excluding passthrough parents
-python 03_Extract_Patterns.py training.csv --output-dir approach_2 --length 2 --filter no_passthrough
+# Approach 3: All patterns, all lengths (use threshold filter in 06)
+python 03_Extract_Patterns.py training.csv --output-dir approach_3
+
+# Approach 4: All lengths, no passthrough parents (use threshold filter in 06)
+python 03_Extract_Patterns.py training.csv --output-dir approach_4 --no-passthrough
 ```
 
 **Variables:**
 - `--output-dir` - Base directory for pattern folders (required)
 - `--length` - Pattern length to extract: 0 = all lengths, N = specific length (default: 0)
-- `--filter` - Filter type: `none`, `required_operators`, `no_passthrough` (default: none)
+- `--required-operators` - Filter to patterns containing REQUIRED_OPERATORS (flag)
+- `--no-passthrough` - Exclude patterns with PASSTHROUGH_OPERATORS as parent (flag)
 
 ---
 
@@ -226,6 +234,42 @@ python 04_Aggregate_Patterns.py Baseline_SVM/approach_1/patterns.csv Baseline_SV
 ```bash
 python 05_Clean_Patterns.py Baseline_SVM
 ```
+
+---
+
+### 06 - Filter_Patterns.py
+
+**Purpose:** Apply occurrence threshold filter to approach patterns
+
+**Workflow:**
+1. Load Data_Generation mining CSV (has occurrence_count from full dataset)
+2. Load approach patterns.csv (already filtered by 03_Extract_Patterns)
+3. If threshold > 0: filter by occurrence_count, return matching approach rows
+4. If threshold = 0: return all approach rows unchanged
+5. Export patterns_filtered.csv
+
+**Inputs:**
+- `mining_csv` - Path to Data_Generation pattern mining CSV (positional)
+- `approach_csv` - Path to approach patterns.csv (positional)
+
+**Outputs:**
+- `{output-dir}/patterns_filtered.csv`
+  - Same columns as input patterns.csv
+
+**Usage:**
+```bash
+# Approach 1/2: no threshold (all patterns)
+python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_1/patterns.csv --output-dir Baseline_SVM/approach_1 --threshold 0
+python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_2/patterns.csv --output-dir Baseline_SVM/approach_2 --threshold 0
+
+# Approach 3/4: threshold >120
+python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_3/patterns.csv --output-dir Baseline_SVM/approach_3 --threshold 120
+python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_4/patterns.csv --output-dir Baseline_SVM/approach_4 --threshold 120
+```
+
+**Variables:**
+- `--output-dir` - Output directory for patterns_filtered.csv (required)
+- `--threshold` - Occurrence threshold, 0 = no filter (default: 150)
 
 ---
 

@@ -1,0 +1,8 @@
+feature;order
+NestedLoop_st1;1
+NestedLoop_nt;2
+HashJoin_Outer_nt2;3
+SeqScan_Outer_nt;4
+Hash_Inner_nt;5
+Hash_Inner_nt1;6
+SeqScan_Outer_sel;7

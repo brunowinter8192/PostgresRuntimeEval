@@ -1,0 +1,15 @@
+pattern_hash;pattern_string;total_occurrences;num_operators;expected_rows;actual_rows;match;status
+184f44dea835017982d512c08043f20c;Aggregate -> Seq Scan (Outer);240;2;480;480;True;OK
+4fc84c77ced18a46514c982f23f12deb;Aggregate -> Gather (Outer);720;2;1440;1440;True;OK
+3cfa90d7df3cd40936e985146fc5ec76;Nested Loop -> [Hash Join (Outer), Index Scan (Inner)];709;3;2127;2127;True;OK
+895c6e8c1a30a094329d71cef3111fbd;Hash Join -> [Seq Scan (Outer), Hash (Inner)];1811;3;5433;5433;True;OK
+3aab37bea1a884da206eb32f2c1ae5ba;Hash -> Seq Scan (Outer);1680;2;3360;3360;True;OK
+3b44787560c64172b4501d3cae04fd1b;Aggregate -> Nested Loop (Outer);229;2;458;458;True;OK
+c53c43965386239f53c764b9a60720dd;Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)];480;3;1440;1440;True;OK
+2e0f44eff91c745724a56159cf7e0d6f;Hash Join -> [Nested Loop (Outer), Hash (Inner)];720;3;2160;2160;True;OK
+7df893ad48ca148008fc536ad76ff48a;Hash -> Hash Join (Outer);851;2;1702;1702;True;OK
+7524c54c59c38d4c931870520c264f63;Aggregate -> Hash Join (Outer);371;2;742;742;True;OK
+7d4e78be851232c5a0cc7a0cf9df4593;Hash Join -> [Hash Join (Outer), Hash (Inner)];240;3;720;720;True;OK
+deb558a9002117c419af6559ba19ef08;Hash -> Index Only Scan (Outer);120;2;240;240;True;OK
+4b856d44f421312792e2ac1665cc79be;Nested Loop -> [Merge Join (Outer), Index Scan (Inner)];120;3;360;360;True;OK
+3e579ee914617f81b698af0622b89162;Hash -> Aggregate (Outer);120;2;240;240;True;OK

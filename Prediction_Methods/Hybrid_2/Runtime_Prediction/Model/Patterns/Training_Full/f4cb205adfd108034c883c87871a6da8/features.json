@@ -1,1 +1,0 @@
-{"features_exec": ["HashJoin_nt1", "SeqScan_Outer_reltuples", "SeqScan_Outer_sel"], "features_start": ["HashJoin_np", "HashJoin_plan_width", "Hash_Inner_startup_cost", "SeqScan_Outer_np", "SeqScan_Outer_plan_width", "SeqScan_Outer_total_cost"]}

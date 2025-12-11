@@ -35,7 +35,7 @@ def run_two_step_workflow(dataset_dir: str, output_dir: str) -> None:
 
     ffs_results = {}
     for (pattern, target), selected_features in zip(tasks, results):
-        ffs_results[(pattern['folder_name'], target)] = selected_features
+        ffs_results[(pattern['hash'], target)] = selected_features
 
     overview_data = process_all_patterns_two_step(patterns, ffs_results, dataset_dir, output_dir)
     export_overview(overview_data, output_dir)
@@ -73,7 +73,7 @@ def run_ffs_for_pattern(pattern: dict, target: str, dataset_dir: str, output_dir
     X, y, template_ids = prepare_features_and_target(df, target)
     cv = create_cv_splitter()
     selected_features, results_df = perform_forward_selection(X, y, template_ids, cv)
-    export_ffs_results(selected_features, results_df, pattern['folder_name'], target, output_dir)
+    export_ffs_results(selected_features, results_df, pattern['hash'], target, output_dir)
     return selected_features
 
 
@@ -89,7 +89,7 @@ def prepare_features_and_target(df, target):
     available_features = extract_available_features(df)
     target_column = identify_target_column(df, target)
 
-    X = df[available_features]
+    X = df[available_features].fillna(0)
     y = df[target_column]
     template_ids = df['query_file'].apply(extract_template_id).values
 
@@ -113,8 +113,11 @@ def extract_available_features(df):
 
 # Identify target column based on target type
 def identify_target_column(df, target):
-    target_suffix = '_actual_startup_time' if target == 'start_time' else '_actual_total_time'
+    unprefixed = 'actual_startup_time' if target == 'start_time' else 'actual_total_time'
+    if unprefixed in df.columns:
+        return unprefixed
 
+    target_suffix = '_actual_startup_time' if target == 'start_time' else '_actual_total_time'
     for col in df.columns:
         if col.endswith(target_suffix) and '_Outer_' not in col and '_Inner_' not in col:
             return col
@@ -224,8 +227,8 @@ def extract_template_id(query_file):
 
 
 # Save FFS selected features to CSV file
-def export_ffs_results(selected_features, results_df, folder_name, target, output_dir):
-    output_path = Path(output_dir) / 'SVM' / target / f'{folder_name}_csv'
+def export_ffs_results(selected_features, results_df, pattern_hash, target, output_dir):
+    output_path = Path(output_dir) / 'SVM' / target / f'{pattern_hash}_csv'
     output_path.mkdir(parents=True, exist_ok=True)
 
     results_file = output_path / f'ffs_results_seed{FFS_SEED}.csv'
@@ -254,7 +257,7 @@ def process_all_patterns_two_step(patterns, ffs_results, dataset_dir, output_dir
 
 # Evaluate single pattern with two-step approach
 def evaluate_pattern_two_step(pattern, target, ffs_results, dataset_dir, output_dir):
-    ffs_selected = ffs_results.get((pattern['folder_name'], target), [])
+    ffs_selected = ffs_results.get((pattern['hash'], target), [])
 
     if not ffs_selected:
         return None
@@ -275,7 +278,7 @@ def evaluate_pattern_two_step(pattern, target, ffs_results, dataset_dir, output_
     else:
         mre_final = mre_ffs
 
-    export_final_features(final_features, pattern['folder_name'], target, output_dir)
+    export_final_features(final_features, pattern['hash'], target, output_dir)
 
     return {
         'pattern_hash': pattern['hash'],
@@ -309,8 +312,8 @@ def identify_missing_child_features(ffs_selected, dataset_child_features):
 
 
 # Export final feature set to CSV
-def export_final_features(final_features, folder_name, target, output_dir):
-    output_path = Path(output_dir) / 'SVM' / target / f'{folder_name}_csv'
+def export_final_features(final_features, pattern_hash, target, output_dir):
+    output_path = Path(output_dir) / 'SVM' / target / f'{pattern_hash}_csv'
     output_path.mkdir(parents=True, exist_ok=True)
 
     final_df = pd.DataFrame({

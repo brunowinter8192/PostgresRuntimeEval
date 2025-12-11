@@ -1,6 +1,0 @@
-feature;order
-HashJoin_Outer_rt1;1
-Aggregate_nt;2
-Aggregate_plan_width;3
-Gather_Outer_sel;4
-Gather_Outer_plan_width;5

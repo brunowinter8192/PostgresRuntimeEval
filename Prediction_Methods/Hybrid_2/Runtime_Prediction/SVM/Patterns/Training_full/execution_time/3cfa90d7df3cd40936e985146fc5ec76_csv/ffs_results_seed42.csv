@@ -1,0 +1,39 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;IndexScan_Inner_total_cost;True;0.01685667895810256;1;IndexScan_Inner_total_cost
+2;NestedLoop_nt1;True;0.01413858569133589;2;IndexScan_Inner_total_cost, NestedLoop_nt1
+3;NestedLoop_rt2;True;0.013937383736730943;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+4;NestedLoop_st2;False;0.013939828565164566;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+5;HashJoin_Outer_nt;False;0.01402893068408977;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+6;NestedLoop_plan_width;False;0.014060640642650432;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+7;NestedLoop_total_cost;False;0.014133605723484469;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+8;NestedLoop_nt;False;0.01416136668037989;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+9;IndexScan_Inner_plan_width;False;0.014165164184043122;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+10;HashJoin_Outer_plan_width;False;0.014191579508302965;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+11;HashJoin_Outer_nt2;False;0.014226388928447681;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+12;HashJoin_Outer_total_cost;False;0.01425321494042905;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+13;NestedLoop_startup_cost;False;0.014275178357390384;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+14;HashJoin_Outer_startup_cost;False;0.014275228789363117;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+15;NestedLoop_sel;False;0.014283903411496535;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+16;NestedLoop_st1;False;0.014304026018811533;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+17;HashJoin_Outer_st2;False;0.014317697564447573;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+18;HashJoin_Outer_rt2;False;0.014317708735042881;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+19;HashJoin_Outer_nt1;False;0.014471720896125459;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+20;NestedLoop_rt1;False;0.014653680878213587;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+21;HashJoin_Outer_rt1;False;0.014657081776759761;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+22;NestedLoop_nt2;False;0.014713136671334937;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+23;IndexScan_Inner_nt;False;0.014713136671334937;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+24;HashJoin_Outer_sel;False;0.014724602287872146;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+25;NestedLoop_np;False;0.014765321260447373;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+26;NestedLoop_reltuples;False;0.014765321260447373;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+27;NestedLoop_parallel_workers;False;0.014765321260447373;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+28;HashJoin_Outer_np;False;0.014765321260447373;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+29;HashJoin_Outer_reltuples;False;0.014765321260447373;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+30;HashJoin_Outer_parallel_workers;False;0.014765321260447373;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+31;IndexScan_Inner_nt1;False;0.014765321260447373;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+32;IndexScan_Inner_nt2;False;0.014765321260447373;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+33;IndexScan_Inner_parallel_workers;False;0.014765321260447373;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+34;IndexScan_Inner_startup_cost;False;0.014836335707142819;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+35;HashJoin_Outer_st1;False;0.014915509405610048;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+36;IndexScan_Inner_sel;False;0.015179118238185019;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+37;IndexScan_Inner_reltuples;False;0.015367407806187266;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2
+38;IndexScan_Inner_np;False;0.015375048941509522;3;IndexScan_Inner_total_cost, NestedLoop_nt1, NestedLoop_rt2

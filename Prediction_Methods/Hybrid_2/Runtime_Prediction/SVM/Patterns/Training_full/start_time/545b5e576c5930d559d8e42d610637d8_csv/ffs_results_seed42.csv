@@ -1,0 +1,53 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;HashJoin_rt2;True;0.46897578308828836;1;HashJoin_rt2
+2;HashJoin_st1;True;0.30823018032397487;2;HashJoin_rt2, HashJoin_st1
+3;HashJoin_Outer_st2;True;0.22334928255142147;3;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2
+4;HashJoin_plan_width;True;0.21190271028457697;4;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width
+5;HashJoin_Outer_plan_width;True;0.19993449186988377;5;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width
+6;SeqScan_Outer_np;True;0.19674968939412246;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+7;HashJoin_np;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+8;HashJoin_reltuples;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+9;HashJoin_parallel_workers;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+10;SeqScan_Outer_nt1;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+11;SeqScan_Outer_nt2;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+12;SeqScan_Outer_startup_cost;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+13;SeqScan_Outer_parallel_workers;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+14;Hash_Inner_np;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+15;Hash_Inner_nt2;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+16;Hash_Inner_reltuples;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+17;Hash_Inner_parallel_workers;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+18;Hash_Inner_st2;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+19;Hash_Inner_rt2;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+20;HashJoin_Outer_np;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+21;HashJoin_Outer_reltuples;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+22;HashJoin_Outer_parallel_workers;False;0.20076914977961757;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+23;Hash_Inner_sel;False;0.2009242501399085;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+24;SeqScan_Outer_total_cost;False;0.20137796196067628;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+25;Hash_Inner_startup_cost;False;0.20137796196067628;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+26;Hash_Inner_total_cost;False;0.20137796196067628;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+27;HashJoin_Outer_startup_cost;False;0.20170635756056998;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+28;HashJoin_Outer_rt2;False;0.20725413112910104;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+29;SeqScan_Outer_nt;False;0.2091290649983494;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+30;Hash_Inner_nt;False;0.2091290649983494;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+31;Hash_Inner_nt1;False;0.2091290649983494;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+32;HashJoin_Outer_nt2;False;0.2091290649983494;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+33;Hash_Inner_rt1;False;0.20919556987071272;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+34;Hash_Inner_st1;False;0.20928875472423386;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+35;SeqScan_Outer_sel;False;0.2105048916013851;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+36;HashJoin_nt;False;0.21530927701485045;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+37;HashJoin_st2;False;0.215440176014156;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+38;HashJoin_Outer_sel;False;0.2157718067915642;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+39;HashJoin_Outer_st1;False;0.21591661475263807;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+40;SeqScan_Outer_reltuples;False;0.2178751117702332;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+41;HashJoin_nt1;False;0.21967517308200005;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+42;HashJoin_Outer_rt1;False;0.21982584026556093;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+43;HashJoin_total_cost;False;0.21995117107255008;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+44;HashJoin_sel;False;0.22066353588664206;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+45;SeqScan_Outer_plan_width;False;0.22125807972173267;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+46;Hash_Inner_plan_width;False;0.22125807972173267;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+47;HashJoin_nt2;False;0.2217596170111817;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+48;HashJoin_Outer_nt;False;0.2217596170111817;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+49;HashJoin_Outer_total_cost;False;0.22184246482772868;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+50;HashJoin_Outer_nt1;False;0.22185191075986932;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+51;HashJoin_startup_cost;False;0.22185287326502884;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np
+52;HashJoin_rt1;False;0.3216861043733935;6;HashJoin_rt2, HashJoin_st1, HashJoin_Outer_st2, HashJoin_plan_width, HashJoin_Outer_plan_width, SeqScan_Outer_np

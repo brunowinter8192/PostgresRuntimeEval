@@ -1,5 +1,0 @@
-feature;order
-NestedLoop_Outer_nt1;1
-IndexScan_Inner_total_cost;2
-HashJoin_nt;3
-NestedLoop_Outer_startup_cost;4

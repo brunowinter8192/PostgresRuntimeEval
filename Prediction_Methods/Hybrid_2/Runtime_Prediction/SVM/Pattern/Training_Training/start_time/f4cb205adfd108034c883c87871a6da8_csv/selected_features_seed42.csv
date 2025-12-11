@@ -1,7 +1,0 @@
-feature;order
-SeqScan_Outer_total_cost;1
-HashJoin_np;2
-HashJoin_plan_width;3
-SeqScan_Outer_plan_width;4
-Hash_Inner_startup_cost;5
-SeqScan_Outer_np;6

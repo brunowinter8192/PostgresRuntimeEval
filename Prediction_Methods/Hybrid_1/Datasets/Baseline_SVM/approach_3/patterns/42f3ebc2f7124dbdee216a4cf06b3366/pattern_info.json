@@ -3,5 +3,5 @@
   "pattern_string": "Incremental Sort -> Nested Loop -> [Merge Join (Outer), Index Scan (Inner)] (Outer)",
   "folder_name": "Incremental_Sort_->_Nested_Loop_->_Merge_Join_Outer_Index_Scan_Inner_Outer",
   "pattern_length": 3,
-  "occurrence_count": 150
+  "occurrence_count": 120
 }

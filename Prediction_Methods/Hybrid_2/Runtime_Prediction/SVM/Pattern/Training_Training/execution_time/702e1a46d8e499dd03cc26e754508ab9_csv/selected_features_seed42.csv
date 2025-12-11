@@ -1,6 +1,0 @@
-feature;order
-Hash_nt;1
-Hash_nt1;2
-HashJoin_Outer_nt;3
-HashJoin_Outer_nt1;4
-NestedLoop_Outer_nt;5

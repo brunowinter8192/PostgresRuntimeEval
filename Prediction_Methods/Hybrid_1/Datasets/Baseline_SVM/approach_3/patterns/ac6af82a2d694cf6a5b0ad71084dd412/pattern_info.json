@@ -3,5 +3,5 @@
   "pattern_string": "Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer)",
   "folder_name": "Sort_->_Aggregate_->_Gather_->_Nested_Loop_->_Hash_Join_Outer_Index_Scan_Inner_Outer_Outer_Outer",
   "pattern_length": 5,
-  "occurrence_count": 150
+  "occurrence_count": 120
 }

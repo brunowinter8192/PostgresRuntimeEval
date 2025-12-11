@@ -1,4 +1,0 @@
-feature;order
-SeqScan_Outer_reltuples;1
-HashJoin_nt1;2
-SeqScan_Outer_sel;3

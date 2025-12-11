@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Aggregate_rt1;True;0.00829992888897572;1;Aggregate_rt1
+2;Aggregate_nt;True;0.00817732469878642;2;Aggregate_rt1, Aggregate_nt
+3;Aggregate_nt1;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+4;Aggregate_sel;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+5;Aggregate_startup_cost;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+6;Aggregate_total_cost;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+7;Aggregate_plan_width;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+8;IndexScan_Outer_np;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+9;IndexScan_Outer_nt;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+10;IndexScan_Outer_sel;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+11;IndexScan_Outer_startup_cost;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+12;IndexScan_Outer_total_cost;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+13;IndexScan_Outer_plan_width;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+14;IndexScan_Outer_reltuples;False;0.008178207819494436;2;Aggregate_rt1, Aggregate_nt
+15;Aggregate_st1;False;0.008514211169634843;2;Aggregate_rt1, Aggregate_nt
+16;Aggregate_np;False;0.008686200537526495;2;Aggregate_rt1, Aggregate_nt
+17;Aggregate_nt2;False;0.008686200537526495;2;Aggregate_rt1, Aggregate_nt
+18;Aggregate_reltuples;False;0.008686200537526495;2;Aggregate_rt1, Aggregate_nt
+19;Aggregate_parallel_workers;False;0.008686200537526495;2;Aggregate_rt1, Aggregate_nt
+20;Aggregate_st2;False;0.008686200537526495;2;Aggregate_rt1, Aggregate_nt
+21;Aggregate_rt2;False;0.008686200537526495;2;Aggregate_rt1, Aggregate_nt
+22;IndexScan_Outer_nt1;False;0.008686200537526495;2;Aggregate_rt1, Aggregate_nt
+23;IndexScan_Outer_nt2;False;0.008686200537526495;2;Aggregate_rt1, Aggregate_nt
+24;IndexScan_Outer_parallel_workers;False;0.008686200537526495;2;Aggregate_rt1, Aggregate_nt

@@ -1,0 +1,7 @@
+feature;order
+NestedLoop_rt1;1
+NestedLoop_nt2;2
+NestedLoop_sel;3
+NestedLoop_startup_cost;4
+NestedLoop_plan_width;5
+HashJoin_Outer_nt;6

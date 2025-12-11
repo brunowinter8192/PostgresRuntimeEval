@@ -70,8 +70,7 @@
 ### Script Output Rules
 
 **Output ONLY:** .md or .csv exports
-**Export location:** Dedicated folder in same directory as script
-**Folder naming:** Descriptive (e.g., `md/`, `csv/`, `analysis/`, `execution_time/`, `start_time/`, `predictions/`)
+**Export location:** Flexibler `--output-dir` Parameter - User entscheidet wo Output landet
 **Script behavior:** Completely silent - no prints, no logging, no verbose output
 
 ---
@@ -119,7 +118,6 @@ def process_workflow(input_file: str, output_dir: str) -> None:
     export_results(analyze_data(cleaned), output_dir)
 
 # FUNCTIONS
-
 # Load raw data from CSV with semicolon delimiter
 def load_data(input_file: str) -> pd.DataFrame:
     return pd.read_csv(input_file, delimiter=';')
@@ -398,4 +396,4 @@ Creates output directory if it does not exist.
 ```
 
 **Rule:** Every function in the module must be documented. Undocumented functions indicate dead code or outdated docs.
-
+- timestamp fix

@@ -1,4 +1,0 @@
-feature;order
-HashJoin_nt1;1
-HashJoin_Outer_startup_cost;2
-SeqScan_Outer_reltuples;3

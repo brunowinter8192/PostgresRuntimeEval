@@ -1,8 +1,0 @@
-feature;order
-NestedLoop_np;1
-NestedLoop_nt;2
-NestedLoop_nt1;3
-SeqScan_Outer_nt;4
-SeqScan_Outer_sel;5
-Hash_Inner_nt;6
-Hash_Inner_nt1;7

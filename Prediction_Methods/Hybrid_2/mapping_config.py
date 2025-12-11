@@ -55,7 +55,21 @@ OPERATOR_CSV_TO_FOLDER = {
 
 OPERATORS_FOLDER_NAMES = list(OPERATOR_CSV_TO_FOLDER.values())
 
-LEAF_OPERATORS = ['Seq Scan', 'Index Scan', 'Index Only Scan']
+LEAF_OPERATORS = ['SeqScan', 'IndexScan', 'IndexOnlyScan']
+
+CHILD_ACTUAL_SUFFIXES = [
+    '_Outer_actual_startup_time',
+    '_Outer_actual_total_time',
+    '_Inner_actual_startup_time',
+    '_Inner_actual_total_time'
+]
+
+CHILD_TIMING_SUFFIXES = [
+    '_Outer_st1', '_Outer_rt1', '_Outer_st2', '_Outer_rt2',
+    '_Inner_st1', '_Inner_rt1', '_Inner_st2', '_Inner_rt2'
+]
+
+PARENT_CHILD_FEATURES = ['_st1', '_rt1', '_st2', '_rt2']
 
 
 # FUNCTIONS

@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Sort_rt1;True;0.011090949334411801;1;Sort_rt1
+2;Sort_nt;True;0.010781267289349484;2;Sort_rt1, Sort_nt
+3;Sort_nt1;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+4;Sort_sel;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+5;Sort_startup_cost;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+6;Sort_total_cost;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+7;Sort_plan_width;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+8;SeqScan_Outer_np;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+9;SeqScan_Outer_nt;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+10;SeqScan_Outer_sel;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+11;SeqScan_Outer_total_cost;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+12;SeqScan_Outer_plan_width;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+13;SeqScan_Outer_reltuples;False;0.010803238948827131;2;Sort_rt1, Sort_nt
+14;Sort_st1;False;0.020165804746021188;2;Sort_rt1, Sort_nt
+15;Sort_np;False;0.02065734653905842;2;Sort_rt1, Sort_nt
+16;Sort_nt2;False;0.02065734653905842;2;Sort_rt1, Sort_nt
+17;Sort_reltuples;False;0.02065734653905842;2;Sort_rt1, Sort_nt
+18;Sort_parallel_workers;False;0.02065734653905842;2;Sort_rt1, Sort_nt
+19;Sort_st2;False;0.02065734653905842;2;Sort_rt1, Sort_nt
+20;Sort_rt2;False;0.02065734653905842;2;Sort_rt1, Sort_nt
+21;SeqScan_Outer_nt1;False;0.02065734653905842;2;Sort_rt1, Sort_nt
+22;SeqScan_Outer_nt2;False;0.02065734653905842;2;Sort_rt1, Sort_nt
+23;SeqScan_Outer_startup_cost;False;0.02065734653905842;2;Sort_rt1, Sort_nt
+24;SeqScan_Outer_parallel_workers;False;0.02065734653905842;2;Sort_rt1, Sort_nt

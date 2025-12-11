@@ -1,0 +1,1 @@
+{"features_exec": ["MergeJoin_Outer_rt1", "MergeJoin_Outer_rt2", "MergeJoin_Outer_st1", "MergeJoin_Outer_st2", "NestedLoop_nt", "NestedLoop_rt1"], "features_start": ["MergeJoin_Outer_rt1", "MergeJoin_Outer_rt2", "MergeJoin_Outer_st1", "MergeJoin_Outer_st2", "NestedLoop_nt", "NestedLoop_st1"]}

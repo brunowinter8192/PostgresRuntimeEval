@@ -1,0 +1,4 @@
+feature;order
+SeqScan_Outer_reltuples;1
+HashJoin_nt1;2
+Hash_Inner_st1;3

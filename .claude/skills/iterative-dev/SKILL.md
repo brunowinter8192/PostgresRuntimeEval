@@ -52,7 +52,7 @@ Every response starts with phase indicator:
 📋 PLAN → ExitPlanMode → 🔨 IMPLEMENT → 📋 PLAN (new plan)
 
 **Critical: After Implementation**
-- call update plan and fully empty the plan file, override with just ' '
+- call update plan and fully empty the plan file, override with just ' ' --> CLEAR THE PLAN AFTER EACH SUCCESSFUL IMPLEMENTATION
 - make sure everything in the plan file was executed accordingly
 - if there are non executed points in the plan file, make sure to not override them and inform the user about the open points
 

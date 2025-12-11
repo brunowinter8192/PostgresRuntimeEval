@@ -1,0 +1,43 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Sort_rt1;True;0.0034163257302576807;1;Sort_rt1
+2;Sort_nt;True;0.002585751920497449;2;Sort_rt1, Sort_nt
+3;NestedLoop_Outer_total_cost;True;0.002582478661235949;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+4;Aggregate_Outer_rt1;False;0.002680456027230017;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+5;Sort_st1;False;0.002682811698412499;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+6;Sort_startup_cost;False;0.0028735271726090775;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+7;Aggregate_Outer_total_cost;False;0.002873528241853698;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+8;Aggregate_Outer_startup_cost;False;0.002873528306161755;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+9;Sort_total_cost;False;0.002873528693615248;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+10;NestedLoop_Outer_sel;False;0.003194204625968749;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+11;Sort_nt1;False;0.0031983162411524262;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+12;Sort_sel;False;0.0031983162411524262;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+13;Sort_plan_width;False;0.0031983162411524262;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+14;Aggregate_Outer_nt;False;0.0031983162411524262;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+15;Aggregate_Outer_plan_width;False;0.0031983162411524262;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+16;NestedLoop_Outer_nt2;False;0.0031983162411524262;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+17;NestedLoop_Outer_startup_cost;False;0.0031983162411524262;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+18;NestedLoop_Outer_plan_width;False;0.0031983162411524262;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+19;Aggregate_Outer_sel;False;0.005070082122026637;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+20;Aggregate_Outer_nt1;False;0.005106305329561204;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+21;NestedLoop_Outer_nt;False;0.005106305329561204;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+22;NestedLoop_Outer_nt1;False;0.00510634851285556;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+23;NestedLoop_Outer_rt1;False;0.00547673098503481;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+24;NestedLoop_Outer_st2;False;0.005925407975000863;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+25;NestedLoop_Outer_rt2;False;0.005925407975000863;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+26;Aggregate_Outer_st1;False;0.013499545207996021;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+27;NestedLoop_Outer_st1;False;0.013520660609488571;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+28;Sort_np;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+29;Sort_nt2;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+30;Sort_reltuples;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+31;Sort_parallel_workers;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+32;Sort_st2;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+33;Sort_rt2;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+34;Aggregate_Outer_np;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+35;Aggregate_Outer_nt2;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+36;Aggregate_Outer_reltuples;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+37;Aggregate_Outer_parallel_workers;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+38;Aggregate_Outer_st2;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+39;Aggregate_Outer_rt2;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+40;NestedLoop_Outer_np;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+41;NestedLoop_Outer_reltuples;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
+42;NestedLoop_Outer_parallel_workers;False;0.013530997805361272;3;Sort_rt1, Sort_nt, NestedLoop_Outer_total_cost
