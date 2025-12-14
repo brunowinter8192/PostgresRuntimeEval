@@ -1,0 +1,2 @@
+seed;n_features;final_mre;selected_features
+42;9;0.04720741666813535;row_count, Hash_Join_rows, Sort_rows, Sort_cnt, jit_functions, partial_mode_simple, strategy_sorted, Nested_Loop_rows, Aggregate_rows

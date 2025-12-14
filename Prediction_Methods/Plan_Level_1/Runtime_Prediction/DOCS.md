@@ -1,5 +1,13 @@
 # Runtime_Prediction Module Documentation
 
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
+
+```bash
+cd /path/to/Plan_Level_1/Runtime_Prediction
+```
+
 ## Directory Structure
 
 ```

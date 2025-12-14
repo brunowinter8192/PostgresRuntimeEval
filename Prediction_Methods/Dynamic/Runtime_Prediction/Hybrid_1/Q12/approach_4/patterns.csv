@@ -1,0 +1,3 @@
+pattern_hash;usage_count;node_types
+460af52cdecd0ba229546017c25fee3b;150;Aggregate
+c53c43965386239f53c764b9a60720dd;150;Nested Loop

@@ -21,7 +21,7 @@ from .mining import compute_pattern_hash
 
 # From mapping_config.py: Configuration constants
 from mapping_config import (
-    SVM_PARAMS, MIN_SAMPLES,
+    SVM_PARAMS,
     TARGET_TYPES, TARGET_NAME_MAP,
     get_operator_features, csv_name_to_folder_name
 )
@@ -36,9 +36,6 @@ def train_all_operators(df: pd.DataFrame, report) -> dict:
 
     for op_type in operator_types:
         op_data = df[df['node_type'] == op_type]
-
-        if len(op_data) < MIN_SAMPLES:
-            continue
 
         features = get_operator_features(op_type)
         available_features = [f for f in features if f in op_data.columns]
@@ -99,7 +96,7 @@ def train_single_pattern(df: pd.DataFrame, pattern_hash: str, pattern_info: dict
             if aggregated:
                 aggregated_rows.append(aggregated)
 
-    if len(aggregated_rows) < MIN_SAMPLES:
+    if not aggregated_rows:
         return None
 
     df_agg = pd.DataFrame(aggregated_rows)

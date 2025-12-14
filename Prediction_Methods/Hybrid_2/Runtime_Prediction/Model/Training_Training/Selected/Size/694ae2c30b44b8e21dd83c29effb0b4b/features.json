@@ -1,1 +1,0 @@
-{"features_exec": ["Gather_rt1", "NestedLoop_Outer_rt1", "NestedLoop_Outer_rt2", "NestedLoop_Outer_st1", "NestedLoop_Outer_st2", "NestedLoop_Outer_total_cost"], "features_start": ["Gather_rt1", "Gather_st1", "NestedLoop_Outer_nt1", "NestedLoop_Outer_rt1", "NestedLoop_Outer_rt2", "NestedLoop_Outer_st1", "NestedLoop_Outer_st2"]}

@@ -9,8 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-# From ffs_config.py: SVM hyperparameters
-from ffs_config import SVM_PARAMS
+SVM_PARAMS = {'kernel': 'rbf', 'nu': 0.65, 'C': 1.5, 'gamma': 'scale', 'cache_size': 500}
 
 # From tree.py: Tree building and pattern functions
 from src.tree import (
@@ -165,6 +164,11 @@ def predict_single_query(
             pattern_hash = matched_pattern
             info = pattern_info[pattern_hash]
             pattern_node_ids = extract_pattern_node_ids(node, info['length'])
+
+            if any(nid in consumed_nodes for nid in pattern_node_ids):
+                matched_pattern = None
+
+        if matched_pattern:
             consumed_nodes.update(pattern_node_ids)
 
             pred_start, pred_exec = predict_pattern(

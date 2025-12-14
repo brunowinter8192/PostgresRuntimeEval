@@ -181,8 +181,7 @@ class ReportBuilder:
         md_dir = Path(self.output_dir) / 'md'
         md_dir.mkdir(parents=True, exist_ok=True)
 
-        timestamp_str = self.timestamp.strftime('%Y%m%d_%H%M%S')
-        filename = f'02_online_prediction_{self.query_file}_{timestamp_str}.md'
+        filename = 'report.md'
 
         with open(md_dir / filename, 'w') as f:
             f.write('\n'.join(self.lines))

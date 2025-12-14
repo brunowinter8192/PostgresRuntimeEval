@@ -1,0 +1,2 @@
+seed;n_features;final_mre;selected_features
+42;7;0.05351137439546566;byte_count, Hash_cnt, strategy_sorted, p_tot_cost, Seq_Scan_cnt, p_st_cost, Hash_rows

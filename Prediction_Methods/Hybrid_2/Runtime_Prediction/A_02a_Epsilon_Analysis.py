@@ -11,7 +11,9 @@ from pathlib import Path
 def run_epsilon_analysis(selection_log_file: str, output_dir: str) -> None:
     df = load_selection_log(selection_log_file)
     stats = calculate_delta_stats(df)
+    dist_df = extract_delta_distribution(df)
     export_stats(stats, output_dir)
+    export_delta_distribution(dist_df, output_dir)
 
 
 # FUNCTIONS
@@ -35,6 +37,12 @@ def calculate_delta_stats(df: pd.DataFrame) -> dict:
     }
 
 
+# Extract delta distribution for SELECTED patterns
+def extract_delta_distribution(df: pd.DataFrame) -> pd.DataFrame:
+    selected = df[df['status'] == 'SELECTED'][['iteration', 'pattern_hash', 'delta']]
+    return selected.sort_values('delta', ascending=False).reset_index(drop=True)
+
+
 # Export delta statistics to CSV
 def export_stats(stats: dict, output_dir: str) -> None:
     output_path = Path(output_dir)
@@ -49,6 +57,13 @@ def export_stats(stats: dict, output_dir: str) -> None:
     }])
 
     df.to_csv(output_path / 'delta_stats.csv', sep=';', index=False)
+
+
+# Export delta distribution to CSV
+def export_delta_distribution(dist_df: pd.DataFrame, output_dir: str) -> None:
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    dist_df.to_csv(output_path / 'delta_distribution.csv', sep=';', index=False)
 
 
 if __name__ == '__main__':

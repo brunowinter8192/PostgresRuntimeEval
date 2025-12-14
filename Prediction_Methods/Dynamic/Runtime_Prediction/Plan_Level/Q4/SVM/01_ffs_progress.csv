@@ -1,0 +1,9 @@
+iteration;feature_added;mre;n_features;features;seed
+1;sort_key_count;0.09320047981147178;1;sort_key_count;42
+2;jit_functions;0.07222838803677292;2;sort_key_count, jit_functions;42
+3;group_key_count;0.05891296096999098;3;sort_key_count, jit_functions, group_key_count;42
+4;Nested_Loop_rows;0.057322378509589725;4;sort_key_count, jit_functions, group_key_count, Nested_Loop_rows;42
+5;Hash_rows;0.05661214733364918;5;sort_key_count, jit_functions, group_key_count, Nested_Loop_rows, Hash_rows;42
+6;strategy_plain;0.05565636799911093;6;sort_key_count, jit_functions, group_key_count, Nested_Loop_rows, Hash_rows, strategy_plain;42
+7;Sort_rows;0.05526521209250285;7;sort_key_count, jit_functions, group_key_count, Nested_Loop_rows, Hash_rows, strategy_plain, Sort_rows;42
+8;row_count;0.055052191226299604;8;sort_key_count, jit_functions, group_key_count, Nested_Loop_rows, Hash_rows, strategy_plain, Sort_rows, row_count;42

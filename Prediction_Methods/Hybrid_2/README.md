@@ -1,17 +1,17 @@
-# Hybrid_7 - Pattern-Level Prediction
+# Hybrid_2 - Pattern-Level Prediction
 
 Pattern-based query runtime prediction using greedy pattern selection. Combines operator-level models with pattern-level models for improved accuracy.
 
 ## Directory Structure
 
 ```
-Hybrid_7/
-    mapping_config.py
+Hybrid_2/
+    mapping_config.py                    Shared config (self-documenting)
     Parameter.md
     README.md
-    Data_Generation/                     [See DOCS.md]
-    Dataset/                             [See DOCS.md]
-    Runtime_Prediction/                  [See DOCS.md]
+    Data_Generation/                     [See DOCS.md](Data_Generation/DOCS.md)
+    Dataset/                             [See DOCS.md](Dataset/DOCS.md)
+    Runtime_Prediction/                  [See DOCS.md](Runtime_Prediction/DOCS.md)
 ```
 
 ## Workflow
@@ -42,9 +42,9 @@ Hybrid_7/
 
 ### Phase 3: Runtime_Prediction
 
-**Purpose:** Feature selection, model training, pattern selection, and prediction.
+**Purpose:** Model training, pattern selection, and prediction.
 
-**Input:** Pattern datasets + Operator models
+**Input:** Pattern datasets + Operator/Pattern FFS features (from Hybrid_1)
 
 **Output:** Predictions with evaluation metrics
 

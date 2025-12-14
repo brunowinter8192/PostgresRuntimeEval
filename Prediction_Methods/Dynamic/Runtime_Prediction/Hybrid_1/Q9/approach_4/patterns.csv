@@ -1,0 +1,6 @@
+pattern_hash;usage_count;node_types
+2873b8c3a1759afe345ffbdfc9bdcba7;150;Hash Join
+3aab37bea1a884da206eb32f2c1ae5ba;150;Hash
+a5f39f08c510532e02e96e109e48c0cd;150;Aggregate
+bd9dfa7bb8f3b0473cdfb5cd4277dc3a;131;Nested Loop
+ec92bdaa27b47a2a45a6787f34350878;19;Hash Join

@@ -1,0 +1,29 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Aggregate_st1;True;0.002497254147715715;1;Aggregate_st1
+2;Aggregate_nt;True;0.0017929102723509983;2;Aggregate_st1, Aggregate_nt
+3;Aggregate_total_cost;True;0.0016561468897742285;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+4;Aggregate_rt1;False;0.0018145279057145962;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+5;Sort_Outer_rt1;False;0.0018154150524295018;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+6;Sort_Outer_total_cost;False;0.001970177248163232;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+7;Aggregate_startup_cost;False;0.0019702143455653325;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+8;Sort_Outer_startup_cost;False;0.0019702143455653325;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+9;Aggregate_nt1;False;0.001976199780533494;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+10;Sort_Outer_nt;False;0.001976199780533494;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+11;Sort_Outer_nt1;False;0.001976199780533494;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+12;Aggregate_plan_width;False;0.002068084294849949;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+13;Sort_Outer_sel;False;0.002068084294849949;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+14;Sort_Outer_plan_width;False;0.002068084294849949;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+15;Aggregate_sel;False;0.0020896098230158335;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+16;Sort_Outer_st1;False;0.009941178504218455;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+17;Aggregate_np;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+18;Aggregate_nt2;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+19;Aggregate_reltuples;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+20;Aggregate_parallel_workers;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+21;Aggregate_st2;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+22;Aggregate_rt2;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+23;Sort_Outer_np;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+24;Sort_Outer_nt2;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+25;Sort_Outer_reltuples;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+26;Sort_Outer_parallel_workers;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+27;Sort_Outer_st2;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost
+28;Sort_Outer_rt2;False;0.011533709784883274;3;Aggregate_st1, Aggregate_nt, Aggregate_total_cost

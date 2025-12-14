@@ -2,6 +2,14 @@
 
 Workflow for SVM-based runtime prediction at operator level with Two-Step Forward Feature Selection.
 
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
+
+```bash
+cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Operator_Level/Runtime_Prediction
+```
+
 ---
 
 ## Directory Structure
@@ -21,7 +29,8 @@ Runtime_Prediction/
 ├── ffs_config.py                      # FFS-specific configuration (seed, params, features)
 ├── DOCS.md                            # This file
 ├── md/                                # MD reports for single query predictions
-├── Baseline_SVM/                      # Baseline dataset results
+├── Baseline_SVM/                      # Baseline dataset results (nu=0.65)
+├── Nu_0.5_SVM/                        # Alternative nu=0.5 results (same structure)
 │   ├── SVM/                           # Feature selection results
 │   │   ├── execution_time/            # Per-operator FFS results
 │   │   ├── start_time/                # Per-operator FFS results
@@ -91,10 +100,19 @@ FFS-specific configuration.
 
 ---
 
+## Input Locations
+
+| Input | Relative Path (from Runtime_Prediction/) |
+|-------|------------------------------------------|
+| Operator Training Data | `../Datasets/Baseline/` |
+| Test Dataset | `../Datasets/Baseline/04b_test_cleaned.csv` |
+
+---
+
 ## Workflow Execution Order
 
 ```
-Input: Training Dataset (from Datasets/Baseline)
+Input: ../Datasets/Baseline (Operator Training Data)
    |
 [01] 01_Forward_Selection.py
    |
@@ -151,7 +169,7 @@ python3 01_Forward_Selection.py <dataset_dir> --output-dir <output_dir>
 **Example**:
 ```bash
 python3 01_Forward_Selection.py \
-    ../../Datasets/Baseline \
+    ../Datasets/Baseline \
     --output-dir ./Baseline_SVM
 ```
 
@@ -177,7 +195,7 @@ python3 02_Train_Models.py <dataset_dir> <overview_file> --output-dir <output_di
 **Example**:
 ```bash
 python3 02_Train_Models.py \
-    ../../Datasets/Baseline \
+    ../Datasets/Baseline \
     ./Baseline_SVM/SVM/two_step_evaluation_overview.csv \
     --output-dir ./Baseline_SVM
 ```
@@ -228,14 +246,14 @@ python3 03_Query_Prediction.py <test_file> <overview_file> <models_dir> --md-que
 ```bash
 # Batch mode
 python3 03_Query_Prediction.py \
-    ../../Datasets/Baseline/04b_test_cleaned.csv \
+    ../Datasets/Baseline/04b_test_cleaned.csv \
     ./Baseline_SVM/SVM/two_step_evaluation_overview.csv \
     ./Baseline_SVM/Model \
     --output-file ./Baseline_SVM/predictions.csv
 
 # Single query MD report
 python3 03_Query_Prediction.py \
-    ../../Datasets/Baseline/03_test.csv \
+    ../Datasets/Baseline/03_test.csv \
     ./Baseline_SVM/SVM/two_step_evaluation_overview.csv \
     ./Baseline_SVM/Model \
     --md-query Q1_121_seed_984483720
@@ -374,7 +392,7 @@ python3 A_01e_Plan_Variability.py <predictions_csv> --output-dir <output_dir>
 **Example**:
 ```bash
 python3 A_01e_Plan_Variability.py \
-    ../../Datasets/Raw/operator_dataset_20251102_140747.csv \
+    ../Datasets/Raw/operator_dataset_20251102_140747.csv \
     --output-dir ./Baseline_SVM
 ```
 

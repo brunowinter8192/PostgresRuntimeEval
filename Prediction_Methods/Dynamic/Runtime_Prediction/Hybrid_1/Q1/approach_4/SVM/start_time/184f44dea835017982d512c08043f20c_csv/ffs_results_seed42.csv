@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Aggregate_rt1;True;0.006284895021404592;1;Aggregate_rt1
+2;Aggregate_nt;True;0.004926969306917271;2;Aggregate_rt1, Aggregate_nt
+3;Aggregate_plan_width;True;0.004575958612476077;3;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width
+4;SeqScan_Outer_np;True;0.004430705426448385;4;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np
+5;Aggregate_startup_cost;True;0.0043666373551716885;5;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost
+6;SeqScan_Outer_total_cost;True;0.004321746977602194;6;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost
+7;SeqScan_Outer_plan_width;True;0.004293996372765204;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+8;SeqScan_Outer_reltuples;False;0.004302030849404933;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+9;Aggregate_total_cost;False;0.004302207547063732;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+10;Aggregate_nt1;False;0.006997589903496757;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+11;SeqScan_Outer_nt;False;0.006997589903496757;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+12;SeqScan_Outer_sel;False;0.00699758990349734;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+13;Aggregate_sel;False;0.007021336444898713;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+14;Aggregate_st1;False;0.018366864263626027;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+15;Aggregate_np;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+16;Aggregate_nt2;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+17;Aggregate_reltuples;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+18;Aggregate_parallel_workers;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+19;Aggregate_st2;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+20;Aggregate_rt2;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+21;SeqScan_Outer_nt1;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+22;SeqScan_Outer_nt2;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+23;SeqScan_Outer_startup_cost;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width
+24;SeqScan_Outer_parallel_workers;False;0.02110016638983205;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_startup_cost, SeqScan_Outer_total_cost, SeqScan_Outer_plan_width

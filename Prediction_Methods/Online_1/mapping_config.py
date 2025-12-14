@@ -12,8 +12,10 @@ SVM_PARAMS = {
 }
 
 # Online Selection Parameters
-EPSILON = 0.0001  # 0.01% minimum improvement
-MIN_SAMPLES = 5   # Minimum samples for training
+EPSILON = 0.005  # 0.5% minimum improvement
+MIN_ERROR_THRESHOLD = 0.1  # 10% - skip patterns with avg_mre below
+STRATEGIES = ['error', 'size', 'frequency']
+DEFAULT_STRATEGY = 'error'
 
 # Operator Feature-Set (10 base features)
 OPERATOR_FEATURES = [
@@ -50,7 +52,7 @@ TARGET_TYPES = ['execution_time', 'start_time']
 # Metadata columns (not features)
 OPERATOR_METADATA = [
     'query_file', 'node_id', 'node_type',
-    'depth', 'parent_relationship', 'subplan_name'
+    'depth', 'parent_relationship', 'subplan_name', 'template'
 ]
 
 # Leaf operators (no child timing features)

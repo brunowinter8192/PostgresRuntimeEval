@@ -1,0 +1,7 @@
+iteration;feature_added;mre;n_features;features
+1;sel;4.509167699536674;1;sel
+2;plan_width;2.6868072852036953;2;sel, plan_width
+3;nt2;2.3496184183532556;3;sel, plan_width, nt2
+4;rt2;1.2699886284478255;4;sel, plan_width, nt2, rt2
+5;nt1;1.2236945591674808;5;sel, plan_width, nt2, rt2, nt1
+6;st2;1.1590409536818016;6;sel, plan_width, nt2, rt2, nt1, st2

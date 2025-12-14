@@ -1,0 +1,8 @@
+feature;order
+Aggregate_sel;1
+Aggregate_startup_cost;2
+GatherMerge_Outer_st1;3
+GatherMerge_Outer_rt1;4
+Aggregate_st1;5
+Aggregate_rt1;6
+GatherMerge_Outer_startup_cost;7

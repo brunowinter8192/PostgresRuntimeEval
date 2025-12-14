@@ -1,0 +1,43 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;HashJoin_startup_cost;True;0.1062709699465949;1;HashJoin_startup_cost
+2;HashJoin_st2;True;0.07407006393421017;2;HashJoin_startup_cost, HashJoin_st2
+3;HashJoin_st1;True;0.06246116057253207;3;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1
+4;NestedLoop_Outer_st1;True;0.05917983335256112;4;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1
+5;HashJoin_plan_width;True;0.05702192606198412;5;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width
+6;Hash_Inner_sel;True;0.05576994933109518;6;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel
+7;Hash_Inner_st1;True;0.05439067425096909;7;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1
+8;HashJoin_np;True;0.05379746691809606;8;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np
+9;HashJoin_reltuples;True;0.05349708232015103;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+10;HashJoin_parallel_workers;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+11;NestedLoop_Outer_np;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+12;NestedLoop_Outer_reltuples;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+13;NestedLoop_Outer_parallel_workers;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+14;Hash_Inner_np;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+15;Hash_Inner_nt2;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+16;Hash_Inner_reltuples;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+17;Hash_Inner_parallel_workers;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+18;Hash_Inner_st2;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+19;Hash_Inner_rt2;False;0.05375270988245719;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+20;NestedLoop_Outer_plan_width;False;0.053836392238184504;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+21;NestedLoop_Outer_sel;False;0.054051264709707315;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+22;NestedLoop_Outer_startup_cost;False;0.05442820967678556;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+23;NestedLoop_Outer_nt2;False;0.054519582988126244;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+24;HashJoin_nt2;False;0.05472771736379807;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+25;Hash_Inner_nt;False;0.05472771736379807;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+26;Hash_Inner_nt1;False;0.05472771736379807;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+27;HashJoin_nt1;False;0.05487045901938277;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+28;NestedLoop_Outer_nt;False;0.05487045901938277;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+29;NestedLoop_Outer_rt2;False;0.05569204616336705;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+30;HashJoin_nt;False;0.05575341774996517;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+31;NestedLoop_Outer_nt1;False;0.05579560670738406;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+32;NestedLoop_Outer_st2;False;0.05587869583840623;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+33;HashJoin_rt2;False;0.05593378599717182;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+34;NestedLoop_Outer_rt1;False;0.05593961952807769;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+35;Hash_Inner_plan_width;False;0.055959883980777926;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+36;HashJoin_sel;False;0.056084324804252704;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+37;HashJoin_rt1;False;0.0567306777531269;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+38;Hash_Inner_rt1;False;0.057272681542889795;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+39;NestedLoop_Outer_total_cost;False;0.05847045078826535;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+40;HashJoin_total_cost;False;0.058892220794112826;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+41;Hash_Inner_startup_cost;False;0.06058594671987303;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples
+42;Hash_Inner_total_cost;False;0.06058594671987303;9;HashJoin_startup_cost, HashJoin_st2, HashJoin_st1, NestedLoop_Outer_st1, HashJoin_plan_width, Hash_Inner_sel, Hash_Inner_st1, HashJoin_np, HashJoin_reltuples

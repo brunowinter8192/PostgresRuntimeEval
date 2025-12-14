@@ -220,6 +220,7 @@ Phase 1 - Pattern Assignment:
    - Find all query nodes matching the pattern hash
    - Mark matched nodes as consumed (prevents overlap)
    - Assign pattern to root node of match
+3. Single-pattern constraint: If only one pattern matches AND it consumes all nodes, discard pattern assignment and use operator-only prediction
 
 Phase 2 - Bottom-Up Prediction:
 1. Traverse nodes by depth (deepest first)

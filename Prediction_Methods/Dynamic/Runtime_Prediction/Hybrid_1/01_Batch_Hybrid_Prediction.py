@@ -6,7 +6,7 @@ from pathlib import Path
 from multiprocessing import Pool
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
-APPROACHES = ['approach_3']
+APPROACHES = ['approach_4']
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCRIPTS_DIR = SCRIPT_DIR.parent.parent.parent / 'Hybrid_1' / 'Runtime_Prediction'

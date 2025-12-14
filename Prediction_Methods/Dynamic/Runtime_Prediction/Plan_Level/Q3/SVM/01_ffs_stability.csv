@@ -1,0 +1,8 @@
+feature;count;percentage
+byte_count;1;100.0
+Hash_cnt;1;100.0
+strategy_sorted;1;100.0
+p_tot_cost;1;100.0
+Seq_Scan_cnt;1;100.0
+p_st_cost;1;100.0
+Hash_rows;1;100.0

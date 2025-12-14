@@ -44,7 +44,7 @@ Phase 2: Datasets
 01_Split_Train_Test.py → 02_Create_State_1.py
 
 Phase 3: Runtime_Prediction
-01_Forward_Selection.py → 02_Train_Model.py → 03_Summarize_Results.py → 04_Evaluation_Plot.py
+01_Forward_Selection.py → 02_Train_Model.py → 03_Summarize_Results.py
 ```
 
 ## Phase Documentation

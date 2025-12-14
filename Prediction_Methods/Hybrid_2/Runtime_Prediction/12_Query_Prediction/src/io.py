@@ -59,19 +59,22 @@ def load_operator_features(overview_file: str) -> dict:
     return features
 
 
-# Load pattern models with embedded features
-def load_pattern_models(model_dir: str) -> dict:
+# Load pattern models for selected hashes only
+def load_pattern_models(model_dir: str, selected_hashes: list = None) -> dict:
     models = {}
     model_path = Path(model_dir)
 
     if not model_path.exists():
         return models
 
-    for pattern_dir in model_path.iterdir():
+    hashes_to_load = selected_hashes if selected_hashes else []
+
+    for pattern_hash in hashes_to_load:
+        pattern_dir = model_path / pattern_hash
+
         if not pattern_dir.is_dir():
             continue
 
-        pattern_hash = pattern_dir.name
         exec_file = pattern_dir / 'model_execution_time.pkl'
         start_file = pattern_dir / 'model_start_time.pkl'
         features_file = pattern_dir / 'features.json'

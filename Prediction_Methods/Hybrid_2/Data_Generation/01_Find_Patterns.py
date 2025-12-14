@@ -4,7 +4,6 @@
 import argparse
 import pandas as pd
 from pathlib import Path
-from datetime import datetime
 import hashlib
 
 
@@ -188,12 +187,11 @@ def collect_all_patterns(pattern_counts: dict) -> list:
 def sort_by_size(patterns: list) -> list:
     return sorted(patterns, key=lambda x: (x['operator_count'], -x['occurrence_count']))
 
-# Save patterns to CSV with timestamp
+# Save patterns to CSV
 def export_results(patterns: list, output_dir: str) -> None:
     csv_dir = Path(output_dir) / 'csv'
     csv_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = csv_dir / f'01_patterns_{timestamp}.csv'
+    output_file = csv_dir / '01_patterns.csv'
 
     df = pd.DataFrame(patterns)
     df.to_csv(output_file, sep=';', index=False)

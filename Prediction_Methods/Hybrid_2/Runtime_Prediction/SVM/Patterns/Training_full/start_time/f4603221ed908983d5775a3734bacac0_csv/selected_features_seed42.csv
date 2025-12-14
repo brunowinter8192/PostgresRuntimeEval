@@ -1,6 +1,0 @@
-feature;order
-HashJoin_st2;1
-HashJoin_st1;2
-NestedLoop_Outer_st1;3
-HashJoin_np;4
-HashJoin_Outer_rt1;5

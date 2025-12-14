@@ -1,5 +1,13 @@
 # Baseline Dataset Processing
 
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Datasets/`
+
+```bash
+cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Operator_Level/Datasets
+```
+
 ## Directory Structure
 
 ```
@@ -92,6 +100,11 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 - Results inform which templates should be removed in script 01
 - Templates Q2, Q11, Q16, Q22 were identified as containing InitPlan/SubPlan operators
 
+**Usage:**
+```bash
+python3 A_01a_InitSub_Analysis.py Raw/operator_dataset_20251102_140747.csv --output-dir Baseline
+```
+
 ---
 
 ### A_01b_Leaf_Validation.py
@@ -113,6 +126,11 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 - Empty or zero-count output indicates all Scan operators are correctly positioned as leaf nodes
 - Helps identify data quality issues in query execution plans
 
+**Usage:**
+```bash
+python3 A_01b_Leaf_Validation.py Raw/operator_dataset_20251102_140747.csv --output-dir Baseline
+```
+
 ---
 
 ### 01_Filter_Templates.py
@@ -133,6 +151,11 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 - Templates Q2, Q11, Q16, Q22 are removed based on findings from A_01a_InitSub_Analysis
 - These templates contain InitPlan/SubPlan operators which complicate prediction modeling
 - This is the first required step in the dataset preparation pipeline
+
+**Usage:**
+```bash
+python3 01_Filter_Templates.py Raw/operator_dataset_20251102_140747.csv --output-dir Baseline
+```
 
 ---
 
@@ -156,6 +179,11 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 - st2/rt2: timing from child with 'Inner' relationship
 - Values are 0.0 if no child exists for that relationship
 - Child operators are identified by depth (current_depth + 1)
+
+**Usage:**
+```bash
+python3 02_Child_Features.py Baseline/01_operator_dataset_cleaned.csv --output-dir Baseline
+```
 
 ---
 
@@ -185,6 +213,11 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 - Prevents data leakage where operators from same query appear in both sets
 - With 14 templates: 1680 training queries, 420 test queries
 
+**Usage:**
+```bash
+python3 03_Split_Data.py Baseline/02_operator_dataset_with_children.csv --output-dir Baseline
+```
+
 ---
 
 ### 04a_Split_Types.py
@@ -208,6 +241,11 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 - Each folder contains all training examples for that specific operator type
 - This is an optional organizational step for specialized analysis
 
+**Usage:**
+```bash
+python3 04a_Split_Types.py Baseline/03_training.csv --output-dir Baseline
+```
+
 ---
 
 ### 04b_Clean_Test.py
@@ -229,6 +267,11 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 - Training set retains child features for model training
 - This ensures realistic evaluation conditions where child operator timings are unknown during inference
 
+**Usage:**
+```bash
+python3 04b_Clean_Test.py Baseline/03_test.csv --output-dir Baseline
+```
+
 ---
 
 ### A_01e_Verify_Plans.py
@@ -249,3 +292,9 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 - Run on both training.csv and test.csv to compare distributions
 - Useful for identifying templates with multiple query plan variants (e.g., Q9 has 2 different plans)
 - Helps ensure train/test split preserves all plan variants
+
+**Usage:**
+```bash
+python3 A_01e_Verify_Plans.py Baseline/03_training.csv --output-dir Baseline
+python3 A_01e_Verify_Plans.py Baseline/03_test.csv --output-dir Baseline
+```

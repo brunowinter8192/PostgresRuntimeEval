@@ -3,57 +3,97 @@ name: iterative-dev
 description: Manages iterative workflow with plan-implement cycles. Use when user mentions "iterativer workflow".
 ---
 
-# Iterative Development Workflow
+# Iterative Development Skill
 
-**Note:** This skill extends native Claude Code Plan Mode, not replaces it.
-Follow all native Plan Mode rules. This adds:
-- Phase indicators (📋/🔨)
+## Overview
+
+This skill extends native Claude Code Plan Mode with:
+- Phase indicators
 - Iterative cycle structure
 - Explicit file vs chat separation
 
-## Phase Tracking
+Follow all native Plan Mode rules.
+
+## Cycle
+
+```
+PLAN -> ExitPlanMode -> IMPLEMENT -> PLAN (new cycle)
+```
 
 Every response starts with phase indicator:
 - `📋 PLAN` - Planning phase (Plan Mode active)
 - `🔨 IMPLEMENT` - Implementation phase
 
-## Planning Phase Rules (📋 PLAN)
+---
 
-**Communication:**
-- Chat = Brainstorming, Asking Questions
-- Plan file = Key Points and Implementation
-  - Use system-provided plan file path from Plan Mode message
-  - **ALWAYS use Write/Edit tool to update plan file**
-  - **NEVER write plan content directly in chat**
-- One question at a time, based on previous answer
+## Planning Phase (PLAN)
 
-**Critical:**
-- Plan file consists of:
-    - 1. Takeaways from the chat
-    - 2. How to implement those takeaways
-- Plan file has to be iteratively extended until execution
-- A good Plan file is not written at once
-- If any brainstorming/changes: UPDATE plan file immediately
+### Communication
 
-**Bash Tool calls and Edits:**
-- if the interactive planning session requires the execution of certain modules to further refine the Plan, call exitplanmode and execute only what needs to be executed in order to refine the Plan file
-- ask the user to manually return to plan mode after execution
+| Channel | Purpose |
+|---------|---------|
+| Chat | Brainstorming, asking questions |
+| Plan file | Key points and implementation steps |
 
-**Before ExitPlanMode:**
-- Plan file MUST reflect current HOW
+- One question at a time, based on previous answer, prefer multiple choice, 'aksuserquestion' tool
+	- Questions building up on each other, one leads to another
+- Use system-provided plan file path from Plan Mode message
+- ALWAYS use Write/Edit tool to update plan file
+- NEVER write plan content directly in chat
+
+### Plan File Management
+
+**Core Principle:** Build the plan iteratively.
+
+```
+update -> update -> update -> implement -> clear
+```
+
+- After each chat exchange: UPDATE the plan file
+- Never write the complete plan at once
+- Plan grows organically through conversation
+- Only call ExitPlanMode when plan reflects current understanding
+
+### Execution During Planning
+
+If the planning session requires module execution to refine the plan:
+1. Call ExitPlanMode
+2. Execute only what is needed to refine the plan
+3. Ask user to manually return to plan mode
+
+### Before ExitPlanMode
+
+- Plan file MUST reflect current implementation approach
 - NEVER call ExitPlanMode with stale plan
 
-## Implementation Phase Rules (🔨 IMPLEMENT)
+---
 
-**After completing each implementation step:**
-- Ask: "Continue implementing or back to 📋 Plan?"
+## Question Tracking
 
-**Cycle:**
-📋 PLAN → ExitPlanMode → 🔨 IMPLEMENT → 📋 PLAN (new plan)
+Second file alongside plan file: `questions/questions.md` in project root.
 
-**Critical: After Implementation**
-- call update plan and fully empty the plan file, override with just ' ' --> CLEAR THE PLAN AFTER EACH SUCCESSFUL IMPLEMENTATION
-- make sure everything in the plan file was executed accordingly
-- if there are non executed points in the plan file, make sure to not override them and inform the user about the open points
+**Purpose:** Knowledge base for future sessions - "did we discuss this before?"
 
+**Workflow:**
+1. User asks a question during planning
+2. Claude explains/answers
+3. Claude asks: "Add to questions.md?"
+4. If yes: append Q + A to `questions/questions.md`
 
+**Format:** Question + Answer
+
+**Exception:** This file CAN be written during Plan Mode (unlike other files).
+
+---
+
+## Implementation Phase (IMPLEMENT)
+
+### After Each Step
+
+Ask: "Continue implementing or back to PLAN?"
+
+### After IMPLEMENTATION
+**CRITICAL**
+1. Verify all plan items were executed
+2. If open points remain: inform user, do NOT override them
+3. If complete: clear plan file (override with single space), CLEAR OFF ALL WELL EXECUTED TASKS IN THE PLAN FILE AFTER EXECUTION

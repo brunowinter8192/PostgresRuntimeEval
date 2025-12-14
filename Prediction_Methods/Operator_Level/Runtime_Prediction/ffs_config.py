@@ -7,7 +7,7 @@ MIN_FEATURES = 1
 
 SVM_PARAMS = {
     'kernel': 'rbf',
-    'nu': 0.65,
+    'nu': 0.5,
     'C': 1.5,
     'gamma': 'scale',
     'cache_size': 500

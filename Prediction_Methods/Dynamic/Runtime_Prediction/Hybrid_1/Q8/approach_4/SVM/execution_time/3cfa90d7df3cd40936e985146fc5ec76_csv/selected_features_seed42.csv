@@ -1,0 +1,5 @@
+feature;order
+IndexScan_Inner_total_cost;1
+IndexScan_Inner_sel;2
+NestedLoop_rt2;3
+NestedLoop_nt1;4

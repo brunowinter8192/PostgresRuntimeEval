@@ -7,7 +7,6 @@ import pandas as pd
 from src.io import (
     create_log_entry,
     calculate_mre,
-    save_pattern_model,
     export_pattern_results,
     export_selection_summary
 )
@@ -52,9 +51,10 @@ def run_static_selection(
     operator_models: dict,
     operator_ffs: dict,
     output_dir: str,
-    model_dir: str,
     pretrained_dir: str,
-    min_error_threshold: float = 0.1
+    min_error_threshold: float = 0.1,
+    epsilon: float = 0.0,
+    min_template_count: int = 1
 ) -> None:
     baseline_mre = 0.2297
     selected_pattern_models = {}
@@ -70,6 +70,13 @@ def run_static_selection(
         pattern_string = pattern_row['pattern_string']
         pattern_length = int(pattern_row['pattern_length'])
         operator_count = int(pattern_row['operator_count'])
+        unique_template_count = int(pattern_row.get('unique_template_count', 1))
+
+        if unique_template_count < min_template_count:
+            selection_log.append(create_log_entry(
+                pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_LOW_TEMPLATE_COUNT', idx
+            ))
+            continue
 
         avg_mre = calculate_pattern_avg_mre(
             pattern_hash, current_predictions, pattern_occurrences
@@ -106,11 +113,10 @@ def run_static_selection(
 
         new_mre = calculate_mre(predictions)
 
-        if new_mre < baseline_mre:
+        if new_mre < baseline_mre - epsilon:
             status = 'SELECTED'
             selected_pattern_models[pattern_hash] = pattern_model
             selected_pattern_info[pattern_hash] = {'length': pattern_length, 'operator_count': operator_count}
-            save_pattern_model(model_dir, pattern_hash, pattern_model)
             log_baseline = baseline_mre
             baseline_mre = new_mre
             delta = log_baseline - new_mre
@@ -139,14 +145,17 @@ def run_error_selection(
     operator_models: dict,
     operator_ffs: dict,
     output_dir: str,
-    model_dir: str,
-    pretrained_dir: str
+    pretrained_dir: str,
+    epsilon: float = 0.0,
+    min_template_count: int = 1
 ) -> None:
     baseline_mre = 0.2297
     selected_pattern_models = {}
     selected_pattern_info = {}
     consumed_hashes = set()
     selection_log = []
+
+    plan_counts = error_baseline.set_index('pattern_hash')['unique_template_count'].to_dict() if 'unique_template_count' in error_baseline.columns else {}
 
     current_predictions = predict_all_queries(
         df_test, operator_models, operator_ffs, {}, pattern_ffs, {}
@@ -175,6 +184,12 @@ def run_error_selection(
 
         consumed_hashes.add(pattern_hash)
 
+        if plan_counts.get(pattern_hash, 1) < min_template_count:
+            selection_log.append(create_log_entry(
+                pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_LOW_TEMPLATE_COUNT', iteration
+            ))
+            continue
+
         if pattern_hash not in pattern_ffs:
             selection_log.append(create_log_entry(
                 pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_NO_FFS', iteration
@@ -200,11 +215,10 @@ def run_error_selection(
 
         new_mre = calculate_mre(new_predictions)
 
-        if new_mre < baseline_mre:
+        if new_mre < baseline_mre - epsilon:
             status = 'SELECTED'
             selected_pattern_models[pattern_hash] = pattern_model
             selected_pattern_info[pattern_hash] = {'length': pattern_length, 'operator_count': operator_count}
-            save_pattern_model(model_dir, pattern_hash, pattern_model)
             log_baseline = baseline_mre
             baseline_mre = new_mre
             delta = log_baseline - new_mre

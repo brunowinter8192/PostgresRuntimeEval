@@ -1,73 +1,154 @@
 # Runtime_Prediction - DOCS
 
+**Note:** This DOCS.md covers all batch scripts at root level. Not CLAUDE.md compliant (should be per-directory), but avoids overengineering for simple batch wrappers.
+
+---
+
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
+
+```bash
+cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Runtime_Prediction
+```
+
+---
+
 ## Directory Structure
 
 ```
 Runtime_Prediction/
 ├── DOCS.md
-├── A_01_Evaluate_Template.py
-├── A_02_Compare_Templates.py
-├── Online_1/                    [See DOCS.md]
-├── Operator_Level/              [See DOCS.md]
-└── Plan_Level/                  [See DOCS.md]
+├── Operator_Level/
+│   ├── 00_Batch_Workflow.py
+│   ├── 01_Forward_Selection.py
+│   └── Q1/, Q3/, ... Q19/
+│       ├── SVM/
+│       ├── Model/
+│       └── predictions.csv
+└── Plan_Level/
+    ├── 00_Batch_Workflow.py
+    └── Q1/, Q3/, ... Q19/
+        ├── SVM/
+        └── 02_predictions_*.csv
 ```
 
 ---
 
-## A_01_Evaluate_Template.py
+## Operator_Level/00_Batch_Workflow.py
 
-**Purpose:** Calculate evaluation metrics for each template based on prediction results
+**Purpose:** Run complete Operator_Level workflow (FFS, Train, Predict) for all 14 LOTO templates.
 
-**Input:** `Evaluation/` directory containing template subfolders with `predictions.csv`
+**Input:**
+- Dataset: `../Dataset/Dataset_Operator/Qx/` (from 01_LOTO_Split.py)
+- Scripts: `/Prediction_Methods/Operator_Level/Runtime_Prediction/` (02, 03)
+- Local: `01_Forward_Selection.py` (see below)
 
-**Output:** `metrics.csv` per template folder
+**Output per Template:**
+- `Qx/SVM/two_step_evaluation_overview.csv` - FFS results
+- `Qx/Model/{target}/{operator}/model.pkl` - Trained models
+- `Qx/predictions.csv` - Bottom-up predictions
 
 **Usage:**
 ```bash
-python3 A_01_Evaluate_Template.py <evaluation_dir>
+cd Operator_Level
+python3 00_Batch_Workflow.py
 ```
 
-### evaluate_workflow()
-Orchestrator that iterates through all template folders in the evaluation directory and calls evaluate_template for each.
+**Workflow per Template:**
+1. `01_Forward_Selection.py` (LOCAL) - Two-step FFS for available operators
+2. `02_Train_Models.py` - Train NuSVR models for available operators
+3. `03_Query_Prediction.py` - Bottom-up prediction with child propagation
 
-### evaluate_template()
-Processes a single template folder: loads predictions, calculates metrics, exports results. Skips if predictions.csv does not exist.
-
-### load_predictions()
-Loads predictions.csv from a template folder using semicolon delimiter.
-
-### calculate_metrics()
-Calculates evaluation metrics from predictions DataFrame: query_count, mean_actual_ms, mean_predicted_ms, mean_mre, std_mre, mean_mre_pct.
-
-### export_metrics()
-Exports metrics dictionary to metrics.csv in the template folder.
+**Templates:** Q1, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q12, Q13, Q14, Q18, Q19
 
 ---
 
-## A_02_Compare_Templates.py
+## Operator_Level/01_Forward_Selection.py (Local Copy)
 
-**Purpose:** Aggregate metrics across all templates and create comparison visualization
+**Why local copy instead of using Operator_Level original:**
 
-**Input:** `Evaluation/` directory containing template subfolders with `metrics.csv` (requires A_01 output)
+LOTO splits may not contain all 13 operators. Example: `Index_Only_Scan` only exists in Q13. When Q13 is held-out, the training data for Q13 has no `Index_Only_Scan` operator.
 
-**Output:** `comparison.csv` and `comparison_plot.png` in evaluation directory root
+The original script iterates over a fixed `OPERATORS_FOLDER_NAMES` list and crashes on missing folders. This local copy iterates over **available** operator folders instead.
+
+**Difference from original:**
+```python
+# Original: for operator in OPERATORS_FOLDER_NAMES:
+# Local:    for operator in get_available_operators(dataset_dir):
+```
+
+**Import Dependencies:**
+- `mapping_config.py` from `/Operator_Level/`
+- `ffs_config.py` from `/Operator_Level/Runtime_Prediction/`
+
+Both paths must be in sys.path for imports to work.
+
+---
+
+## Plan_Level/00_Batch_Workflow.py
+
+**Purpose:** Run complete Plan_Level workflow (FFS, Train) for all 14 LOTO templates using Plan_Level_1 scripts.
+
+**Input:**
+- Dataset: `../Dataset/Dataset_Plan/Qx/` (from 01_LOTO_Split.py)
+- Scripts: `/Plan_Level_1/Runtime_Prediction/` (01, 02)
+
+**Output per Template:**
+- `Qx/SVM/01_ffs_summary.csv` - FFS results
+- `Qx/SVM/01_ffs_stability.csv` - Feature stability
+- `Qx/02_predictions_*.csv` - Predictions on test set
 
 **Usage:**
 ```bash
-python3 A_02_Compare_Templates.py <evaluation_dir> [--title "Plot Title"]
+cd Plan_Level
+python3 00_Batch_Workflow.py
 ```
 
-### compare_workflow()
-Orchestrator that collects metrics from all templates, creates comparison table, exports CSV and generates plot.
+**Workflow per Template:**
+1. `01_Forward_Selection.py` - Multi-seed FFS with NuSVR
+2. `02_Train_Model.py` - Train model and predict on test set
 
-### collect_all_metrics()
-Iterates through template folders, reads metrics.csv from each, returns list of metric dictionaries with template name added.
+**Templates:** Q1, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q12, Q13, Q14, Q18, Q19
 
-### create_comparison_table()
-Converts collected metrics list to DataFrame, sets template as index, sorts alphabetically.
+**Note:** Uses Plan_Level_1 scripts via subprocess calls (no local copy needed).
 
-### export_comparison()
-Saves comparison DataFrame to comparison.csv in evaluation directory root.
+---
 
-### create_comparison_plot()
-Generates bar plot showing mean_mre_pct per template with value labels. Saves as comparison_plot.png.
+## Hybrid_1/01_Batch_Hybrid_Prediction.py
+
+**Purpose:** Run complete Hybrid_1 workflow (FFS, Train, Predict) for all 14 LOTO templates using only pre-filtered patterns.
+
+**Input:**
+- Pattern datasets: `../Dataset/Dataset_Hybrid_1/Qx/approach_4/`
+- Pattern filter: `used_patterns.csv` (from 00_Dry_Prediction.py)
+- Operator models: `Operator_Level/Qx/Model/` (symlinked)
+- Scripts: `Hybrid_1/Runtime_Prediction/` (01, 02, 03_Predict_Queries)
+
+**Output per Template:**
+- `Qx/approach_4/SVM/two_step_evaluation_overview.csv` - Pattern FFS results
+- `Qx/approach_4/Model/Patterns/{target}/{hash}/model.pkl` - Trained pattern models
+- `Qx/approach_4/Model/Operators/` - Symlinks to operator models
+- `Qx/approach_4/predictions.csv` - Hybrid predictions
+- `Qx/approach_4/patterns.csv` - Pattern usage summary
+
+**Usage:**
+```bash
+cd Hybrid_1
+python3 01_Batch_Hybrid_Prediction.py
+```
+
+**Workflow per Template:**
+1. `01_Feature_Selection.py` with `--pattern-filter used_patterns.csv` - FFS only for used patterns
+2. `02_Train_Models.py` with `--pattern-filter used_patterns.csv` - Train only used pattern models
+3. Symlink operator models from `Operator_Level/Qx/Model/`
+4. `03_Predict_Queries.py` - Hybrid bottom-up prediction
+
+**Key Optimization:** The `--pattern-filter` flag ensures FFS and training only process patterns that will actually be used for prediction. Combined with `00_Dry_Prediction.py`, this reduces processing from 100+ patterns to typically 2-10 per template.
+
+**Templates:** Q1, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q12, Q13, Q14, Q18, Q19
+
+**Prerequisites:**
+- `Dataset/Dataset_Operator/` LOTO splits must exist
+- `Dataset/Dataset_Hybrid_1/` pattern extraction must be complete
+- `Runtime_Prediction/Operator_Level/` must have trained operator models

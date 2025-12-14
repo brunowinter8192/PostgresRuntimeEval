@@ -1,5 +1,24 @@
 # Datasets Module Documentation
 
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Datasets/`
+
+```bash
+cd /path/to/Plan_Level_1/Datasets
+```
+
+## Directory Structure
+
+```
+Datasets/
+├── DOCS.md
+├── 01_Split_Train_Test.py
+├── 02_Create_State_1.py
+├── Baseline/
+└── State_1/
+```
+
 ## Shared Infrastructure
 
 ### Parent mapping_config.py

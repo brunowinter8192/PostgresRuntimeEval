@@ -1,2 +1,0 @@
-seed;n_features;final_mre;selected_features
-42;10;0.055184551367164957;sort_key_count, jit_functions, group_key_count, Nested_Loop_rows, Hash_rows, strategy_plain, Sort_rows, row_count, p_tot_cost, sort_key_columns

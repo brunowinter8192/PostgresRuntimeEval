@@ -1,0 +1,15 @@
+feature;count;percentage
+Sort_rows;1;100.0
+Nested_Loop_cnt;1;100.0
+group_key_columns;1;100.0
+jit_functions;1;100.0
+Limit_rows;1;100.0
+Aggregate_cnt;1;100.0
+sort_key_count;1;100.0
+Index_Scan_cnt;1;100.0
+p_tot_cost;1;100.0
+Gather_Merge_rows;1;100.0
+Index_Scan_rows;1;100.0
+p_st_cost;1;100.0
+Incremental_Sort_cnt;1;100.0
+subplan_count;1;100.0

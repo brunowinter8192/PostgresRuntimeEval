@@ -1,0 +1,29 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Gather_Outer_rt1;True;0.015955816378061743;1;Gather_Outer_rt1
+2;Aggregate_rt1;True;0.01592067292238285;2;Gather_Outer_rt1, Aggregate_rt1
+3;Aggregate_total_cost;False;0.01832833664848496;2;Gather_Outer_rt1, Aggregate_rt1
+4;Aggregate_startup_cost;False;0.0183874520901544;2;Gather_Outer_rt1, Aggregate_rt1
+5;Gather_Outer_total_cost;False;0.018605707424417826;2;Gather_Outer_rt1, Aggregate_rt1
+6;Gather_Outer_sel;False;0.019487099168134812;2;Gather_Outer_rt1, Aggregate_rt1
+7;Gather_Outer_parallel_workers;False;0.019762746849075686;2;Gather_Outer_rt1, Aggregate_rt1
+8;Aggregate_st1;False;0.03558538617338898;2;Gather_Outer_rt1, Aggregate_rt1
+9;Gather_Outer_st1;False;0.03598846448428213;2;Gather_Outer_rt1, Aggregate_rt1
+10;Gather_Outer_startup_cost;False;0.040258528818579185;2;Gather_Outer_rt1, Aggregate_rt1
+11;Aggregate_sel;False;0.04291456054615447;2;Gather_Outer_rt1, Aggregate_rt1
+12;Aggregate_plan_width;False;0.0522722130088976;2;Gather_Outer_rt1, Aggregate_rt1
+13;Gather_Outer_nt1;False;0.0592752846058718;2;Gather_Outer_rt1, Aggregate_rt1
+14;Aggregate_nt1;False;0.06030545119258814;2;Gather_Outer_rt1, Aggregate_rt1
+15;Gather_Outer_nt;False;0.06030545119258814;2;Gather_Outer_rt1, Aggregate_rt1
+16;Gather_Outer_plan_width;False;0.060403532691533514;2;Gather_Outer_rt1, Aggregate_rt1
+17;Aggregate_nt;False;0.07251514347493629;2;Gather_Outer_rt1, Aggregate_rt1
+18;Aggregate_np;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+19;Aggregate_nt2;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+20;Aggregate_reltuples;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+21;Aggregate_parallel_workers;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+22;Aggregate_st2;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+23;Aggregate_rt2;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+24;Gather_Outer_np;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+25;Gather_Outer_nt2;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+26;Gather_Outer_reltuples;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+27;Gather_Outer_st2;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1
+28;Gather_Outer_rt2;False;0.09791370040511871;2;Gather_Outer_rt1, Aggregate_rt1

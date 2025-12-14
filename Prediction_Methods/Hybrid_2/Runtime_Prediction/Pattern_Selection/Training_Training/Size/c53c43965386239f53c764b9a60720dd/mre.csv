@@ -1,2 +1,0 @@
-pattern_hash;pattern_string;mre;mre_pct;status
-c53c43965386239f53c764b9a60720dd;Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)];0.20716743456484432;20.716743456484433;SELECTED

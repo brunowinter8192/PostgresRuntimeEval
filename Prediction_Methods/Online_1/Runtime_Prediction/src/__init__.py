@@ -31,7 +31,7 @@ from .mining import (
     find_pattern_occurrences_in_data,
     compute_pattern_hash,
     generate_pattern_string,
-    calculate_error_ranking
+    calculate_ranking
 )
 
 # From training.py: Operator and pattern model training

@@ -1,5 +1,13 @@
 # Data Generation - Operator-Level Prediction Methods
 
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Data_Generation/`
+
+```bash
+cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Operator_Level/Data_Generation
+```
+
 ## Directory Structure
 
 ```
@@ -11,11 +19,9 @@ Data_Generation/
 ├── 01a_Extract_Features.py           # Extract static features from EXPLAIN
 ├── 01b_Extract_Targets.py            # Extract runtime targets from EXPLAIN ANALYSE
 ├── 02_Merge_Data.py                  # Merge features and targets
-├── A_01a_Cache_Val.py                # Analysis: Cold cache validation
 ├── A_01b_PG_Class.py                 # Analysis: pg_class statistics export
 ├── A_01c_Explain_JSON.py             # Analysis: EXPLAIN JSON export
 ├── A_01d_Explain_Analyse.py          # Analysis: EXPLAIN ANALYSE JSON export
-├── Cache_Validation/                 # Output folder for A_01a
 ├── Basic_Explain/                    # Output folder for A_01b, A_01c, A_01d
 │   └── md/                           # Generated markdown exports
 └── csv/                              # Dataset outputs
@@ -69,7 +75,6 @@ Database connection via argparse flags:
 ### Analysis Tools (Optional)
 
 ```
-A_01a_Cache_Val.py       # Cold cache validation (Q1 only)
 A_01b_PG_Class.py        # pg_class statistics (first seeds)
 A_01c_Explain_JSON.py    # EXPLAIN JSON export (first seeds)
 A_01d_Explain_Analyse.py # EXPLAIN ANALYSE JSON (first seeds, cold cache)
@@ -102,6 +107,11 @@ All A_ scripts are **independent** and can run in any order.
 - Uses EXPLAIN (no ANALYZE) for fast extraction
 - No cold cache restarts required
 
+**Usage:**
+```bash
+python3 01a_Extract_Features.py ../../../Misc/Generated_Queries --output-dir csv
+```
+
 ---
 
 ### 01b_Extract_Targets.py
@@ -126,6 +136,11 @@ All A_ scripts are **independent** and can run in any order.
 - Restarts OrbStack and purges cache before EACH query execution
 - Execution time: Several hours due to cold cache restarts
 
+**Usage:**
+```bash
+python3 01b_Extract_Targets.py ../../../Misc/Generated_Queries --output-dir csv
+```
+
 ---
 
 ### 02_Merge_Data.py
@@ -149,28 +164,13 @@ All A_ scripts are **independent** and can run in any order.
 - Performs inner join on [query_file, node_id]
 - Validates row count consistency before and after merge
 
----
-
-### A_01a_Cache_Val.py
-
-**Purpose:** Validate cold cache consistency by running Q1 first seed multiple times
-
-**Input:**
-- `query_dir` (positional): Path to query directory
-
-**Variables:**
-- `--output-dir`: Output directory for CSV files (default: `./`)
-- `--runs`: Number of cold cache runs (default: `5`)
-- `--container-name`: Docker container name (default: `tpch-postgres`)
-- Database configuration flags (see config.py)
-
-**Output:**
-- `cold_cache_runs.csv`: Individual run times (query_file, runtime)
-- `cold_cache_stats.csv`: Statistics (query_file, mean, spannweite_percent, spannweite_ms)
-
-**Notes:**
-- Requires sudo privileges
-- Only processes Q1 template
+**Usage:**
+```bash
+python3 02_Merge_Data.py \
+    --features-csv csv/features_20251102_135531.csv \
+    --targets-csv csv/targets_20251102_113110.csv \
+    --output-dir csv
+```
 
 ---
 
@@ -191,6 +191,11 @@ All A_ scripts are **independent** and can run in any order.
 **Notes:**
 - Processes only first seed of each template (Q1-Q22, excluding Q15)
 
+**Usage:**
+```bash
+python3 A_01b_PG_Class.py ../../../Misc/Generated_Queries --output-dir Basic_Explain/md
+```
+
 ---
 
 ### A_01c_Explain_JSON.py
@@ -209,6 +214,11 @@ All A_ scripts are **independent** and can run in any order.
 
 **Notes:**
 - Processes only first seed of each template (Q1-Q22, excluding Q15)
+
+**Usage:**
+```bash
+python3 A_01c_Explain_JSON.py ../../../Misc/Generated_Queries --output-dir Basic_Explain/md
+```
 
 ---
 
@@ -230,6 +240,11 @@ All A_ scripts are **independent** and can run in any order.
 **Notes:**
 - Requires sudo privileges
 - Restarts OrbStack and purges cache before each query
+
+**Usage:**
+```bash
+python3 A_01d_Explain_Analyse.py ../../../Misc/Generated_Queries --output-dir Basic_Explain/md
+```
 
 ---
 

@@ -60,7 +60,8 @@ def calculate_pattern_errors(
         metadata_dict[row['pattern_hash']] = {
             'pattern_string': row['pattern_string'],
             'pattern_length': row['pattern_length'],
-            'operator_count': row['operator_count']
+            'operator_count': row['operator_count'],
+            'unique_template_count': row.get('unique_template_count', 1)
         }
 
     results = []
@@ -85,6 +86,7 @@ def calculate_pattern_errors(
                 'pattern_length': meta.get('pattern_length', 0),
                 'operator_count': meta.get('operator_count', 0),
                 'occurrence_count': occurrence_count,
+                'unique_template_count': meta.get('unique_template_count', 1),
                 'avg_mre': avg_mre,
                 'avg_mre_pct': avg_mre * 100,
                 'error_score': error_score

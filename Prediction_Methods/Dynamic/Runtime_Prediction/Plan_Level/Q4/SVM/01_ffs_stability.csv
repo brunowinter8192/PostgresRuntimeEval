@@ -1,0 +1,9 @@
+feature;count;percentage
+sort_key_count;1;100.0
+jit_functions;1;100.0
+group_key_count;1;100.0
+Nested_Loop_rows;1;100.0
+Hash_rows;1;100.0
+strategy_plain;1;100.0
+Sort_rows;1;100.0
+row_count;1;100.0

@@ -1,0 +1,2 @@
+seed;n_features;final_mre;selected_features
+42;9;0.051140104081885775;Nested_Loop_rows, Gather_rows, Nested_Loop_cnt, jit_functions, p_width, p_st_cost, Hash_cnt, p_tot_cost, Sort_rows

@@ -1,0 +1,6 @@
+iteration;feature_added;mre;n_features;features
+1;total_cost;10.886014674206015;1;total_cost
+2;nt2;9.408955733114148;2;total_cost, nt2
+3;st1;6.1866779661320255;3;total_cost, nt2, st1
+4;rt1;4.815910082929141;4;total_cost, nt2, st1, rt1
+5;nt;4.183969111686536;5;total_cost, nt2, st1, rt1, nt

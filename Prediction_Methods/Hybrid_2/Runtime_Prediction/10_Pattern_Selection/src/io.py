@@ -84,6 +84,13 @@ def load_pattern_occurrences(pattern_occurrences_file: str) -> pd.DataFrame:
     return pd.read_csv(pattern_occurrences_file, delimiter=';')
 
 
+# Count unique templates per pattern from occurrences
+def count_templates_per_pattern(pattern_occurrences: pd.DataFrame) -> dict:
+    df = pattern_occurrences.copy()
+    df['template'] = df['query_file'].str.split('_').str[0]
+    return df.groupby('pattern_hash')['template'].nunique().to_dict()
+
+
 # Load training data filtered to main plan
 def load_training_data(training_file: str) -> pd.DataFrame:
     df = pd.read_csv(training_file, delimiter=';')
@@ -176,21 +183,6 @@ def calculate_mre(predictions: list) -> float:
     return np.mean(mre_values) if mre_values else float('inf')
 
 
-# Save pattern model to disk
-def save_pattern_model(model_dir: str, pattern_hash: str, model: dict) -> None:
-    pattern_dir = Path(model_dir) / pattern_hash
-    pattern_dir.mkdir(parents=True, exist_ok=True)
-
-    joblib.dump(model['execution_time'], pattern_dir / 'model_execution_time.pkl')
-    joblib.dump(model['start_time'], pattern_dir / 'model_start_time.pkl')
-
-    with open(pattern_dir / 'features.json', 'w') as f:
-        json.dump({
-            'features_exec': model['features_exec'],
-            'features_start': model['features_start']
-        }, f)
-
-
 # Export per-pattern results
 def export_pattern_results(
     output_dir: str,
@@ -236,6 +228,7 @@ def export_selection_summary(output_dir: str, selection_log: list) -> None:
         'rejected': len([s for s in selection_log if s['status'] == 'REJECTED']),
         'skipped_no_ffs': len([s for s in selection_log if s['status'] == 'SKIPPED_NO_FFS']),
         'skipped_train_failed': len([s for s in selection_log if s['status'] == 'SKIPPED_TRAIN_FAILED']),
+        'skipped_low_template_count': len([s for s in selection_log if s['status'] == 'SKIPPED_LOW_TEMPLATE_COUNT']),
         'final_mre': selection_log[-1]['baseline_mre'] if selection_log else None
     }
     summary_df = pd.DataFrame([summary])

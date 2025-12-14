@@ -94,6 +94,11 @@ python3 00_Batch_Workflow.py
 
 Pattern-based hybrid prediction combining operator-level and pattern-level models.
 
+**Approach 4 Configuration:**
+- All pattern lengths (not just depth 2)
+- No passthrough operators as pattern roots
+- Occurrence threshold: 120
+
 ### Pipeline
 
 ```
@@ -114,7 +119,7 @@ Runtime_Prediction/Hybrid_1/01_Batch_Hybrid_Prediction.py
             |
             v
     Q1/, Q3/, ... Q19/
-    (SVM/ + Model/ + predictions)
+    (SVM/ + Model/ + predictions.csv)
 ```
 
 ### Step 1: Extract Patterns
@@ -123,24 +128,24 @@ Runtime_Prediction/Hybrid_1/01_Batch_Hybrid_Prediction.py
 
 **Input:** `Dataset/Dataset_Operator/Qx/training.csv`
 
-**Output per Template:** `Qx/approach_3/patterns.csv` + `patterns/` folder
+**Output per Template:** `Qx/approach_4/patterns.csv` + `patterns/` folder
 
 ```bash
 cd Dataset/Dataset_Hybrid_1
 python3 01_Batch_Extract_Patterns.py
 ```
 
-### Step 2: Dry Prediction (Pattern Filtering)
+### Step 2: Dry Prediction (Pattern Pre-Filtering)
 
 **Script:** `Dataset/Dataset_Hybrid_1/00_Dry_Prediction.py`
 
-**Purpose:** Identifies which patterns are actually used for test data prediction (reduces FFS workload by ~90%)
+**Purpose:** Simulates pattern assignment on test queries to identify which patterns are actually needed. Reduces FFS workload by 90-99% (e.g., Q1: 190 patterns -> 2 used).
 
 **Input:** `Dataset/Dataset_Operator/Qx/test.csv` + `patterns.csv`
 
 **Output per Template:**
-- `Qx/approach_3/used_patterns.csv` - Pattern hashes that match test queries
-- `Qx/approach_3/md/00_dry_prediction_report.md` - Statistics report
+- `Qx/approach_4/used_patterns.csv` - Pattern hashes that match test queries
+- `Qx/approach_4/md/00_dry_prediction_report.md` - Statistics report
 
 ```bash
 cd Dataset/Dataset_Hybrid_1
@@ -153,12 +158,29 @@ python3 00_Dry_Prediction.py
 
 **Dependency:** Uses scripts from `Hybrid_1/Runtime_Prediction/` via subprocess
 
+**Key Optimization:** Only runs FFS and training for patterns in `used_patterns.csv`, not all extracted patterns.
+
 **Output per Template:**
-- `Qx/approach_3/SVM/two_step_evaluation_overview.csv` - FFS results
-- `Qx/approach_3/Model/` - Trained pattern models
-- Predictions on test set
+- `Qx/approach_4/SVM/two_step_evaluation_overview.csv` - FFS results
+- `Qx/approach_4/Model/` - Trained pattern models
+- `Qx/approach_4/predictions.csv` - Hybrid predictions
 
 ```bash
 cd Runtime_Prediction/Hybrid_1
+python3 01_Batch_Hybrid_Prediction.py
+```
+
+### Full Reproduction
+
+```bash
+# Step 1: Extract patterns (all 14 templates in parallel)
+cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Dataset/Dataset_Hybrid_1
+python3 01_Batch_Extract_Patterns.py
+
+# Step 2: Dry prediction to filter patterns
+python3 00_Dry_Prediction.py
+
+# Step 3: FFS + Train + Predict (only used patterns)
+cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Runtime_Prediction/Hybrid_1
 python3 01_Batch_Hybrid_Prediction.py
 ```

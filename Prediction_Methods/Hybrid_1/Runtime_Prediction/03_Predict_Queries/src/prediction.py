@@ -72,6 +72,10 @@ def predict_single_query(
         all_nodes, pattern_info, pattern_order
     )
 
+    if len(pattern_assignments) == 1 and len(consumed_nodes) == len(all_nodes):
+        consumed_nodes = set()
+        pattern_assignments = {}
+
     prediction_cache = {}
     predictions = []
     steps = []

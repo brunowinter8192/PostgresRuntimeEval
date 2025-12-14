@@ -1,0 +1,7 @@
+feature;order
+Aggregate_rt1;1
+Aggregate_total_cost;2
+HashJoin_Outer_rt1;3
+HashJoin_Outer_rt2;4
+HashJoin_Outer_st1;5
+HashJoin_Outer_st2;6

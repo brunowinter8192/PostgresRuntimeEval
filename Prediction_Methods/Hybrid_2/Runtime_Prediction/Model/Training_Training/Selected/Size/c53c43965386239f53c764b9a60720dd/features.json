@@ -1,1 +1,0 @@
-{"features_exec": ["IndexScan_Inner_startup_cost", "NestedLoop_startup_cost"], "features_start": ["NestedLoop_st1", "NestedLoop_total_cost"]}

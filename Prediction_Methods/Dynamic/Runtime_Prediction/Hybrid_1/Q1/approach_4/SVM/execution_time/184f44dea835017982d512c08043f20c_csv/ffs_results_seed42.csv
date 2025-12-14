@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Aggregate_rt1;True;0.006285123933218439;1;Aggregate_rt1
+2;Aggregate_nt;True;0.004927429183175635;2;Aggregate_rt1, Aggregate_nt
+3;Aggregate_plan_width;True;0.004576310272275533;3;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width
+4;SeqScan_Outer_np;True;0.004431529909001795;4;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np
+5;Aggregate_total_cost;True;0.004366637407683658;5;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost
+6;Aggregate_startup_cost;True;0.004323686277251175;6;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost
+7;SeqScan_Outer_total_cost;True;0.0042940914407939524;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+8;SeqScan_Outer_plan_width;False;0.004301791870015598;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+9;SeqScan_Outer_reltuples;False;0.004301791870015598;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+10;Aggregate_nt1;False;0.006996833633323675;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+11;SeqScan_Outer_nt;False;0.006996833633323675;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+12;SeqScan_Outer_sel;False;0.0069968336333242525;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+13;Aggregate_sel;False;0.007020562122487158;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+14;Aggregate_st1;False;0.018366736949221956;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+15;Aggregate_np;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+16;Aggregate_nt2;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+17;Aggregate_reltuples;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+18;Aggregate_parallel_workers;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+19;Aggregate_st2;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+20;Aggregate_rt2;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+21;SeqScan_Outer_nt1;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+22;SeqScan_Outer_nt2;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+23;SeqScan_Outer_startup_cost;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost
+24;SeqScan_Outer_parallel_workers;False;0.021100152792945394;7;Aggregate_rt1, Aggregate_nt, Aggregate_plan_width, SeqScan_Outer_np, Aggregate_total_cost, Aggregate_startup_cost, SeqScan_Outer_total_cost

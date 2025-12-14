@@ -1,0 +1,8 @@
+iteration;feature_added;mre;n_features;features;seed
+1;byte_count;0.08749524623043035;1;byte_count;42
+2;Hash_cnt;0.06947089959177788;2;byte_count, Hash_cnt;42
+3;strategy_sorted;0.05727331323374307;3;byte_count, Hash_cnt, strategy_sorted;42
+4;p_tot_cost;0.05494093353990213;4;byte_count, Hash_cnt, strategy_sorted, p_tot_cost;42
+5;Seq_Scan_cnt;0.054050738432680004;5;byte_count, Hash_cnt, strategy_sorted, p_tot_cost, Seq_Scan_cnt;42
+6;p_st_cost;0.05356734740372706;6;byte_count, Hash_cnt, strategy_sorted, p_tot_cost, Seq_Scan_cnt, p_st_cost;42
+7;Hash_rows;0.05351137439546566;7;byte_count, Hash_cnt, strategy_sorted, p_tot_cost, Seq_Scan_cnt, p_st_cost, Hash_rows;42

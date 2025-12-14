@@ -1,0 +1,21 @@
+iteration;feature_added;mre;n_features;features;seed
+1;Nested_Loop_rows;0.08682984865417087;1;Nested_Loop_rows;42
+2;Gather_rows;0.06535369300390179;2;Nested_Loop_rows, Gather_rows;42
+3;p_width;0.05885751323145805;3;Nested_Loop_rows, Gather_rows, p_width;42
+4;jit_functions;0.057854362294328575;4;Nested_Loop_rows, Gather_rows, p_width, jit_functions;42
+5;Nested_Loop_cnt;0.05443314411566456;5;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt;42
+6;sort_key_columns;0.05300182827861115;6;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns;42
+7;Sort_rows;0.052381502579544714;7;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows;42
+8;Index_Scan_rows;0.05203329302316693;8;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows;42
+9;Hash_cnt;0.05178285655805788;9;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt;42
+10;Incremental_Sort_cnt;0.051534996852293256;10;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt;42
+11;Incremental_Sort_rows;0.05138811398666503;11;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows;42
+12;Merge_Join_cnt;0.05125130227619771;12;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows, Merge_Join_cnt;42
+13;Merge_Join_rows;0.05114213637009929;13;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows, Merge_Join_cnt, Merge_Join_rows;42
+14;Gather_Merge_rows;0.0510341272990046;14;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows, Merge_Join_cnt, Merge_Join_rows, Gather_Merge_rows;42
+15;Aggregate_rows;0.05098055011136042;15;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows, Merge_Join_cnt, Merge_Join_rows, Gather_Merge_rows, Aggregate_rows;42
+16;p_tot_cost;0.050949153578622154;16;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows, Merge_Join_cnt, Merge_Join_rows, Gather_Merge_rows, Aggregate_rows, p_tot_cost;42
+17;p_st_cost;0.05089465560674833;17;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows, Merge_Join_cnt, Merge_Join_rows, Gather_Merge_rows, Aggregate_rows, p_tot_cost, p_st_cost;42
+18;byte_count;0.05087135646162459;18;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows, Merge_Join_cnt, Merge_Join_rows, Gather_Merge_rows, Aggregate_rows, p_tot_cost, p_st_cost, byte_count;42
+19;subplan_count;0.05084277503888751;19;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows, Merge_Join_cnt, Merge_Join_rows, Gather_Merge_rows, Aggregate_rows, p_tot_cost, p_st_cost, byte_count, subplan_count;42
+20;initplan_count;0.050821924367728345;20;Nested_Loop_rows, Gather_rows, p_width, jit_functions, Nested_Loop_cnt, sort_key_columns, Sort_rows, Index_Scan_rows, Hash_cnt, Incremental_Sort_cnt, Incremental_Sort_rows, Merge_Join_cnt, Merge_Join_rows, Gather_Merge_rows, Aggregate_rows, p_tot_cost, p_st_cost, byte_count, subplan_count, initplan_count;42

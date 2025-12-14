@@ -6,7 +6,7 @@ DBGEN_DIR="$1"
 OUTPUT_DIR="$2"
 REFERENCE_FILE="$DBGEN_DIR/reference/cmd_qgen_sf1"
 
-TEMPLATES=(17 20)
+TEMPLATES=(15 17 20)
 
 for template in "${TEMPLATES[@]}"; do
     TEMPLATE_DIR="$OUTPUT_DIR/Q$template"
