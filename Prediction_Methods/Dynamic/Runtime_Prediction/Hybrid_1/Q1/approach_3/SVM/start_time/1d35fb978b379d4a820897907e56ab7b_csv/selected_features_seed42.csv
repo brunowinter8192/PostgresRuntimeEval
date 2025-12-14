@@ -1,0 +1,5 @@
+feature;order
+Aggregate_Outer_startup_cost;1
+Aggregate_Outer_sel;2
+Aggregate_Outer_st1;3
+Sort_plan_width;4

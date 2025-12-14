@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "46baed7f06163b3af82c476d6c604bd1",
+  "pattern_string": "Sort -> Aggregate -> Aggregate -> Hash Join (Outer) (Outer) (Outer)",
+  "folder_name": "Sort_->_Aggregate_->_Aggregate_->_Hash_Join_Outer_Outer_Outer",
+  "pattern_length": 4,
+  "occurrence_count": 150
+}

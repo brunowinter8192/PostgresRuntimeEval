@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "10e10cd477d96a0b6148c9b09756d8f6",
+  "pattern_string": "Gather -> Aggregate -> Seq Scan (Outer) (Outer)",
+  "folder_name": "Gather_->_Aggregate_->_Seq_Scan_Outer_Outer",
+  "pattern_length": 3,
+  "occurrence_count": 150
+}

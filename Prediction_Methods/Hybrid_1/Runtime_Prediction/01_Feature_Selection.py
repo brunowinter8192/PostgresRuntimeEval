@@ -12,7 +12,6 @@ from sklearn.preprocessing import MaxAbsScaler
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.metrics import make_scorer
-from joblib import Parallel, delayed
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -23,19 +22,15 @@ from mapping_config import TARGET_TYPES, NON_FEATURE_SUFFIXES, FFS_SEED, FFS_MIN
 # ORCHESTRATOR
 
 # Run two-step feature selection workflow for all patterns
-def run_two_step_workflow(dataset_dir: str, output_dir: str) -> None:
-    patterns = discover_patterns(dataset_dir)
-
-    tasks = [(pattern, target) for pattern in patterns for target in TARGET_TYPES]
-
-    results = Parallel(n_jobs=-1)(
-        delayed(run_ffs_for_pattern)(pattern, target, dataset_dir, output_dir)
-        for pattern, target in tasks
-    )
+def run_two_step_workflow(dataset_dir: str, output_dir: str, pattern_filter: str = None) -> None:
+    allowed_hashes = load_pattern_filter(pattern_filter) if pattern_filter else None
+    patterns = discover_patterns(dataset_dir, allowed_hashes)
 
     ffs_results = {}
-    for (pattern, target), selected_features in zip(tasks, results):
-        ffs_results[(pattern['hash'], target)] = selected_features
+    for pattern in patterns:
+        for target in TARGET_TYPES:
+            selected_features = run_ffs_for_pattern(pattern, target, dataset_dir, output_dir)
+            ffs_results[(pattern['hash'], target)] = selected_features
 
     overview_data = process_all_patterns_two_step(patterns, ffs_results, dataset_dir, output_dir)
     export_overview(overview_data, output_dir)
@@ -43,8 +38,14 @@ def run_two_step_workflow(dataset_dir: str, output_dir: str) -> None:
 
 # FUNCTIONS
 
+# Load allowed pattern hashes from filter CSV
+def load_pattern_filter(filter_path: str) -> set:
+    df = pd.read_csv(filter_path, delimiter=';')
+    return set(df['pattern_hash'].tolist())
+
+
 # Discover patterns from patterns folder by reading pattern_info.json
-def discover_patterns(dataset_dir: str) -> list:
+def discover_patterns(dataset_dir: str, allowed_hashes: set = None) -> list:
     patterns_path = Path(dataset_dir) / 'patterns'
     patterns = []
 
@@ -53,6 +54,8 @@ def discover_patterns(dataset_dir: str) -> list:
 
     for folder in patterns_path.iterdir():
         if folder.is_dir():
+            if allowed_hashes and folder.name not in allowed_hashes:
+                continue
             info_file = folder / 'pattern_info.json'
             if info_file.exists():
                 with open(info_file, 'r') as f:
@@ -338,6 +341,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_dir", help="Directory containing pattern training datasets")
     parser.add_argument("--output-dir", required=True, help="Output directory for FFS results and overview")
+    parser.add_argument("--pattern-filter", help="CSV file with pattern_hash column to filter patterns")
     args = parser.parse_args()
 
-    run_two_step_workflow(args.dataset_dir, args.output_dir)
+    run_two_step_workflow(args.dataset_dir, args.output_dir, args.pattern_filter)

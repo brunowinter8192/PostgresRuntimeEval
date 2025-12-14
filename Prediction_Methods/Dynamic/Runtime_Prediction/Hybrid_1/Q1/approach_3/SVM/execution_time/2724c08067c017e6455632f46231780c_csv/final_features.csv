@@ -1,0 +1,10 @@
+feature;order
+Aggregate_plan_width;1
+Aggregate_sel;2
+Aggregate_st1;3
+Aggregate_startup_cost;4
+GatherMerge_Outer_rt1;5
+GatherMerge_Outer_rt2;6
+GatherMerge_Outer_st1;7
+GatherMerge_Outer_st2;8
+GatherMerge_Outer_startup_cost;9

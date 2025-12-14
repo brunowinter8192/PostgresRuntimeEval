@@ -19,19 +19,28 @@ from mapping_config import TARGET_TYPES
 # ORCHESTRATOR
 
 # Train models for all pattern-target combinations
-def train_all_patterns(dataset_dir, overview_file, output_dir):
+def train_all_patterns(dataset_dir, overview_file, output_dir, pattern_filter=None):
     overview_df = load_overview(overview_file)
     folder_to_hash = build_folder_hash_mapping(dataset_dir)
+    allowed_hashes = load_pattern_filter(pattern_filter) if pattern_filter else None
 
     for _, row in overview_df.iterrows():
         pattern_folder_name = row['pattern']
         target = row['target']
         pattern_hash = folder_to_hash.get(pattern_folder_name)
         if pattern_hash:
+            if allowed_hashes and pattern_hash not in allowed_hashes:
+                continue
             train_single_model(pattern_folder_name, pattern_hash, target, dataset_dir, overview_df, output_dir)
 
 
 # FUNCTIONS
+
+# Load allowed pattern hashes from filter CSV
+def load_pattern_filter(filter_path: str) -> set:
+    df = pd.read_csv(filter_path, delimiter=';')
+    return set(df['pattern_hash'].tolist())
+
 
 # Load feature selection overview from CSV
 def load_overview(overview_file):
@@ -128,6 +137,7 @@ if __name__ == "__main__":
     parser.add_argument('dataset_dir', help='Path to Patterns directory')
     parser.add_argument('overview_file', help='Path to two_step_evaluation_overview.csv')
     parser.add_argument('--output-dir', required=True, help='Path to Model/Hybrid output directory')
+    parser.add_argument('--pattern-filter', help='CSV file with pattern_hash column to filter patterns')
     args = parser.parse_args()
 
-    train_all_patterns(args.dataset_dir, args.overview_file, args.output_dir)
+    train_all_patterns(args.dataset_dir, args.overview_file, args.output_dir, args.pattern_filter)

@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "af27a52b75459a4f4068970057686d71",
+  "pattern_string": "Gather -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer) (Outer)",
+  "folder_name": "Gather_->_Aggregate_->_Hash_Join_->_Seq_Scan_Outer_Hash_Inner_Outer_Outer",
+  "pattern_length": 4,
+  "occurrence_count": 319
+}

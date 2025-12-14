@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "b6901c4fd264455d8bb66a793a8bbf04",
+  "pattern_string": "Nested Loop -> [Merge Join -> [Sort (Outer), Sort (Inner)] (Outer), Index Scan (Inner)]",
+  "folder_name": "Nested_Loop_->_Merge_Join_->_Sort_Outer_Sort_Inner_Outer_Index_Scan_Inner",
+  "pattern_length": 3,
+  "occurrence_count": 150
+}
