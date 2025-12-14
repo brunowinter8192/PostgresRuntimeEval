@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "7bcfec2259bf8f077d86cc017740ebd6",
+  "pattern_string": "Limit -> Sort -> Aggregate (Outer) (Outer)",
+  "folder_name": "Limit_->_Sort_->_Aggregate_Outer_Outer",
+  "pattern_length": 3,
+  "occurrence_count": 300
+}

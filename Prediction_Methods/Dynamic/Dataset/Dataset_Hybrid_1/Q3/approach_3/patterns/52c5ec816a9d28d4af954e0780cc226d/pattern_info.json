@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "52c5ec816a9d28d4af954e0780cc226d",
+  "pattern_string": "Gather Merge -> Sort -> Aggregate -> Seq Scan (Outer) (Outer) (Outer)",
+  "folder_name": "Gather_Merge_->_Sort_->_Aggregate_->_Seq_Scan_Outer_Outer_Outer",
+  "pattern_length": 4,
+  "occurrence_count": 150
+}

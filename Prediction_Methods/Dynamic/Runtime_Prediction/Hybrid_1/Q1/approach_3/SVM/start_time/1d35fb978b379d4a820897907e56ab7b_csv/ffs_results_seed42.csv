@@ -1,0 +1,29 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Aggregate_Outer_startup_cost;True;0.12009888089700844;1;Aggregate_Outer_startup_cost
+2;Aggregate_Outer_sel;True;0.1062860142902303;2;Aggregate_Outer_startup_cost, Aggregate_Outer_sel
+3;Aggregate_Outer_st1;True;0.10358302190997015;3;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1
+4;Sort_plan_width;True;0.10147927534571202;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+5;Aggregate_Outer_rt1;False;0.10175786687040278;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+6;Sort_rt1;False;0.10177042517484207;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+7;Sort_st1;False;0.1017705851263904;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+8;Aggregate_Outer_total_cost;False;0.1021305956358602;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+9;Sort_startup_cost;False;0.10220351158461727;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+10;Sort_total_cost;False;0.10220958385152283;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+11;Aggregate_Outer_plan_width;False;0.1025754672881114;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+12;Sort_np;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+13;Sort_nt2;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+14;Sort_reltuples;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+15;Sort_parallel_workers;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+16;Sort_st2;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+17;Sort_rt2;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+18;Aggregate_Outer_np;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+19;Aggregate_Outer_nt2;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+20;Aggregate_Outer_reltuples;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+21;Aggregate_Outer_parallel_workers;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+22;Aggregate_Outer_st2;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+23;Aggregate_Outer_rt2;False;0.10290558826755651;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+24;Aggregate_Outer_nt1;False;0.10300480152175555;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+25;Sort_nt;False;0.10337850115466334;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+26;Sort_nt1;False;0.10337850115466334;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+27;Aggregate_Outer_nt;False;0.10337850115466334;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width
+28;Sort_sel;False;0.10481281759122049;4;Aggregate_Outer_startup_cost, Aggregate_Outer_sel, Aggregate_Outer_st1, Sort_plan_width

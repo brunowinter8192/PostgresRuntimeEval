@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "7b9e50b618ae255bad151ec6fe0c4a12",
+  "pattern_string": "Merge Join -> [Sort -> Hash Join (Outer) (Outer), Sort -> Seq Scan (Outer) (Inner)]",
+  "folder_name": "Merge_Join_->_Sort_->_Hash_Join_Outer_Outer_Sort_->_Seq_Scan_Outer_Inner",
+  "pattern_length": 3,
+  "occurrence_count": 150
+}

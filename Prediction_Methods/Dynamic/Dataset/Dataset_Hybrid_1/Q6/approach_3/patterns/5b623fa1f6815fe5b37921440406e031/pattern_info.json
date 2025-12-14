@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "5b623fa1f6815fe5b37921440406e031",
+  "pattern_string": "Sort -> Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer)",
+  "folder_name": "Sort_->_Nested_Loop_->_Seq_Scan_Outer_Index_Scan_Inner_Outer",
+  "pattern_length": 3,
+  "occurrence_count": 150
+}

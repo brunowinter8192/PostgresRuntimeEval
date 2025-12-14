@@ -1,0 +1,7 @@
+{
+  "pattern_hash": "98d4ff98a85ecf333b0de5d4f060d098",
+  "pattern_string": "Gather Merge -> Sort -> Hash Join (Outer) (Outer)",
+  "folder_name": "Gather_Merge_->_Sort_->_Hash_Join_Outer_Outer",
+  "pattern_length": 3,
+  "occurrence_count": 300
+}
