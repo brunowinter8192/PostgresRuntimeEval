@@ -1,0 +1,3 @@
+pattern_hash;usage_count;node_types
+53f9aa07d73657d04951f9bbdd83fef8;150;Aggregate
+a95bee4e9ae59bc7fb7a48a1a7973a31;150;Hash Join

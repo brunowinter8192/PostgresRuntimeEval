@@ -14,7 +14,6 @@ from src.io import (
     load_operator_models,
     load_operator_features,
     load_pattern_models,
-    load_pattern_features,
     load_pattern_info,
     export_predictions
 )
@@ -35,7 +34,6 @@ def run_prediction(
     output_dir: str,
     strategy: str = None,
     pattern_model_dir: str = None,
-    pattern_ffs_file: str = None,
     selected_patterns_file: str = None,
     pattern_metadata_file: str = None
 ) -> None:
@@ -44,18 +42,16 @@ def run_prediction(
     operator_features = load_operator_features(operator_overview_file)
 
     pattern_models = {}
-    pattern_features = {}
     pattern_info = {}
     pattern_order = []
 
-    if pattern_model_dir and pattern_ffs_file and selected_patterns_file and pattern_metadata_file:
-        pattern_models = load_pattern_models(pattern_model_dir)
-        pattern_features = load_pattern_features(pattern_ffs_file, pattern_models)
+    if pattern_model_dir and selected_patterns_file and pattern_metadata_file:
         pattern_info, pattern_order = load_pattern_info(selected_patterns_file, pattern_metadata_file)
+        pattern_models = load_pattern_models(pattern_model_dir, pattern_order)
 
     all_predictions = predict_all_queries(
         df_test, operator_models, operator_features,
-        pattern_models, pattern_features, pattern_info, pattern_order,
+        pattern_models, pattern_info, pattern_order,
         output_dir, operator_model_dir, pattern_model_dir or ''
     )
 
@@ -69,9 +65,8 @@ if __name__ == '__main__':
     parser.add_argument('operator_overview_file', help='Path to operator_overview.csv')
     parser.add_argument('--strategy', choices=STRATEGIES, default=None, help='Selection strategy for pattern priority')
     parser.add_argument('--pattern-model-dir', default=None, help='Path to pattern models')
-    parser.add_argument('--pattern-ffs-file', default=None, help='Path to pattern FFS overview')
     parser.add_argument('--selected-patterns', default=None, help='Path to selected_patterns.csv')
-    parser.add_argument('--pattern-metadata', default=None, help='Path to selected_metadata.csv')
+    parser.add_argument('--pattern-metadata', default=None, help='Path to pattern_metadata.csv')
     parser.add_argument('--output-dir', required=True, help='Output directory for predictions')
     args = parser.parse_args()
 
@@ -82,7 +77,6 @@ if __name__ == '__main__':
         args.output_dir,
         args.strategy,
         args.pattern_model_dir,
-        args.pattern_ffs_file,
         args.selected_patterns,
         args.pattern_metadata
     )

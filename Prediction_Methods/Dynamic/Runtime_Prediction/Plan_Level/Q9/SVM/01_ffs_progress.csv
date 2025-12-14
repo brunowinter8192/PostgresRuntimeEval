@@ -1,0 +1,15 @@
+iteration;feature_added;mre;n_features;features;seed
+1;Sort_rows;0.08398260653323811;1;Sort_rows;42
+2;Nested_Loop_cnt;0.07206619032847335;2;Sort_rows, Nested_Loop_cnt;42
+3;group_key_columns;0.06273949846288507;3;Sort_rows, Nested_Loop_cnt, group_key_columns;42
+4;jit_functions;0.056682363534540946;4;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions;42
+5;Limit_rows;0.05316891741984442;5;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows;42
+6;Aggregate_cnt;0.05211319195840527;6;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, Aggregate_cnt;42
+7;sort_key_count;0.05165834970361046;7;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, Aggregate_cnt, sort_key_count;42
+8;Index_Scan_cnt;0.051287425791454386;8;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, Aggregate_cnt, sort_key_count, Index_Scan_cnt;42
+9;p_tot_cost;0.051063504436203985;9;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, Aggregate_cnt, sort_key_count, Index_Scan_cnt, p_tot_cost;42
+10;Gather_Merge_rows;0.050972086633029434;10;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, Aggregate_cnt, sort_key_count, Index_Scan_cnt, p_tot_cost, Gather_Merge_rows;42
+11;Index_Scan_rows;0.050869644368434386;11;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, Aggregate_cnt, sort_key_count, Index_Scan_cnt, p_tot_cost, Gather_Merge_rows, Index_Scan_rows;42
+12;p_st_cost;0.050793847188970544;12;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, Aggregate_cnt, sort_key_count, Index_Scan_cnt, p_tot_cost, Gather_Merge_rows, Index_Scan_rows, p_st_cost;42
+13;Incremental_Sort_cnt;0.050775516603167856;13;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, Aggregate_cnt, sort_key_count, Index_Scan_cnt, p_tot_cost, Gather_Merge_rows, Index_Scan_rows, p_st_cost, Incremental_Sort_cnt;42
+14;subplan_count;0.05077355019579133;14;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, Aggregate_cnt, sort_key_count, Index_Scan_cnt, p_tot_cost, Gather_Merge_rows, Index_Scan_rows, p_st_cost, Incremental_Sort_cnt, subplan_count;42

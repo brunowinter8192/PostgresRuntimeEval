@@ -1,2 +1,0 @@
-seed;n_features;final_mre;selected_features
-42;10;0.02457070014956785;Nested_Loop_rows, strategy_sorted, Seq_Scan_cnt, p_st_cost, Index_Scan_cnt, p_tot_cost, max_tree_depth, Index_Scan_rows, parallel_aware_count, op_count

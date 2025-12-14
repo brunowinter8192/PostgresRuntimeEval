@@ -1,5 +1,0 @@
-feature;order
-reltuples;1
-startup_cost;2
-total_cost;3
-plan_width;4

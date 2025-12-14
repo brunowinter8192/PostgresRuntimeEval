@@ -1,0 +1,10 @@
+feature;count;percentage
+Nested_Loop_rows;1;100.0
+Gather_rows;1;100.0
+Nested_Loop_cnt;1;100.0
+jit_functions;1;100.0
+p_width;1;100.0
+p_st_cost;1;100.0
+Hash_cnt;1;100.0
+p_tot_cost;1;100.0
+Sort_rows;1;100.0

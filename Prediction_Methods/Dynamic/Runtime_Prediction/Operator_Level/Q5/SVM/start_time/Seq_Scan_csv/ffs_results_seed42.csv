@@ -1,0 +1,4 @@
+iteration;feature_added;mre;n_features;features
+1;reltuples;2.8139030066330943;1;reltuples
+2;sel;2.2701940537407714;2;reltuples, sel
+3;total_cost;2.1845590218861215;3;reltuples, sel, total_cost

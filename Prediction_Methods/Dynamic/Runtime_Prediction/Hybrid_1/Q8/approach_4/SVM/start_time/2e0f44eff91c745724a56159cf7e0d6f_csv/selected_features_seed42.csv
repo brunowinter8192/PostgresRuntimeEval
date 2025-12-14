@@ -1,0 +1,6 @@
+feature;order
+NestedLoop_Outer_total_cost;1
+HashJoin_rt2;2
+HashJoin_st1;3
+Hash_Inner_rt1;4
+HashJoin_st2;5

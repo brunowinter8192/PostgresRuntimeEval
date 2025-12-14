@@ -1,0 +1,7 @@
+iteration;feature_added;mre;n_features;features;seed
+1;Nested_Loop_rows;0.09155652295707703;1;Nested_Loop_rows;42
+2;Gather_rows;0.07589161356764182;2;Nested_Loop_rows, Gather_rows;42
+3;strategy_sorted;0.06605642172291962;3;Nested_Loop_rows, Gather_rows, strategy_sorted;42
+4;Seq_Scan_cnt;0.0567936956635882;4;Nested_Loop_rows, Gather_rows, strategy_sorted, Seq_Scan_cnt;42
+5;p_tot_cost;0.05420971598291573;5;Nested_Loop_rows, Gather_rows, strategy_sorted, Seq_Scan_cnt, p_tot_cost;42
+6;p_st_cost;0.05369628800916826;6;Nested_Loop_rows, Gather_rows, strategy_sorted, Seq_Scan_cnt, p_tot_cost, p_st_cost;42

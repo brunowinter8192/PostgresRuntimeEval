@@ -1,5 +1,29 @@
 # Data_Generation Module Documentation
 
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Data_Generation/`
+
+```bash
+cd /path/to/Plan_Level_1/Data_Generation
+```
+
+## Directory Structure
+
+```
+Data_Generation/
+├── DOCS.md
+├── features.md
+├── targets.md
+├── 01a_Runtime_Data.py
+├── 01b_Plan_Features.py
+├── 01c_Row_Features.py
+├── 02_Merge_Data.py
+├── A_01a_Explain_JSON.py
+├── csv/
+└── md/
+```
+
 ## Shared Infrastructure
 
 ### Parent mapping_config.py

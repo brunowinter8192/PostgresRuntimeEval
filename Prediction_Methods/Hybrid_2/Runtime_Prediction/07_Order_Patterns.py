@@ -51,16 +51,17 @@ def calculate_avg_mre(occurrences: pd.DataFrame, predictions: pd.DataFrame) -> d
     return avg_mre_map
 
 
-# Aggregate pattern statistics by counting occurrences
+# Aggregate pattern statistics by counting occurrences and unique templates
 def aggregate_pattern_stats(df: pd.DataFrame, avg_mre_map: dict) -> pd.DataFrame:
     stats = df.groupby('pattern_hash').agg({
         'pattern_string': 'first',
         'pattern_length': 'first',
         'operator_count': 'first',
-        'query_file': 'count'
+        'query_file': 'count',
+        'template': 'nunique'
     }).reset_index()
 
-    stats = stats.rename(columns={'query_file': 'occurrence_count'})
+    stats = stats.rename(columns={'query_file': 'occurrence_count', 'template': 'unique_template_count'})
     stats['avg_mre'] = stats['pattern_hash'].map(avg_mre_map)
     return stats
 

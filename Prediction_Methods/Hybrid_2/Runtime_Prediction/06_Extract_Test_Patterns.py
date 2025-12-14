@@ -5,7 +5,6 @@ import argparse
 import pandas as pd
 import hashlib
 from pathlib import Path
-from datetime import datetime
 
 
 class QueryNode:
@@ -132,6 +131,7 @@ def find_patterns_in_query(all_nodes: list, known_patterns: dict, query_file: st
                     'pattern_length': pattern_info['pattern_length'],
                     'operator_count': pattern_info['operator_count'],
                     'query_file': query_file,
+                    'template': query_file.split('_')[0],
                     'root_node_id': node.node_id,
                     'root_node_type': node.node_type,
                     'root_depth': node.depth
@@ -175,8 +175,7 @@ def compute_pattern_hash_at_length(node, remaining_length: int) -> str:
 def export_occurrences(occurrences: list, output_dir: str) -> None:
     out_path = Path(output_dir)
     out_path.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = out_path / f'06_test_pattern_occurrences_{timestamp}.csv'
+    output_file = out_path / '06_test_pattern_occurrences.csv'
 
     df = pd.DataFrame(occurrences)
     df.to_csv(output_file, sep=';', index=False)

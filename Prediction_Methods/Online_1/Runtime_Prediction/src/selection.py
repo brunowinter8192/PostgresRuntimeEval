@@ -13,14 +13,14 @@ from .training import train_single_pattern
 # From prediction.py: Query prediction
 from .prediction import predict_all_queries_with_patterns
 
-# From mining.py: Error ranking calculation
-from .mining import calculate_error_ranking
+# From mining.py: Ranking calculation
+from .mining import calculate_ranking
 
 # From metrics.py: MRE calculation
 from .metrics import calculate_mre
 
 # From mapping_config.py: Configuration constants
-from mapping_config import EPSILON
+from mapping_config import EPSILON, MIN_ERROR_THRESHOLD, DEFAULT_STRATEGY
 
 
 # FUNCTIONS
@@ -35,7 +35,9 @@ def run_pattern_selection(
     operator_models: dict,
     current_predictions: list,
     baseline_mre: float,
-    report
+    report,
+    min_error_threshold: float = MIN_ERROR_THRESHOLD,
+    strategy: str = DEFAULT_STRATEGY
 ) -> tuple:
     selected_patterns = set()
     pattern_models = {}
@@ -52,6 +54,13 @@ def run_pattern_selection(
 
         consumed_hashes.add(pattern_hash)
         current_ranking = [r for r in current_ranking if r['pattern_hash'] != pattern_hash]
+
+        if candidate['avg_mre'] < min_error_threshold:
+            selection_log.append(_create_selection_log_entry(
+                iteration, pattern_hash, candidate, None, None, 'SKIPPED_LOW_ERROR', baseline_mre
+            ))
+            iteration += 1
+            continue
 
         pattern_info = patterns[pattern_hash]
 
@@ -81,8 +90,8 @@ def run_pattern_selection(
             baseline_mre = new_mre
             current_predictions = new_predictions
 
-            current_ranking = calculate_error_ranking(
-                current_predictions, pattern_occurrences, patterns, consumed_hashes
+            current_ranking = calculate_ranking(
+                current_predictions, pattern_occurrences, patterns, consumed_hashes, strategy
             )
         else:
             status = 'REJECTED'

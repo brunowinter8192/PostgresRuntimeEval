@@ -1,0 +1,7 @@
+feature;count;percentage
+Nested_Loop_rows;1;100.0
+Gather_rows;1;100.0
+strategy_sorted;1;100.0
+Seq_Scan_cnt;1;100.0
+p_tot_cost;1;100.0
+p_st_cost;1;100.0

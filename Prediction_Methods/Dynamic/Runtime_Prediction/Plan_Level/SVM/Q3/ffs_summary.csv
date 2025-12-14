@@ -1,2 +1,0 @@
-seed;n_features;final_mre;selected_features
-42;10;0.05353832196678985;byte_count, Hash_cnt, strategy_sorted, p_tot_cost, Seq_Scan_cnt, p_st_cost, Hash_rows, op_count, Nested_Loop_rows, Limit_rows

@@ -1,0 +1,10 @@
+iteration;feature_added;mre;n_features;features;seed
+1;Nested_Loop_rows;0.09321981725861306;1;Nested_Loop_rows;42
+2;Gather_rows;0.0731627250771151;2;Nested_Loop_rows, Gather_rows;42
+3;Nested_Loop_cnt;0.0656975668862344;3;Nested_Loop_rows, Gather_rows, Nested_Loop_cnt;42
+4;jit_functions;0.059235858167354695;4;Nested_Loop_rows, Gather_rows, Nested_Loop_cnt, jit_functions;42
+5;p_width;0.0532303428894916;5;Nested_Loop_rows, Gather_rows, Nested_Loop_cnt, jit_functions, p_width;42
+6;p_st_cost;0.052230659664354404;6;Nested_Loop_rows, Gather_rows, Nested_Loop_cnt, jit_functions, p_width, p_st_cost;42
+7;Hash_cnt;0.05153993799804317;7;Nested_Loop_rows, Gather_rows, Nested_Loop_cnt, jit_functions, p_width, p_st_cost, Hash_cnt;42
+8;p_tot_cost;0.05121880543610195;8;Nested_Loop_rows, Gather_rows, Nested_Loop_cnt, jit_functions, p_width, p_st_cost, Hash_cnt, p_tot_cost;42
+9;Sort_rows;0.051140104081885775;9;Nested_Loop_rows, Gather_rows, Nested_Loop_cnt, jit_functions, p_width, p_st_cost, Hash_cnt, p_tot_cost, Sort_rows;42

@@ -1,9 +1,0 @@
-feature;order
-Sort_rt1;1
-Sort_sel;2
-Sort_plan_width;3
-HashJoin_Outer_nt1;4
-HashJoin_Outer_plan_width;5
-NestedLoop_Outer_nt;6
-Sort_total_cost;7
-HashJoin_Outer_startup_cost;8

@@ -1,20 +1,31 @@
 #!/usr/bin/env python3
+"""
+Local copy for Dynamic LOTO workflow.
+
+DIFFERENCE FROM ORIGINAL (Operator_Level/Runtime_Prediction/01_Forward_Selection.py):
+- Iterates over AVAILABLE operator folders instead of fixed OPERATORS_FOLDER_NAMES list
+- Required because LOTO splits may not contain all 13 operators (e.g., Index_Only_Scan only in Q13)
+"""
 
 # INFRASTRUCTURE
-
 import argparse
+import re
 import pandas as pd
 import numpy as np
 from pathlib import Path
 from sklearn.svm import NuSVR
 from sklearn.preprocessing import MaxAbsScaler
 from sklearn.pipeline import Pipeline
-from sklearn.model_selection import cross_val_score, KFold
+from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.metrics import make_scorer
+import sys
 
-# From mapping_config.py: Get operator names target types child features and leaf operators
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'Operator_Level'))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'Operator_Level' / 'Runtime_Prediction'))
+
+# From mapping_config.py: Get target types child features and leaf operators
 from mapping_config import (
-    OPERATORS_FOLDER_NAMES, TARGET_TYPES, TARGET_NAME_MAP,
+    TARGET_TYPES, TARGET_NAME_MAP,
     CHILD_FEATURES, LEAF_OPERATORS, csv_name_to_folder_name,
     OPERATOR_METADATA, OPERATOR_TARGETS
 )
@@ -28,46 +39,51 @@ CHILD_FEATURES_SET = set(CHILD_FEATURES)
 
 
 # ORCHESTRATOR
-
-def run_ffs_workflow(training_csv, output_dir, template):
-    df = load_training_data(training_csv)
-    overview_data = collect_operator_results(df, output_dir, template)
+def run_ffs_workflow(dataset_dir, output_dir):
+    overview_data = collect_operator_results(dataset_dir, output_dir)
     overview_df = generate_two_step_overview(overview_data)
-    export_two_step_overview(overview_df, output_dir, template)
+    export_two_step_overview(overview_df, output_dir)
 
 
 # FUNCTIONS
 
-# Load training data from CSV file
-def load_training_data(training_csv):
-    return pd.read_csv(training_csv, delimiter=';')
+# Get available operator folders from dataset directory
+def get_available_operators(dataset_dir):
+    dataset_path = Path(dataset_dir)
+    operators = []
+    for folder in sorted(dataset_path.iterdir()):
+        if folder.is_dir() and folder.name.startswith('04a_'):
+            operator_name = folder.name[4:]
+            csv_file = folder / f'04a_{operator_name}.csv'
+            if csv_file.exists():
+                df = pd.read_csv(csv_file, delimiter=';', nrows=1)
+                if len(df) > 0:
+                    operators.append(operator_name)
+    return operators
 
 
 # Collect feature selection results from all operator-target combinations
-def collect_operator_results(df, output_dir, template):
+def collect_operator_results(dataset_dir, output_dir):
+    available_operators = get_available_operators(dataset_dir)
     overview_data = []
-    for operator in OPERATORS_FOLDER_NAMES:
+    for operator in available_operators:
         for target in TARGET_TYPES:
-            result = process_operator_target(df, operator, target, output_dir, template)
+            result = process_operator_target(operator, target, dataset_dir, output_dir)
             if result:
                 overview_data.append(result)
     return overview_data
 
 
 # Process forward feature selection for single operator-target combination
-def process_operator_target(df, operator, target, output_dir, template):
-    operator_df = filter_operator_data(df, operator)
-
-    if len(operator_df) < 10:
-        return None
-
-    X, y = prepare_features_and_target(operator_df, operator, target)
+def process_operator_target(operator, target, dataset_dir, output_dir):
+    df = load_operator_data(dataset_dir, operator)
+    X, y, template_ids = prepare_features_and_target(df, operator, target)
     cv = create_cv_splitter()
-    selected_features, results_df = perform_forward_selection(X, y, cv)
-    export_results(selected_features, results_df, operator, target, output_dir, template)
+    selected_features, results_df = perform_forward_selection(X, y, template_ids, cv)
+    export_results(selected_features, results_df, operator, target, output_dir)
 
-    two_step_result = evaluate_operator_two_step(operator_df, operator, target, cv, selected_features)
-    export_final_features(two_step_result['final_features'], operator, target, output_dir, template)
+    two_step_result = evaluate_operator_two_step(df, operator, target, template_ids, cv, selected_features)
+    export_final_features(two_step_result['final_features'], operator, target, output_dir)
 
     return {
         'operator': operator,
@@ -83,20 +99,23 @@ def process_operator_target(df, operator, target, output_dir, template):
     }
 
 
-# Filter dataframe to specific operator type
-def filter_operator_data(df, operator):
-    operator_csv_name = operator.replace('_', ' ')
-    return df[df['node_type'] == operator_csv_name].copy()
+# Load training data for specified operator
+def load_operator_data(dataset_dir, operator):
+    operator_dir = Path(dataset_dir) / f'04a_{operator}'
+    training_file = operator_dir / f'04a_{operator}.csv'
+    return pd.read_csv(training_file, delimiter=';')
 
 
-# Extract features and target from dataframe
+# Extract features, target, and template IDs from dataframe
 def prepare_features_and_target(df, operator, target):
     available_features = extract_available_features(df, operator)
 
     X = df[available_features]
     y = df[TARGET_NAME_MAP[target]]
 
-    return X, y
+    template_ids = df['query_file'].apply(extract_template_id).values
+
+    return X, y, template_ids
 
 
 # Extract available features excluding metadata and target columns
@@ -106,13 +125,13 @@ def extract_available_features(df, operator):
     return available_features
 
 
-# Create K-fold cross-validator
+# Create stratified K-fold cross-validator
 def create_cv_splitter():
-    return KFold(n_splits=5, shuffle=True, random_state=SEED)
+    return StratifiedKFold(n_splits=5, shuffle=True, random_state=SEED)
 
 
 # Perform forward feature selection with cross-validation
-def perform_forward_selection(X, y, cv):
+def perform_forward_selection(X, y, template_ids, cv):
     selected = []
     remaining = list(X.columns)
     results = []
@@ -125,7 +144,7 @@ def perform_forward_selection(X, y, cv):
 
         for feature in remaining:
             test_features = selected + [feature]
-            score = evaluate_feature_set(X, y, test_features, cv)
+            score = evaluate_feature_set(X, y, test_features, template_ids, cv)
             scores[feature] = score
 
         best_feature = min(scores, key=scores.get)
@@ -140,32 +159,23 @@ def perform_forward_selection(X, y, cv):
         if should_add:
             selected.append(best_feature)
             best_score = best_new_score
+            remaining.remove(best_feature)
 
             results.append({
                 'iteration': iteration,
-                'feature_tested': best_feature,
-                'was_selected': True,
+                'feature_added': best_feature,
                 'mre': best_new_score,
-                'n_features_selected': len(selected),
-                'selected_features': ', '.join(selected)
+                'n_features': len(selected),
+                'features': ', '.join(selected)
             })
         else:
-            results.append({
-                'iteration': iteration,
-                'feature_tested': best_feature,
-                'was_selected': False,
-                'mre': best_new_score,
-                'n_features_selected': len(selected),
-                'selected_features': ', '.join(selected) if selected else ''
-            })
-
-        remaining.remove(best_feature)
+            break
 
     return selected, pd.DataFrame(results)
 
 
 # Evaluate feature set using cross-validated mean relative error
-def evaluate_feature_set(X, y, features, cv):
+def evaluate_feature_set(X, y, features, template_ids, cv):
     pipeline = Pipeline([
         ('scaler', MaxAbsScaler()),
         ('model', NuSVR(**SVM_PARAMS))
@@ -177,7 +187,7 @@ def evaluate_feature_set(X, y, features, cv):
         pipeline,
         X[features],
         y,
-        cv=cv,
+        cv=cv.split(X[features], template_ids),
         scoring=scorer,
         n_jobs=-1
     )
@@ -192,9 +202,18 @@ def calculate_mean_relative_error(y_true, y_pred):
     return np.mean(relative_errors)
 
 
+# Extract template ID number from query filename
+def extract_template_id(query_file):
+    filename = str(query_file).lower()
+    match = re.search(r'q(\d+)_', filename)
+    if match:
+        return int(match.group(1))
+    return 0
+
+
 # Save selected features and iteration trace to CSV files
-def export_results(selected_features, results_df, operator, target, output_dir, template):
-    output_path = Path(output_dir) / 'SVM' / template / target / f'{operator}_csv'
+def export_results(selected_features, results_df, operator, target, output_dir):
+    output_path = Path(output_dir) / 'SVM' / target / f'{operator}_csv'
     output_path.mkdir(parents=True, exist_ok=True)
 
     results_file = output_path / f'ffs_results_seed{SEED}.csv'
@@ -219,18 +238,18 @@ def identify_missing_child_features(ffs_features, operator):
 
 
 # Evaluate operator with two-step approach
-def evaluate_operator_two_step(df, operator, target, cv, ffs_features):
+def evaluate_operator_two_step(df, operator, target, template_ids, cv, ffs_features):
     available_features = extract_available_features(df, operator)
 
     X = df[available_features]
     y = df[TARGET_NAME_MAP[target]]
 
-    mre_ffs = evaluate_feature_set(X, y, ffs_features, cv)
+    mre_ffs = evaluate_feature_set(X, y, ffs_features, template_ids, cv)
 
     missing_child = identify_missing_child_features(ffs_features, operator)
     final_features = ffs_features + list(missing_child)
 
-    mre_final = evaluate_feature_set(X, y, final_features, cv)
+    mre_final = evaluate_feature_set(X, y, final_features, template_ids, cv)
 
     return {
         'ffs_features': ffs_features,
@@ -245,8 +264,8 @@ def evaluate_operator_two_step(df, operator, target, cv, ffs_features):
 
 
 # Save final features to CSV file
-def export_final_features(final_features, operator, target, output_dir, template):
-    output_path = Path(output_dir) / 'SVM' / template / target / f'{operator}_csv'
+def export_final_features(final_features, operator, target, output_dir):
+    output_path = Path(output_dir) / 'SVM' / target / f'{operator}_csv'
     output_path.mkdir(parents=True, exist_ok=True)
 
     final_df = pd.DataFrame({
@@ -276,18 +295,17 @@ def generate_two_step_overview(overview_data):
 
 
 # Save two-step evaluation overview to CSV
-def export_two_step_overview(overview_df, output_dir, template):
-    overview_path = Path(output_dir) / 'SVM' / template / 'two_step_evaluation_overview.csv'
+def export_two_step_overview(overview_df, output_dir):
+    overview_path = Path(output_dir) / 'SVM' / 'two_step_evaluation_overview.csv'
     overview_path.parent.mkdir(parents=True, exist_ok=True)
     overview_df.to_csv(overview_path, index=False, sep=';')
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("training_csv", help="Path to template training CSV file")
+    parser.add_argument("dataset_dir", help="Path to dataset directory containing operator folders")
     parser.add_argument("--output-dir", required=True, help="Output directory for FFS results")
-    parser.add_argument("--template", required=True, help="Template name (e.g., Q1)")
 
     args = parser.parse_args()
 
-    run_ffs_workflow(args.training_csv, args.output_dir, args.template)
+    run_ffs_workflow(args.dataset_dir, args.output_dir)

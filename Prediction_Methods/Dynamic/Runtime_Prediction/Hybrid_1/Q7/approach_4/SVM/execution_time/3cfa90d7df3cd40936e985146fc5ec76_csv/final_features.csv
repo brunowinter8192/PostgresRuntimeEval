@@ -1,0 +1,9 @@
+feature;order
+HashJoin_Outer_rt1;1
+HashJoin_Outer_rt2;2
+HashJoin_Outer_st1;3
+HashJoin_Outer_st2;4
+IndexScan_Inner_total_cost;5
+NestedLoop_nt;6
+NestedLoop_plan_width;7
+NestedLoop_rt1;8

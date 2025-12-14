@@ -1,0 +1,11 @@
+feature;order
+HashJoin_nt;1
+HashJoin_sel;2
+HashJoin_st1;3
+Hash_Inner_rt1;4
+Hash_Inner_rt2;5
+Hash_Inner_st1;6
+Hash_Inner_st2;7
+SeqScan_Outer_plan_width;8
+SeqScan_Outer_sel;9
+SeqScan_Outer_total_cost;10

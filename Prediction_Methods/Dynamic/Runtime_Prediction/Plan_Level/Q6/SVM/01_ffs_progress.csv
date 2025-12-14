@@ -1,0 +1,8 @@
+iteration;feature_added;mre;n_features;features;seed
+1;Sort_rows;0.08826650117751075;1;Sort_rows;42
+2;Nested_Loop_cnt;0.0760298648580979;2;Sort_rows, Nested_Loop_cnt;42
+3;group_key_columns;0.061275431272011294;3;Sort_rows, Nested_Loop_cnt, group_key_columns;42
+4;jit_functions;0.05632054880012671;4;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions;42
+5;Limit_rows;0.05327353675286871;5;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows;42
+6;p_rows;0.05277566002520875;6;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, p_rows;42
+7;sort_key_columns;0.05259787000469955;7;Sort_rows, Nested_Loop_cnt, group_key_columns, jit_functions, Limit_rows, p_rows, sort_key_columns;42

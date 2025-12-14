@@ -1,0 +1,10 @@
+feature;order
+HashJoin_startup_cost;1
+Hash_Inner_rt1;2
+Hash_Inner_rt2;3
+Hash_Inner_st1;4
+Hash_Inner_st2;5
+NestedLoop_Outer_rt1;6
+NestedLoop_Outer_rt2;7
+NestedLoop_Outer_st1;8
+NestedLoop_Outer_st2;9

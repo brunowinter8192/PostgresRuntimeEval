@@ -1,0 +1,8 @@
+feature;order
+Aggregate_rt1;1
+Aggregate_nt;2
+Aggregate_plan_width;3
+SeqScan_Outer_np;4
+Aggregate_startup_cost;5
+SeqScan_Outer_total_cost;6
+SeqScan_Outer_plan_width;7

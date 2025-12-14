@@ -110,6 +110,7 @@ Selection strategy implementations.
 
 | Function | Purpose |
 |----------|---------|
+| `calculate_pattern_avg_mre(...)` | Calculate avg MRE for pattern based on current predictions |
 | `run_static_selection(...)` | Greedy selection for frequency/size |
 | `run_error_selection(...)` | Dynamic selection with re-ranking |
 | `calculate_error_ranking(...)` | Compute error scores for patterns |

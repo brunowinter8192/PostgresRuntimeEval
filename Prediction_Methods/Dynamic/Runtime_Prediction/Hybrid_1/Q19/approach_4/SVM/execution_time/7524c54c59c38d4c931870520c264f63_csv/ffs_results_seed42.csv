@@ -1,0 +1,29 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;HashJoin_Outer_sel;True;0.034186801498914635;1;HashJoin_Outer_sel
+2;Aggregate_rt1;True;0.03408029740847481;2;HashJoin_Outer_sel, Aggregate_rt1
+3;HashJoin_Outer_nt2;False;0.034302637197030326;2;HashJoin_Outer_sel, Aggregate_rt1
+4;HashJoin_Outer_rt1;False;0.034323671628790964;2;HashJoin_Outer_sel, Aggregate_rt1
+5;Aggregate_startup_cost;False;0.034402618184746374;2;HashJoin_Outer_sel, Aggregate_rt1
+6;Aggregate_total_cost;False;0.03440302954242881;2;HashJoin_Outer_sel, Aggregate_rt1
+7;HashJoin_Outer_total_cost;False;0.03441841072544024;2;HashJoin_Outer_sel, Aggregate_rt1
+8;Aggregate_nt;False;0.0344444934099568;2;HashJoin_Outer_sel, Aggregate_rt1
+9;HashJoin_Outer_nt1;False;0.034573550199435026;2;HashJoin_Outer_sel, Aggregate_rt1
+10;Aggregate_nt1;False;0.03491320004715517;2;HashJoin_Outer_sel, Aggregate_rt1
+11;HashJoin_Outer_nt;False;0.03491320004715517;2;HashJoin_Outer_sel, Aggregate_rt1
+12;Aggregate_plan_width;False;0.03519324984373863;2;HashJoin_Outer_sel, Aggregate_rt1
+13;HashJoin_Outer_st1;False;0.03547364842714549;2;HashJoin_Outer_sel, Aggregate_rt1
+14;Aggregate_sel;False;0.036045222963413434;2;HashJoin_Outer_sel, Aggregate_rt1
+15;HashJoin_Outer_plan_width;False;0.03633652672467917;2;HashJoin_Outer_sel, Aggregate_rt1
+16;Aggregate_np;False;0.03670053617019266;2;HashJoin_Outer_sel, Aggregate_rt1
+17;Aggregate_nt2;False;0.03670053617019266;2;HashJoin_Outer_sel, Aggregate_rt1
+18;Aggregate_reltuples;False;0.03670053617019266;2;HashJoin_Outer_sel, Aggregate_rt1
+19;Aggregate_parallel_workers;False;0.03670053617019266;2;HashJoin_Outer_sel, Aggregate_rt1
+20;Aggregate_st2;False;0.03670053617019266;2;HashJoin_Outer_sel, Aggregate_rt1
+21;Aggregate_rt2;False;0.03670053617019266;2;HashJoin_Outer_sel, Aggregate_rt1
+22;HashJoin_Outer_np;False;0.03670053617019266;2;HashJoin_Outer_sel, Aggregate_rt1
+23;HashJoin_Outer_reltuples;False;0.03670053617019266;2;HashJoin_Outer_sel, Aggregate_rt1
+24;HashJoin_Outer_parallel_workers;False;0.03670053617019266;2;HashJoin_Outer_sel, Aggregate_rt1
+25;HashJoin_Outer_startup_cost;False;0.03810495208241153;2;HashJoin_Outer_sel, Aggregate_rt1
+26;Aggregate_st1;False;0.038131962381642764;2;HashJoin_Outer_sel, Aggregate_rt1
+27;HashJoin_Outer_st2;False;0.03814548749761574;2;HashJoin_Outer_sel, Aggregate_rt1
+28;HashJoin_Outer_rt2;False;0.038145499561991966;2;HashJoin_Outer_sel, Aggregate_rt1

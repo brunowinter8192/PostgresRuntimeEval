@@ -15,7 +15,10 @@ from src.training import train_all_operators, train_selected_patterns
 from src.prediction import predict_all_queries_operator_only, predict_single_query_operator_only, predict_single_query_with_patterns
 
 # From src/mining.py: Pattern mining and ranking
-from src.mining import mine_patterns_from_query, find_pattern_occurrences_in_data, calculate_error_ranking
+from src.mining import mine_patterns_from_query, find_pattern_occurrences_in_data, calculate_ranking
+
+# From mapping_config.py: Configuration constants
+from mapping_config import STRATEGIES, DEFAULT_STRATEGY
 
 # From src/selection.py: Pattern selection loop
 from src.selection import run_pattern_selection
@@ -38,9 +41,11 @@ def online_prediction_workflow(
     training_test_csv: str,
     training_csv: str,
     test_csv: str,
-    output_dir: str
+    output_dir: str,
+    strategy: str = DEFAULT_STRATEGY
 ) -> None:
-    report = ReportBuilder(test_query_file, output_dir)
+    query_output_dir = str(Path(output_dir) / strategy.capitalize() / test_query_file)
+    report = ReportBuilder(test_query_file, query_output_dir)
 
     df_tt = load_data(training_training_csv)
     df_tv = load_data(training_test_csv)
@@ -60,12 +65,12 @@ def online_prediction_workflow(
     report.add_operator_baseline(test_query_baseline_mre)
     patterns = mine_patterns_from_query(test_query_ops)
     pattern_occurrences = find_pattern_occurrences_in_data(df_tv, patterns)
-    initial_ranking = calculate_error_ranking(baseline_predictions, pattern_occurrences, patterns)
+    initial_ranking = calculate_ranking(baseline_predictions, pattern_occurrences, patterns, strategy=strategy)
     report.add_patterns_in_query(patterns, initial_ranking)
 
     selected_patterns, pattern_models, selection_log = run_pattern_selection(
         df_tt, df_tv, patterns, pattern_occurrences, initial_ranking,
-        operator_models, baseline_predictions, baseline_mre, report
+        operator_models, baseline_predictions, baseline_mre, report, strategy=strategy
     )
 
     final_operator_models = train_all_operators(df_train, None)
@@ -83,8 +88,8 @@ def online_prediction_workflow(
     report.add_final_prediction(final_predictions, final_mre, test_query_baseline_mre)
     report.add_prediction_chain(final_predictions, prediction_cache, pattern_assignments, consumed_nodes, patterns)
 
-    save_models(output_dir, test_query_file, final_operator_models, final_pattern_models)
-    save_csv_outputs(output_dir, test_query_file, selection_log, final_predictions)
+    save_models(query_output_dir, test_query_file, final_operator_models, final_pattern_models)
+    save_csv_outputs(query_output_dir, test_query_file, selection_log, final_predictions)
     report.save()
 
 
@@ -109,6 +114,7 @@ if __name__ == '__main__':
     parser.add_argument("training_csv", help="Path to Training.csv")
     parser.add_argument("test_csv", help="Path to Test.csv")
     parser.add_argument("--output-dir", required=True, help="Output directory")
+    parser.add_argument("--strategy", choices=STRATEGIES, default=DEFAULT_STRATEGY, help="Pattern ordering strategy")
     args = parser.parse_args()
 
     online_prediction_workflow(
@@ -117,5 +123,6 @@ if __name__ == '__main__':
         args.training_test_csv,
         args.training_csv,
         args.test_csv,
-        args.output_dir
+        args.output_dir,
+        args.strategy
     )

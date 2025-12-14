@@ -37,10 +37,11 @@ def run_pattern_selection(
     operator_model_dir: str,
     operator_ffs_dir: str,
     output_dir: str,
-    model_dir: str,
     pretrained_dir: str = None,
     pattern_occurrences_file: str = None,
-    min_error_threshold: float = 0.1
+    min_error_threshold: float = 0.1,
+    epsilon: float = 0.0,
+    min_template_count: int = 1
 ) -> None:
     operator_models = load_operator_models(operator_model_dir)
     operator_ffs = load_operator_ffs(operator_ffs_dir)
@@ -54,13 +55,14 @@ def run_pattern_selection(
     if strategy == 'error':
         run_error_selection(
             sorted_patterns, pattern_occurrences, pattern_ffs, df_training, df_test,
-            operator_models, operator_ffs, output_dir, model_dir, pretrained_dir
+            operator_models, operator_ffs, output_dir, pretrained_dir,
+            epsilon, min_template_count
         )
     else:
         run_static_selection(
             sorted_patterns, pattern_occurrences, pattern_ffs, df_training, df_test,
-            operator_models, operator_ffs, output_dir, model_dir, pretrained_dir,
-            min_error_threshold
+            operator_models, operator_ffs, output_dir, pretrained_dir,
+            min_error_threshold, epsilon, min_template_count
         )
 
 
@@ -74,10 +76,11 @@ if __name__ == '__main__':
     parser.add_argument('operator_model_dir', help='Path to Model/Operator/')
     parser.add_argument('operator_ffs_dir', help='Path to SVM/Operator/')
     parser.add_argument('--pattern-output-dir', required=True, help='Per-pattern results output directory')
-    parser.add_argument('--model-dir', required=True, help='Model output directory')
     parser.add_argument('--pretrained-dir', default=None, help='Path to pretrained models')
     parser.add_argument('--pattern-occurrences-file', required=True, help='Path to 05_test_pattern_occurrences_*.csv')
     parser.add_argument('--min-error-threshold', type=float, default=0.1, help='Min avg_mre threshold for size/frequency (default: 0.1)')
+    parser.add_argument('--epsilon', type=float, default=0.0, help='Min MRE improvement required for SELECTED (default: 0.0)')
+    parser.add_argument('--min-template-count', type=int, default=1, help='Min unique templates a pattern must appear in (default: 1 = disabled)')
     args = parser.parse_args()
 
     run_pattern_selection(
@@ -89,8 +92,9 @@ if __name__ == '__main__':
         args.operator_model_dir,
         args.operator_ffs_dir,
         args.pattern_output_dir,
-        args.model_dir,
         args.pretrained_dir,
         args.pattern_occurrences_file,
-        args.min_error_threshold
+        args.min_error_threshold,
+        args.epsilon,
+        args.min_template_count
     )

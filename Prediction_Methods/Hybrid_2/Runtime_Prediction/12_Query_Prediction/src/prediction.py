@@ -35,7 +35,6 @@ def predict_all_queries(
     operator_models: dict,
     operator_features: dict,
     pattern_models: dict,
-    pattern_features: dict,
     pattern_info: dict,
     pattern_order: list,
     output_dir: str = '',
@@ -53,7 +52,7 @@ def predict_all_queries(
 
         predictions, steps, consumed_nodes, pattern_assignments = predict_single_query(
             query_ops, operator_models, operator_features,
-            pattern_models, pattern_features, pattern_info, pattern_order,
+            pattern_models, pattern_info, pattern_order,
             operator_model_dir, pattern_model_dir
         )
 
@@ -75,7 +74,6 @@ def predict_single_query(
     operator_models: dict,
     operator_features: dict,
     pattern_models: dict,
-    pattern_features: dict,
     pattern_info: dict,
     pattern_order: list,
     operator_model_dir: str = '',

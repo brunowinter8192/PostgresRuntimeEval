@@ -1,0 +1,4 @@
+pattern_hash;usage_count;node_types
+9d0e407c0aa5052a4246612a4a2e0ad2;150;Nested Loop
+a54055cece1adb617abae41ca3244142;150;Hash
+b149ff282ebc2d2b2e199afbf6e167c9;150;Aggregate

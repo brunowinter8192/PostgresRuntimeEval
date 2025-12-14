@@ -24,26 +24,38 @@ For each change, determine:
 
 ### Step 1: README Check
 
+**README Sections (per CLAUDE.md):**
+1. Title + Description
+2. Directory Structure (root-level files + [See DOCS.md] links)
+3. Workflow Phases (Purpose, Input, Output, Details)
+
 **Update Required When:**
 1. Phase structure changes (new phase, reordering, removed)
-2. Modules change (new folder, renamed, removed, dependencies)
-3. Shared infrastructure changes (mapping_config.py, new config)
-4. Dataset variants change (new variant, train/test split, feature count)
-5. External dependencies change (new dependency, paths)
+2. Directories change (new folder, renamed, removed)
+3. Root-level config files change (mapping_config.py, new config)
+4. Phase inputs/outputs change
 
 **NO Update When:**
 - Bug fixes, internal refactoring, performance improvements
-- Code reorganization without behavioral changes
+- Script changes inside directories (those go in DOCS.md)
 - Variable/function renaming
 
 ### Step 2: DOCS Check
 
+**DOCS Sections (per CLAUDE.md):**
+1. Working Directory (CRITICAL)
+2. Directory Structure
+3. Workflow Dependency Graph (if applicable)
+4. Output Structure (if applicable)
+5. Shared Infrastructure (if applicable)
+6. Module Documentation (Purpose, Inputs, Outputs, Variables, Usage)
+
 **Update Required When:**
 1. New script added (0N_Script.py)
-2. Script workflow changes (reordering, removed, merged)
-3. Argparse parameters change (new args, removed, renamed, defaults)
-4. Output format changes (CSV columns, new folder, filenames)
-5. Module-specific config changes
+2. Script dependencies change (Workflow Dependency Graph)
+3. Argparse parameters change (Inputs/Variables in Module Documentation)
+4. Output paths/formats change (Output Structure)
+5. Script removed or renamed (Directory Structure + Module Documentation)
 
 **NO Update When:**
 - Bug fixes, internal refactoring within function body

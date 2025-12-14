@@ -1,0 +1,8 @@
+iteration;feature_added;mre;n_features;features;seed
+1;Nested_Loop_rows;0.0568751081512374;1;Nested_Loop_rows;42
+2;strategy_sorted;0.03281433470060832;2;Nested_Loop_rows, strategy_sorted;42
+3;Seq_Scan_cnt;0.02656389328855018;3;Nested_Loop_rows, strategy_sorted, Seq_Scan_cnt;42
+4;p_st_cost;0.02544790056519357;4;Nested_Loop_rows, strategy_sorted, Seq_Scan_cnt, p_st_cost;42
+5;Index_Scan_cnt;0.024660707892777245;5;Nested_Loop_rows, strategy_sorted, Seq_Scan_cnt, p_st_cost, Index_Scan_cnt;42
+6;p_tot_cost;0.024656415124690596;6;Nested_Loop_rows, strategy_sorted, Seq_Scan_cnt, p_st_cost, Index_Scan_cnt, p_tot_cost;42
+7;max_tree_depth;0.024596723638340583;7;Nested_Loop_rows, strategy_sorted, Seq_Scan_cnt, p_st_cost, Index_Scan_cnt, p_tot_cost, max_tree_depth;42

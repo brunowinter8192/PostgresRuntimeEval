@@ -1,0 +1,3 @@
+feature;order
+IndexScan_Inner_nt;1
+NestedLoop_nt2;2

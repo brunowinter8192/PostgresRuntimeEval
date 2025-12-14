@@ -212,8 +212,8 @@ if __name__ == "__main__":
 
 **Output Files:** `NN_descriptive_name.ext`
 - Use same `NN` prefix as the script that generates them
-- Timestamp for multiple runs: `NN_name_{timestamp}.ext`
-- Examples: `05_features_20251102_135531.csv`, `07_operator_dataset_20251102_140747.csv`
+- use no timestamps, pipeline structure requires overwriting for redundant files
+- Examples: `05_features.csv`, `07_operator_dataset.csv`
 
 **Rationale:** Immediate visual connection between script and its outputs
 
@@ -275,65 +275,57 @@ Workflow/          -> README.md (tree to directories)
 
 ### README.md (Workflow-Level)
 
-**Purpose:** High-level overview of multi-phase workflow orchestration
+**Purpose:** High-level overview linking to DOCS.md for details
 
 **Placement:**
-- **Location:** Workflow root (e.g., `Plan_Level_1/`)
+- **Location:** Workflow root (e.g., `Hybrid_2/`)
 - **Relationship:** One README per workflow
-- **Scope:** Tree to directories only, links to DOCS.md
+- **Scope:** Tree to directories, links to DOCS.md
 
 **Required Sections:**
 
-#### 1. Directory Structure
+#### 1. Title + Description
 
-Tree showing only directories with `[See DOCS.md]` references:
-
-```
-Plan_Level_1/
-├── README.md                            # This file
-├── mapping_config.py                    # Shared configuration
-├── Data_Generation/                     [See DOCS.md]
-├── Datasets/                            [See DOCS.md]
-└── Runtime_Prediction/                  [See DOCS.md]
-```
-
-**Rule:** No `.py` files, no subdirectories - only top-level directories with DOCS links.
-
-#### 2. Shared Infrastructure
-
-Config files with bullet list of exports:
+Workflow name as H1, followed by 1-2 sentence description:
 
 ```markdown
-**mapping_config.py:**
-- `DB_CONFIG`: PostgreSQL connection parameters
-- `OPERATOR_TYPES`: 13 plan operator types
-- `PLAN_METADATA`: ['query_file', 'template']
+# Hybrid_2 - Pattern-Level Prediction
+
+Pattern-based query runtime prediction using greedy pattern selection.
 ```
 
-#### 3. Workflow Overview
+#### 2. Directory Structure
 
-Phase dependencies as flow diagram:
+Tree showing root-level files AND directories with `[See DOCS.md]` links:
 
 ```
-Phase 1: Data_Generation
-Phase 2: Datasets
-Phase 3: Runtime_Prediction
-
-Data_Generation -> Datasets -> Runtime_Prediction
+Hybrid_2/
+    mapping_config.py
+    Parameter.md
+    README.md
+    Data_Generation/                     [See DOCS.md]
+    Dataset/                             [See DOCS.md]
+    Runtime_Prediction/                  [See DOCS.md]
 ```
 
-#### 4. Phase Documentation
+**Rule:** Only root-level files. Scripts inside directories belong in their DOCS.md.
+
+**Root-Level Config Files:** Files like `mapping_config.py` are self-documenting and only listed in Directory Structure. No separate documentation needed - they contain only constants and simple mappings.
+
+#### 3. Workflow
 
 Per phase: Purpose, Input, Output, Details link:
 
 ```markdown
+## Workflow
+
 ### Phase 1: Data_Generation
 
-**Purpose:** Extract features and measure runtime for TPC-H queries
+**Purpose:** Mine structural patterns from query execution plans
 
-**Input:** Query directory with SQL files
+**Input:** Operator dataset
 
-**Output:** `complete_dataset.csv`
+**Output:** Pattern definitions with occurrence counts
 
 **Details:** [Data_Generation/DOCS.md](Data_Generation/DOCS.md)
 ```
@@ -347,11 +339,24 @@ Per phase: Purpose, Input, Output, Details link:
 **Placement:**
 - **Location:** Directory root (e.g., `Data_Generation/`)
 - **Relationship:** Multiple DOCS can exist under one README
-- **Scope:** Tree to modules, every function documented in Module Documentation
+- **Scope:** Tree to modules, script-level documentation
 
 **Required Sections:**
 
-#### 1. Directory Structure
+#### 1. Working Directory (CRITICAL)
+
+All commands assume CWD = this directory. Users must cd here before execution.
+
+```markdown
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
+
+bash
+cd /path/to/Hybrid_2/Runtime_Prediction
+```
+
+#### 2. Directory Structure
 
 Tree showing modules (no functions in tree):
 
@@ -363,37 +368,101 @@ Data_Generation/
 └── csv/
 ```
 
-#### 2. Shared Infrastructure (if applicable)
+#### 3. Workflow Dependency Graph (if applicable)
+
+ASCII diagram showing script execution order and dependencies:
+
+```markdown
+## Workflow Dependency Graph
+
+02_Operator_Train
+       |
+       v
+04_Query_Prediction
+       |
+       v
+06_Extract_Patterns --> 07_Order_Patterns --> 09_Pretrain
+```
+
+#### 4. Output Structure (if applicable)
+
+Tree showing generated outputs (models, CSVs, etc.):
+
+```markdown
+## Output Structure
+
+Runtime_Prediction/
+├── Model/
+│   └── Training_Training/
+│       ├── Operator/{target}/{Operator}/model.pkl
+│       └── Pattern/{hash}/model_*.pkl
+├── Pattern_Selection/
+│   └── {Strategy}/selected_patterns.csv
+└── Evaluation/
+    └── predictions.csv
+```
+
+#### 5. Shared Infrastructure (if applicable)
 
 Directory-specific config files with exports.
 
-#### 3. Module Documentation
+#### 6. Module Documentation
 
-Per module (`## module_name.py`) with Purpose, Input, Output, then all functions (`### function_name()`):
+Per module (`## NN - Module_Name.py`) with Purpose, Inputs, Outputs, Variables (if applicable):
 
 ```markdown
-## 01a_Runtime_Data.py
-**Purpose:** Measure query execution time with cold cache
-**Input:** Query directory path
-**Output:** CSV with runtime measurements
+## 02 - Operator_Train.py
 
-### process_workflow()
-Orchestrator function that coordinates the full measurement pipeline.
-Calls load_queries, iterates through queries calling execute_query and
-measure_runtime for each, then exports all results.
+**Purpose:** Train SVM models for each operator-target combination
 
-### load_queries()
-Loads all SQL files from the specified directory. Returns list of
-query file paths sorted alphabetically.
+**Inputs:**
+- `dataset_dir`: Directory with operator CSV files
+- `overview_file`: Path to two_step_evaluation_overview.csv
+- `--output-dir`: Output directory for trained models (required)
 
-### execute_query()
-Executes a single SQL query against PostgreSQL with cold cache.
-Clears shared buffers before execution to ensure consistent measurements.
+**Outputs:**
+- `{output-dir}/{target}/{Operator}/model.pkl`
 
-### export_results()
-Saves runtime measurements to CSV with semicolon delimiter.
-Creates output directory if it does not exist.
+**Usage:**
+python3 02_Operator_Train.py ../Dataset/Operators/Training_Training overview.csv --output-dir Model/Operator
 ```
 
-**Rule:** Every function in the module must be documented. Undocumented functions indicate dead code or outdated docs.
-- timestamp fix
+**Inputs vs Variables:**
+
+| Type | Argparse | Without it | Example |
+|------|----------|------------|---------|
+| Input | positional + required flags | workflow FAILS | `dataset_dir`, `--output-dir` |
+| Variable | optional flags with default | workflow uses defaults | `--epsilon 0.0`, `--n-jobs -1` |
+
+**Variables Section:** MUST be included if script has optional flags with defaults. Undocumented variables = documentation bug.
+
+```markdown
+**Variables:**
+- `--epsilon`: Min MRE improvement required (default: 0.0)
+- `--n-jobs`: Parallel jobs (default: -1 = all cores)
+```
+
+---
+
+### Subdirectory-Modules
+
+When a module is a directory (e.g., `10_Pattern_Selection/`):
+
+**Structure:**
+```
+10_Pattern_Selection/
+├── DOCS.md                     # Entry-point documentation
+├── 10_Pattern_Selection.py     # Entry-point (argparse + orchestrator)
+└── src/                        [See DOCS.md](src/DOCS.md)
+    ├── tree.py                 # Helper modules
+    ├── io.py
+    ├── prediction.py
+    └── DOCS.md                 # Function-level documentation
+```
+
+**Rules:**
+- Entry-point script in root: `NN_Module_Name.py`
+- Own `DOCS.md` at module root for entry-point documentation
+- Helper functions in `src/`
+- `src/DOCS.md` for function-level documentation
+- Parent DOCS.md references with `[See DOCS.md]` link only

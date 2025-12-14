@@ -17,7 +17,7 @@ from mapping_config import TARGET_TYPES
 
 # Save models
 def save_models(output_dir: str, query_file: str, operator_models: dict, pattern_models: dict) -> None:
-    models_dir = Path(output_dir) / 'models' / query_file
+    models_dir = Path(output_dir) / 'models'
 
     for target_type in TARGET_TYPES:
         for op_name, model_info in operator_models[target_type].items():
@@ -39,5 +39,5 @@ def save_csv_outputs(output_dir: str, query_file: str, selection_log: list, pred
     csv_dir = Path(output_dir) / 'csv'
     csv_dir.mkdir(parents=True, exist_ok=True)
 
-    pd.DataFrame(selection_log).to_csv(csv_dir / f'selection_log_{query_file}.csv', sep=';', index=False)
-    pd.DataFrame(predictions).to_csv(csv_dir / f'predictions_{query_file}.csv', sep=';', index=False)
+    pd.DataFrame(selection_log).to_csv(csv_dir / 'selection_log.csv', sep=';', index=False)
+    pd.DataFrame(predictions).to_csv(csv_dir / 'predictions.csv', sep=';', index=False)

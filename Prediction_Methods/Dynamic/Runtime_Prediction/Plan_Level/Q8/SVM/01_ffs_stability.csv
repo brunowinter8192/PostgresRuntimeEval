@@ -1,0 +1,8 @@
+feature;count;percentage
+Nested_Loop_rows;1;100.0
+Sort_cnt;1;100.0
+jit_functions;1;100.0
+Seq_Scan_cnt;1;100.0
+Hash_cnt;1;100.0
+Aggregate_cnt;1;100.0
+sort_key_count;1;100.0

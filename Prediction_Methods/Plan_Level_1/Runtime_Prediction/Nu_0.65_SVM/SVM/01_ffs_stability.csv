@@ -1,0 +1,8 @@
+feature;count;percentage
+initplan_count;1;100.0
+subplan_count;1;100.0
+Index_Scan_cnt;1;100.0
+op_count;1;100.0
+Seq_Scan_rows;1;100.0
+Index_Only_Scan_cnt;1;100.0
+jit_functions;1;100.0

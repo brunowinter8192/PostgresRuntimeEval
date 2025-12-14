@@ -149,9 +149,12 @@ def build_pattern_assignments(all_nodes: list, pattern_info: dict, pattern_order
             if not has_children_at_length(node, pattern_length):
                 continue
 
+            pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
+            if any(nid in consumed_nodes for nid in pattern_node_ids):
+                continue
+
             computed_hash = compute_pattern_hash(node, pattern_length)
             if computed_hash == pattern_hash:
-                pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
                 consumed_nodes.update(pattern_node_ids)
                 pattern_assignments[node.node_id] = pattern_hash
 

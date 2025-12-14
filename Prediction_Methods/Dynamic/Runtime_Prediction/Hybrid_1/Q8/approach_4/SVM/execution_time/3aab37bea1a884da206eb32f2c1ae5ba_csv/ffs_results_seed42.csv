@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Hash_rt1;True;0.9686989886710153;1;Hash_rt1
+2;SeqScan_Outer_reltuples;True;0.25398792748168203;2;Hash_rt1, SeqScan_Outer_reltuples
+3;Hash_np;True;0.2539625731498789;3;Hash_rt1, SeqScan_Outer_reltuples, Hash_np
+4;Hash_nt2;True;0.24695636864958087;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+5;Hash_reltuples;False;0.25051563501127216;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+6;Hash_parallel_workers;False;0.25051563501127216;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+7;Hash_st2;False;0.25051563501127216;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+8;Hash_rt2;False;0.25051563501127216;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+9;SeqScan_Outer_nt1;False;0.25051563501127216;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+10;SeqScan_Outer_nt2;False;0.25051563501127216;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+11;SeqScan_Outer_startup_cost;False;0.25051563501127216;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+12;SeqScan_Outer_parallel_workers;False;0.25051563501127216;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+13;Hash_startup_cost;False;0.3205613700882331;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+14;Hash_total_cost;False;0.3205613700882331;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+15;SeqScan_Outer_total_cost;False;0.3205613700882331;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+16;SeqScan_Outer_np;False;0.3419510976038517;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+17;Hash_nt;False;0.36990320675051414;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+18;Hash_nt1;False;0.36990320675051414;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+19;SeqScan_Outer_nt;False;0.36990320675051414;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+20;SeqScan_Outer_sel;False;0.41032354987088543;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+21;Hash_plan_width;False;0.5809948359949274;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+22;SeqScan_Outer_plan_width;False;0.5809948359949274;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+23;Hash_st1;False;0.6012999452591383;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2
+24;Hash_sel;False;1.0923795060953212;4;Hash_rt1, SeqScan_Outer_reltuples, Hash_np, Hash_nt2

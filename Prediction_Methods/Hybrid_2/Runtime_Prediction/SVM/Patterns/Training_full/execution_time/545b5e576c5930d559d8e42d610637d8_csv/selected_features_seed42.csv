@@ -1,4 +1,0 @@
-feature;order
-HashJoin_rt1;1
-SeqScan_Outer_np;2
-Hash_Inner_sel;3

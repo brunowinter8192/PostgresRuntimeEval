@@ -1,5 +1,0 @@
-feature;order
-MergeJoin_Outer_rt1;1
-GatherMerge_nt;2
-MergeJoin_Outer_st1;3
-GatherMerge_rt1;4

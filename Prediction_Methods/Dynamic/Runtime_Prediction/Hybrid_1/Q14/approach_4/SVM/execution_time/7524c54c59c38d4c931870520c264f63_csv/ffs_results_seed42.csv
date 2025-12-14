@@ -1,0 +1,29 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;HashJoin_Outer_rt1;True;0.03473863469487937;1;HashJoin_Outer_rt1
+2;Aggregate_total_cost;True;0.034305488204364645;2;HashJoin_Outer_rt1, Aggregate_total_cost
+3;Aggregate_rt1;True;0.03411560939476394;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+4;Aggregate_startup_cost;False;0.03433434217676532;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+5;HashJoin_Outer_total_cost;False;0.03437907117136061;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+6;HashJoin_Outer_sel;False;0.03449544564307373;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+7;HashJoin_Outer_nt2;False;0.034582682463209544;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+8;Aggregate_nt;False;0.034744905518979866;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+9;HashJoin_Outer_nt1;False;0.03481114075106389;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+10;Aggregate_nt1;False;0.03506367888405879;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+11;HashJoin_Outer_nt;False;0.03506367888405879;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+12;Aggregate_sel;False;0.03542740136766512;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+13;Aggregate_plan_width;False;0.03552279851226903;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+14;HashJoin_Outer_st1;False;0.035522898173310884;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+15;HashJoin_Outer_plan_width;False;0.0358582511689723;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+16;Aggregate_st1;False;0.03591459686453871;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+17;HashJoin_Outer_startup_cost;False;0.03595553888398747;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+18;HashJoin_Outer_rt2;False;0.036031717853149264;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+19;HashJoin_Outer_st2;False;0.03603171904362261;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+20;Aggregate_np;False;0.036799992414988644;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+21;Aggregate_nt2;False;0.036799992414988644;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+22;Aggregate_reltuples;False;0.036799992414988644;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+23;Aggregate_parallel_workers;False;0.036799992414988644;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+24;Aggregate_st2;False;0.036799992414988644;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+25;Aggregate_rt2;False;0.036799992414988644;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+26;HashJoin_Outer_np;False;0.036799992414988644;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+27;HashJoin_Outer_reltuples;False;0.036799992414988644;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1
+28;HashJoin_Outer_parallel_workers;False;0.036799992414988644;3;HashJoin_Outer_rt1, Aggregate_total_cost, Aggregate_rt1

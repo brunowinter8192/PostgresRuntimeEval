@@ -1,0 +1,5 @@
+pattern_hash;pattern_string;selected_count;used_count;usage_rate;templates;status
+a5f39f08c510532e02e96e109e48c0cd;Aggregate -> Gather -> Aggregate (Outer) (Outer);120;120;100.0%;Q6,Q9,Q14,Q19;USED
+25df29b5b69835d07c0d8b72b0e46a3b;Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer);60;60;100.0%;Q3,Q10;USED
+35ffb64405c972adec2b1bd3878a66ec;Sort -> Aggregate -> Aggregate (Outer) (Outer);30;30;100.0%;Q13;USED
+fd858367085e17ddeebcdbba5dd3a6ac;Limit -> Sort -> Aggregate -> Gather Merge (Outer) (Outer) (Outer);30;30;100.0%;Q18;USED

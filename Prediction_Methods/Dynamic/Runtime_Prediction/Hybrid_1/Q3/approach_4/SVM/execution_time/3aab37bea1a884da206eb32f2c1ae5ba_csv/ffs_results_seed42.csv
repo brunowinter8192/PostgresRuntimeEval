@@ -1,0 +1,25 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Hash_rt1;True;0.10253179312987434;1;Hash_rt1
+2;Hash_plan_width;True;0.10000141012534133;2;Hash_rt1, Hash_plan_width
+3;Hash_st1;False;0.1034218971487767;2;Hash_rt1, Hash_plan_width
+4;Hash_np;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+5;Hash_nt2;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+6;Hash_reltuples;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+7;Hash_parallel_workers;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+8;Hash_st2;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+9;Hash_rt2;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+10;SeqScan_Outer_nt1;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+11;SeqScan_Outer_nt2;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+12;SeqScan_Outer_startup_cost;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+13;SeqScan_Outer_parallel_workers;False;0.10671538173830161;2;Hash_rt1, Hash_plan_width
+14;Hash_startup_cost;False;0.11798799803998876;2;Hash_rt1, Hash_plan_width
+15;Hash_total_cost;False;0.11798799803998876;2;Hash_rt1, Hash_plan_width
+16;SeqScan_Outer_total_cost;False;0.11798799803998876;2;Hash_rt1, Hash_plan_width
+17;SeqScan_Outer_reltuples;False;0.13229974054308052;2;Hash_rt1, Hash_plan_width
+18;SeqScan_Outer_plan_width;False;0.13662068378029782;2;Hash_rt1, Hash_plan_width
+19;SeqScan_Outer_np;False;0.1429489468089126;2;Hash_rt1, Hash_plan_width
+20;Hash_nt;False;0.3796338743437146;2;Hash_rt1, Hash_plan_width
+21;Hash_nt1;False;0.3796338743437146;2;Hash_rt1, Hash_plan_width
+22;SeqScan_Outer_nt;False;0.3796338743437146;2;Hash_rt1, Hash_plan_width
+23;SeqScan_Outer_sel;False;0.40515911709730024;2;Hash_rt1, Hash_plan_width
+24;Hash_sel;False;0.7571206117963958;2;Hash_rt1, Hash_plan_width

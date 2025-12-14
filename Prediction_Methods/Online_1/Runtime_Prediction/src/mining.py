@@ -99,12 +99,13 @@ def generate_pattern_string(node, remaining_length: int) -> str:
     return f"{node.node_type} -> [{children_combined}]"
 
 
-# Calculate error ranking for patterns (unified function)
-def calculate_error_ranking(
+# Calculate ranking for patterns based on strategy
+def calculate_ranking(
     predictions: list,
     occurrences: dict,
     patterns: dict,
-    consumed_hashes: set = None
+    consumed_hashes: set = None,
+    strategy: str = 'error'
 ) -> list:
     if consumed_hashes is None:
         consumed_hashes = set()
@@ -145,4 +146,10 @@ def calculate_error_ranking(
                 'error_score': error_score
             })
 
+    if strategy == 'error':
+        return sorted(ranking, key=lambda x: -x['error_score'])
+    elif strategy == 'size':
+        return sorted(ranking, key=lambda x: (x['pattern_length'], -x['occurrence_count']))
+    elif strategy == 'frequency':
+        return sorted(ranking, key=lambda x: (-x['occurrence_count'], x['pattern_length']))
     return sorted(ranking, key=lambda x: -x['error_score'])
