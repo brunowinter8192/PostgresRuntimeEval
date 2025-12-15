@@ -15,6 +15,7 @@ Misc/
     Setup.md                                                 (Environment setup)
     Generated_Queries/                                       [documented below]
     Cache_Validation/                                        [documented below]
+    FFS_Comparison/                                          [documented below]
     Konzepte/
     specification/
 ```
@@ -112,3 +113,66 @@ python3 A_01_Runtime_Variance.py \
 | cv | Coefficient of variation (std/mean * 100) |
 | min/max | Runtime range |
 | range | max - min |
+
+---
+
+## FFS_Comparison
+
+Comparison tools for evaluating SVM nu parameter impact on Forward Feature Selection.
+
+### Directory Structure
+
+```
+FFS_Comparison/
+    Plan_Level/
+        01_Compare_Nu.py
+        nu_0.5_summary.csv
+        nu_0.65_summary.csv
+    Operator_Level/
+        01_Compare_Nu.py
+        nu_0.5_overview.csv
+        nu_0.65_overview.csv
+```
+
+### Plan_Level/01 - Compare_Nu.py
+
+**Purpose:** Compare FFS results between nu=0.5 and nu=0.65 at plan level.
+
+**Inputs:**
+- `--baseline`: Baseline summary CSV (default: `nu_0.5_summary.csv`)
+- `--alternative`: Alternative summary CSV (default: `nu_0.65_summary.csv`)
+- `--output-dir`: Output directory (default: `.`)
+
+**Outputs:**
+- `01_nu_comparison.csv`: mre_0.5, mre_0.65, delta_mre, n_features_*, features_*, better
+
+**Usage:**
+```bash
+cd Misc/FFS_Comparison/Plan_Level
+python3 01_Compare_Nu.py
+```
+
+### Operator_Level/01 - Compare_Nu.py
+
+**Purpose:** Compare FFS results between nu=0.65 and nu=0.5 at operator level.
+
+**Inputs:**
+- `--baseline`: Baseline overview CSV (default: `nu_0.65_overview.csv`)
+- `--alternative`: Alternative overview CSV (default: `nu_0.5_overview.csv`)
+- `--output-dir`: Output directory (default: `.`)
+
+**Outputs:**
+- `01_nu_comparison.csv`: operator, target, mre_ffs_*, mre_final_*, delta_mre_*, better_ffs, better_final
+
+**Usage:**
+```bash
+cd Misc/FFS_Comparison/Operator_Level
+python3 01_Compare_Nu.py
+```
+
+### Delta Interpretation
+
+| Script | delta_mre > 0 means |
+|--------|---------------------|
+| Plan_Level | nu=0.65 is better |
+| Operator_Level | nu=0.5 is better |

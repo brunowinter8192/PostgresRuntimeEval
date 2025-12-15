@@ -1,8 +1,8 @@
 iteration;feature_added;mre;n_features;features;seed
-1;initplan_count;0.5022672986979264;1;initplan_count;42
-2;subplan_count;0.17781391552927428;2;initplan_count, subplan_count;42
-3;Index_Scan_cnt;0.12836494394477477;3;initplan_count, subplan_count, Index_Scan_cnt;42
-4;max_tree_depth;0.11121799759303035;4;initplan_count, subplan_count, Index_Scan_cnt, max_tree_depth;42
-5;jit_functions;0.10518641382869912;5;initplan_count, subplan_count, Index_Scan_cnt, max_tree_depth, jit_functions;42
-6;Aggregate_cnt;0.0985200821476517;6;initplan_count, subplan_count, Index_Scan_cnt, max_tree_depth, jit_functions, Aggregate_cnt;42
-7;sort_key_columns;0.09232460404531188;7;initplan_count, subplan_count, Index_Scan_cnt, max_tree_depth, jit_functions, Aggregate_cnt, sort_key_columns;42
+1;initplan_count;0.4799483520850953;1;initplan_count;42
+2;subplan_count;0.17006983293581562;2;initplan_count, subplan_count;42
+3;Index_Scan_cnt;0.11492849020820987;3;initplan_count, subplan_count, Index_Scan_cnt;42
+4;op_count;0.0899546843101519;4;initplan_count, subplan_count, Index_Scan_cnt, op_count;42
+5;Seq_Scan_rows;0.08862731758453117;5;initplan_count, subplan_count, Index_Scan_cnt, op_count, Seq_Scan_rows;42
+6;Index_Only_Scan_cnt;0.0870784218791338;6;initplan_count, subplan_count, Index_Scan_cnt, op_count, Seq_Scan_rows, Index_Only_Scan_cnt;42
+7;jit_functions;0.0827895461812825;7;initplan_count, subplan_count, Index_Scan_cnt, op_count, Seq_Scan_rows, Index_Only_Scan_cnt, jit_functions;42

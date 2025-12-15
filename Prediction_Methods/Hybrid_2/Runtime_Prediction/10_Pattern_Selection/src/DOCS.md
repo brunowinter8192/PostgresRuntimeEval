@@ -100,6 +100,14 @@ Training, prediction, and feature aggregation.
 | `aggregate_pattern_with_cache(...)` | Aggregate for prediction (cached children) |
 | `aggregate_subtree_with_cache(...)` | Recursive aggregation with cache |
 
+### Pattern Overlap Resolution
+
+**IMPORTANT:** Bei der Prediction haben groessere Patterns Prioritaet ueber kleinere.
+
+Wenn ein 4-Operator-Pattern und ein 2-Operator-Pattern dieselben Nodes matchen, wird das 4-Operator-Pattern verwendet. Dies entspricht der Paper-Logik (Section 3.4, Algorithm 1): "occurrences of p are consumed by the newly added model".
+
+**Implementation:** `predict_single_query()` sammelt zuerst alle Pattern-Matches, sortiert sie nach `pattern_length` (groesste zuerst), und wendet sie dann der Reihe nach an. Nodes, die von einem grossen Pattern konsumiert wurden, werden nicht erneut von kleineren Patterns gematcht.
+
 ---
 
 ## selection.py

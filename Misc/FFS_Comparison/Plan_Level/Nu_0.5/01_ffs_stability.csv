@@ -1,0 +1,8 @@
+feature;count;percentage
+initplan_count;1;100.0
+subplan_count;1;100.0
+group_key_count;1;100.0
+jit_functions;1;100.0
+Index_Only_Scan_cnt;1;100.0
+workers_planned;1;100.0
+Gather_cnt;1;100.0

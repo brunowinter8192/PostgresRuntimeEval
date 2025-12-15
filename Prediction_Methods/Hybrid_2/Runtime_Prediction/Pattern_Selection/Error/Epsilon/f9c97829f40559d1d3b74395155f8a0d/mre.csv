@@ -1,0 +1,2 @@
+pattern_hash;pattern_string;mre;mre_pct;status
+f9c97829f40559d1d3b74395155f8a0d;Aggregate -> Gather Merge -> Aggregate -> Sort -> Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);0.048181104676006656;4.818110467600666;REJECTED

@@ -29,6 +29,8 @@
 
 ## 4. CRITICAL STANDARDS
 
+**Documentation First:** When working on any directory or file, FIRST read the corresponding DOCS.md to understand context, inputs, outputs, and implementation details.
+
 - NO comments inside function bodies (only function header comments + section markers)
 - NO test files in root (ONLY in debug/ folder when requested)
 - NO emojis in code AND documentation
@@ -408,7 +410,7 @@ Directory-specific config files with exports.
 
 #### 6. Module Documentation
 
-Per module (`## NN - Module_Name.py`) with Purpose, Inputs, Outputs, Variables (if applicable):
+Per module (`## NN - Module_Name.py`) with Purpose, Inputs, Outputs, Variables, Implementation Details (if applicable):
 
 ```markdown
 ## 02 - Operator_Train.py
@@ -425,6 +427,10 @@ Per module (`## NN - Module_Name.py`) with Purpose, Inputs, Outputs, Variables (
 
 **Usage:**
 python3 02_Operator_Train.py ../Dataset/Operators/Training_Training overview.csv --output-dir Model/Operator
+
+**Implementation Details:** (if applicable)
+
+Critical algorithm logic, invariants, or non-obvious behavior that affects correctness.
 ```
 
 **Inputs vs Variables:**
@@ -457,12 +463,13 @@ When a module is a directory (e.g., `10_Pattern_Selection/`):
     ├── tree.py                 # Helper modules
     ├── io.py
     ├── prediction.py
-    └── DOCS.md                 # Function-level documentation
+    └── DOCS.md                 # Module-level documentation
 ```
 
 **Rules:**
 - Entry-point script in root: `NN_Module_Name.py`
 - Own `DOCS.md` at module root for entry-point documentation
 - Helper functions in `src/`
-- `src/DOCS.md` for function-level documentation
+- `src/DOCS.md` for module-level documentation
 - Parent DOCS.md references with `[See DOCS.md]` link only
+

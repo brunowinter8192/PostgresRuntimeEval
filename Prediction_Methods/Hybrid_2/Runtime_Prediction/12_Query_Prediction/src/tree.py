@@ -131,16 +131,18 @@ def extract_pattern_node_ids(node: QueryNode, remaining_length: int) -> list:
     return node_ids
 
 
-# Build pattern assignments matching patterns to query nodes (Phase 1)
+# Build pattern assignments matching patterns to query nodes (larger patterns first)
 def build_pattern_assignments(all_nodes: list, pattern_info: dict, pattern_order: list) -> tuple:
     consumed_nodes = set()
     pattern_assignments = {}
 
-    for pattern_hash in pattern_order:
-        if pattern_hash not in pattern_info:
-            continue
+    sorted_patterns = sorted(
+        [(h, pattern_info[h]) for h in pattern_order if h in pattern_info],
+        key=lambda x: x[1]['length'],
+        reverse=True
+    )
 
-        info = pattern_info[pattern_hash]
+    for pattern_hash, info in sorted_patterns:
         pattern_length = info['length']
 
         for node in all_nodes:

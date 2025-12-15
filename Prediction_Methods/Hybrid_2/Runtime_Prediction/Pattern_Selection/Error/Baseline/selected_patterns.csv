@@ -1,0 +1,15 @@
+iteration;pattern_hash;pattern_string;baseline_mre;new_mre;delta;status
+0;3aab37bea1a884da206eb32f2c1ae5ba;Hash -> Seq Scan (Outer);0.2297;0.21176972582965248;0.01793027417034751;SELECTED
+1;895c6e8c1a30a094329d71cef3111fbd;Hash Join -> [Seq Scan (Outer), Hash (Inner)];0.21176972582965248;0.21116727198907118;0.0006024538405813018;SELECTED
+7;c53c43965386239f53c764b9a60720dd;Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)];0.21116727198907118;0.2111337352937222;3.353669534897352e-05;SELECTED
+8;2e0f44eff91c745724a56159cf7e0d6f;Hash Join -> [Nested Loop (Outer), Hash (Inner)];0.2111337352937222;0.21110669370769292;2.704158602928608e-05;SELECTED
+10;30d6e09bdb501c499cb36578168e324f;Hash Join -> [Hash Join -> [Nested Loop (Outer), Hash (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)];0.21110669370769292;0.2111048812013103;1.8125063826202048e-06;SELECTED
+17;25df29b5b69835d07c0d8b72b0e46a3b;Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer);0.2111048812013103;0.11613708302467043;0.09496779817663986;SELECTED
+18;1d35fb978b379d4a820897907e56ab7b;Sort -> Aggregate (Outer);0.11613708302467043;0.11109635204604046;0.005040730978629976;SELECTED
+30;3e2d5a00246ff56483c16003698d4917;Sort -> Hash Join (Outer);0.11109635204604046;0.10946535537585204;0.0016309966701884143;SELECTED
+33;a5f39f08c510532e02e96e109e48c0cd;Aggregate -> Gather -> Aggregate (Outer) (Outer);0.10946535537585204;0.07767289238012161;0.031792462995730436;SELECTED
+44;2724c08067c017e6455632f46231780c;Aggregate -> Gather Merge (Outer);0.07767289238012161;0.07006770638309451;0.0076051859970271;SELECTED
+54;0564d0b3361e670c2e404e29c4e1752c;Gather Merge -> Incremental Sort -> Nested Loop -> [Merge Join -> [Sort -> Hash Join -> [Seq Scan (Outer), Hash -> Aggregate (Outer) (Inner)] (Outer) (Outer), Sort -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer);0.07006770638309451;0.0698515775294773;0.00021612885361721457;SELECTED
+57;267d3d4e6cbf10ceab1785c594b8f2f2;Limit -> Sort -> Aggregate -> Gather Merge -> Incremental Sort -> Nested Loop -> [Merge Join -> [Sort -> Hash Join -> [Seq Scan (Outer), Hash -> Aggregate (Outer) (Inner)] (Outer) (Outer), Sort -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer) (Outer);0.0698515775294773;0.0481813968668801;0.021670180662597197;SELECTED
+99;e6c1e0d80e32f1143d09cc88a08370bd;Gather Merge -> Aggregate -> Sort (Outer) (Outer);0.0481813968668801;0.04573171477665108;0.0024496820902290134;SELECTED
+175;3dbdd75b2e68f57812702c03947e298f;Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Hash Join -> [Nested Loop (Outer), Hash (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer) (Inner)] (Outer), Index Scan (Inner)];0.04573171477665108;0.04572599659193;5.718184721080488e-06;SELECTED

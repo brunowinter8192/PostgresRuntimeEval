@@ -40,7 +40,13 @@ Tree node representing a query plan operator.
 | `compute_pattern_hash(node, length)` | MD5 hash of subtree structure |
 | `has_children_at_length(node, length)` | Check subtree depth exists |
 | `extract_pattern_node_ids(node, length)` | Get all node IDs in pattern |
-| `build_pattern_assignments(nodes, info, order)` | Match patterns to query (Phase 1) |
+| `build_pattern_assignments(nodes, info, order)` | Match patterns to query (larger first) |
+
+### Pattern Overlap Resolution
+
+**IMPORTANT:** Bei der Prediction haben groessere Patterns Prioritaet ueber kleinere.
+
+`build_pattern_assignments()` sortiert Patterns nach `length` (groesste zuerst), bevor sie gematcht werden. Dies entspricht der Paper-Logik (Section 3.4): "occurrences of p are consumed by the newly added model".
 
 ---
 

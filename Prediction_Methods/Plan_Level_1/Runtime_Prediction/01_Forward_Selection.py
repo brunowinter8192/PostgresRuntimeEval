@@ -31,8 +31,8 @@ def forward_selection_workflow(input_csv: Path, output_dir: Path, model_key: str
     y = df[PLAN_TARGET]
     template_ids = extract_template_ids(df)
 
-    all_seed_results, feature_counter, progress_df = run_multi_seed_selection(X, y, feature_cols, template_ids, model_config)
-    export_results(all_seed_results, feature_counter, progress_df, output_dir)
+    all_seed_results, progress_df = run_multi_seed_selection(X, y, feature_cols, template_ids, model_config)
+    export_results(all_seed_results, progress_df, output_dir)
 
 
 # FUNCTIONS
@@ -64,7 +64,6 @@ def extract_template_id(template_str) -> int:
 # Run forward selection across multiple seeds
 def run_multi_seed_selection(X: pd.DataFrame, y: pd.Series, feature_cols: list, template_ids: np.ndarray, model_config: dict) -> tuple:
     all_seed_results = []
-    feature_counter = {}
     all_progress = []
 
     for seed in FFS_CONFIG['seeds']:
@@ -85,11 +84,8 @@ def run_multi_seed_selection(X: pd.DataFrame, y: pd.Series, feature_cols: list, 
         }
         all_seed_results.append(seed_result)
 
-        for feature in selected_features:
-            feature_counter[feature] = feature_counter.get(feature, 0) + 1
-
     progress_df = pd.concat(all_progress, ignore_index=True)
-    return all_seed_results, feature_counter, progress_df
+    return all_seed_results, progress_df
 
 
 # Forward selection algorithm with minimum features constraint
@@ -173,7 +169,7 @@ def mean_relative_error(y_true, y_pred) -> float:
 
 
 # Export all results to CSV files with semicolon delimiter
-def export_results(all_seed_results: list, feature_counter: dict, progress_df: pd.DataFrame, output_dir: Path) -> None:
+def export_results(all_seed_results: list, progress_df: pd.DataFrame, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     progress_file = output_dir / '01_ffs_progress.csv'
@@ -182,19 +178,6 @@ def export_results(all_seed_results: list, feature_counter: dict, progress_df: p
     summary_df = pd.DataFrame(all_seed_results)
     summary_file = output_dir / '01_ffs_summary.csv'
     summary_df.to_csv(summary_file, sep=';', index=False)
-
-    sorted_features = sorted(feature_counter.items(), key=lambda x: x[1], reverse=True)
-    stability_data = [
-        {
-            'feature': feat,
-            'count': cnt,
-            'percentage': (cnt / len(FFS_CONFIG['seeds'])) * 100
-        }
-        for feat, cnt in sorted_features
-    ]
-    stability_df = pd.DataFrame(stability_data)
-    stability_file = output_dir / '01_ffs_stability.csv'
-    stability_df.to_csv(stability_file, sep=';', index=False)
 
 
 if __name__ == "__main__":

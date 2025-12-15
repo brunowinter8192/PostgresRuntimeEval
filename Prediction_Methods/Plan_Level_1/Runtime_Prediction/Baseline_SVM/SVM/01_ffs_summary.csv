@@ -1,2 +1,2 @@
 seed;n_features;final_mre;selected_features
-42;7;0.09232460404531188;initplan_count, subplan_count, Index_Scan_cnt, max_tree_depth, jit_functions, Aggregate_cnt, sort_key_columns
+42;7;0.0827895461812825;initplan_count, subplan_count, Index_Scan_cnt, op_count, Seq_Scan_rows, Index_Only_Scan_cnt, jit_functions

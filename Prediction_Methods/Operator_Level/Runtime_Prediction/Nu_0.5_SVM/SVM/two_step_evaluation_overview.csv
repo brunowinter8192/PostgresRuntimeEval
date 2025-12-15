@@ -5,8 +5,8 @@ Gather;execution_time;1;5;6;0.02327760887280542;0.1031238702290425;rt1;nt1, nt2,
 Gather;start_time;1;6;7;1.849241454829281;2.9689991665391466;parallel_workers;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, parallel_workers, rt1, rt2, st1, st2
 Gather_Merge;execution_time;1;5;6;0.13396093201366852;0.14655150473477094;st1;nt1, nt2, rt1, rt2, st2;nt1, nt2, rt1, rt2, st1, st2
 Gather_Merge;start_time;1;6;7;0.13442252104560987;0.14274632442282625;sel;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, sel, st1, st2
-Hash;execution_time;2;6;8;160.44897412654282;206.6545908849245;startup_cost, total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost, total_cost
-Hash;start_time;2;6;8;163.66022345281334;210.7868083820229;startup_cost, total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost, total_cost
+Hash;execution_time;2;6;8;160.44897412654282;206.65459088492435;startup_cost, total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost, total_cost
+Hash;start_time;2;6;8;163.66022345281334;210.7868083820228;startup_cost, total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost, total_cost
 Hash_Join;execution_time;3;5;8;53.10693181001452;65.98249105285649;nt, rt1, total_cost;nt1, nt2, rt2, st1, st2;nt, nt1, nt2, rt1, rt2, st1, st2, total_cost
 Hash_Join;start_time;5;3;8;4.183969111686536;10.795163233393122;nt, nt2, rt1, st1, total_cost;nt1, rt2, st2;nt, nt1, nt2, rt1, rt2, st1, st2, total_cost
 Incremental_Sort;execution_time;3;4;7;0.0012347450337549504;0.005426240715456481;nt, rt1, st1;nt1, nt2, rt2, st2;nt, nt1, nt2, rt1, rt2, st1, st2

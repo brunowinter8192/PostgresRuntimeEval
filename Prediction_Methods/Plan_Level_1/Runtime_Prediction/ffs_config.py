@@ -26,7 +26,7 @@ MODEL_REGISTRY = {
         'output_folder': 'SVM',
         'params': {
             'kernel': 'rbf',
-            'nu': 0.5,
+            'nu': 0.65,
             'C': 5.0,
             'gamma': 'scale',
             'cache_size': 500

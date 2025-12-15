@@ -48,7 +48,7 @@ For each change, determine:
 3. Workflow Dependency Graph (if applicable)
 4. Output Structure (if applicable)
 5. Shared Infrastructure (if applicable)
-6. Module Documentation (Purpose, Inputs, Outputs, Variables, Usage)
+6. Module Documentation (Purpose, Inputs, Outputs, Variables, Implementation Details, Usage)
 
 **Update Required When:**
 1. New script added (0N_Script.py)

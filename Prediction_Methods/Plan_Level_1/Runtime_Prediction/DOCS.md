@@ -18,7 +18,7 @@ Runtime_Prediction/
 ├── 03_Summarize_Results.py              # Aggregate predictions by template
 ├── A_01a_Correlation_Analysis.py        # Analysis: Feature correlations
 ├── A_01b_Scatter_Plots.py               # Analysis: Feature vs runtime plots
-├── A_01c_Outlier_Sparsity.py            # Analysis: IQR outliers + zero counts
+├── A_01c_Sparsity.py                    # Analysis: Feature sparsity (zero counts)
 ├── A_01d_Template_Constancy.py          # Analysis: Feature constancy per template
 ├── A_01e_Template_Feature_Values.py     # Analysis: Constant feature values per template
 ├── A_01g_Evaluation_Plot.py             # Analysis: MRE bar plots
@@ -47,12 +47,12 @@ Uses configuration files from parent directory:
 
 **ffs_config.py:**
 - FFS_CONFIG: Forward feature selection parameters
-  - min_features: 10 (minimum features before stopping)
-  - seeds: [42, 123, 456, 789, 999] (random seeds for multi-seed FFS)
+  - min_features: 1 (minimum features before stopping)
+  - seeds: [42] (random seed for cross-validation)
   - n_splits: 5 (cross-validation folds)
 
 - MODEL_REGISTRY: Model configurations for all baselines
-  - svm: NuSVR with MaxAbsScaler (kernel=rbf, nu=0.5, C=5.0, gamma=scale, cache_size=500)
+  - svm: NuSVR with MaxAbsScaler (kernel=rbf, nu=0.65, C=5.0, gamma=scale, cache_size=500)
   - random_forest: RandomForestRegressor (n_estimators=1000, max_depth=None, max_features=sqrt, n_jobs=-1)
   - xgboost: XGBRegressor (max_depth=7, learning_rate=0.05, n_estimators=1000, subsample=0.8)
 
@@ -65,7 +65,7 @@ Uses configuration files from parent directory:
 - output_folder: Output directory name (SVM/, Random_Forest/, XGBoost/)
 - params: Dictionary of model hyperparameters
 
-**All models use CSV-based feature loading:** Features are dynamically loaded from FFS output (01_multi_seed_summary.csv)
+**All models use CSV-based feature loading:** Features are dynamically loaded from FFS output (01_ffs_summary.csv)
 
 ## Workflow Execution Order
 
@@ -89,11 +89,11 @@ Optional: Analysis scripts (A_01a-g, parallel)
 
 ```bash
 # 1. Forward feature selection
-python 01_Forward_Selection.py ../../Datasets/Baseline/training_data.csv --model svm
-# Output: Baseline_SVM/SVM/01_multi_seed_summary.csv, 01_feature_stability.csv
+python 01_Forward_Selection.py ../Datasets/Baseline/training_data.csv --model svm
+# Output: Baseline_SVM/SVM/01_ffs_summary.csv, 01_ffs_stability.csv
 
 # 2. Train model with selected features
-python 02_Train_Model.py ../../Datasets/Baseline/training_data.csv ../../Datasets/Baseline/test_data.csv --model svm
+python 02_Train_Model.py ../Datasets/Baseline/training_data.csv ../Datasets/Baseline/test_data.csv --model svm
 # Output: Baseline_SVM/SVM/02_model_<timestamp>.pkl, 02_predictions_<timestamp>.csv
 
 # 3. Optional: Summarize results
@@ -129,19 +129,18 @@ python 03_Summarize_Results.py Baseline_SVM/SVM/02_predictions_<timestamp>.csv
 - `--model` (required): Model to use (choices: svm, random_forest, xgboost)
 
 **Outputs**:
-- `Baseline_<Model>/<output_folder>/01_multi_seed_summary.csv`: seed, n_features, final_mre, selected_features
-- `Baseline_<Model>/<output_folder>/01_feature_stability.csv`: feature, count, percentage (across seeds)
+- `Baseline_<Model>/<output_folder>/01_ffs_summary.csv`: seed, n_features, final_mre, selected_features
 
 **Usage**:
 ```bash
 # SVM (outputs to Baseline_SVM/SVM/)
-python 01_Forward_Selection.py ../../Datasets/Baseline/training_data.csv --model svm
+python 01_Forward_Selection.py ../Datasets/Baseline/training_data.csv --model svm
 
 # Random Forest (outputs to Baseline_RandomForest/Random_Forest/)
-python 01_Forward_Selection.py ../../Datasets/Baseline/training_data.csv --model random_forest
+python 01_Forward_Selection.py ../Datasets/Baseline/training_data.csv --model random_forest
 
 # XGBoost (outputs to Baseline_XGBoost/XGBoost/)
-python 01_Forward_Selection.py ../../Datasets/Baseline/training_data.csv --model xgboost
+python 01_Forward_Selection.py ../Datasets/Baseline/training_data.csv --model xgboost
 
 # Custom output directory
 python 01_Forward_Selection.py dataset.csv --model svm --output-dir /custom/output
@@ -187,7 +186,7 @@ python 01_Forward_Selection.py dataset.csv --model svm --output-dir /custom/outp
 **Usage**:
 ```bash
 # SVM with default seed 42
-python 02_Train_Model.py ../../Datasets/Baseline/training_data.csv ../../Datasets/Baseline/test_data.csv --model svm
+python 02_Train_Model.py ../Datasets/Baseline/training_data.csv ../Datasets/Baseline/test_data.csv --model svm
 
 # Random Forest with seed 123
 python 02_Train_Model.py train.csv test.csv --model random_forest --seed 123
@@ -201,7 +200,7 @@ python 02_Train_Model.py train.csv test.csv --model svm --output-dir /custom/out
 
 **Variables**:
 - `--model` (required): svm | random_forest | xgboost
-- `--ffs-csv`: FFS results CSV (default: Baseline_<Model>/<output_folder>/01_multi_seed_summary.csv)
+- `--ffs-csv`: FFS results CSV (default: Baseline_<Model>/<output_folder>/01_ffs_summary.csv)
 - `--seed`: Random seed to select features for (default: 42)
 - `--output-dir`: Output directory (default: Baseline_<Model>/<output_folder>/)
 
@@ -259,7 +258,7 @@ Analysis scripts are standalone tools, NOT part of the main workflow. They can b
 
 **Usage**:
 ```bash
-python A_01a_Correlation_Analysis.py ../../Datasets/Baseline/training_data.csv --threshold 0.95
+python A_01a_Correlation_Analysis.py ../Datasets/Baseline/training_data.csv --threshold 0.95
 ```
 
 **Variables**:
@@ -270,17 +269,18 @@ python A_01a_Correlation_Analysis.py ../../Datasets/Baseline/training_data.csv -
 
 ### A_01b - Scatter_Plots.py
 
-**Purpose**: Create scatter plots of all features versus runtime
+**Purpose**: Create scatter plots of FFS-selected features versus runtime
 
 **Inputs**:
 - `dataset_csv` (positional): Dataset CSV with features and runtime
+- `--ffs-csv` (required): FFS summary CSV with selected_features column
 
 **Outputs**:
 - `A_01b_scatter_plots_{timestamp}.png`: Grid of scatter plots with correlation coefficients
 
 **Usage**:
 ```bash
-python A_01b_Scatter_Plots.py ../../Datasets/Baseline/training_data.csv
+python A_01b_Scatter_Plots.py ../Datasets/Baseline/training_data.csv --ffs-csv Baseline_SVM/SVM/01_ffs_summary.csv
 ```
 
 **Variables**:
@@ -288,20 +288,19 @@ python A_01b_Scatter_Plots.py ../../Datasets/Baseline/training_data.csv
 
 ---
 
-### A_01c - Outlier_Sparsity.py
+### A_01c - Sparsity.py
 
-**Purpose**: Analyze feature outliers (IQR method) and sparsity (zero counts)
+**Purpose**: Analyze feature sparsity (zero counts per feature)
 
 **Inputs**:
 - `dataset_csv` (positional): Dataset CSV with features
 
 **Outputs**:
-- `A_01c_feature_outliers_{timestamp}.csv`: Outlier statistics per feature
-- `A_01c_feature_zeros_{timestamp}.csv`: Zero count per feature
+- `A_01c_feature_sparsity_{timestamp}.csv`: Zero count and percentage per feature
 
 **Usage**:
 ```bash
-python A_01c_Outlier_Sparsity.py ../../Datasets/Baseline/training_data.csv
+python A_01c_Sparsity.py ../Datasets/Baseline/training_data.csv
 ```
 
 **Variables**:
@@ -322,10 +321,10 @@ python A_01c_Outlier_Sparsity.py ../../Datasets/Baseline/training_data.csv
 **Usage**:
 ```bash
 # All features
-python A_01d_Template_Constancy.py ../../Datasets/Baseline/training_data.csv
+python A_01d_Template_Constancy.py ../Datasets/Baseline/training_data.csv
 
 # Only FFS-selected features
-python A_01d_Template_Constancy.py ../../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv
+python A_01d_Template_Constancy.py ../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv
 ```
 
 **Variables**:
@@ -346,7 +345,7 @@ python A_01d_Template_Constancy.py ../../Datasets/Baseline/training_data.csv --f
 
 **Usage**:
 ```bash
-python A_01e_Template_Feature_Values.py ../../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv
+python A_01e_Template_Feature_Values.py ../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv
 ```
 
 **Variables**:
