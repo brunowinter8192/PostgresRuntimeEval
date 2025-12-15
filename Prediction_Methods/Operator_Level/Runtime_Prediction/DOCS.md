@@ -30,7 +30,6 @@ Runtime_Prediction/
 ├── DOCS.md                            # This file
 ├── md/                                # MD reports for single query predictions
 ├── Baseline_SVM/                      # Baseline dataset results (nu=0.65)
-├── Nu_0.5_SVM/                        # Alternative nu=0.5 results (same structure)
 │   ├── SVM/                           # Feature selection results
 │   │   ├── execution_time/            # Per-operator FFS results
 │   │   ├── start_time/                # Per-operator FFS results

@@ -1,0 +1,7 @@
+iteration;feature_added;mre;n_features;features
+1;plan_width;0.4069031293489168;1;plan_width
+2;np;0.31348177878122346;2;plan_width, np
+3;total_cost;0.2378362414496824;3;plan_width, np, total_cost
+4;sel;0.23657180433580277;4;plan_width, np, total_cost, sel
+5;nt1;0.23388940955148557;5;plan_width, np, total_cost, sel, nt1
+6;nt2;0.2308791212853655;6;plan_width, np, total_cost, sel, nt1, nt2

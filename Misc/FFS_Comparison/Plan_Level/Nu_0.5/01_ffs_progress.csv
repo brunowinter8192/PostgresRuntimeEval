@@ -1,0 +1,8 @@
+iteration;feature_added;mre;n_features;features;seed
+1;initplan_count;0.48991138534425094;1;initplan_count;42
+2;subplan_count;0.17120606657453694;2;initplan_count, subplan_count;42
+3;group_key_count;0.12686971031584968;3;initplan_count, subplan_count, group_key_count;42
+4;jit_functions;0.12197320430294742;4;initplan_count, subplan_count, group_key_count, jit_functions;42
+5;Index_Only_Scan_cnt;0.10379063069584953;5;initplan_count, subplan_count, group_key_count, jit_functions, Index_Only_Scan_cnt;42
+6;workers_planned;0.08917150251096866;6;initplan_count, subplan_count, group_key_count, jit_functions, Index_Only_Scan_cnt, workers_planned;42
+7;Gather_cnt;0.08423342370551273;7;initplan_count, subplan_count, group_key_count, jit_functions, Index_Only_Scan_cnt, workers_planned, Gather_cnt;42

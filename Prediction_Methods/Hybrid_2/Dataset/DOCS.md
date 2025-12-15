@@ -99,18 +99,6 @@ python3 01_Split_Data.py \
     --output-dir Baseline
 ```
 
-### copy_file()
-Copy source file to destination.
-
-### load_data()
-Load dataset with semicolon delimiter.
-
-### split_queries_by_template()
-Split queries stratified by template using sklearn train_test_split with seed 42.
-
-### export_split()
-Export rows belonging to specified queries to CSV.
-
 ---
 
 ### 02a_Split_Operators.py
@@ -126,15 +114,6 @@ Export rows belonging to specified queries to CSV.
 python3 02a_Split_Operators.py Baseline/Training_Training.csv --output-dir Operators/Training_Training
 python3 02a_Split_Operators.py Baseline/Training.csv --output-dir Operators/Training_Full
 ```
-
-### load_data()
-Load operator dataset with semicolon delimiter.
-
-### get_unique_operators()
-Get set of unique operator types from dataset.
-
-### export_operator_data()
-Export rows for single operator type to dedicated folder.
 
 ---
 
@@ -159,33 +138,6 @@ python3 02b_Extract_Patterns.py Baseline/Training_Training.csv \
     --output-dir Patterns/Training_Training
 ```
 
-### load_and_filter_data()
-Load training data and filter to main plan (exclude subplans).
-
-### load_pattern_info()
-Load pattern definitions from mining CSV into dictionary.
-
-### extract_all_pattern_occurrences()
-For each query build tree, compute hashes, match against known patterns.
-
-### build_tree_from_dataframe()
-Build QueryNode tree structure from flat DataFrame.
-
-### extract_all_nodes()
-Extract all nodes from tree recursively into list.
-
-### has_children_at_length()
-Check if node has children at target pattern length.
-
-### compute_pattern_hash_at_length()
-Compute structural MD5 hash for pattern at specific depth.
-
-### extract_pattern_node_ids()
-Extract node IDs of all nodes in pattern up to specified length.
-
-### export_pattern_datasets()
-Export pattern datasets to separate directories.
-
 ---
 
 ### 03_Aggregate_Patterns.py
@@ -203,21 +155,6 @@ Export pattern datasets to separate directories.
 python3 03_Aggregate_Patterns.py ../Data_Generation/Training_Full/csv/01_patterns.csv Patterns/Training_Full
 python3 03_Aggregate_Patterns.py ../Data_Generation/Training_Training/csv/01_patterns.csv Patterns/Training_Training
 ```
-
-### load_pattern_data()
-Load pattern definitions from Data_Generation output.
-
-### build_tree_from_query()
-Build tree structure from flat DataFrame for single query chunk.
-
-### clean_node_type()
-Remove spaces from node type for column naming.
-
-### aggregate_subtree()
-Aggregate subtree into single row with hierarchical prefixes.
-
-### process_pattern_folder()
-Process single pattern folder: load, chunk, aggregate, export.
 
 ---
 
@@ -237,27 +174,6 @@ python3 04_Clean_Patterns.py Patterns/Training_Full
 python3 04_Clean_Patterns.py Patterns/Training_Training
 ```
 
-### get_pattern_folders()
-Get all pattern subdirectories.
-
-### process_all_patterns()
-Iterate over all pattern folders and clean each.
-
-### load_aggregated_data()
-Load aggregated training data from CSV.
-
-### identify_parent_prefix()
-Identify parent operator prefix from column names.
-
-### identify_columns_to_remove()
-Identify columns to remove (actual timing of children, parent's child features).
-
-### remove_columns()
-Remove specified columns from dataframe.
-
-### export_cleaned_data()
-Save cleaned dataset to pattern folder.
-
 ---
 
 ### A_01c_Verify_Split.py
@@ -274,18 +190,6 @@ Save cleaned dataset to pattern folder.
 ```
 python3 A_01c_Verify_Split.py Baseline --output-dir Verification
 ```
-
-### load_data()
-Load dataset with semicolon delimiter.
-
-### count_queries_per_template()
-Count unique queries per template using groupby.
-
-### build_comparison()
-Build comparison dataframe for two splits showing counts per template.
-
-### export_results()
-Export results to CSV with semicolon delimiter.
 
 ---
 

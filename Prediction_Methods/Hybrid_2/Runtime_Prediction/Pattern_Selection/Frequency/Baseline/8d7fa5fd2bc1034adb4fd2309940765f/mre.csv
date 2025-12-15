@@ -1,0 +1,2 @@
+pattern_hash;pattern_string;mre;mre_pct;status
+8d7fa5fd2bc1034adb4fd2309940765f;Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)] (Outer);0.04758447292454991;4.758447292454991;REJECTED

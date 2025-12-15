@@ -1,0 +1,15 @@
+iteration;feature_added;mre;n_features;features
+1;np;0.22495550388314628;1;np
+2;nt;0.22495550388314628;2;np, nt
+3;nt1;0.22495550388314628;3;np, nt, nt1
+4;nt2;0.22495550388314628;4;np, nt, nt1, nt2
+5;sel;0.22495550388314628;5;np, nt, nt1, nt2, sel
+6;startup_cost;0.22495550388314628;6;np, nt, nt1, nt2, sel, startup_cost
+7;total_cost;0.22495550388314628;7;np, nt, nt1, nt2, sel, startup_cost, total_cost
+8;plan_width;0.22495550388314628;8;np, nt, nt1, nt2, sel, startup_cost, total_cost, plan_width
+9;reltuples;0.22495550388314628;9;np, nt, nt1, nt2, sel, startup_cost, total_cost, plan_width, reltuples
+10;parallel_workers;0.22495550388314628;10;np, nt, nt1, nt2, sel, startup_cost, total_cost, plan_width, reltuples, parallel_workers
+11;st1;0.22495550388314628;11;np, nt, nt1, nt2, sel, startup_cost, total_cost, plan_width, reltuples, parallel_workers, st1
+12;rt1;0.22495550388314628;12;np, nt, nt1, nt2, sel, startup_cost, total_cost, plan_width, reltuples, parallel_workers, st1, rt1
+13;st2;0.22495550388314628;13;np, nt, nt1, nt2, sel, startup_cost, total_cost, plan_width, reltuples, parallel_workers, st1, rt1, st2
+14;rt2;0.22495550388314628;14;np, nt, nt1, nt2, sel, startup_cost, total_cost, plan_width, reltuples, parallel_workers, st1, rt1, st2, rt2
