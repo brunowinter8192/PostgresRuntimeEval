@@ -29,7 +29,33 @@
 
 ## 4. CRITICAL STANDARDS
 
-**Documentation First:** When working on any directory or file, FIRST read the corresponding DOCS.md to understand context, inputs, outputs, and implementation details.
+**Documentation First (MANDATORY):**
+
+BEFORE any action in a directory (running scripts, editing files, exploring code):
+1. STOP
+2. READ the DOCS.md in that directory
+3. ONLY THEN proceed
+
+This is NON-NEGOTIABLE. The user has invested significant effort into documentation.
+Skipping DOCS.md leads to: wrong paths, wrong arguments, wrong understanding.
+
+Example: User says "run prediction for approach_2"
+- WRONG: Immediately try to run commands
+- RIGHT: First read `Runtime_Prediction/DOCS.md` and `03_Predict_Queries/DOCS.md`
+
+**Commit Policy:** Commit nach jeder abgeschlossenen logischen Einheit:
+- Bug-Fix abgeschlossen → Commit
+- Feature implementiert → Commit
+- Docs aktualisiert → Commit
+- NICHT nach jedem kleinen Edit (sammeln bis logische Einheit fertig)
+
+**Commit-Message Format:**
+```
+<Scope>: <Kurzbeschreibung>
+
+- Detail 1
+- Detail 2
+```
 
 - NO comments inside function bodies (only function header comments + section markers)
 - NO test files in root (ONLY in debug/ folder when requested)

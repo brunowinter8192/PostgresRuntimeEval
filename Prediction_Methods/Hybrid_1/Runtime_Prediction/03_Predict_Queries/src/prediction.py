@@ -161,14 +161,19 @@ def is_passthrough_node(node: QueryNode) -> bool:
     return node.node_type in PASSTHROUGH_OPERATORS
 
 
-# Predict using passthrough (copy child prediction)
+# Predict using passthrough (copy max child prediction)
 def predict_passthrough(node: QueryNode, prediction_cache: dict) -> dict:
+    max_exec = 0.0
+    max_start = 0.0
+
     for child in node.children:
         if child.node_id in prediction_cache:
             pred = prediction_cache[child.node_id]
-            return {'start': pred['start'], 'exec': pred['exec']}
+            if pred['exec'] > max_exec:
+                max_exec = pred['exec']
+                max_start = pred['start']
 
-    return {'start': 0.0, 'exec': 0.0}
+    return {'start': max_start, 'exec': max_exec}
 
 
 # Predict using pattern model
