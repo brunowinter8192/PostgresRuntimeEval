@@ -34,11 +34,19 @@ Datasets/
     └── Verification/approach_X/csv/    # Verification results per approach
 ```
 
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Datasets/`
+
+```bash
+cd /path/to/Hybrid_1/Datasets
+```
+
 ## Shared Infrastructure
 
 **Constants from mapping_config.py:**
 - `LEAF_OPERATORS` - Leaf node types (SeqScan, IndexScan, IndexOnlyScan)
-- `REQUIRED_OPERATORS` - Operators for INCLUDE filter (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
+- `REQUIRED_OPERATORS` - Operators for INCLUDE filter (Hash, Hash Join, Seq Scan, Sort, Nested Loop)
 - `PASSTHROUGH_OPERATORS` - Operators for EXCLUDE filter (Incremental Sort, Gather Merge, Gather, Sort, Limit, Merge Join)
 - `CHILD_ACTUAL_SUFFIXES` - Child actual time columns to remove
 - `CHILD_TIMING_SUFFIXES` - Child st/rt columns for leaf operators

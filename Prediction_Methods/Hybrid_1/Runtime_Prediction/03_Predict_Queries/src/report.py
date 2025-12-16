@@ -22,7 +22,8 @@ def export_md_report(
     pattern_assignments: dict,
     pattern_info: dict,
     output_dir: str,
-    plan_hash: str = ''
+    plan_hash: str = '',
+    passthrough: bool = False
 ) -> None:
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
@@ -33,19 +34,19 @@ def export_md_report(
     hash_suffix = f'_{plan_hash[:8]}' if plan_hash else ''
     md_file = md_dir / f'03_{template}{hash_suffix}_{timestamp}.md'
 
-    lines = build_report_lines(query_file, df_query, predictions, steps, consumed_nodes, pattern_assignments, pattern_info)
+    lines = build_report_lines(query_file, df_query, predictions, steps, consumed_nodes, pattern_assignments, pattern_info, passthrough)
 
     with open(md_file, 'w') as f:
         f.write('\n'.join(lines))
 
 
 # Build all report lines
-def build_report_lines(query_file: str, df_query, predictions: list, steps: list, consumed_nodes: set, pattern_assignments: dict, pattern_info: dict) -> list:
+def build_report_lines(query_file: str, df_query, predictions: list, steps: list, consumed_nodes: set, pattern_assignments: dict, pattern_info: dict, passthrough: bool = False) -> list:
     lines = []
 
     lines.extend(build_header_section(query_file))
     lines.extend(build_pattern_summary_section(pattern_assignments, pattern_info))
-    lines.extend(build_tree_section(df_query, consumed_nodes, pattern_assignments))
+    lines.extend(build_tree_section(df_query, consumed_nodes, pattern_assignments, passthrough))
     lines.extend(build_chain_section(steps))
     lines.extend(build_results_section(predictions))
 
@@ -88,7 +89,7 @@ def build_pattern_summary_section(pattern_assignments: dict, pattern_info: dict)
 
 
 # Build query tree section with pattern markers
-def build_tree_section(df_query, consumed_nodes: set, pattern_assignments: dict) -> list:
+def build_tree_section(df_query, consumed_nodes: set, pattern_assignments: dict, passthrough: bool = False) -> list:
     lines = ['## Query Tree', '', '```']
 
     min_depth = df_query['depth'].min()
@@ -104,7 +105,7 @@ def build_tree_section(df_query, consumed_nodes: set, pattern_assignments: dict)
             marker = ' [PATTERN ROOT]'
         elif node_id in consumed_nodes:
             marker = ' [consumed]'
-        elif node_type in PASSTHROUGH_OPERATORS:
+        elif passthrough and node_type in PASSTHROUGH_OPERATORS:
             marker = ' [PASSTHROUGH]'
 
         suffix = ' - ROOT' if depth == min_depth else ''

@@ -15,6 +15,14 @@ Execute hybrid bottom-up prediction on test queries with multi-depth pattern mat
     └── report.py
 ```
 
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
+
+```bash
+cd /path/to/Hybrid_1/Runtime_Prediction
+```
+
 ---
 
 ## 03_Predict_Queries.py
@@ -58,7 +66,7 @@ When --passthrough flag is set, these operators copy their child's prediction if
 **Usage:**
 ```bash
 # All queries for approach_1
-python 03_Predict_Queries.py \
+python3 03_Predict_Queries/03_Predict_Queries.py \
   ../Datasets/Baseline_SVM/test.csv \
   ../Datasets/Baseline_SVM/approach_1/patterns.csv \
   Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
@@ -67,7 +75,7 @@ python 03_Predict_Queries.py \
   --output-dir Baseline_SVM/Predictions/approach_1
 
 # With passthrough enabled
-python 03_Predict_Queries.py \
+python3 03_Predict_Queries/03_Predict_Queries.py \
   ../Datasets/Baseline_SVM/test.csv \
   ../Datasets/Baseline_SVM/approach_2/patterns.csv \
   Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
