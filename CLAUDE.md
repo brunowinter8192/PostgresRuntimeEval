@@ -57,6 +57,11 @@ Example: User says "run prediction for approach_2"
 - Detail 2
 ```
 
+**Justfile:** Vor langen Bash-Commands prüfen ob ein `just` Shortcut existiert.
+- `just --list` zeigt alle verfügbaren Commands
+- Bevorzuge `just h1-predict approach_2 --passthrough` statt manuelle Pfade
+- Spart Tokens und vermeidet Pfadfehler
+
 - NO comments inside function bodies (only function header comments + section markers)
 - NO test files in root (ONLY in debug/ folder when requested)
 - NO emojis in code AND documentation
