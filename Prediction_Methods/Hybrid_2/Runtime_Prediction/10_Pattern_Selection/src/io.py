@@ -228,7 +228,7 @@ def export_selection_summary(output_dir: str, selection_log: list) -> None:
         'rejected': len([s for s in selection_log if s['status'] == 'REJECTED']),
         'skipped_no_ffs': len([s for s in selection_log if s['status'] == 'SKIPPED_NO_FFS']),
         'skipped_train_failed': len([s for s in selection_log if s['status'] == 'SKIPPED_TRAIN_FAILED']),
-        'skipped_low_template_count': len([s for s in selection_log if s['status'] == 'SKIPPED_LOW_TEMPLATE_COUNT']),
+        'skipped_low_error': len([s for s in selection_log if s['status'] == 'SKIPPED_LOW_ERROR']),
         'final_mre': selection_log[-1]['baseline_mre'] if selection_log else None
     }
     summary_df = pd.DataFrame([summary])
