@@ -378,6 +378,30 @@ python3 A_02b_Convergence_Analysis.py Pattern_Selection/Error/selection_log.csv 
 
 ---
 
+### A_02c - Pattern_Usage.py
+
+**Purpose:** Analyze how often each selected pattern was actually used for predictions.
+
+**Workflow:**
+1. Load predictions.csv
+2. Filter rows where prediction_type == 'pattern'
+3. Group by pattern_hash, count occurrences
+4. Calculate percentage of total pattern predictions
+
+**Inputs:**
+- `predictions_file`: Path to predictions.csv (from 12_Query_Prediction)
+
+**Outputs:**
+- `{output-dir}/pattern_usage.csv`
+  - Columns: pattern_hash;usage_count;percentage
+
+**Usage:**
+```
+python3 A_02c_Pattern_Usage.py Evaluation/Size/Epsilon/predictions.csv --output-dir Evaluation/Size/Epsilon
+```
+
+---
+
 ### A_03a - Feature_Frequency.py
 
 **Purpose:** Analyze feature usage frequency across FFS results.
