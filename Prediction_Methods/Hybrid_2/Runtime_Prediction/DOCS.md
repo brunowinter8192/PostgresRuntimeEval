@@ -81,13 +81,10 @@ cd /path/to/Hybrid_2/Runtime_Prediction
 |----------|---------|-----------------|-------------|------------|
 | size | Baseline | 07_patterns_by_size.csv | - | Pattern_Selection/Size/Baseline |
 | size | Epsilon | 07_patterns_by_size.csv | --epsilon 0.005 | Pattern_Selection/Size/Epsilon |
-| size | Threshold | 07_patterns_by_size.csv | --min-template-count 2 | Pattern_Selection/Size/Threshold |
 | frequency | Baseline | 07_patterns_by_frequency.csv | - | Pattern_Selection/Frequency/Baseline |
 | frequency | Epsilon | 07_patterns_by_frequency.csv | --epsilon 0.005 | Pattern_Selection/Frequency/Epsilon |
-| frequency | Threshold | 07_patterns_by_frequency.csv | --min-template-count 2 | Pattern_Selection/Frequency/Threshold |
 | error | Baseline | 08_patterns_by_error.csv | - | Pattern_Selection/Error/Baseline |
 | error | Epsilon | 08_patterns_by_error.csv | --epsilon 0.005 | Pattern_Selection/Error/Epsilon |
-| error | Threshold | 08_patterns_by_error.csv | --min-template-count 2 | Pattern_Selection/Error/Threshold |
 
 ### Variant Descriptions
 
@@ -95,7 +92,6 @@ cd /path/to/Hybrid_2/Runtime_Prediction
 |---------|------|-------------|
 | Baseline | - | Accept any improvement (delta > 0) |
 | Epsilon | --epsilon 0.005 | Require min 0.5% MRE improvement |
-| Threshold | --min-template-count 2 | Only patterns in 2+ templates |
 
 ### Output per Run
 
@@ -126,9 +122,9 @@ Runtime_Prediction/
 │   ├── 07_patterns_by_size.csv
 │   ├── 07_patterns_by_frequency.csv
 │   ├── 08_patterns_by_error.csv
-│   ├── Size/{Baseline,Epsilon,Threshold}/selected_patterns.csv
-│   ├── Frequency/{Baseline,Epsilon,Threshold}/selected_patterns.csv
-│   └── Error/{Baseline,Epsilon,Threshold}/selected_patterns.csv
+│   ├── Size/{Baseline,Epsilon}/selected_patterns.csv
+│   ├── Frequency/{Baseline,Epsilon}/selected_patterns.csv
+│   └── Error/{Baseline,Epsilon}/selected_patterns.csv
 └── Evaluation/
     ├── Operator_Training_Test/predictions.csv
     └── {Strategy}/predictions.csv
@@ -226,7 +222,6 @@ python3 06_Extract_Test_Patterns.py ../Dataset/Baseline/Training_Test.csv ../Dat
 Pattern muss in mehreren Query-Templates vorkommen um generalisierbar zu sein.
 - `template` = Query-Template (z.B. `Q1`, `Q9` - extrahiert aus query_file)
 - `unique_template_count` = Anzahl distinct templates pro pattern (max 14 in TPC-H)
-- Wird in 10_Pattern_Selection fuer --min-template-count Filter verwendet
 
 **Sorting Strategies:**
 

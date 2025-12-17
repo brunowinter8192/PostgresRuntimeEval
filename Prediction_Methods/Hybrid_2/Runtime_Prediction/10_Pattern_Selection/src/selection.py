@@ -57,7 +57,6 @@ def run_static_selection(
     pretrained_dir: str,
     min_error_threshold: float = 0.1,
     epsilon: float = 0.0,
-    min_template_count: int = 1,
     strategy: str = 'frequency',
     report: bool = False,
     max_iteration: int = None
@@ -85,20 +84,8 @@ def run_static_selection(
         pattern_string = pattern_row['pattern_string']
         pattern_length = int(pattern_row['pattern_length'])
         operator_count = int(pattern_row['operator_count'])
-        unique_template_count = int(pattern_row.get('unique_template_count', 1))
         occurrence_count = int(pattern_row.get('occurrence_count', 0))
         root_operator = pattern_string.split(' -> ')[0] if ' -> ' in pattern_string else pattern_string
-
-        if unique_template_count < min_template_count:
-            selection_log.append(create_log_entry(
-                pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_LOW_TEMPLATE_COUNT', idx
-            ))
-            if report:
-                iteration_data.append(create_iteration_entry(
-                    idx, pattern_hash, pattern_string, operator_count, occurrence_count,
-                    root_operator, 0, min_error_threshold, baseline_mre, None, None, 'SKIPPED_LOW_TEMPLATE_COUNT'
-                ))
-            continue
 
         avg_mre = calculate_pattern_avg_mre(
             pattern_hash, current_predictions, pattern_occurrences
@@ -206,7 +193,6 @@ def run_error_selection(
     output_dir: str,
     pretrained_dir: str,
     epsilon: float = 0.0,
-    min_template_count: int = 1,
     strategy: str = 'error',
     report: bool = False,
     max_iteration: int = None
@@ -221,7 +207,6 @@ def run_error_selection(
     iteration_data = []
     collision_data = []
 
-    plan_counts = error_baseline.set_index('pattern_hash')['unique_template_count'].to_dict() if 'unique_template_count' in error_baseline.columns else {}
     occurrence_counts = error_baseline.set_index('pattern_hash')['occurrence_count'].to_dict() if 'occurrence_count' in error_baseline.columns else {}
 
     current_predictions = predict_all_queries(
@@ -257,17 +242,6 @@ def run_error_selection(
         root_operator = pattern_string.split(' -> ')[0] if ' -> ' in pattern_string else pattern_string
 
         consumed_hashes.add(pattern_hash)
-
-        if plan_counts.get(pattern_hash, 1) < min_template_count:
-            selection_log.append(create_log_entry(
-                pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_LOW_TEMPLATE_COUNT', iteration
-            ))
-            if report:
-                iteration_data.append(create_iteration_entry(
-                    iteration, pattern_hash, pattern_string, operator_count, occurrence_count,
-                    root_operator, 0, 0, baseline_mre, None, None, 'SKIPPED_LOW_TEMPLATE_COUNT'
-                ))
-            continue
 
         if pattern_hash not in pattern_ffs:
             selection_log.append(create_log_entry(
@@ -548,7 +522,6 @@ def build_summary(selection_log: list, initial_mre: float, final_mre: float) -> 
     rejected = sum(1 for entry in selection_log if entry.get('status') == 'REJECTED')
     skipped_low_error = sum(1 for entry in selection_log if entry.get('status') == 'SKIPPED_LOW_ERROR')
     skipped_no_ffs = sum(1 for entry in selection_log if entry.get('status') == 'SKIPPED_NO_FFS')
-    skipped_low_template = sum(1 for entry in selection_log if entry.get('status') == 'SKIPPED_LOW_TEMPLATE_COUNT')
 
     return {
         'total': total,
@@ -556,7 +529,6 @@ def build_summary(selection_log: list, initial_mre: float, final_mre: float) -> 
         'rejected': rejected,
         'skipped_low_error': skipped_low_error,
         'skipped_no_ffs': skipped_no_ffs,
-        'skipped_low_template': skipped_low_template,
         'initial_mre': initial_mre,
         'final_mre': final_mre
     }

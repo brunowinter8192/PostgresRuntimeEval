@@ -41,7 +41,6 @@ def run_pattern_selection(
     pattern_occurrences_file: str = None,
     min_error_threshold: float = 0.1,
     epsilon: float = 0.0,
-    min_template_count: int = 1,
     report: bool = False,
     max_iteration: int = None
 ) -> None:
@@ -58,13 +57,13 @@ def run_pattern_selection(
         run_error_selection(
             sorted_patterns, pattern_occurrences, pattern_ffs, df_training, df_test,
             operator_models, operator_ffs, output_dir, pretrained_dir,
-            epsilon, min_template_count, strategy, report, max_iteration
+            epsilon, strategy, report, max_iteration
         )
     else:
         run_static_selection(
             sorted_patterns, pattern_occurrences, pattern_ffs, df_training, df_test,
             operator_models, operator_ffs, output_dir, pretrained_dir,
-            min_error_threshold, epsilon, min_template_count, strategy, report, max_iteration
+            min_error_threshold, epsilon, strategy, report, max_iteration
         )
 
 
@@ -82,7 +81,6 @@ if __name__ == '__main__':
     parser.add_argument('--pattern-occurrences-file', required=True, help='Path to 05_test_pattern_occurrences_*.csv')
     parser.add_argument('--min-error-threshold', type=float, default=0.1, help='Min avg_mre threshold for size/frequency (default: 0.1)')
     parser.add_argument('--epsilon', type=float, default=0.0, help='Min MRE improvement required for SELECTED (default: 0.0)')
-    parser.add_argument('--min-template-count', type=int, default=1, help='Min unique templates a pattern must appear in (default: 1 = disabled)')
     parser.add_argument('--report', action='store_true', help='Generate selection report markdown')
     parser.add_argument('--max-iteration', type=int, default=None, help='Max iteration to include in report (default: all)')
     args = parser.parse_args()
@@ -100,7 +98,6 @@ if __name__ == '__main__':
         args.pattern_occurrences_file,
         args.min_error_threshold,
         args.epsilon,
-        args.min_template_count,
         args.report,
         args.max_iteration
     )

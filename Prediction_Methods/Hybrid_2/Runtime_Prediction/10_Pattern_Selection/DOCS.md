@@ -50,7 +50,6 @@ cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Hybri
 - `--pretrained-dir` - Path to pretrained models (default: None)
 - `--min-error-threshold` - Min avg_mre to consider pattern (default: 0.1, size/frequency only)
 - `--epsilon` - Min MRE improvement required for SELECTED (default: 0.0)
-- `--min-template-count` - Min unique templates a pattern must appear in (default: 1 = disabled)
 
 **Usage (Static - Frequency):**
 ```bash
@@ -104,6 +103,3 @@ Combines frequency and current prediction error. After each SELECTED/REJECTED de
 
 **Min Error Threshold:**
 Patterns with avg_mre < threshold are skipped for size/frequency strategies. avg_mre is calculated dynamically based on current predictions (updated after each SELECTED pattern). Error strategy does not use this filter.
-
-**Min Template Count:**
-Patterns appearing in fewer than N unique templates are skipped. A pattern in only 1 template is unlikely to generalize. Default=1 (disabled).
