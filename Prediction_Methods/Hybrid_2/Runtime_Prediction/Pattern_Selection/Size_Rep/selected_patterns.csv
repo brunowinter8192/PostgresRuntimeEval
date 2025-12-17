@@ -1,0 +1,3 @@
+iteration;pattern_hash;pattern_string;baseline_mre;new_mre;delta;status
+0;3aab37bea1a884da206eb32f2c1ae5ba;Hash -> Seq Scan (Outer);0.2297;0.21176972582965248;0.01793027417034751;SELECTED
+1;1d35fb978b379d4a820897907e56ab7b;Sort -> Aggregate (Outer);0.21176972582965248;0.2068343055754941;0.004935420254158385;SELECTED
