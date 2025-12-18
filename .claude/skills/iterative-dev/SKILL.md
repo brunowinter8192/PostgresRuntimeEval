@@ -118,6 +118,8 @@ After report + commit:
 2. Collect additional user feedback into improvement list
 3. Ask: "Proceed to IMPROVE?"
 
+**CRITICAL:** Wait for EXPLICIT confirmation (e.g., "improve", "proceed", "yes"). User adding remarks is NOT confirmation. Only enter IMPROVE when user explicitly confirms the phase transition.
+
 User confirms → next response starts with 🛠️ IMPROVE
 
 ---

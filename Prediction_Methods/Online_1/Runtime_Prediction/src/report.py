@@ -113,7 +113,7 @@ class ReportBuilder:
         self.lines.append('')
         self.lines.append('## Phase D: Pattern Selection')
         self.lines.append('')
-        self.lines.append('| Iter | Pattern | Error Score | Delta | Status | MRE After |')
+        self.lines.append('| Iter | Pattern | Error Score | Delta | Status | Global MRE |')
         self.lines.append('|------|---------|-------------|-------|--------|-----------|')
 
     def add_selection_iteration(self, iteration, pattern_hash, candidate, delta, status, mre_after):
