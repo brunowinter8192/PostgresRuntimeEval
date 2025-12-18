@@ -150,12 +150,8 @@ Only enter when user confirms (e.g., "proceed", "close", "done").
 
 1. Update DOCS.md (if needed)
 2. Handle open items:
-   - **Session-internal items** (will be done in next iteration): Keep in plan file
-   - **Session-spanning items** (weeks/months, uncertain timeline): Migrate to Beads with `bd create`
+   - For each open item, ASK: "Soll [Item X] in Beads? (session-uebergreifend)"
+   - User confirms → `bd create --title "..." --body "..."`
+   - User declines → Keep in plan file for next iteration
    - If no open items remain: clear plan file (overwrite with single space)
 3. Ask: "New cycle or done for now?"
-
-**Beads migration example:**
-```bash
-bd create --title "Verify Paper Section 4 claims" --body "Unverified: Paper Selection, Interferenz-Fehler"
-```
