@@ -7,23 +7,17 @@ Discovers and catalogs all parent-child operator patterns from the operator data
 ```
 Data_Generation/
 ├── 01_Find_Patterns.py                   # Pattern discovery (all lengths)
-├── 02_Passthrough_Analysis.py            # Operator passthrough ratio analysis
 └── csv/                                  # [outputs]
-    ├── 01_patterns_{ts}.csv              # Pattern inventory with occurrences
-    └── 02_passthrough_analysis_{ts}.csv  # Operator passthrough ratios
+    └── 01_patterns_{ts}.csv              # Pattern inventory with occurrences
 ```
 
-**Input data (external):** `Operator_Level/Datasets/Baseline/04_training.csv`
+**Input data (external):** `Operator_Level/Datasets/Baseline/03_training.csv`
 
 ## Workflow Execution Order
 
 ```
 01 - Find_Patterns         [operator_dataset.csv -> pattern inventory CSV]
-
-02 - Passthrough_Analysis  [operator_dataset.csv -> passthrough ratios CSV]
 ```
-
-Scripts are independent. 02 is optional analysis for determining passthrough operators.
 
 ## Script Documentation
 
@@ -56,31 +50,3 @@ python 01_Find_Patterns.py operator_dataset.csv --output-dir .
 **Variables:**
 - `--output-dir` - Output directory for CSV results (required)
 
----
-
-### 02 - Passthrough_Analysis.py
-
-**Purpose:** Analyze which operators have execution time approximately equal to their children (passthrough behavior)
-
-**Workflow:**
-1. Load operator dataset
-2. Build parent-child map for each query
-3. For each parent with children: compute ratio = parent_time / max(children_time)
-4. Group by operator type, calculate mean ratio
-5. Export sorted by ratio (lowest = most passthrough)
-
-**Inputs:**
-- `input_file` - Path to operator dataset CSV (positional)
-
-**Outputs:**
-- `csv/02_passthrough_analysis_{timestamp}.csv`
-  - Columns: node_type, instance_count, mean_parent_time, mean_max_child_time, ratio_pct
-  - ratio_pct ~100% indicates passthrough behavior
-
-**Usage:**
-```bash
-python 02_Passthrough_Analysis.py operator_dataset.csv --output-dir .
-```
-
-**Variables:**
-- `--output-dir` - Output directory for CSV results (required)

@@ -48,12 +48,12 @@ def calculate_template_stats(root_ops):
         'predicted_total_time': 'mean',
         'actual_total_time': 'mean'
     }).round(4)
-    
+
     template_stats.columns = ['mean_mre', 'std_mre', 'query_count', 'mean_predicted_ms', 'mean_actual_ms']
     template_stats['mean_mre_pct'] = template_stats['mean_mre'] * 100
     template_stats = template_stats[['mean_mre_pct', 'mean_mre', 'std_mre', 'query_count', 'mean_predicted_ms', 'mean_actual_ms']]
-    template_stats = template_stats.sort_index()
-    
+    template_stats = template_stats.reindex(sorted(template_stats.index, key=lambda x: int(x[1:])))
+
     return template_stats
 
 

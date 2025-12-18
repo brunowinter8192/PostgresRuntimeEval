@@ -145,10 +145,7 @@ def extract_pattern_node_ids(node, remaining_length: int) -> list:
 # Check if pattern passes all active filters
 def passes_filter(node, require_operators: bool, no_passthrough: bool) -> bool:
     if require_operators:
-        operators = {node.node_type}
-        for child in node.children:
-            operators.add(child.node_type)
-        if not operators.intersection(REQUIRED_OPERATORS):
+        if node.node_type not in REQUIRED_OPERATORS:
             return False
 
     if no_passthrough:

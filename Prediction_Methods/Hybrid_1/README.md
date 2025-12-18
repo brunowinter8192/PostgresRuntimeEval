@@ -43,7 +43,7 @@ Hybrid_1/
 - `TARGET_TYPES` - Target variables (execution_time, start_time)
 - `NON_FEATURE_SUFFIXES` - Metadata column suffixes to exclude
 - `LEAF_OPERATORS` - Leaf node types (SeqScan, IndexScan, IndexOnlyScan)
-- `REQUIRED_OPERATORS` - Operators for INCLUDE filter (Gather, Hash, Hash Join, Nested Loop, Seq Scan)
+- `REQUIRED_OPERATORS` - Operators for INCLUDE filter (Hash, Hash Join, Seq Scan, Sort, Nested Loop)
 - `PASSTHROUGH_OPERATORS` - Operators for EXCLUDE filter (Incremental Sort, Gather Merge, Gather, Sort, Limit, Merge Join)
 - `CHILD_FEATURES_TIMING` - Child timing features (st1, rt1, st2, rt2)
 - `FFS_SEED` - Random seed for cross-validation (42)
@@ -90,6 +90,22 @@ The hybrid pattern-level prediction pipeline consists of three sequential phases
 3. **Runtime_Prediction**: Train pattern-level SVM models, perform hybrid bottom-up prediction (pattern models for matched patterns, operator models for fallback) → Produces predictions and evaluation results
 
 **Hybrid Concept:** Instead of predicting each operator individually, this approach groups parent operators with their immediate children into "patterns" (e.g., Hash_Join with Seq_Scan outer and Hash inner). Models are trained on these aggregated units. Operators not matching any pattern use fallback operator-level models trained within Hybrid_1.
+
+## Model Training Architecture
+
+**Train Once, Use Flexibly:**
+
+FFS and model training is performed ONCE for all 372 mined patterns:
+- `01_Feature_Selection.py` - FFS for all 372 patterns
+- `02_Train_Models.py` - Train models for all 372 patterns
+
+Each approach then selects a SUBSET at prediction time via `patterns_filtered.csv`:
+- approach_1: 21 patterns (length=2, required_operators)
+- approach_2: 18 patterns (length=2, no_passthrough)
+- approach_3: 72 patterns (all lengths, threshold>150)
+- approach_4: X patterns (all lengths, no_passthrough, threshold>150)
+
+This avoids redundant training and allows flexible experimentation with different pattern subsets.
 
 ## Phase Documentation
 
@@ -162,7 +178,7 @@ The hybrid pattern-level prediction pipeline consists of three sequential phases
 **Output:**
 - `SVM/Patterns/two_step_evaluation_overview.csv` - Pattern FFS results with selected features per pattern-target
 - `SVM/Operators/operator_overview.csv` - Operator FFS results with selected features per operator-target
-- `Model/Patterns/{target}/{hash}/model.pkl` - Trained pattern SVM models (381 patterns x 2 targets)
+- `Model/Patterns/{target}/{hash}/model.pkl` - Trained pattern SVM models (372 patterns x 2 targets)
 - `Model/{target}/operators/{type}/model.pkl` - Trained operator SVM models (13 operators x 2 targets)
 - `Predictions/approach_X/predictions.csv` - Hybrid predictions per approach with pattern/operator/passthrough types
 

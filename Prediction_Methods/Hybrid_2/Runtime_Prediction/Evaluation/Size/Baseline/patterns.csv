@@ -1,0 +1,12 @@
+pattern_hash;usage_count;node_types
+3aab37bea1a884da206eb32f2c1ae5ba;352;Hash
+3e2d5a00246ff56483c16003698d4917;120;Sort
+a5f39f08c510532e02e96e109e48c0cd;120;Aggregate
+c0a8d3deb0fdb169e0a08bb071cd8160;120;Hash
+c53c43965386239f53c764b9a60720dd;90;Nested Loop
+1d35fb978b379d4a820897907e56ab7b;60;Sort
+25df29b5b69835d07c0d8b72b0e46a3b;60;Limit
+715d5c92d04e9fdd3e607001ad32ee57;60;Gather Merge
+898abd491a1ae406c1e4084944df775d;30;Gather Merge
+fd858367085e17ddeebcdbba5dd3a6ac;30;Limit
+9adbbadc73f7b5b039279e7949b9e7bc;8;Hash Join

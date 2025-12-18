@@ -17,7 +17,7 @@ NON_FEATURE_SUFFIXES = [
 
 LEAF_OPERATORS = ['SeqScan', 'IndexScan', 'IndexOnlyScan']
 
-REQUIRED_OPERATORS = {'Gather', 'Hash', 'Hash Join', 'Nested Loop', 'Seq Scan'}
+REQUIRED_OPERATORS = {'Hash', 'Hash Join', 'Seq Scan', 'Sort', 'Nested Loop'}
 
 PASSTHROUGH_OPERATORS = {
     'Incremental Sort',

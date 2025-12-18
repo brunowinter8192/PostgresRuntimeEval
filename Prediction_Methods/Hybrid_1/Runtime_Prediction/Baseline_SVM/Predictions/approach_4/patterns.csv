@@ -1,8 +1,20 @@
 pattern_hash;usage_count;node_types
-2b345df91ee63631094adc0263156d31;30;Aggregate
-32b96b54863453fb4222169db9b2c217;30;Aggregate
-b8f6401f8d11f409a419f5d73efb0a23;30;Aggregate
-f4f9ccef9a701a26d0997b3b211eb66d;30;Aggregate
-ff421d0575f5d9359dccd784342f0159;30;Aggregate
-1c7aa67e01bc01b1581997d61e1e3ed2;22;Aggregate
-c65a77da93bb95c9fdc9391a204dbf6d;8;Aggregate
+f8231c4dd4c57d8a84a6ba0a53bdb42d;60;Aggregate
+c53c43965386239f53c764b9a60720dd;60;Nested Loop
+460af52cdecd0ba229546017c25fee3b;60;Aggregate
+4fc84c77ced18a46514c982f23f12deb;60;Aggregate
+a95bee4e9ae59bc7fb7a48a1a7973a31;60;Hash Join
+a5f39f08c510532e02e96e109e48c0cd;60;Aggregate
+a54055cece1adb617abae41ca3244142;30;Hash
+f4cb205adfd108034c883c87871a6da8;30;Hash Join
+b149ff282ebc2d2b2e199afbf6e167c9;30;Aggregate
+2724c08067c017e6455632f46231780c;30;Aggregate
+2873b8c3a1759afe345ffbdfc9bdcba7;30;Hash Join
+895c6e8c1a30a094329d71cef3111fbd;30;Hash Join
+7a51ce50a8f4529f944f9df797fa04b8;30;Hash Join
+53f9aa07d73657d04951f9bbdd83fef8;30;Aggregate
+422ae017fa27104671904e4f61703f9d;30;Aggregate
+3aab37bea1a884da206eb32f2c1ae5ba;30;Hash
+9d0e407c0aa5052a4246612a4a2e0ad2;30;Nested Loop
+bd9dfa7bb8f3b0473cdfb5cd4277dc3a;22;Nested Loop
+ec92bdaa27b47a2a45a6787f34350878;8;Hash Join

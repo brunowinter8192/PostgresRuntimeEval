@@ -52,7 +52,9 @@ When --passthrough flag is set, these operators copy their child's prediction if
 
 **Inputs:**
 - `test_file` - Path to baseline test.csv (positional)
-- `patterns_csv` - Path to patterns.csv with pattern_hash and pattern_length (positional)
+- `patterns_csv` - Path to patterns_filtered.csv with pattern_hash and pattern_length (positional)
+  - NOTE: Use patterns_filtered.csv for approaches with threshold filtering (approach_3/4)
+  - patterns.csv and patterns_filtered.csv are identical for approach_1/2 (threshold=0)
 - `pattern_overview` - Path to pattern FFS overview (two_step_evaluation_overview.csv) (positional)
 - `operator_overview` - Path to operator overview (operator_overview.csv) (positional)
 - `model_dir` - Path to Model directory (positional)
@@ -65,27 +67,47 @@ When --passthrough flag is set, these operators copy their child's prediction if
 
 **Usage:**
 ```bash
-# All queries for approach_1
+# All queries for approach_1 (no filtering, patterns.csv = patterns_filtered.csv)
 python3 03_Predict_Queries/03_Predict_Queries.py \
   ../Datasets/Baseline_SVM/test.csv \
-  ../Datasets/Baseline_SVM/approach_1/patterns.csv \
+  ../Datasets/Baseline_SVM/approach_1/patterns_filtered.csv \
   Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
   Baseline_SVM/SVM/Operators/operator_overview.csv \
   Baseline_SVM/Model \
   --output-dir Baseline_SVM/Predictions/approach_1
 
-# With passthrough enabled
+# With passthrough enabled (approach_2)
 python3 03_Predict_Queries/03_Predict_Queries.py \
   ../Datasets/Baseline_SVM/test.csv \
-  ../Datasets/Baseline_SVM/approach_2/patterns.csv \
+  ../Datasets/Baseline_SVM/approach_2/patterns_filtered.csv \
   Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
   Baseline_SVM/SVM/Operators/operator_overview.csv \
   Baseline_SVM/Model \
   --output-dir Baseline_SVM/Predictions/approach_2 \
   --passthrough
+
+# approach_3 with threshold filtering (72 of 372 patterns), no passthrough
+python3 03_Predict_Queries/03_Predict_Queries.py \
+  ../Datasets/Baseline_SVM/test.csv \
+  ../Datasets/Baseline_SVM/approach_3/patterns_filtered.csv \
+  Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
+  Baseline_SVM/SVM/Operators/operator_overview.csv \
+  Baseline_SVM/Model \
+  --output-dir Baseline_SVM/Predictions/approach_3
 ```
 
 **Variables:**
 - `--output-dir` - Path to output directory for predictions (required)
 - `--passthrough` - Enable passthrough for non-pattern passthrough operators (optional)
 - `--report` - Generate MD report for first query of each unique plan structure (optional)
+
+**Approach Flag Matrix:**
+
+| Approach | Extraktion (03_Extract_Patterns) | Prediction (03_Predict_Queries) |
+|----------|----------------------------------|--------------------------------|
+| 1 | `--length 2 --required-operators` | - |
+| 2 | `--length 2 --required-operators --no-passthrough` | `--passthrough` |
+| 3 | - | - |
+| 4 | `--no-passthrough` | `--passthrough` |
+
+**Rule:** `--no-passthrough` at extraction → `--passthrough` at prediction

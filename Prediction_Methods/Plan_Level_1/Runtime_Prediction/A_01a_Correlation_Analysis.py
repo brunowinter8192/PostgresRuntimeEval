@@ -16,12 +16,18 @@ from mapping_config import METADATA_COLUMNS
 # ORCHESTRATOR
 
 # Analyze feature correlations and identify highly correlated pairs
-def correlation_analysis_workflow(input_csv: Path, output_dir: Path, threshold: float) -> None:
+def correlation_analysis_workflow(input_csv: Path, output_dir: Path, threshold: float, ffs_csv: Path = None) -> None:
     df = load_dataset(input_csv)
-    feature_cols = get_feature_columns(df)
+    if ffs_csv:
+        feature_cols = load_ffs_features(ffs_csv)
+    else:
+        feature_cols = get_feature_columns(df)
     X = df[feature_cols]
     high_corr_pairs = find_high_correlations(X, threshold)
+    corr_matrix = X.corr()
     export_correlations(high_corr_pairs, output_dir)
+    if ffs_csv:
+        export_correlation_matrix(corr_matrix, output_dir)
 
 
 # FUNCTIONS
@@ -53,6 +59,14 @@ def find_high_correlations(X: pd.DataFrame, threshold: float) -> list:
     return high_corr
 
 
+# Load selected features from FFS summary CSV
+def load_ffs_features(ffs_csv: Path, seed: int = 42) -> list:
+    df = pd.read_csv(ffs_csv, delimiter=';')
+    row = df[df['seed'] == seed].iloc[0]
+    features_str = row['selected_features']
+    return [f.strip() for f in features_str.split(',')]
+
+
 # Export high correlations to CSV with semicolon delimiter
 def export_correlations(high_corr_pairs: list, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
@@ -61,11 +75,19 @@ def export_correlations(high_corr_pairs: list, output_dir: Path) -> None:
     pd.DataFrame(high_corr_pairs).to_csv(high_corr_file, sep=';', index=False)
 
 
+# Export full correlation matrix for FFS features
+def export_correlation_matrix(corr_matrix: pd.DataFrame, output_dir: Path) -> None:
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    matrix_file = output_dir / f'A_01a_ffs_correlation_matrix_{timestamp}.csv'
+    corr_matrix.to_csv(matrix_file, sep=';')
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze feature correlations")
     parser.add_argument("input_csv", help="Input CSV file with features")
     parser.add_argument("--output-dir", default=None, help="Output directory (default: script_dir/csv)")
     parser.add_argument("--threshold", type=float, default=0.95, help="Correlation threshold (default: 0.95)")
+    parser.add_argument("--ffs-csv", default=None, help="FFS summary CSV (optional, for FFS-only analysis)")
 
     args = parser.parse_args()
 
@@ -75,4 +97,5 @@ if __name__ == "__main__":
     else:
         output_path = Path(__file__).parent / 'csv'
 
-    correlation_analysis_workflow(input_path, output_path, args.threshold)
+    ffs_path = Path(args.ffs_csv) if args.ffs_csv else None
+    correlation_analysis_workflow(input_path, output_path, args.threshold, ffs_path)

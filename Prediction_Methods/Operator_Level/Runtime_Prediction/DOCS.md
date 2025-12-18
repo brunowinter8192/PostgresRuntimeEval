@@ -26,6 +26,7 @@ Runtime_Prediction/
 ├── A_01e_Plan_Variability.py          # Analyze plan variability across templates
 ├── A_01f_Query_Evaluation.py          # Query-level MRE evaluation and template bar chart
 ├── A_01g_Operator_Analysis.py         # Cross-evaluation of MRE per node type and template
+├── A_01h_Optimizer_Baseline.py        # Compare ML predictions vs optimizer cost baseline
 ├── ffs_config.py                      # FFS-specific configuration (seed, params, features)
 ├── DOCS.md                            # This file
 ├── md/                                # MD reports for single query predictions
@@ -48,7 +49,10 @@ Runtime_Prediction/
 │       ├── A_01f_template_mre.csv
 │       ├── A_01f_template_mre_plot.png
 │       ├── A_01g_mre_total_pct_*.csv
-│       └── A_01g_mre_startup_pct_*.csv
+│       ├── A_01g_mre_startup_pct_*.csv
+│       ├── A_01h_optimizer_baseline_overall.csv
+│       ├── A_01h_optimizer_baseline_template.csv
+│       └── A_01h_optimizer_baseline_plot.png
 └── All_Templates_SVM/                 # All-templates dataset results (same structure)
 ```
 
@@ -134,6 +138,7 @@ predictions.csv
 - `A_01e_Plan_Variability.py` - Analyze plan variability across templates
 - `A_01f_Query_Evaluation.py` - Query-level MRE evaluation and template bar chart
 - `A_01g_Operator_Analysis.py` - Cross-evaluation of MRE per node type and template
+- `A_01h_Optimizer_Baseline.py` - Compare ML predictions vs optimizer cost baseline
 
 ---
 
@@ -455,6 +460,43 @@ python3 A_01g_Operator_Analysis.py <predictions_csv> --output-dir <output_dir>
 **Example**:
 ```bash
 python3 A_01g_Operator_Analysis.py \
+    ./Baseline_SVM/predictions.csv \
+    --output-dir ./Baseline_SVM
+```
+
+---
+
+### A_01h - A_01h_Optimizer_Baseline.py
+
+**Purpose**: Compare ML predictions against optimizer cost baseline (Linear Regression on total_cost).
+
+**Workflow**:
+1. Train Linear Regression on root operator total_cost from training set
+2. Predict test set root operators using trained model
+3. Compare MRE: ML Bottom-Up vs Optimizer LinReg
+4. Export per-template and overall comparison
+
+**Inputs**:
+- `train_csv` - Training dataset CSV (with total_cost column)
+- `test_csv` - Test dataset CSV (with total_cost column)
+- `predictions_csv` - ML predictions CSV
+- `--output-dir` - Output directory for evaluation results
+
+**Outputs**:
+- `Evaluation/A_01h_optimizer_baseline_overall.csv` - Overall MRE comparison
+- `Evaluation/A_01h_optimizer_baseline_template.csv` - Per-template MRE comparison
+- `Evaluation/A_01h_optimizer_baseline_plot.png` - Bar chart visualization
+
+**Usage**:
+```bash
+python3 A_01h_Optimizer_Baseline.py <train_csv> <test_csv> <predictions_csv> --output-dir <output_dir>
+```
+
+**Example**:
+```bash
+python3 A_01h_Optimizer_Baseline.py \
+    ../Datasets/Baseline/03_training.csv \
+    ../Datasets/Baseline/03_test.csv \
     ./Baseline_SVM/predictions.csv \
     --output-dir ./Baseline_SVM
 ```

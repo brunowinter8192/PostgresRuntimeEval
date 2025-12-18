@@ -17,12 +17,19 @@ Follow all native Plan Mode rules.
 ## Cycle
 
 ```
-PLAN -> ExitPlanMode -> IMPLEMENT -> PLAN (new cycle)
+PLAN (Plan Mode) -> IMPLEMENT -> EVALUATE -> IMPROVE -> CLOSING -> PLAN (new cycle)
 ```
+
+**Note:** Only PLAN uses Claude Code's native Plan Mode system prompt. EVALUATE, IMPROVE and CLOSING are skill-internal phases that happen after IMPLEMENT, regardless of system mode.
+
+**Phase Detection:** System message contains "Plan mode is active" → PLAN phase is active. This is the trigger to return to PLAN from any other phase.
 
 Every response starts with phase indicator:
 - `📋 PLAN` - Planning phase (Plan Mode active)
 - `🔨 IMPLEMENT` - Implementation phase
+- `🔍 EVALUATE` - Report phase (not Plan Mode)
+- `🛠️ IMPROVE` - Improvements phase (not Plan Mode)
+- `✅ CLOSING` - Cycle completion (not Plan Mode)
 
 ---
 
@@ -43,12 +50,9 @@ Every response starts with phase indicator:
 
 ### Plan File Management
 
-**Core Principle:** Build the plan iteratively.
+**Core Principle:** Build the plan iteratively. New plan ALWAYS overwrites old plan.
 
-```
-update -> update -> update -> implement -> clear
-```
-
+- **CRITICAL:** When starting a new plan, OVERWRITE the old plan file completely
 - After each chat exchange: UPDATE the plan file
 - Never write the complete plan at once
 - Plan grows organically through conversation
@@ -68,32 +72,77 @@ If the planning session requires module execution to refine the plan:
 
 ---
 
-## Question Tracking
+## Implementation Phase (IMPLEMENT)
 
-Second file alongside plan file: `questions/questions.md` in project root.
+### After IMPLEMENTATION
 
-**Purpose:** Knowledge base for future sessions - "did we discuss this before?"
+**Principle:** One phase per response. Never combine IMPLEMENT and EVALUATE in same response.
 
-**Workflow:**
-1. User asks a question during planning
-2. Claude explains/answers
-3. Claude asks: "Add to questions.md?"
-4. If yes: append Q + A to `questions/questions.md`
+1. Verify all plan items were executed
+2. **If open points remain:** Inform user: "Open items: [list]"
+3. Ask: "Continue implementing or proceed to EVALUATE?"
 
-**Format:** Question + Answer
-
-**Exception:** This file CAN be written during Plan Mode (unlike other files).
+User confirms → next response starts with 🔍 EVALUATE
 
 ---
 
-## Implementation Phase (IMPLEMENT)
+## Evaluation Phase (EVALUATE)
 
-### After Each Step
+**Purpose:** Evaluate the PLAN→IMPLEMENT iteration (the process), NOT the content.
 
-Ask: "Continue implementing or back to PLAN?"
+**CRITICAL: NO EDITS IN EVALUATE.** Only collect and report. All edits happen in IMPROVE.
 
-### After IMPLEMENTATION
-**CRITICAL**
-1. Verify all plan items were executed
-2. If open points remain: inform user, do NOT override them
-3. If complete: clear plan file (override with single space), CLEAR OFF ALL WELL EXECUTED TASKS IN THE PLAN FILE AFTER EXECUTION
+**NO:**
+- Summarizing what was implemented
+- Making edits or fixes (that's IMPROVE)
+
+**YES:**
+- How was the Plan Phase, did user and you were on the same page, were the user precise, did you ask questions
+- How was the execution, were there flaws in the execution, misexecuted commands, unclear plan file
+
+
+Claude writes a report covering:
+
+- **Execution:** What matched the plan, what deviated
+- **Process:** What could have been planned better
+- **Documentation:** Does DOCS.md need updating? (new scripts, changed behavior, new parameters)
+- **Improvements:** What can be improved? With reasoning. ONLY LIST, do NOT implement yet.
+  - Critical: Must fix (breaks functionality, wrong behavior)
+  - Important: Should fix (code quality, maintainability)
+  - Optional: Nice to have (style, minor optimizations)
+
+**COMMIT (CRITICAL):** After the report, check: Were edits made during IMPLEMENT? → Commit immediately.
+
+After report + commit:
+1. Ask: "Any remarks?"
+2. Collect additional user feedback into improvement list
+3. Ask: "Proceed to IMPROVE?"
+
+User confirms → next response starts with 🛠️ IMPROVE
+
+---
+
+## Improve Phase (IMPROVE)
+
+**Purpose:** Implement improvements identified in EVALUATE.
+
+**CRITICAL:** This is where edits happen, NOT in EVALUATE.
+
+1. Review improvement list from EVALUATE (including user feedback)
+2. Implement each improvement
+3. Ask: "Proceed to CLOSING?"
+
+User confirms → next response starts with ✅ CLOSING
+
+---
+
+## Closing Phase (CLOSING)
+
+Only enter when user confirms (e.g., "proceed", "close", "done").
+
+1. Update DOCS.md (if needed)
+2. Update plan file:
+   - Remove completed items
+   - **KEEP open items for next iteration** (deferred tasks, unverified claims, follow-up work)
+   - If no open items remain: clear file (overwrite with single space)
+3. Ask: "New cycle or done for now?"

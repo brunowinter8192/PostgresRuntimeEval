@@ -4,10 +4,6 @@
 
 **Research Domain:** ML-based runtime prediction for SQL queries
 **Benchmark:** TPC-H queries on PostgreSQL
-**Methodology:** Exploration and evaluation of various ML approaches
-**Pipeline:** Dataset → Feature Selection → Model Training → Prediction → Evaluation
-
-**Critical Constraint:** Large, mature codebase requiring focused, session-based navigation with strict context management.
 
 ---
 
@@ -43,24 +39,25 @@ Example: User says "run prediction for approach_2"
 - WRONG: Immediately try to run commands
 - RIGHT: First read `Runtime_Prediction/DOCS.md` and `03_Predict_Queries/DOCS.md`
 
-**Commit Policy:** Commit nach jeder abgeschlossenen logischen Einheit:
-- Bug-Fix abgeschlossen → Commit
-- Feature implementiert → Commit
-- Docs aktualisiert → Commit
-- NICHT nach jedem kleinen Edit (sammeln bis logische Einheit fertig)
+**Commit Policy:** Commit after each completed logical unit:
+- Bug fix completed → Commit
+- Feature implemented → Commit
+- Docs updated → Commit
+- NOT after every small edit (collect until logical unit is complete)
 
 **Commit-Message Format:**
 ```
-<Scope>: <Kurzbeschreibung>
+<Scope>: <Short description>
 
 - Detail 1
 - Detail 2
 ```
 
-**Justfile:** Vor langen Bash-Commands prüfen ob ein `just` Shortcut existiert.
-- `just --list` zeigt alle verfügbaren Commands
-- Bevorzuge `just h1-predict approach_2 --passthrough` statt manuelle Pfade
-- Spart Tokens und vermeidet Pfadfehler
+**Justfile:** Before long bash commands, check if a `just` shortcut exists.
+- `just --list` to check - do NOT read the entire justfile
+- `just --show <recipe>` for details on a specific recipe
+- Prefer `just h1-predict approach_2 --passthrough` over manual paths
+- Saves tokens and avoids path errors
 
 - NO comments inside function bodies (only function header comments + section markers)
 - NO test files in root (ONLY in debug/ folder when requested)
@@ -85,6 +82,38 @@ Example: User says "run prediction for approach_2"
 
 ## 5. THESIS-SPECIFIC RULES
 
+### Paper Reference Rule
+
+**CRITICAL:** When the user mentions the paper or asks for comparison with the paper:
+1. STOP
+2. Ask: "Ich kenne diese Section nicht. Soll ich erst das Paper lesen bevor wir weiterreden?"
+3. Read `Misc/Learning-based_Query_Performance_Modeling_and_Pred.md` if confirmed
+4. ONLY THEN make claims about what the paper does or doesn't do
+
+**Why:** Making assumptions about paper content leads to wrong comparisons and wasted corrections.
+
+---
+
+### Formatting: Bullet Lists over Tables
+
+**CRITICAL:** In documentation and thesis text, prefer bullet lists over markdown tables.
+
+**Rationale:** Tables often have formatting/alignment issues in different viewers.
+
+**Example:**
+```markdown
+WRONG:
+| Strategy | MRE |
+|----------|-----|
+| Size | 3.15% |
+
+RIGHT:
+- **Size:** 3.15%
+- **Frequency:** 3.15%
+```
+
+---
+
 ### CSV Files
 
 **CRITICAL:** ALL CSV files MUST use semicolon `;` as delimiter, never comma
@@ -103,7 +132,7 @@ Example: User says "run prediction for approach_2"
 ### Script Output Rules
 
 **Output ONLY:** .md or .csv exports
-**Export location:** Flexibler `--output-dir` Parameter - User entscheidet wo Output landet
+**Export location:** Flexible `--output-dir` parameter - user decides where output goes
 **Script behavior:** Completely silent - no prints, no logging, no verbose output
 
 ---

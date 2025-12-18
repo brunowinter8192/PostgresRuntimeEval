@@ -52,23 +52,32 @@ Runtime_Prediction/
 
 ## Workflow Execution Order
 
+**EINMAL (shared across all approaches):**
 ```
-01  - Feature_Selection           [Pattern datasets → SVM/ FFS results]
-01b - Feature_Selection_Operators [Operator datasets → SVM/operators/ FFS results]
+01  - Feature_Selection           [All pattern datasets → SVM/FFS results]
+01b - Feature_Selection_Operators [Operator datasets → SVM/operators/FFS results]
      ↓
-02  - Train_Models                [Pattern overview → Model/{pattern}/model.pkl]
-02b - Train_Models_Operators      [Operator overview → Model/operators/{type}/model.pkl]
-     ↓
-03  - Predict_Queries             [Test data + All models → predictions.csv]
+02  - Train_Models                [Pattern overview → Model/Patterns/{hash}/model.pkl]
+02b - Train_Models_Operators      [Operator overview → Model/Operators/{type}/model.pkl]
+```
+
+**PRO APPROACH:**
+```
+03  - Predict_Queries --approach X   [Test + Models → Predictions/approach_X/]
 ```
 
 ## Analysis Scripts
 
+**PRO APPROACH (run after 03):**
 ```
-A_01a - Evaluate_Predictions  [predictions.csv → MRE metrics, optional baseline comparison]
+A_01a - Evaluate_Predictions  [Predictions/approach_X/ → Evaluation/approach_X/]
+A_01d - Depth_Propagation     [Predictions/approach_X/ → Evaluation/approach_X/Propagation/]
+```
+
+**EINMAL (general analysis):**
+```
 A_01b - Node_Evaluation       [predictions.csv → Node type analysis by source]
 A_01c - Time_Analysis         [operator_dataset.csv → Operator range statistics]
-A_01d - Depth_Propagation     [predictions.csv → Depth propagation plots per plan]
 ```
 
 ## Script Documentation

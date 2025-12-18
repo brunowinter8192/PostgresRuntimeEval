@@ -16,6 +16,7 @@ Misc/
     Generated_Queries/                                       [documented below]
     Cache_Validation/                                        [documented below]
     FFS_Comparison/                                          [documented below]
+    Pass_Through/                                            [documented below]
     Konzepte/
     specification/
 ```
@@ -176,3 +177,47 @@ python3 01_Compare_Nu.py
 |--------|---------------------|
 | Plan_Level | nu=0.65 is better |
 | Operator_Level | nu=0.5 is better |
+
+---
+
+## Pass_Through
+
+Analysis tool for identifying pass-through operators (operators whose execution time equals their children's time).
+
+### Directory Structure
+
+```
+Pass_Through/
+    02_Passthrough_Analysis.py
+    csv/
+        02_passthrough_analysis_{ts}.csv
+```
+
+### 02 - Passthrough_Analysis.py
+
+**Purpose:** Analyze which operators have execution time approximately equal to their children (passthrough behavior).
+
+**Inputs:**
+- `input_file` (positional): Path to operator dataset CSV
+- `--output-dir` (required): Output directory for CSV results
+
+**Outputs:**
+- `csv/02_passthrough_analysis_{timestamp}.csv`
+  - Columns: node_type, instance_count, mean_parent_time, mean_max_child_time, ratio_pct
+  - ratio_pct ~100% indicates passthrough behavior
+
+**Usage:**
+```bash
+cd Misc/Pass_Through
+python3 02_Passthrough_Analysis.py \
+  ../../Prediction_Methods/Operator_Level/Datasets/Baseline/03_training.csv \
+  --output-dir .
+```
+
+**Interpretation:**
+
+| ratio_pct | Meaning |
+|-----------|---------|
+| ~100% | Pure passthrough - operator adds no time |
+| 100-105% | Near passthrough - minimal own computation |
+| >110% | Computing operator - significant own work |

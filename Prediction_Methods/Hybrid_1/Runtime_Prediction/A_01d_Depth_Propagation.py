@@ -63,6 +63,13 @@ def get_unique_plan_hashes(df):
     return df.groupby(['template', 'plan_hash']).first().reset_index()[['plan_hash', 'template']].values.tolist()
 
 
+# Build operator label with prediction type prefix
+def build_operator_label(node_type, prediction_type):
+    if prediction_type == 'pattern':
+        return f'P_{node_type}'
+    return node_type
+
+
 # Create depth propagation plot for each plan hash
 def create_depth_plots(df, plan_hashes, output_dir):
     output_path = Path(output_dir)
@@ -70,43 +77,40 @@ def create_depth_plots(df, plan_hashes, output_dir):
 
     for plan_hash, template in plan_hashes:
         plan_df = df[(df['plan_hash'] == plan_hash) & (df['template'] == template)].copy()
+        sample_query = plan_df['query_file'].iloc[0]
+        query_ops = plan_df[plan_df['query_file'] == sample_query].copy()
+        query_ops = sort_tree_order(query_ops)
 
-        depth_stats = plan_df.groupby('depth').agg({
-            'actual_total_time': 'mean',
-            'predicted_total_time': 'mean'
-        }).reset_index()
+        fig, ax = plt.subplots(figsize=(14, 7))
 
-        unique_depths = sorted(depth_stats['depth'].unique(), reverse=True)
-        depth_to_x = {d: i for i, d in enumerate(unique_depths)}
+        x_positions = range(len(query_ops))
+        actual_values = query_ops['actual_total_time'].values
+        predicted_values = query_ops['predicted_total_time'].values
 
-        depth_stats['x'] = depth_stats['depth'].map(depth_to_x)
-        depth_stats = depth_stats.sort_values('x')
-
-        fig, ax = plt.subplots(figsize=(12, 7))
-
-        ax.plot(depth_stats['x'], depth_stats['actual_total_time'],
+        ax.plot(x_positions, actual_values,
                 color='tab:orange', marker='o', markersize=8, linewidth=2,
                 alpha=0.7, label='Actual', zorder=3)
 
-        ax.plot(depth_stats['x'], depth_stats['predicted_total_time'],
+        ax.plot(x_positions, predicted_values,
                 color='tab:blue', marker='s', markersize=8, linewidth=2,
                 alpha=0.7, label='Predicted', zorder=3)
 
         texts = []
-        for _, row in depth_stats.iterrows():
-            x = row['x']
+        for i, (_, row) in enumerate(query_ops.iterrows()):
             act = row['actual_total_time']
             pred = row['predicted_total_time']
-            texts.append(ax.text(x, act, f'A: {act:.2f}', fontsize=8, ha='center'))
-            texts.append(ax.text(x, pred, f'P: {pred:.2f}', fontsize=8, ha='center'))
+            texts.append(ax.text(i, act, f'{act:.1f}', fontsize=7, ha='center'))
+            texts.append(ax.text(i, pred, f'{pred:.1f}', fontsize=7, ha='center'))
 
         adjust_text(texts, ax=ax, arrowprops=dict(arrowstyle='-', color='gray', alpha=0.5))
 
-        ax.set_xticks(range(len(unique_depths)))
-        ax.set_xticklabels([f'd{d}' for d in unique_depths])
-        ax.set_xlabel('Depth (Leaf -> Root)')
+        labels = [f"{build_operator_label(row['node_type'], row['prediction_type'])}\n(d{row['depth']})"
+                  for _, row in query_ops.iterrows()]
+        ax.set_xticks(x_positions)
+        ax.set_xticklabels(labels, rotation=45, ha='right', fontsize=8)
+        ax.set_xlabel('Operator (Leaf -> Root)')
         ax.set_ylabel('Total Time (ms)')
-        ax.set_title(f'{template} - Depth Propagation (plan: {plan_hash[:8]})')
+        ax.set_title(f'{template} - Prediction Chain (plan: {plan_hash[:8]})')
         ax.legend()
         ax.grid(True, alpha=0.3)
 
@@ -115,6 +119,19 @@ def create_depth_plots(df, plan_hashes, output_dir):
         output_file = output_path / f'A_01d_depth_{template}_{plan_hash[:8]}.png'
         plt.savefig(output_file, dpi=150)
         plt.close()
+
+
+# Sort operators in tree traversal order (highest depth left, root right, Outer before Inner)
+def sort_tree_order(query_ops):
+    query_ops = query_ops[
+        (query_ops['actual_total_time'] > 0.0001) | (query_ops['predicted_total_time'] > 0.0001)
+    ].copy()
+    relationship_order = {'Outer': 0, 'Inner': 1, '': 2}
+    query_ops['rel_order'] = query_ops['parent_relationship'].map(
+        lambda x: relationship_order.get(x, 2) if pd.notna(x) else 2
+    )
+    query_ops = query_ops.sort_values(['depth', 'rel_order'], ascending=[False, True])
+    return query_ops.drop(columns=['rel_order'])
 
 
 if __name__ == '__main__':

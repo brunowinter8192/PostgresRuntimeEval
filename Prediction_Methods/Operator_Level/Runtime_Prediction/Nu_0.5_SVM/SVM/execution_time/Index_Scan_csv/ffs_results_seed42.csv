@@ -1,6 +1,0 @@
-iteration;feature_added;mre;n_features;features
-1;reltuples;0.9695161773170076;1;reltuples
-2;plan_width;0.8133356863594672;2;reltuples, plan_width
-3;nt1;0.4363212481316115;3;reltuples, plan_width, nt1
-4;startup_cost;0.42078393530314095;4;reltuples, plan_width, nt1, startup_cost
-5;nt2;0.41272751592288126;5;reltuples, plan_width, nt1, startup_cost, nt2

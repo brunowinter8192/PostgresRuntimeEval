@@ -59,6 +59,7 @@ def run_pattern_selection(
             selection_log.append(_create_selection_log_entry(
                 iteration, pattern_hash, candidate, None, None, 'SKIPPED_LOW_ERROR', baseline_mre
             ))
+            report.add_selection_iteration(iteration, pattern_hash, candidate, None, 'SKIPPED_LOW_ERROR', baseline_mre)
             iteration += 1
             continue
 
@@ -70,6 +71,7 @@ def run_pattern_selection(
             selection_log.append(_create_selection_log_entry(
                 iteration, pattern_hash, candidate, None, None, 'SKIPPED_TRAIN_FAILED', baseline_mre
             ))
+            report.add_selection_iteration(iteration, pattern_hash, candidate, None, 'SKIPPED_TRAIN_FAILED', baseline_mre)
             iteration += 1
             continue
 
