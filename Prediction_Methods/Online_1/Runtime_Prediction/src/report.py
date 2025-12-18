@@ -103,13 +103,18 @@ class ReportBuilder:
         self.lines.append('')
         self.lines.append(f'- Total Patterns: {len(patterns)}')
         self.lines.append('')
-        self.lines.append('| Hash | Pattern String | Length | Occurrences | Error Score |')
-        self.lines.append('|------|----------------|--------|-------------|-------------|')
+        self.lines.append('| Hash | Pattern String | Length | Occ | Avg MRE | Error Score |')
+        self.lines.append('|------|----------------|--------|-----|---------|-------------|')
 
-        for r in ranking[:10]:
+        for r in ranking:
             pattern_str = r['pattern_string'][:40] + '...' if len(r['pattern_string']) > 40 else r['pattern_string']
-            self.lines.append(f'| {r["pattern_hash"][:8]} | {pattern_str} | {r["pattern_length"]} | {r["occurrence_count"]} | {r["error_score"]:.4f} |')
+            self.lines.append(f'| {r["pattern_hash"][:8]} | {pattern_str} | {r["pattern_length"]} | {r["occurrence_count"]} | {r["avg_mre"]*100:.1f}% | {r["error_score"]:.4f} |')
 
+        self.lines.append('')
+        self.lines.append('**Legend:**')
+        self.lines.append('- **Occ:** Pattern occurrences in Training_Test')
+        self.lines.append('- **Avg MRE:** Average MRE of operator predictions at pattern root nodes')
+        self.lines.append('- **Error Score:** Occ x Avg MRE (initial ranking metric)')
         self.lines.append('')
         self.lines.append('## Phase D: Pattern Selection')
         self.lines.append('')
@@ -121,6 +126,11 @@ class ReportBuilder:
         self.lines.append(f'| {iteration} | {pattern_hash[:8]} | {candidate["error_score"]:.4f} | {delta_str} | {status} | {mre_after*100:.2f}% |')
 
     def add_final_prediction(self, predictions, final_mre, baseline_mre):
+        self.lines.append('')
+        self.lines.append('**Legend:**')
+        self.lines.append('- **Error Score:** Score at iteration time (recalculated after each ACCEPT)')
+        self.lines.append('- **Delta:** MRE improvement if pattern is added')
+        self.lines.append('- **Global MRE:** Overall MRE on Training_Test after this iteration')
         self.lines.append('')
         self.lines.append('## Phase E: Final Prediction')
         self.lines.append('')
