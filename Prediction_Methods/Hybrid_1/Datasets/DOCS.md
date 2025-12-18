@@ -270,9 +270,9 @@ python 05_Clean_Patterns.py Baseline_SVM
 python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_1/patterns.csv --output-dir Baseline_SVM/approach_1 --threshold 0
 python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_2/patterns.csv --output-dir Baseline_SVM/approach_2 --threshold 0
 
-# Approach 3/4: threshold >120
-python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_3/patterns.csv --output-dir Baseline_SVM/approach_3 --threshold 120
-python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_4/patterns.csv --output-dir Baseline_SVM/approach_4 --threshold 120
+# Approach 3/4: threshold >150 (default)
+python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_3/patterns.csv --output-dir Baseline_SVM/approach_3
+python 06_Filter_Patterns.py ../Data_Generation/csv/01_patterns_*.csv Baseline_SVM/approach_4/patterns.csv --output-dir Baseline_SVM/approach_4
 ```
 
 **Variables:**

@@ -22,6 +22,7 @@ Runtime_Prediction/
 ├── A_01d_Template_Constancy.py          # Analysis: Feature constancy per template
 ├── A_01e_Template_Feature_Values.py     # Analysis: Constant feature values per template
 ├── A_01g_Evaluation_Plot.py             # Analysis: MRE bar plots
+├── A_01h_Runtime_Plot.py                # Analysis: Mean runtime bar plots
 ├── Baseline_SVM/                        # NuSVR outputs
 │   ├── SVM/                             # [FFS outputs]
 │   ├── Model/                           # [training outputs]
@@ -255,14 +256,23 @@ Analysis scripts are standalone tools, NOT part of the main workflow. They can b
 
 **Outputs**:
 - `A_01a_feature_correlations_{timestamp}.csv`: feature_1, feature_2, correlation
+- `A_01a_ffs_correlation_matrix_{timestamp}.csv`: Full correlation matrix (only when --ffs-csv provided)
 
 **Usage**:
 ```bash
+# All features with high correlation threshold
 python A_01a_Correlation_Analysis.py ../Datasets/Baseline/training_data.csv --threshold 0.95
+
+# Only FFS-selected features with lower threshold
+python A_01a_Correlation_Analysis.py ../Datasets/Baseline/complete_dataset.csv \
+    --ffs-csv Baseline_SVM/SVM/01_ffs_summary.csv \
+    --output-dir Baseline_SVM/Evaluation \
+    --threshold 0.5
 ```
 
 **Variables**:
 - `--threshold`: Correlation threshold (default: 0.95)
+- `--ffs-csv`: FFS summary CSV (optional, restricts analysis to FFS-selected features)
 - `--output-dir`: Output directory
 
 ---
@@ -367,6 +377,26 @@ python A_01e_Template_Feature_Values.py ../Datasets/Baseline/training_data.csv -
 **Usage**:
 ```bash
 python A_01g_Evaluation_Plot.py Baseline_SVM/SVM/03_template_summary.csv
+```
+
+**Variables**:
+- `--output-dir`: Output directory (default: Evaluation/)
+
+---
+
+### A_01h - Runtime_Plot.py
+
+**Purpose**: Create mean runtime bar plot per template (sorted ascending)
+
+**Inputs**:
+- `dataset_csv` (positional): Complete dataset CSV with runtime column
+
+**Outputs**:
+- `A_01h_template_runtime_plot.png`: Bar chart showing mean runtime per template (300 DPI, sorted low to high)
+
+**Usage**:
+```bash
+python A_01h_Runtime_Plot.py ../Datasets/Baseline/complete_dataset.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables**:

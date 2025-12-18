@@ -1,0 +1,6 @@
+metric;value
+overall_mre;0.5367
+train_samples;2280
+test_samples;570
+feature;p_tot_cost
+model;LinearRegression

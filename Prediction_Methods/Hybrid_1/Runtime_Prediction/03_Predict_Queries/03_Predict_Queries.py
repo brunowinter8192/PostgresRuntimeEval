@@ -93,7 +93,8 @@ def run_with_reports(
             reported_plans.add(plan_hash)
             export_md_report(
                 query_file, query_ops, predictions, steps,
-                consumed_nodes, pattern_assignments, pattern_info, output_dir, plan_hash
+                consumed_nodes, pattern_assignments, pattern_info, output_dir, plan_hash,
+                passthrough
             )
 
     export_predictions(all_predictions, output_dir)
