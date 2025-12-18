@@ -39,27 +39,34 @@ Multiple findings = multiple blocks. No prose between them.
 - Redundant searches (if you found the file, READ it - don't grep again)
 - Continuing when output looks broken (stop and report the issue)
 
-## ANTI-PATTERNS (Efficiency Killers)
+## BEST PRACTICES (Efficient Search)
 
-**Pfad-Blindheit:**
-- WRONG: 5x in falsche Verzeichnisse greifen
-- RIGHT: Einmal `ls -R` oder `find . -name "*.py"` für Struktur
+**Struktur zuerst:**
+- Einmal `ls -R` oder `find . -name "*.py"` fuer Ueberblick
+- Dann gezielt in bekannte Pfade navigieren
 
-**Redundanz:**
-- WRONG: Dieselbe Datei in mehreren Calls lesen
-- RIGHT: Einmal lesen, Ergebnis merken
+**Einmal lesen, merken:**
+- Jede Datei nur einmal lesen
+- Ergebnisse im Kopf behalten, nicht nochmal suchen
 
-**Side-Questing:**
-- WRONG: Feature-Listen laden wenn Selection-Logik gefragt ist
-- RIGHT: Bei der Kernfrage bleiben
+**Bei der Kernfrage bleiben:**
+- Was ist die eigentliche Frage?
+- Nur relevante Daten sammeln
 
-**Hypothesen-loses Arbeiten:**
-- WRONG: Daten sammeln ohne klare Frage
-- RIGHT: Hypothese formulieren, gezielt prüfen
+**Hypothesen-getrieben arbeiten:**
+- Erst Hypothese formulieren
+- Dann gezielt pruefen
+- Nicht planlos Daten sammeln
 
-**Config ignorieren:**
-- WRONG: Code durchsuchen während Konstanten in mapping_config.py stehen
-- RIGHT: Config-Dateien ZUERST prüfen
+**Config-Dateien zuerst:**
+- `mapping_config.py` enthaelt oft die Antwort
+- Konstanten/Thresholds dort pruefen bevor Code durchsucht wird
+
+**Effizientes Vorgehen (3-4 Reads):**
+1. Struktur erfassen (ls/find)
+2. Relevante CSV/Log lesen (Muster erkennen)
+3. Config pruefen (Konstanten/Thresholds)
+4. Fertig - nicht weitersuchen
 
 ## ALLOWED
 

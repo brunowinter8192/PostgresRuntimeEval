@@ -147,9 +147,9 @@ def calculate_ranking(
             })
 
     if strategy == 'error':
-        return sorted(ranking, key=lambda x: -x['error_score'])
+        return sorted(ranking, key=lambda x: (-x['error_score'], x['pattern_hash']))
     elif strategy == 'size':
         return sorted(ranking, key=lambda x: (x['pattern_length'], -x['occurrence_count']))
     elif strategy == 'frequency':
         return sorted(ranking, key=lambda x: (-x['occurrence_count'], x['pattern_length']))
-    return sorted(ranking, key=lambda x: -x['error_score'])
+    return sorted(ranking, key=lambda x: (-x['error_score'], x['pattern_hash']))
