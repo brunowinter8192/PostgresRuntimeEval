@@ -533,3 +533,36 @@ When a module is a directory (e.g., `10_Pattern_Selection/`):
 - `src/DOCS.md` for module-level documentation
 - Parent DOCS.md references with `[See DOCS.md]` link only
 
+---
+
+## 11. TASK MANAGEMENT HIERARCHY
+
+Three levels of task tracking, each for different time horizons:
+
+- **Beads** (`.beads/`) - Session-uebergreifend (Wochen/Monate). Persistent issues that survive across sessions.
+- **Plan-File** (`.claude/plans/`) - Innerhalb einer Session (Stunden). Current iteration plan and open items.
+- **TodoWrite** - Innerhalb einer Iteration (Minuten). Immediate task tracking during implementation.
+
+### Beads Usage
+
+**Start of session:**
+```bash
+bd ready              # Show unblocked tasks
+bd show <issue-id>    # Details of specific issue
+```
+
+**During work:**
+```bash
+bd create --title "..." --body "..."   # New issue
+bd comment <id> "progress update"      # Add progress
+bd block <id> --on <other-id>          # Mark dependency
+```
+
+**End of session:**
+```bash
+bd close <id>         # Close completed issue
+bd comment <id> "..."  # Document state for next session
+```
+
+**Issue naming:** `Thesis_Final-<id>` (e.g., `Thesis_Final-q18`)
+

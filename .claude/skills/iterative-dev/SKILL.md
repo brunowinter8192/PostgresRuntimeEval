@@ -14,6 +14,12 @@ This skill extends native Claude Code Plan Mode with:
 
 Follow all native Plan Mode rules.
 
+## Task Management Hierarchy
+
+- **Beads** (`.beads/`) - Session-uebergreifend (Wochen/Monate)
+- **Plan-File** (`.claude/plans/`) - Innerhalb einer Session (Stunden)
+- **TodoWrite** - Innerhalb einer Iteration (Minuten)
+
 ## Cycle
 
 ```
@@ -143,8 +149,13 @@ User confirms → next response starts with ✅ CLOSING
 Only enter when user confirms (e.g., "proceed", "close", "done").
 
 1. Update DOCS.md (if needed)
-2. Update plan file:
-   - Remove completed items
-   - **KEEP open items for next iteration** (deferred tasks, unverified claims, follow-up work)
-   - If no open items remain: clear file (overwrite with single space)
+2. Handle open items:
+   - **Session-internal items** (will be done in next iteration): Keep in plan file
+   - **Session-spanning items** (weeks/months, uncertain timeline): Migrate to Beads with `bd create`
+   - If no open items remain: clear plan file (overwrite with single space)
 3. Ask: "New cycle or done for now?"
+
+**Beads migration example:**
+```bash
+bd create --title "Verify Paper Section 4 claims" --body "Unverified: Paper Selection, Interferenz-Fehler"
+```
