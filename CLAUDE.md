@@ -80,6 +80,34 @@ Example: User says "run prediction for approach_2"
 
 ---
 
+## 4.5 AGENT USAGE
+
+**CRITICAL:** Für Codebase-Exploration IMMER `search-specialist-thesis` verwenden.
+
+### Workflow
+
+1. **EINMAL am Anfang:** Agent für Exploration starten
+2. **Auf Ergebnissen aufbauen:** Keine redundanten Suchen
+3. **Config zuerst:** `mapping_config.py` vor Code-Analyse
+
+### Anti-Patterns (VERBOTEN)
+
+- Pfad-Blindheit: Raten statt `ls` oder `find`
+- Redundante Suchen: Dieselbe Datei mehrfach lesen
+- Side-Questing: Vom Kernproblem abkommen
+- Zahlen ignorieren: Logs lesen ohne Muster erkennen
+
+### Effizienter Ablauf (VORBILD)
+
+1. `find .` oder `ls -R` (einmalig für Struktur)
+2. Relevante CSV/Log lesen (Muster erkennen)
+3. `mapping_config.py` prüfen (Konstanten/Thresholds)
+4. **Fertig** - nicht weitersuchen
+
+**Prinzip:** 3-4 gezielte Reads statt 20+ Trial-and-Error Calls.
+
+---
+
 ## 5. THESIS-SPECIFIC RULES
 
 ### Paper Reference Rule
@@ -565,4 +593,14 @@ bd comment <id> "..."  # Document state for next session
 ```
 
 **Issue naming:** `Thesis_Final-<id>` (e.g., `Thesis_Final-q18`)
+
+### Quick Reference
+
+```bash
+bd ready              # Find available work
+bd show <id>          # View issue details
+bd update <id> --status in_progress  # Claim work
+bd close <id>         # Complete work
+bd sync               # Sync with git
+```
 
