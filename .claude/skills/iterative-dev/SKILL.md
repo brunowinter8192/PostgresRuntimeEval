@@ -1,6 +1,6 @@
 ---
 name: iterative-dev
-description: Manages iterative workflow with plan-implement cycles. Use when user mentions "iterativer workflow".
+description: Manages iterative workflow with plan-implement cycles. Use when user mentions "iterative workflow".
 ---
 
 # Iterative Development Skill
@@ -16,9 +16,9 @@ Follow all native Plan Mode rules.
 
 ## Task Management Hierarchy
 
-- **Beads** (`.beads/`) - Session-uebergreifend (Wochen/Monate)
-- **Plan-File** (`.claude/plans/`) - Innerhalb einer Session (Stunden)
-- **TodoWrite** - Innerhalb einer Iteration (Minuten)
+- **Beads** (`.beads/`) - Cross-session (weeks/months)
+- **Plan-File** (`.claude/plans/`) - Within a session (hours)
+- **TodoWrite** - Within an iteration (minutes)
 
 ## Cycle
 
@@ -39,6 +39,23 @@ Every response starts with phase indicator:
 
 ---
 
+## Activation Gate (CRITICAL)
+
+On skill activation ALWAYS:
+
+1. **Declare phase:** "📋 PLAN - Skill activated"
+2. **Check context:**
+   - What is the goal?
+   - Which files are affected?
+   - What is the current state?
+3. **Establish or confirm context:**
+   - New: Ask at least 3 questions
+   - Continuation: "We were at [X], continue?"
+
+**NEVER** go directly to IMPLEMENT without established context.
+
+---
+
 ## Planning Phase (PLAN)
 
 ### Communication
@@ -48,8 +65,16 @@ Every response starts with phase indicator:
 | Chat | Brainstorming, asking questions |
 | Plan file | Key points and implementation steps |
 
-- One question at a time, based on previous answer, prefer multiple choice, 'aksuserquestion' tool
-	- Questions building up on each other, one leads to another
+**Proactivity (CRITICAL):**
+- On skill start: Ask context questions IMMEDIATELY, don't wait
+- Form hypotheses and verify them
+- Don't wait for user hints - explore yourself
+
+**Questions:**
+- One question at a time, based on previous answer, prefer multiple choice, 'askuserquestion' tool
+- Questions building up on each other, one leads to another
+
+**Plan-File:**
 - Use system-provided plan file path from Plan Mode message
 - ALWAYS use Write/Edit tool to update plan file
 - NEVER write plan content directly in chat
@@ -89,6 +114,17 @@ If the planning session requires module execution to refine the plan:
 3. Ask: "Continue implementing or proceed to EVALUATE?"
 
 User confirms → next response starts with 🔍 EVALUATE
+
+### Ad-hoc Window
+
+After completing plan edits, BEFORE transition to EVALUATE:
+
+1. Claude: "Plan edits completed. Proceed to EVALUATE?"
+2. User can request ad-hoc edits
+3. Claude executes ad-hoc edits
+4. Back to step 1 until user says "eval"
+
+**CRITICAL:** This window is the ONLY place for ad-hoc edits.
 
 ---
 
@@ -150,7 +186,7 @@ Only enter when user confirms (e.g., "proceed", "close", "done").
 
 1. Update DOCS.md (if needed)
 2. Handle open items:
-   - For each open item, ASK: "Soll [Item X] in Beads? (session-uebergreifend)"
+   - For each open item, ASK: "Should [Item X] go to Beads? (cross-session)"
    - User confirms → `bd create --title "..." --body "..."`
    - User declines → Keep in plan file for next iteration
    - If no open items remain: clear plan file (overwrite with single space)
