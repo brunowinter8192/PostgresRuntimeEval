@@ -39,13 +39,7 @@ Example: User says "run prediction for approach_2"
 - WRONG: Immediately try to run commands
 - RIGHT: First read `Runtime_Prediction/DOCS.md` and `03_Predict_Queries/DOCS.md`
 
----
-
-## 4.5 AGENT USAGE
-
-**CRITICAL:** For codebase exploration ALWAYS use `search-specialist-thesis` agent.
-
-This agent is specifically tuned for the thesis codebase. See agent file for details.
+**Agent Usage:** For codebase exploration ALWAYS use `search-specialist-thesis` agent. This agent is specifically tuned for the thesis codebase. See agent file for details.
 
 ---
 
