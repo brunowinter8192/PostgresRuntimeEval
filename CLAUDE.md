@@ -39,72 +39,13 @@ Example: User says "run prediction for approach_2"
 - WRONG: Immediately try to run commands
 - RIGHT: First read `Runtime_Prediction/DOCS.md` and `03_Predict_Queries/DOCS.md`
 
-**Commit Policy:** Commit after each completed logical unit:
-- Bug fix completed → Commit
-- Feature implemented → Commit
-- Docs updated → Commit
-- NOT after every small edit (collect until logical unit is complete)
-
-**Commit-Message Format:**
-```
-<Scope>: <Short description>
-
-- Detail 1
-- Detail 2
-```
-
-**Justfile:** Before long bash commands, check if a `just` shortcut exists.
-- `just --list` to check - do NOT read the entire justfile
-- `just --show <recipe>` for details on a specific recipe
-- Prefer `just h1-predict approach_2 --passthrough` over manual paths
-- Saves tokens and avoids path errors
-
-- NO comments inside function bodies (only function header comments + section markers)
-- NO test files in root (ONLY in debug/ folder when requested)
-- NO emojis in code AND documentation
-- NO hardcoded paths (always use argparse)
-
-**Type hints:** RECOMMENDED but optional
-
-**Fail-Fast:** Let exceptions fly. No try-catch that silently swallows errors affecting business logic. Script must fail if it cannot fulfill its purpose.
-
-**Immediate Stop on Problems:**
-- On ANY unexpected problem during execution: STOP IMMEDIATELY
-- Inform user with clear problem description
-- NEVER autonomously "fix" or implement workarounds
-- Wait for explicit user decision before proceeding
-
-**Examples:** NaN values, missing files, unexpected formats, algorithm errors, dependency issues, etc.
-
-**Why:** An autonomous "fix" can invalidate the entire project. Better to ask once too often than once too little.
-
 ---
 
 ## 4.5 AGENT USAGE
 
-**CRITICAL:** Für Codebase-Exploration IMMER `search-specialist-thesis` verwenden.
+**CRITICAL:** For codebase exploration ALWAYS use `search-specialist-thesis` agent.
 
-### Workflow
-
-1. **EINMAL am Anfang:** Agent für Exploration starten
-2. **Auf Ergebnissen aufbauen:** Keine redundanten Suchen
-3. **Config zuerst:** `mapping_config.py` vor Code-Analyse
-
-### Anti-Patterns (VERBOTEN)
-
-- Pfad-Blindheit: Raten statt `ls` oder `find`
-- Redundante Suchen: Dieselbe Datei mehrfach lesen
-- Side-Questing: Vom Kernproblem abkommen
-- Zahlen ignorieren: Logs lesen ohne Muster erkennen
-
-### Effizienter Ablauf (VORBILD)
-
-1. `find .` oder `ls -R` (einmalig für Struktur)
-2. Relevante CSV/Log lesen (Muster erkennen)
-3. `mapping_config.py` prüfen (Konstanten/Thresholds)
-4. **Fertig** - nicht weitersuchen
-
-**Prinzip:** 3-4 gezielte Reads statt 20+ Trial-and-Error Calls.
+This agent is specifically tuned for the thesis codebase. See agent file for details.
 
 ---
 
@@ -114,7 +55,7 @@ Example: User says "run prediction for approach_2"
 
 **CRITICAL:** When the user mentions the paper or asks for comparison with the paper:
 1. STOP
-2. Ask: "Ich kenne diese Section nicht. Soll ich erst das Paper lesen bevor wir weiterreden?"
+2. Ask: "I don't know this section. Should I read the paper first before we continue?"
 3. Read `Misc/Learning-based_Query_Performance_Modeling_and_Pred.md` if confirmed
 4. ONLY THEN make claims about what the paper does or doesn't do
 
@@ -225,6 +166,24 @@ def export_results(results: pd.DataFrame, output_dir: str) -> None:
     Path(output_dir).mkdir(exist_ok=True)
     results.to_csv(f'{output_dir}/results.csv', sep=';', index=False)
 ```
+
+### Type Hints
+
+RECOMMENDED but optional. Type annotations in function signatures help IDE catch errors.
+
+### Fail-Fast
+
+Let exceptions fly. No try-catch that silently swallows errors affecting business logic. Script must fail if it cannot fulfill its purpose.
+
+**Immediate Stop on Problems:**
+- On ANY unexpected problem during execution: STOP IMMEDIATELY
+- Inform user with clear problem description
+- NEVER autonomously "fix" or implement workarounds
+- Wait for explicit user decision before proceeding
+
+**Examples:** NaN values, missing files, unexpected formats, algorithm errors, dependency issues.
+
+**Why:** An autonomous "fix" can invalidate the entire project. Better to ask once too often than once too little.
 
 ---
 
@@ -567,9 +526,9 @@ When a module is a directory (e.g., `10_Pattern_Selection/`):
 
 Three levels of task tracking, each for different time horizons:
 
-- **Beads** (`.beads/`) - Session-uebergreifend (Wochen/Monate). Persistent issues that survive across sessions.
-- **Plan-File** (`.claude/plans/`) - Innerhalb einer Session (Stunden). Current iteration plan and open items.
-- **TodoWrite** - Innerhalb einer Iteration (Minuten). Immediate task tracking during implementation.
+- **Beads** (`.beads/`) - Cross-session (weeks/months). Persistent issues that survive across sessions.
+- **Plan-File** (`.claude/plans/`) - Within a session (hours). Current iteration plan and open items.
+- **TodoWrite** - Within an iteration (minutes). Immediate task tracking during implementation.
 
 ### Beads Usage
 
