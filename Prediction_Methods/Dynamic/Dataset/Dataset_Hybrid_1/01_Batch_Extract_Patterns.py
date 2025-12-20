@@ -8,13 +8,14 @@ from multiprocessing import Pool
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
 APPROACHES = {
-    'approach_4': {'length': 0, 'required_operators': False, 'no_passthrough': True, 'threshold': 120},
+    'approach_3': {'length': 0, 'required_operators': False, 'no_passthrough': False, 'threshold': 150},
+    'approach_4': {'length': 0, 'required_operators': False, 'no_passthrough': True, 'threshold': 150},
 }
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCRIPTS_DIR = SCRIPT_DIR.parent.parent.parent / 'Hybrid_1' / 'Datasets'
 OPERATOR_DATASET_DIR = SCRIPT_DIR.parent / 'Dataset_Operator'
-MINED_PATTERNS_DIR = SCRIPT_DIR.parent.parent / 'Data_Generation' / 'Hybrid_1'
+STATIC_PATTERNS_DIR = SCRIPT_DIR.parent.parent.parent / 'Hybrid_1' / 'Data_Generation' / 'csv'
 OUTPUT_DIR = SCRIPT_DIR
 
 
@@ -77,17 +78,16 @@ def run_clean(approach_dir: Path) -> None:
     ], check=True)
 
 
-# Filter patterns by occurrence threshold
+# Filter patterns by occurrence threshold using Static pattern pool
 def run_filter(template: str, approach_dir: Path, threshold: int) -> None:
-    mined_csv = MINED_PATTERNS_DIR / template / 'csv'
-    pattern_files = list(mined_csv.glob('01_patterns_*.csv'))
+    pattern_files = list(STATIC_PATTERNS_DIR.glob('01_patterns_*.csv'))
     if not pattern_files:
         return
-    mined_patterns = sorted(pattern_files)[-1]
+    static_patterns = sorted(pattern_files)[-1]
 
     subprocess.run([
         'python3', str(SCRIPTS_DIR / '06_Filter_Patterns.py'),
-        str(mined_patterns),
+        str(static_patterns),
         str(approach_dir / 'patterns.csv'),
         '--output-dir', str(approach_dir),
         '--threshold', str(threshold)
