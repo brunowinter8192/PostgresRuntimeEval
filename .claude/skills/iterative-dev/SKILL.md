@@ -145,15 +145,27 @@ After completing plan edits, BEFORE transition to EVALUATE:
 
 **Purpose:** Evaluate the PLAN→IMPLEMENT iteration - both CONTENT and PROCESS.
 
-**CRITICAL: NO EDITS IN EVALUATE.** Only collect and report. All edits happen in IMPROVE.
+**ABSOLUTE RULE: ZERO EDITS IN EVALUATE.**
 
-**NO:**
-- Summarizing what was implemented
-- Making edits or fixes (that's IMPROVE)
+EVALUATE = COLLECT improvements
+IMPROVE = EXECUTE improvements
 
-**YES:**
-- Content quality: Does the code/docs work correctly?
-- Process quality: Was the planning efficient?
+**FORBIDDEN in EVALUATE:**
+- ANY file edits (code, docs, config)
+- ANY tool calls that modify files (Edit, Write, Bash with side effects)
+- Executing user remarks immediately
+
+**ALLOWED in EVALUATE:**
+- Read tools (Read, Glob, Grep)
+- Git commit (for IMPLEMENT changes only)
+- Collecting improvements into a list
+- Adding user remarks to the improvement list
+
+**When user gives a remark in EVALUATE:**
+1. ADD it to the improvement list
+2. DO NOT execute it
+3. Ask: "Added to improvements. Any more remarks?"
+4. Only execute in IMPROVE phase
 
 Claude writes a report covering:
 
@@ -200,13 +212,20 @@ User confirms → next response starts with 🛠️ IMPROVE
 
 ## Improve Phase (IMPROVE)
 
-**Purpose:** Implement improvements identified in EVALUATE.
+**Purpose:** Execute ALL improvements collected in EVALUATE.
 
-**CRITICAL:** This is where edits happen, NOT in EVALUATE.
+**THIS is where edits happen. NOT in EVALUATE.**
 
-1. Review improvement list from EVALUATE (including user feedback)
-2. Implement each improvement
-3. Ask: "Proceed to CLOSING?"
+Improvement sources:
+- Report findings (DOCS.md updates, code fixes)
+- User remarks collected during EVALUATE
+- Process improvements (CLAUDE.md, skill files)
+
+**Workflow:**
+1. List all collected improvements
+2. Execute each one (Edit, Write, Bash)
+3. Commit changes
+4. Ask: "Proceed to CLOSING?"
 
 User confirms → next response starts with ✅ CLOSING
 
