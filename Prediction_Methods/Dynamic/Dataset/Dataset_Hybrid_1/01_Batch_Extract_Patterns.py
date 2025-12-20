@@ -5,6 +5,8 @@ import subprocess
 from pathlib import Path
 from multiprocessing import Pool
 
+import pandas as pd
+
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
 APPROACHES = {
@@ -14,7 +16,6 @@ APPROACHES = {
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCRIPTS_DIR = SCRIPT_DIR.parent.parent.parent / 'Hybrid_1' / 'Datasets'
 OPERATOR_DATASET_DIR = SCRIPT_DIR.parent / 'Dataset_Operator'
-STATIC_PATTERNS_DIR = SCRIPT_DIR.parent.parent.parent / 'Hybrid_1' / 'Data_Generation' / 'csv'
 OUTPUT_DIR = SCRIPT_DIR
 
 
@@ -39,7 +40,7 @@ def process_task(task: tuple) -> None:
     run_clean(approach_dir)
 
     if approach_config['threshold'] > 0:
-        run_filter(template, approach_dir, approach_config['threshold'])
+        filter_by_threshold(approach_dir, approach_config['threshold'])
 
 
 # Extract patterns from training data
@@ -77,20 +78,12 @@ def run_clean(approach_dir: Path) -> None:
     ], check=True)
 
 
-# Filter patterns by occurrence threshold using Static pattern pool
-def run_filter(template: str, approach_dir: Path, threshold: int) -> None:
-    pattern_files = list(STATIC_PATTERNS_DIR.glob('01_patterns_*.csv'))
-    if not pattern_files:
-        return
-    static_patterns = sorted(pattern_files)[-1]
-
-    subprocess.run([
-        'python3', str(SCRIPTS_DIR / '06_Filter_Patterns.py'),
-        str(static_patterns),
-        str(approach_dir / 'patterns.csv'),
-        '--output-dir', str(approach_dir),
-        '--threshold', str(threshold)
-    ], check=True)
+# Filter patterns by local occurrence count threshold
+def filter_by_threshold(approach_dir: Path, threshold: int) -> None:
+    patterns_file = approach_dir / 'patterns.csv'
+    df = pd.read_csv(patterns_file, delimiter=';')
+    df_filtered = df[df['occurrence_count'] >= threshold]
+    df_filtered.to_csv(approach_dir / 'patterns_filtered.csv', index=False, sep=';')
 
 
 if __name__ == "__main__":

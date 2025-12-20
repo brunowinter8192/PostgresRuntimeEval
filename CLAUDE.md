@@ -23,27 +23,7 @@
 
 ---
 
-## 4. CRITICAL STANDARDS
-
-**Documentation First (MANDATORY):**
-
-BEFORE any action in a directory (running scripts, editing files, exploring code):
-1. STOP
-2. READ the DOCS.md in that directory
-3. ONLY THEN proceed
-
-This is NON-NEGOTIABLE. The user has invested significant effort into documentation.
-Skipping DOCS.md leads to: wrong paths, wrong arguments, wrong understanding.
-
-Example: User says "run prediction for approach_2"
-- WRONG: Immediately try to run commands
-- RIGHT: First read `Runtime_Prediction/DOCS.md` and `03_Predict_Queries/DOCS.md`
-
-**Agent Usage:** For codebase exploration ALWAYS use `search-specialist-thesis` agent. This agent is specifically tuned for the thesis codebase. See agent file for details.
-
----
-
-## 5. THESIS-SPECIFIC RULES
+## 4. THESIS-SPECIFIC RULES
 
 ### Paper Reference Rule
 
@@ -109,7 +89,7 @@ RIGHT:
 
 ---
 
-## 6. CODE ORGANIZATION
+## 5. CODE ORGANIZATION
 
 **CRITICAL:** Every script follows this structure:
 
@@ -181,7 +161,7 @@ Let exceptions fly. No try-catch that silently swallows errors affecting busines
 
 ---
 
-## 7. COMMENT RULES
+## 6. COMMENT RULES
 
 **CRITICAL:** Three types of allowed comments only
 
@@ -207,7 +187,7 @@ from data_loader import load_validated_data
 
 ---
 
-## 8. ARGPARSE TEMPLATE
+## 7. ARGPARSE TEMPLATE
 
 ```python
 if __name__ == "__main__":
@@ -229,7 +209,7 @@ if __name__ == "__main__":
 
 ---
 
-## 9. ARCHITECTURE STANDARDS
+## 8. ARCHITECTURE STANDARDS
 
 ### Naming Conventions
 
@@ -292,7 +272,7 @@ CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']                # Known at prediction
 
 ---
 
-## 10. DOCUMENTATION STRUCTURE
+## 9. DOCUMENTATION STRUCTURE
 
 ### Terminology
 
@@ -516,7 +496,7 @@ When a module is a directory (e.g., `10_Pattern_Selection/`):
 
 ---
 
-## 11. TASK MANAGEMENT HIERARCHY
+## 10. TASK MANAGEMENT HIERARCHY
 
 Three levels of task tracking, each for different time horizons:
 

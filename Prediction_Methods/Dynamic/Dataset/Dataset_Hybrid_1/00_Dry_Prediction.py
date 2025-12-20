@@ -69,7 +69,7 @@ def load_pattern_info(patterns_file: Path) -> tuple:
 def collect_used_patterns(df_test: pd.DataFrame, pattern_info: dict, pattern_order: list) -> tuple:
     used_patterns = set()
     plan_hashes_seen = set()
-    unique_plans = 0
+    tree_data = []
 
     for query_file in df_test['query_file'].unique():
         query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
@@ -79,7 +79,6 @@ def collect_used_patterns(df_test: pd.DataFrame, pattern_info: dict, pattern_ord
             continue
 
         plan_hashes_seen.add(plan_hash)
-        unique_plans += 1
 
         root = build_tree_from_dataframe(query_ops)
         all_nodes = extract_all_nodes(root)
@@ -88,10 +87,17 @@ def collect_used_patterns(df_test: pd.DataFrame, pattern_info: dict, pattern_ord
         # Single-Pattern Constraint: Verwerfe wenn nur 1 Pattern alle Nodes konsumiert
         if len(pattern_assignments) == 1 and len(consumed_nodes) == len(all_nodes):
             pattern_assignments = {}
+            consumed_nodes = set()
 
         used_patterns.update(pattern_assignments.values())
+        tree_data.append({
+            'query_ops': query_ops,
+            'consumed_nodes': consumed_nodes,
+            'pattern_assignments': pattern_assignments,
+            'query_file': query_file
+        })
 
-    return used_patterns, {'unique_plans': unique_plans}
+    return used_patterns, {'unique_plans': len(tree_data), 'trees': tree_data}
 
 
 # Export used patterns to CSV
@@ -123,27 +129,61 @@ def export_md_report(template: str, used_patterns: set, pattern_info: dict, plan
         '',
         '## Summary',
         '',
-        f'| Metric | Value |',
-        f'|--------|-------|',
-        f'| Total Test Queries | {total_queries} |',
-        f'| Unique Plan Structures | {plan_stats["unique_plans"]} |',
-        f'| Total Patterns Available | {total_patterns} |',
-        f'| Patterns Used | {used_count} |',
-        f'| Reduction | {reduction:.1f}% |',
+        f'- **Total Test Queries:** {total_queries}',
+        f'- **Unique Plan Structures:** {plan_stats["unique_plans"]}',
+        f'- **Total Patterns Available:** {total_patterns}',
+        f'- **Patterns Used:** {used_count}',
+        f'- **Reduction:** {reduction:.1f}%',
         '',
         '## Used Patterns',
-        '',
-        '| Hash | Pattern |',
-        '|------|---------|'
+        ''
     ]
 
     for pattern_hash in sorted(used_patterns):
         info = pattern_info.get(pattern_hash, {})
         pattern_string = info.get('pattern_string', 'Unknown')
-        lines.append(f'| {pattern_hash[:12]}... | {pattern_string} |')
+        lines.append(f'- `{pattern_hash[:12]}...` {pattern_string}')
+
+    lines.extend(['', '## Query Trees', ''])
+
+    for i, tree_info in enumerate(plan_stats.get('trees', []), 1):
+        lines.append(f'### Plan {i} (Example: {tree_info["query_file"]})')
+        lines.append('')
+        lines.append('```')
+        tree_lines = render_tree_markdown(
+            tree_info['query_ops'],
+            tree_info['consumed_nodes'],
+            tree_info['pattern_assignments']
+        )
+        lines.extend(tree_lines)
+        lines.append('```')
+        lines.append('')
 
     report_file = md_dir / '00_dry_prediction_report.md'
     report_file.write_text('\n'.join(lines))
+
+
+# Render query tree as markdown with pattern annotations
+def render_tree_markdown(df_query: pd.DataFrame, consumed_nodes: set, pattern_assignments: dict) -> list:
+    lines = []
+    min_depth = df_query['depth'].min()
+
+    for _, row in df_query.iterrows():
+        depth = row['depth']
+        indent = '  ' * (depth - min_depth)
+        node_type = row['node_type']
+        node_id = row['node_id']
+
+        marker = ''
+        if node_id in pattern_assignments:
+            marker = ' [PATTERN ROOT]'
+        elif node_id in consumed_nodes:
+            marker = ' [consumed]'
+
+        suffix = ' - ROOT' if depth == min_depth else ''
+        lines.append(f'{indent}Node {node_id} ({node_type}){marker}{suffix}')
+
+    return lines
 
 
 # Tree building and pattern matching functions
@@ -259,9 +299,12 @@ def build_pattern_assignments(all_nodes: list, pattern_info: dict, pattern_order
             if not has_children_at_length(node, pattern_length):
                 continue
 
+            pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
+            if any(nid in consumed_nodes for nid in pattern_node_ids):
+                continue
+
             computed_hash = compute_pattern_hash(node, pattern_length)
             if computed_hash == pattern_hash:
-                pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
                 consumed_nodes.update(pattern_node_ids)
                 pattern_assignments[node.node_id] = pattern_hash
 
