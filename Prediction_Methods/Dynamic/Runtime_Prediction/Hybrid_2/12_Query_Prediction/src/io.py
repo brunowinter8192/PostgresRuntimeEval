@@ -6,10 +6,10 @@ from pathlib import Path
 import joblib
 import sys
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 
-# From mapping_config.py: Convert CSV operator name to folder name
-from mapping_config import csv_name_to_folder_name
+# From mapping_config.py: Convert CSV operator name to folder name, get operator features
+from mapping_config import csv_name_to_folder_name, get_operator_features, LEAF_OPERATORS
 
 
 # FUNCTIONS
@@ -41,20 +41,39 @@ def load_operator_models(model_dir: str) -> dict:
     return models
 
 
-# Load operator features from overview CSV
+# Load operator features from overview CSV or mapping_config fallback
 def load_operator_features(overview_file: str) -> dict:
-    df = pd.read_csv(overview_file, delimiter=';')
     features = {'execution_time': {}, 'start_time': {}}
 
-    for _, row in df.iterrows():
-        operator = row['operator']
-        target = row['target']
-        features_str = row['final_features']
+    if overview_file and Path(overview_file).exists():
+        df = pd.read_csv(overview_file, delimiter=';')
 
-        if pd.isna(features_str) or features_str.strip() == '':
-            continue
+        for _, row in df.iterrows():
+            operator = row['operator']
+            target = row['target']
+            features_str = row['final_features']
 
-        features[target][operator] = [f.strip() for f in features_str.split(',')]
+            if pd.isna(features_str) or features_str.strip() == '':
+                continue
+
+            features[target][operator] = [f.strip() for f in features_str.split(',')]
+
+        return features
+
+    all_operators = LEAF_OPERATORS + [
+        'Hash Join', 'Merge Join', 'Nested Loop',
+        'Hash', 'Sort', 'Aggregate', 'Materialize',
+        'Limit', 'Result', 'Append', 'Subquery Scan',
+        'Gather', 'Gather Merge', 'Group', 'Unique',
+        'Hash Aggregate', 'Group Aggregate', 'WindowAgg',
+        'Incremental Sort', 'Memoize', 'BitmapAnd', 'BitmapOr',
+        'Bitmap Heap Scan', 'Bitmap Index Scan', 'CTE Scan'
+    ]
+
+    for op in all_operators:
+        op_features = get_operator_features(op)
+        features['execution_time'][op] = op_features
+        features['start_time'][op] = op_features
 
     return features
 
