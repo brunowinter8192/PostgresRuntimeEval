@@ -39,24 +39,24 @@ EVERY RESPONSE STARTS WITH A PHASE INDICATOR:
 
 ---
 
-## Activation Gate (CRITICAL)
-
-On skill activation ALWAYS:
-
-1. **Declare phase:** "📋 PLAN - Skill activated"
-2. **Check context:**
-   - What is the goal?
-   - Which files are affected?
-   - What is the current state?
-3. **Establish or confirm context:**
-   - New: Ask at least 3 questions
-   - Continuation: "We were at [X], continue?"
-
-**NEVER** go directly to IMPLEMENT without established context.
-
----
-
 ## Planning Phase (PLAN)
+
+### Exploration
+
+**Documentation First (MANDATORY):**
+
+BEFORE any action in a directory (running scripts, editing files, exploring code):
+1. STOP
+2. READ the DOCS.md in that directory
+3. ONLY THEN proceed
+
+This is NON-NEGOTIABLE. Skipping DOCS.md leads to: wrong paths, wrong arguments, wrong understanding.
+
+**Agent Usage:**
+- Decide autonomously whether an agent is necessary
+- Agents are useful for getting an overview of unfamiliar areas
+- Critical information (paths, parameters, dependencies) MUST be verified firsthand
+- When in doubt: Read the file yourself
 
 ### Communication
 
