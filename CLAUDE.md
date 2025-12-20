@@ -469,6 +469,16 @@ Critical algorithm logic, invariants, or non-obvious behavior that affects corre
 - `--n-jobs`: Parallel jobs (default: -1 = all cores)
 ```
 
+**Source References:** When code or logic is derived from another module, document the source:
+
+```markdown
+**Source:** `Hybrid_1/Runtime_Prediction/03_Predict_Queries/src/tree.py`
+- `build_pattern_assignments()` - Pattern matching logic
+- `compute_pattern_hash()` - Hash computation
+```
+
+This makes dependencies explicit and prevents reinventing existing logic.
+
 ---
 
 ### Subdirectory-Modules
