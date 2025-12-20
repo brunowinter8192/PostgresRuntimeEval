@@ -4,10 +4,10 @@ Greedy pattern selection for runtime prediction improvement. Iteratively evaluat
 
 ## Working Directory
 
-**CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
+**CRITICAL:** All commands assume CWD = `Runtime_Prediction/Hybrid_2/`
 
 ```bash
-cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Hybrid_2/Runtime_Prediction
+cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Runtime_Prediction/Hybrid_2
 ```
 
 ## Directory Structure
@@ -25,17 +25,15 @@ cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Hybri
 
 **Purpose:** Execute greedy pattern selection based on strategy (frequency, size, or error)
 
-**Baseline:** Operator-only prediction on Training_Test = 22.97% MRE. Selection accepts patterns that improve this baseline.
-
 **Inputs:**
-- `sorted_patterns_file` - Patterns ranked by strategy (07_patterns_by_*.csv or 08_patterns_by_error.csv)
-- `pattern_ffs_file` - Pattern feature selection results (pattern_ffs_overview.csv)
+- `sorted_patterns_file` - Patterns ranked by strategy (07_patterns_by_*.csv)
 - `training_file` - Training data (Training_Training.csv)
 - `test_file` - Validation data (Training_Test.csv)
 - `operator_model_dir` - Pre-trained operator models (Model/Operator/)
 - `operator_ffs_dir` - Operator FFS results (SVM/Operator/)
 - `--strategy` - Selection strategy: frequency, size, error (required)
 - `--pattern-output-dir` - Per-pattern results output directory (required)
+- `--pretrained-dir` - Path to pretrained pattern models (required)
 - `--pattern-occurrences-file` - Path to 06_test_pattern_occurrences.csv (required)
 
 **Outputs:**
@@ -47,38 +45,25 @@ cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Hybri
 - `selection_summary.csv` - Aggregate counts and final MRE
 
 **Variables:**
-- `--pretrained-dir` - Path to pretrained models (default: None)
 - `--min-error-threshold` - Min avg_mre to consider pattern (default: 0.1, size/frequency only)
 - `--epsilon` - Min MRE improvement required for SELECTED (default: 0.0)
+- `--max-iteration` - Stop after N iterations (default: all)
+- `--report` - Generate selection report markdown
 
-**Usage (Static - Frequency):**
+**Usage:**
 ```bash
 python3 10_Pattern_Selection/10_Pattern_Selection.py \
-    --strategy frequency \
-    Pattern_Selection/07_patterns_by_frequency.csv \
-    SVM/Pattern/Training_Training/pattern_ffs_overview.csv \
-    ../Dataset/Baseline/Training_Training.csv \
-    ../Dataset/Baseline/Training_Test.csv \
-    Model/Training_Training/Operator \
-    SVM/Operator/Training_Training \
-    --pattern-output-dir Pattern_Selection/Training_Training/Frequency/Baseline \
-    --pretrained-dir Model/Training_Training/Pattern \
-    --pattern-occurrences-file Pattern_Selection/06_test_pattern_occurrences.csv
-```
-
-**Usage (Dynamic - Error):**
-```bash
-python3 10_Pattern_Selection/10_Pattern_Selection.py \
-    --strategy error \
-    Pattern_Selection/08_patterns_by_error.csv \
-    SVM/Pattern/Training_Training/pattern_ffs_overview.csv \
-    ../Dataset/Baseline/Training_Training.csv \
-    ../Dataset/Baseline/Training_Test.csv \
-    Model/Training_Training/Operator \
-    SVM/Operator/Training_Training \
-    --pattern-output-dir Pattern_Selection/Training_Training/Error/Baseline \
-    --pretrained-dir Model/Training_Training/Pattern \
-    --pattern-occurrences-file Pattern_Selection/06_test_pattern_occurrences.csv
+    --strategy size \
+    Selected_Patterns/Q1/07_patterns_by_size.csv \
+    ../../Dataset/Dataset_Hybrid_2/Training_Training/Q1/Training_Training.csv \
+    ../../Dataset/Dataset_Hybrid_2/Training_Training/Q1/Training_Test.csv \
+    Model/Training_Training/Q1/Operator \
+    ../Operator_Level/Q1/SVM \
+    --pattern-output-dir Selected_Patterns/Q1/Size/Epsilon \
+    --pretrained-dir Model/Training_Training/Q1/Pattern \
+    --pattern-occurrences-file Selected_Patterns/Q1/06_test_pattern_occurrences.csv \
+    --epsilon 0.005 \
+    --max-iteration 150
 ```
 
 ---
@@ -89,7 +74,7 @@ python3 10_Pattern_Selection/10_Pattern_Selection.py \
 |----------|-------------|---------------|
 | `frequency` | Static: iterate by occurrence count | 07_patterns_by_frequency.csv |
 | `size` | Static: iterate by pattern size | 07_patterns_by_size.csv |
-| `error` | Dynamic: re-rank by current error | 08_patterns_by_error.csv |
+| `error` | Dynamic: re-rank by current error | 07_patterns_by_frequency.csv (initial) |
 
 **Error-Score Formula (error strategy):**
 ```
@@ -103,3 +88,6 @@ Combines frequency and current prediction error. After each SELECTED/REJECTED de
 
 **Min Error Threshold:**
 Patterns with avg_mre < threshold are skipped for size/frequency strategies. avg_mre is calculated dynamically based on current predictions (updated after each SELECTED pattern). Error strategy does not use this filter.
+
+**Pretrained Models:**
+Patterns without pretrained models are skipped with status `SKIPPED_NO_MODEL`.

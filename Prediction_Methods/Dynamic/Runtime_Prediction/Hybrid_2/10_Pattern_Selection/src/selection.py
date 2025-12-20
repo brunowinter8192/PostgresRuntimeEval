@@ -48,7 +48,6 @@ def calculate_pattern_avg_mre(
 def run_static_selection(
     sorted_patterns: pd.DataFrame,
     pattern_occurrences: pd.DataFrame,
-    pattern_ffs: dict,
     df_training: pd.DataFrame,
     df_test: pd.DataFrame,
     operator_models: dict,
@@ -69,7 +68,7 @@ def run_static_selection(
     collision_data = []
 
     current_predictions = predict_all_queries(
-        df_test, operator_models, operator_ffs, {}, pattern_ffs, {}
+        df_test, operator_models, operator_ffs, {}, {}
     )
 
     initial_mre = calculate_mre(current_predictions)
@@ -103,18 +102,16 @@ def run_static_selection(
                 ))
             continue
 
-        pattern_model = load_or_train_pattern_model(
-            pretrained_dir, df_training, pattern_hash, pattern_length, operator_count, pattern_ffs.get(pattern_hash, {})
-        )
+        pattern_model = load_or_train_pattern_model(pretrained_dir, pattern_hash)
 
         if pattern_model is None:
             selection_log.append(create_log_entry(
-                pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_TRAIN_FAILED', idx
+                pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_NO_MODEL', idx
             ))
             if report:
                 iteration_data.append(create_iteration_entry(
                     idx, pattern_hash, pattern_string, operator_count, occurrence_count,
-                    root_operator, avg_mre, min_error_threshold, baseline_mre, None, None, 'SKIPPED_TRAIN_FAILED'
+                    root_operator, avg_mre, min_error_threshold, baseline_mre, None, None, 'SKIPPED_NO_MODEL'
                 ))
             continue
 
@@ -122,7 +119,7 @@ def run_static_selection(
         test_info = {**selected_pattern_info, pattern_hash: {'length': pattern_length, 'operator_count': operator_count}}
 
         predictions = predict_all_queries(
-            df_test, operator_models, operator_ffs, test_models, pattern_ffs, test_info
+            df_test, operator_models, operator_ffs, test_models, test_info
         )
 
         new_mre = calculate_mre(predictions)
@@ -175,7 +172,6 @@ def run_static_selection(
 def run_error_selection(
     error_baseline: pd.DataFrame,
     pattern_occurrences: pd.DataFrame,
-    pattern_ffs: dict,
     df_training: pd.DataFrame,
     df_test: pd.DataFrame,
     operator_models: dict,
@@ -198,7 +194,7 @@ def run_error_selection(
     occurrence_counts = error_baseline.set_index('pattern_hash')['occurrence_count'].to_dict() if 'occurrence_count' in error_baseline.columns else {}
 
     current_predictions = predict_all_queries(
-        df_test, operator_models, operator_ffs, {}, pattern_ffs, {}
+        df_test, operator_models, operator_ffs, {}, {}
     )
 
     initial_mre = calculate_mre(current_predictions)
@@ -234,18 +230,16 @@ def run_error_selection(
 
         consumed_hashes.add(pattern_hash)
 
-        pattern_model = load_or_train_pattern_model(
-            pretrained_dir, df_training, pattern_hash, pattern_length, operator_count, pattern_ffs.get(pattern_hash, {})
-        )
+        pattern_model = load_or_train_pattern_model(pretrained_dir, pattern_hash)
 
         if pattern_model is None:
             selection_log.append(create_log_entry(
-                pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_TRAIN_FAILED', iteration
+                pattern_hash, pattern_string, baseline_mre, None, None, 'SKIPPED_NO_MODEL', iteration
             ))
             if report:
                 iteration_data.append(create_iteration_entry(
                     iteration, pattern_hash, pattern_string, operator_count, occurrence_count,
-                    root_operator, candidate.get('avg_mre', 0), 0, baseline_mre, None, None, 'SKIPPED_TRAIN_FAILED'
+                    root_operator, candidate.get('avg_mre', 0), 0, baseline_mre, None, None, 'SKIPPED_NO_MODEL'
                 ))
             continue
 
@@ -253,7 +247,7 @@ def run_error_selection(
         test_info = {**selected_pattern_info, pattern_hash: {'length': pattern_length, 'operator_count': operator_count}}
 
         new_predictions = predict_all_queries(
-            df_test, operator_models, operator_ffs, test_models, pattern_ffs, test_info
+            df_test, operator_models, operator_ffs, test_models, test_info
         )
 
         new_mre = calculate_mre(new_predictions)

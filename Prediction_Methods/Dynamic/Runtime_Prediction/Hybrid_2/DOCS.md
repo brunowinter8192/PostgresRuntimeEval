@@ -17,11 +17,13 @@ Runtime_Prediction/Hybrid_2/
 ├── DOCS.md
 ├── 00_Batch_Workflow.py
 ├── 02_Pretrain_Models.py
+├── 03_Batch_Pattern_Selection.py
 ├── 06_Extract_Test_Patterns.py
 ├── 07_Order_Patterns.py
 ├── 10_Pattern_Selection/           [See DOCS.md]
 ├── 12_Query_Prediction/            [See DOCS.md]
-└── Model/
+├── Model/
+└── Selected_Patterns/
     ├── Training_Training/          # 80% - für Pattern Selection
     │   └── {Q*}/
     │       ├── Operator/{target}/{op}/model.pkl
@@ -144,6 +146,33 @@ python3 00_Batch_Workflow.py
 python3 02_Pretrain_Models.py --split Training_Training
 python3 02_Pretrain_Models.py --split Training
 python3 02_Pretrain_Models.py --split Training --templates Q1 Q3
+```
+
+---
+
+## 03 - Batch_Pattern_Selection.py
+
+**Purpose:** Run pattern selection for all templates and strategies
+
+**Workflow per Template:**
+1. `06_Extract_Test_Patterns.py` - Find pattern occurrences in Training_Test
+2. `07_Order_Patterns.py` - Sort by size/frequency
+3. `10_Pattern_Selection.py` - Run for size, frequency, error strategies
+
+**Outputs per Template:**
+- `Selected_Patterns/{Q*}/06_test_pattern_occurrences.csv`
+- `Selected_Patterns/{Q*}/07_patterns_by_*.csv`
+- `Selected_Patterns/{Q*}/{Strategy}/Epsilon/selected_patterns.csv`
+
+**Variables:**
+- `--templates` - Templates to process (default: all 14)
+- `--epsilon` - Min MRE improvement (default: 0.005)
+- `--max-iteration` - Stop after N iterations (default: 150)
+
+**Usage:**
+```bash
+python3 03_Batch_Pattern_Selection.py
+python3 03_Batch_Pattern_Selection.py --templates Q1 Q3 --epsilon 0.01
 ```
 
 ---
