@@ -1,0 +1,2 @@
+pattern_hash;pattern_string;mre;mre_pct;status
+be4808de7f9a47aadf39329d5c347f27;Sort -> Seq Scan (Outer);0.14044367390682555;14.044367390682556;REJECTED

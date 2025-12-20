@@ -29,22 +29,9 @@ from src.io import load_pretrained_model, create_prediction_result
 
 # FUNCTIONS
 
-# Load pretrained model or train on-the-fly
-def load_or_train_pattern_model(
-    pretrained_dir: str,
-    df_training: pd.DataFrame,
-    pattern_hash: str,
-    pattern_length: int,
-    operator_count: int,
-    ffs_features: dict
-) -> dict:
-    if pretrained_dir:
-        pretrained_model = load_pretrained_model(pretrained_dir, pattern_hash)
-
-        if pretrained_model:
-            return pretrained_model
-
-    return train_pattern_model(df_training, pattern_hash, pattern_length, operator_count, ffs_features)
+# Load pretrained model (fail if not found)
+def load_or_train_pattern_model(pretrained_dir: str, pattern_hash: str) -> dict:
+    return load_pretrained_model(pretrained_dir, pattern_hash)
 
 
 # Train pattern model by extracting and aggregating on-the-fly
@@ -120,7 +107,6 @@ def predict_all_queries(
     operator_models: dict,
     operator_ffs: dict,
     pattern_models: dict,
-    pattern_ffs: dict,
     pattern_info: dict
 ) -> list:
     all_predictions = []
@@ -129,7 +115,7 @@ def predict_all_queries(
         query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
 
         predictions = predict_single_query(
-            query_ops, operator_models, operator_ffs, pattern_models, pattern_ffs, pattern_info
+            query_ops, operator_models, operator_ffs, pattern_models, pattern_info
         )
 
         all_predictions.extend(predictions)
@@ -143,7 +129,6 @@ def predict_single_query(
     operator_models: dict,
     operator_ffs: dict,
     pattern_models: dict,
-    pattern_ffs: dict,
     pattern_info: dict
 ) -> list:
     root = build_tree_from_dataframe(query_ops)
