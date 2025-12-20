@@ -8,7 +8,7 @@ from pathlib import Path
 from multiprocessing import Pool
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
-APPROACHES = ['approach_4']
+APPROACHES = ['approach_3', 'approach_4']
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 OPERATOR_DATASET_DIR = SCRIPT_DIR.parent / 'Dataset_Operator'
@@ -83,7 +83,11 @@ def collect_used_patterns(df_test: pd.DataFrame, pattern_info: dict, pattern_ord
 
         root = build_tree_from_dataframe(query_ops)
         all_nodes = extract_all_nodes(root)
-        _, pattern_assignments = build_pattern_assignments(all_nodes, pattern_info, pattern_order)
+        consumed_nodes, pattern_assignments = build_pattern_assignments(all_nodes, pattern_info, pattern_order)
+
+        # Single-Pattern Constraint: Verwerfe wenn nur 1 Pattern alle Nodes konsumiert
+        if len(pattern_assignments) == 1 and len(consumed_nodes) == len(all_nodes):
+            pattern_assignments = {}
 
         used_patterns.update(pattern_assignments.values())
 
