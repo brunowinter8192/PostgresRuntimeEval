@@ -252,6 +252,11 @@ def build_pattern_assignments(all_nodes: list, pattern_info: dict, pattern_order
 
             computed_hash = compute_pattern_hash(node, pattern_length)
             if computed_hash == pattern_hash:
+                # Single-Pattern-Constraint: Skip if this pattern would consume ALL nodes
+                would_consume_all = (len(consumed_nodes) == 0 and len(pattern_node_ids) == len(all_nodes))
+                if would_consume_all:
+                    continue
+
                 consumed_nodes.update(pattern_node_ids)
                 pattern_assignments[node.node_id] = pattern_hash
 
@@ -317,11 +322,6 @@ def predict_single_query(
     consumed_nodes, pattern_assignments = build_pattern_assignments(
         all_nodes, pattern_info, pattern_order
     )
-
-    # Single-Pattern Constraint
-    if len(pattern_assignments) == 1 and len(consumed_nodes) == len(all_nodes):
-        consumed_nodes = set()
-        pattern_assignments = {}
 
     prediction_cache = {}
     predictions = []

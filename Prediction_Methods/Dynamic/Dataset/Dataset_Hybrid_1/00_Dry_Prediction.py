@@ -84,11 +84,6 @@ def collect_used_patterns(df_test: pd.DataFrame, pattern_info: dict, pattern_ord
         all_nodes = extract_all_nodes(root)
         consumed_nodes, pattern_assignments = build_pattern_assignments(all_nodes, pattern_info, pattern_order)
 
-        # Single-Pattern Constraint: Verwerfe wenn nur 1 Pattern alle Nodes konsumiert
-        if len(pattern_assignments) == 1 and len(consumed_nodes) == len(all_nodes):
-            pattern_assignments = {}
-            consumed_nodes = set()
-
         used_patterns.update(pattern_assignments.values())
         tree_data.append({
             'query_ops': query_ops,
@@ -305,6 +300,11 @@ def build_pattern_assignments(all_nodes: list, pattern_info: dict, pattern_order
 
             computed_hash = compute_pattern_hash(node, pattern_length)
             if computed_hash == pattern_hash:
+                # Single-Pattern-Constraint: Skip if this pattern would consume ALL nodes
+                would_consume_all = (len(consumed_nodes) == 0 and len(pattern_node_ids) == len(all_nodes))
+                if would_consume_all:
+                    continue
+
                 consumed_nodes.update(pattern_node_ids)
                 pattern_assignments[node.node_id] = pattern_hash
 
