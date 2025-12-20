@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "51640d133d5920161c6394ba92f0fd70",
-  "pattern_string": "Aggregate -> Gather -> Aggregate -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer)",
-  "folder_name": "Aggregate_->_Gather_->_Aggregate_->_Nested_Loop_->_Hash_Join_->_Seq_Scan_Outer_Hash_Inner_Outer_Index_Scan_Inner_Outer_Outer_Outer",
-  "pattern_length": 6,
-  "occurrence_count": 131
-}

@@ -1,7 +1,0 @@
-feature;order
-Aggregate_rt1;1
-HashJoin_Outer_rt1;2
-HashJoin_Outer_rt2;3
-HashJoin_Outer_sel;4
-HashJoin_Outer_st1;5
-HashJoin_Outer_st2;6

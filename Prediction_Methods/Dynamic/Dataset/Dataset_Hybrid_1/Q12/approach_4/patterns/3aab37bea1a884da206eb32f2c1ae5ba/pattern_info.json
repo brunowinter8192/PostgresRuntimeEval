@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "3aab37bea1a884da206eb32f2c1ae5ba",
-  "pattern_string": "Hash -> Seq Scan (Outer)",
-  "folder_name": "Hash_->_Seq_Scan_Outer",
-  "pattern_length": 2,
-  "occurrence_count": 2100
-}

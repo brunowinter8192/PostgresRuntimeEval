@@ -6,13 +6,14 @@
 |--------|-------|
 | Total Test Queries | 150 |
 | Unique Plan Structures | 1 |
-| Total Patterns Available | 67 |
-| Patterns Used | 2 |
-| Reduction | 97.0% |
+| Total Patterns Available | 72 |
+| Patterns Used | 3 |
+| Reduction | 95.8% |
 
 ## Used Patterns
 
 | Hash | Pattern |
 |------|---------|
 | 2724c08067c0... | Aggregate -> Gather Merge (Outer) |
+| 3754655cfe1a... | Aggregate -> Sort (Outer) |
 | c53c43965386... | Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] |

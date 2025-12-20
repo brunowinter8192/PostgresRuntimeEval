@@ -6,7 +6,7 @@
 |--------|-------|
 | Total Test Queries | 150 |
 | Unique Plan Structures | 1 |
-| Total Patterns Available | 71 |
+| Total Patterns Available | 72 |
 | Patterns Used | 4 |
 | Reduction | 94.4% |
 

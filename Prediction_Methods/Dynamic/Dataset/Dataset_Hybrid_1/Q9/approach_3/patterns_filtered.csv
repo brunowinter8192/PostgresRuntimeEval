@@ -16,6 +16,7 @@ e0e3c3e1b229568ff01695a42f46d8ea;Nested Loop -> [Hash Join -> [Seq Scan (Outer),
 895c6e8c1a30a094329d71cef3111fbd;Hash Join -> [Seq Scan (Outer), Hash (Inner)];2;3;2100
 f4cb205adfd108034c883c87871a6da8;Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)];3;4;1050
 3aab37bea1a884da206eb32f2c1ae5ba;Hash -> Seq Scan (Outer);2;2;1800
+3b44787560c64172b4501d3cae04fd1b;Aggregate -> Nested Loop (Outer);2;2;150
 c53c43965386239f53c764b9a60720dd;Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)];2;3;450
 ddb1e0cae6d1724880dfc741b2555585;Sort -> Aggregate -> Gather Merge (Outer) (Outer);3;3;300
 8a8c43c6e5296c8252f967d740368fb6;Aggregate -> Gather Merge -> Aggregate (Outer) (Outer);3;3;300
@@ -57,6 +58,10 @@ b149ff282ebc2d2b2e199afbf6e167c9;Aggregate -> Gather Merge -> Sort -> Hash Join 
 53f9aa07d73657d04951f9bbdd83fef8;Aggregate -> Gather Merge -> Sort -> Hash Join -> [Nested Loop (Outer), Hash (Inner)] (Outer) (Outer) (Outer);5;6;300
 98d4ff98a85ecf333b0de5d4f060d098;Gather Merge -> Sort -> Hash Join (Outer) (Outer);3;3;300
 3c6d80067ee1c8bfc0ff6ec2ffb502e3;Gather Merge -> Sort -> Hash Join -> [Nested Loop (Outer), Hash (Inner)] (Outer) (Outer);4;5;300
+7d4e78be851232c5a0cc7a0cf9df4593;Hash Join -> [Hash Join (Outer), Hash (Inner)];2;3;150
+30d6e09bdb501c499cb36578168e324f;Hash Join -> [Hash Join -> [Nested Loop (Outer), Hash (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)];3;6;150
+7a51ce50a8f4529f944f9df797fa04b8;Hash Join -> [Hash Join -> [Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)];4;9;150
+2873b8c3a1759afe345ffbdfc9bdcba7;Hash Join -> [Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)];3;6;150
 7524c54c59c38d4c931870520c264f63;Aggregate -> Hash Join (Outer);2;2;450
 422ae017fa27104671904e4f61703f9d;Aggregate -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer);3;4;450
 efde8b387936f6dfa72a80ba94a03a08;Aggregate -> Gather -> Aggregate -> Hash Join (Outer) (Outer) (Outer);4;4;300

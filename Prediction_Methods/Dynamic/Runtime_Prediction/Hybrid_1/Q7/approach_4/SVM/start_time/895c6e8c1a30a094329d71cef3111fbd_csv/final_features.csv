@@ -1,6 +1,0 @@
-feature;order
-Hash_Inner_rt1;1
-Hash_Inner_rt2;2
-Hash_Inner_st1;3
-Hash_Inner_st2;4
-SeqScan_Outer_reltuples;5

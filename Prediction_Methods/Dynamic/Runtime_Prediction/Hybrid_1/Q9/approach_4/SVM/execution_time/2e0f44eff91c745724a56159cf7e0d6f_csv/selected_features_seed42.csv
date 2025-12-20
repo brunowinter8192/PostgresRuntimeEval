@@ -1,4 +1,0 @@
-feature;order
-HashJoin_total_cost;1
-HashJoin_rt1;2
-NestedLoop_Outer_total_cost;3

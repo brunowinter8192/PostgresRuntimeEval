@@ -18,6 +18,7 @@ f4cb205adfd108034c883c87871a6da8;Hash Join -> [Seq Scan (Outer), Hash -> Seq Sca
 3aab37bea1a884da206eb32f2c1ae5ba;Hash -> Seq Scan (Outer);2;2;2100
 3b44787560c64172b4501d3cae04fd1b;Aggregate -> Nested Loop (Outer);2;2;281
 c53c43965386239f53c764b9a60720dd;Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)];2;3;600
+ddb1e0cae6d1724880dfc741b2555585;Sort -> Aggregate -> Gather Merge (Outer) (Outer);3;3;150
 8a8c43c6e5296c8252f967d740368fb6;Aggregate -> Gather Merge -> Aggregate (Outer) (Outer);3;3;300
 460af52cdecd0ba229546017c25fee3b;Aggregate -> Gather Merge -> Aggregate -> Sort (Outer) (Outer) (Outer);4;4;300
 46f37744a683caa98c7864be249e8d71;Gather Merge -> Aggregate (Outer);2;2;300

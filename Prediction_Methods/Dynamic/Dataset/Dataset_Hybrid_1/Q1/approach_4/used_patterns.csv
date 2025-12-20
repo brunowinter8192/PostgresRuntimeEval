@@ -1,3 +1,0 @@
-pattern_hash;pattern_string;pattern_length
-184f44dea835017982d512c08043f20c;Aggregate -> Seq Scan (Outer);2
-2724c08067c017e6455632f46231780c;Aggregate -> Gather Merge (Outer);2
