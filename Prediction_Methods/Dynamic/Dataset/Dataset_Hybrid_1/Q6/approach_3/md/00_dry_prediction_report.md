@@ -5,13 +5,12 @@
 - **Total Test Queries:** 150
 - **Unique Plan Structures:** 1
 - **Total Patterns Available:** 308
-- **Patterns Used:** 2
-- **Reduction:** 99.4%
+- **Patterns Used:** 1
+- **Reduction:** 99.7%
 
 ## Used Patterns
 
-- `184f44dea835...` Aggregate -> Seq Scan (Outer)
-- `4fc84c77ced1...` Aggregate -> Gather (Outer)
+- `a5f39f08c510...` Aggregate -> Gather -> Aggregate (Outer) (Outer)
 
 ## Query Trees
 
@@ -20,6 +19,6 @@
 ```
 Node 9901 (Aggregate) [PATTERN ROOT] - ROOT
   Node 9902 (Gather) [consumed]
-    Node 9903 (Aggregate) [PATTERN ROOT]
-      Node 9904 (Seq Scan) [consumed]
+    Node 9903 (Aggregate) [consumed]
+      Node 9904 (Seq Scan)
 ```

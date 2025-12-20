@@ -47,20 +47,20 @@ def process_template(task: tuple) -> None:
     export_md_report(template, used_patterns, pattern_info, plan_stats, len(df_test['query_file'].unique()), approach_dir)
 
 
-# Load pattern info from CSV
+# Load pattern info from CSV sorted by length descending
 def load_pattern_info(patterns_file: Path) -> tuple:
     df = pd.read_csv(patterns_file, delimiter=';')
-    pattern_info = {}
-    pattern_order = []
+    df_sorted = df.sort_values(['pattern_length', 'occurrence_count'], ascending=[False, False])
+    pattern_order = df_sorted['pattern_hash'].tolist()
 
-    for _, row in df.iterrows():
+    pattern_info = {}
+    for _, row in df_sorted.iterrows():
         pattern_hash = row['pattern_hash']
         pattern_info[pattern_hash] = {
             'pattern_string': row['pattern_string'],
-            'length': row['pattern_length'],
+            'length': int(row['pattern_length']),
             'operator_count': row.get('operator_count', row['pattern_length'])
         }
-        pattern_order.append(pattern_hash)
 
     return pattern_info, pattern_order
 

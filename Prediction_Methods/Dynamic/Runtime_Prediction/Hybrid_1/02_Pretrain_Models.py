@@ -100,6 +100,8 @@ def train_operators(template: str, output_dir: Path) -> None:
 def train_patterns(template: str, approach: str, pattern_dataset: Path, output_dir: Path) -> None:
     used_patterns_file = pattern_dataset / 'used_patterns.csv'
     used_patterns_df = pd.read_csv(used_patterns_file, delimiter=';')
+    if used_patterns_df.empty:
+        return
     used_hashes = set(used_patterns_df['pattern_hash'].tolist())
 
     patterns_dir = pattern_dataset / 'patterns'

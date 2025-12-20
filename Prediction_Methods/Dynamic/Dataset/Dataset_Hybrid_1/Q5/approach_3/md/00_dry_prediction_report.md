@@ -5,16 +5,13 @@
 - **Total Test Queries:** 150
 - **Unique Plan Structures:** 1
 - **Total Patterns Available:** 266
-- **Patterns Used:** 5
-- **Reduction:** 98.1%
+- **Patterns Used:** 2
+- **Reduction:** 99.2%
 
 ## Used Patterns
 
-- `2724c08067c0...` Aggregate -> Gather Merge (Outer)
-- `3aab37bea1a8...` Hash -> Seq Scan (Outer)
-- `3cfa90d7df3c...` Nested Loop -> [Hash Join (Outer), Index Scan (Inner)]
-- `3e2d5a00246f...` Sort -> Hash Join (Outer)
-- `895c6e8c1a30...` Hash Join -> [Seq Scan (Outer), Hash (Inner)]
+- `460af52cdecd...` Aggregate -> Gather Merge -> Aggregate -> Sort (Outer) (Outer) (Outer)
+- `a95bee4e9ae5...` Hash Join -> [Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer) (Inner)] (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)]
 
 ## Query Trees
 
@@ -24,21 +21,21 @@
 Node 6901 (Sort) - ROOT
   Node 6902 (Aggregate) [PATTERN ROOT]
     Node 6903 (Gather Merge) [consumed]
-      Node 6904 (Aggregate)
-        Node 6905 (Sort) [PATTERN ROOT]
-          Node 6906 (Hash Join) [consumed]
-            Node 6907 (Nested Loop) [PATTERN ROOT]
+      Node 6904 (Aggregate) [consumed]
+        Node 6905 (Sort) [consumed]
+          Node 6906 (Hash Join) [PATTERN ROOT]
+            Node 6907 (Nested Loop) [consumed]
               Node 6908 (Hash Join) [consumed]
-                Node 6909 (Seq Scan)
-                Node 6910 (Hash)
-                  Node 6911 (Hash Join) [PATTERN ROOT]
+                Node 6909 (Seq Scan) [consumed]
+                Node 6910 (Hash) [consumed]
+                  Node 6911 (Hash Join) [consumed]
                     Node 6912 (Seq Scan) [consumed]
                     Node 6913 (Hash) [consumed]
-                      Node 6914 (Hash Join) [PATTERN ROOT]
+                      Node 6914 (Hash Join) [consumed]
                         Node 6915 (Seq Scan) [consumed]
                         Node 6916 (Hash) [consumed]
-                          Node 6917 (Seq Scan)
+                          Node 6917 (Seq Scan) [consumed]
               Node 6918 (Index Scan) [consumed]
-            Node 6919 (Hash) [PATTERN ROOT]
+            Node 6919 (Hash) [consumed]
               Node 6920 (Seq Scan) [consumed]
 ```
