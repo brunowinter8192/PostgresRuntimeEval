@@ -155,6 +155,11 @@ def build_pattern_assignments(all_nodes: list, pattern_info: dict, pattern_order
 
             computed_hash = compute_pattern_hash(node, pattern_length)
             if computed_hash == pattern_hash:
+                # Single-Pattern-Constraint: Skip if this pattern would consume ALL nodes
+                would_consume_all = (len(consumed_nodes) == 0 and len(pattern_node_ids) == len(all_nodes))
+                if would_consume_all:
+                    continue
+
                 consumed_nodes.update(pattern_node_ids)
                 pattern_assignments[node.node_id] = pattern_hash
 
