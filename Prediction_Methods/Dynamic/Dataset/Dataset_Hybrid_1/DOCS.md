@@ -118,7 +118,11 @@ python3 00_Dry_Prediction.py
 python3 00_Dry_Prediction.py --templates Q1 Q3
 ```
 
-**Pattern Matching Logic:** Identisch zu `03_Predict_Queries/src/tree.py`:
+**Source:** `Hybrid_1/Runtime_Prediction/03_Predict_Queries/src/tree.py`
+- `build_pattern_assignments()` - Pattern matching logic
+- `compute_pattern_hash()` - Hash computation
+
+**Pattern Matching Logic:**
 - Patterns werden in Reihenfolge von `patterns_filtered.csv` gematcht
 - Subtree-Check: Pattern wird nur gematcht wenn KEIN Node im Subtree bereits konsumiert
 - Greedy: Frühere Patterns haben Priorität über spätere

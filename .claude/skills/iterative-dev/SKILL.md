@@ -58,6 +58,17 @@ This is NON-NEGOTIABLE. Skipping DOCS.md leads to: wrong paths, wrong arguments,
 - Critical information (paths, parameters, dependencies) MUST be verified firsthand
 - When in doubt: Read the file yourself
 
+**Prompting the Search Agent:**
+When delegating to search agent, be SPECIFIC:
+
+WRONG: "Find where features are defined"
+RIGHT: "Find where FEATURES constant is defined in Runtime_Prediction/"
+
+WRONG: "How does pattern selection work?"
+RIGHT: "Find the function that filters patterns by MRE threshold"
+
+The agent returns FILE/LINES/RELEVANT - you then read those specific lines to verify and understand.
+
 ### Communication
 
 | Channel | Purpose |
