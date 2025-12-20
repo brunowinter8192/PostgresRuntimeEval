@@ -129,6 +129,8 @@ python3 03_Predict.py --templates Q1 Q3 --approaches approach_3
 
 **Pattern Matching:** Uses `used_patterns.csv` for matching - same patterns that were trained.
 
+**Single-Pattern-Constraint:** If a pattern would consume ALL nodes as the first match, it is skipped and shorter patterns are tried. Ensures hybrid prediction (at least 1 pattern + 1 operator).
+
 ## A_01a - Query_Evaluation.py
 
 **Purpose:** Aggregate predictions from all 14 LOTO folds and calculate MRE.
