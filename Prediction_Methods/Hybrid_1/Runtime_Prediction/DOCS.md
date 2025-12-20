@@ -102,7 +102,7 @@ A_01c - Time_Analysis         [operator_dataset.csv → Operator range statistic
 - `{output-dir}/SVM/{target}/{Pattern}_csv/ffs_results_seed42.csv`
 - `{output-dir}/SVM/{target}/{Pattern}_csv/selected_features_seed42.csv`
 - `{output-dir}/SVM/{target}/{Pattern}_csv/final_features.csv`
-- `{output-dir}/SVM/two_step_evaluation_overview.csv`
+- `{output-dir}/SVM/Patterns/two_step_evaluation_overview.csv`
   - Columns: pattern, target, ffs_feature_count, missing_child_count, final_feature_count, mre_ffs, mre_final, mre_delta, features
 
 **Usage:**
@@ -135,7 +135,7 @@ python 01_Feature_Selection.py Baseline_SVM --output-dir Baseline_SVM
 - `{output-dir}/SVM/{target}/operators/{Operator}_csv/ffs_results_seed42.csv`
 - `{output-dir}/SVM/{target}/operators/{Operator}_csv/selected_features_seed42.csv`
 - `{output-dir}/SVM/{target}/operators/{Operator}_csv/final_features.csv`
-- `{output-dir}/SVM/operator_overview.csv`
+- `{output-dir}/SVM/Operators/operator_overview.csv`
 
 **Usage:**
 ```bash
@@ -168,7 +168,7 @@ python 01b_Feature_Selection_Operators.py ../Datasets/Baseline_SVM --output-dir 
 
 **Usage:**
 ```bash
-python 02_Train_Models.py Baseline_SVM SVM/two_step_evaluation_overview.csv --output-dir Baseline_SVM
+python 02_Train_Models.py Baseline_SVM SVM/Patterns/two_step_evaluation_overview.csv --output-dir Baseline_SVM
 ```
 
 **Variables:**
@@ -197,7 +197,7 @@ python 02_Train_Models.py Baseline_SVM SVM/two_step_evaluation_overview.csv --ou
 
 **Usage:**
 ```bash
-python 02b_Train_Models_Operators.py ../Datasets/Baseline_SVM Baseline_SVM/SVM/operator_overview.csv --output-dir Baseline_SVM
+python 02b_Train_Models_Operators.py ../Datasets/Baseline_SVM Baseline_SVM/SVM/Operators/operator_overview.csv --output-dir Baseline_SVM
 ```
 
 **Variables:**
