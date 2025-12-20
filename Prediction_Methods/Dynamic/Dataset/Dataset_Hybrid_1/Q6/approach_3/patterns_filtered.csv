@@ -5,6 +5,7 @@ f8231c4dd4c57d8a84a6ba0a53bdb42d;Aggregate -> Gather Merge -> Sort -> Aggregate 
 1691f6f0dbbde049f7f6b5d065d62f74;Gather Merge -> Sort (Outer);2;2;600
 715d5c92d04e9fdd3e607001ad32ee57;Gather Merge -> Sort -> Aggregate (Outer) (Outer);3;3;300
 1d35fb978b379d4a820897907e56ab7b;Sort -> Aggregate (Outer);2;2;1200
+184f44dea835017982d512c08043f20c;Aggregate -> Seq Scan (Outer);2;2;150
 e296a71f830144e9c017d1502a6dcc01;Limit -> Sort (Outer);2;2;450
 7bcfec2259bf8f077d86cc017740ebd6;Limit -> Sort -> Aggregate (Outer) (Outer);3;3;450
 25df29b5b69835d07c0d8b72b0e46a3b;Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer);4;4;300

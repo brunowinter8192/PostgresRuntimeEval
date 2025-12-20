@@ -1,8 +1,0 @@
-feature;order
-HashJoin_startup_cost;1
-HashJoin_rt1;2
-HashJoin_st1;3
-HashJoin_st2;4
-NestedLoop_Outer_st1;5
-HashJoin_rt2;6
-Hash_Inner_rt1;7

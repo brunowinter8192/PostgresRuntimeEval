@@ -1,5 +1,0 @@
-pattern_hash;pattern;target;ffs_feature_count;missing_child_count;final_feature_count;mre_ffs;mre_final;mre_delta;ffs_features;missing_child_features;final_features
-184f44dea835017982d512c08043f20c;Aggregate_->_Seq_Scan_Outer;execution_time;1;0;1;0.0135;0.0135;0.0000;Aggregate_rt1;;Aggregate_rt1
-184f44dea835017982d512c08043f20c;Aggregate_->_Seq_Scan_Outer;start_time;1;0;1;0.0135;0.0135;0.0000;Aggregate_rt1;;Aggregate_rt1
-4fc84c77ced18a46514c982f23f12deb;Aggregate_->_Gather_Outer;execution_time;2;3;5;0.0140;0.1131;0.0991;Aggregate_rt1, Gather_Outer_rt1;Gather_Outer_rt2, Gather_Outer_st1, Gather_Outer_st2;Aggregate_rt1, Gather_Outer_rt1, Gather_Outer_rt2, Gather_Outer_st1, Gather_Outer_st2
-4fc84c77ced18a46514c982f23f12deb;Aggregate_->_Gather_Outer;start_time;2;3;5;0.0138;0.1130;0.0992;Aggregate_rt1, Gather_Outer_rt1;Gather_Outer_rt2, Gather_Outer_st1, Gather_Outer_st2;Aggregate_rt1, Gather_Outer_rt1, Gather_Outer_rt2, Gather_Outer_st1, Gather_Outer_st2

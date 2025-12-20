@@ -9,7 +9,6 @@ TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13'
 
 APPROACHES = {
     'approach_3': {'length': 0, 'required_operators': False, 'no_passthrough': False, 'threshold': 150},
-    'approach_4': {'length': 0, 'required_operators': False, 'no_passthrough': True, 'threshold': 150},
 }
 
 SCRIPT_DIR = Path(__file__).resolve().parent

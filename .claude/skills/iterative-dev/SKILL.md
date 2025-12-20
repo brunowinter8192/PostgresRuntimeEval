@@ -20,22 +20,22 @@ Follow all native Plan Mode rules.
 - **Plan-File** (`.claude/plans/`) - Within a session (hours)
 - **TodoWrite** - Within an iteration (minutes)
 
-## Cycle
+## CRITICAL CYCLE
 
 ```
 PLAN (Plan Mode) -> IMPLEMENT -> EVALUATE -> IMPROVE -> CLOSING -> PLAN (new cycle)
 ```
 
-**Note:** Only PLAN uses Claude Code's native Plan Mode system prompt. EVALUATE, IMPROVE and CLOSING are skill-internal phases that happen after IMPLEMENT, regardless of system mode.
-
-**Phase Detection:** System message contains "Plan mode is active" → PLAN phase is active. This is the trigger to return to PLAN from any other phase.
-
-Every response starts with phase indicator:
+EVERY RESPONSE STARTS WITH A PHASE INDICATOR:
 - `📋 PLAN` - Planning phase (Plan Mode active)
 - `🔨 IMPLEMENT` - Implementation phase
 - `🔍 EVALUATE` - Report phase (not Plan Mode)
 - `🛠️ IMPROVE` - Improvements phase (not Plan Mode)
 - `✅ CLOSING` - Cycle completion (not Plan Mode)
+
+**Note:** Only PLAN uses Claude Code's native Plan Mode system prompt. EVALUATE, IMPROVE and CLOSING are skill-internal phases that happen after IMPLEMENT, regardless of system mode. 
+
+**Phase Detection:** System message contains "Plan mode is active" → PLAN phase is active. This is the trigger to return to PLAN from any other phase.
 
 ---
 
@@ -81,9 +81,9 @@ On skill activation ALWAYS:
 
 ### Plan File Management
 
-**Core Principle:** Build the plan iteratively. New plan ALWAYS overwrites old plan.
+**Core Principle:** Build the plan ITERATIVELY.
 
-- **CRITICAL:** When starting a new plan, OVERWRITE the old plan file completely
+- **CRITICAL:**
 - After each chat exchange: UPDATE the plan file
 - Never write the complete plan at once
 - Plan grows organically through conversation
@@ -104,6 +104,8 @@ If the planning session requires module execution to refine the plan:
 ---
 
 ## Implementation Phase (IMPLEMENT)
+
+- execute whats stated in the PLAN file
 
 ### After IMPLEMENTATION
 
@@ -130,7 +132,7 @@ After completing plan edits, BEFORE transition to EVALUATE:
 
 ## Evaluation Phase (EVALUATE)
 
-**Purpose:** Evaluate the PLAN→IMPLEMENT iteration (the process), NOT the content.
+**Purpose:** Evaluate the PLAN→IMPLEMENT iteration - both CONTENT and PROCESS.
 
 **CRITICAL: NO EDITS IN EVALUATE.** Only collect and report. All edits happen in IMPROVE.
 
@@ -139,19 +141,38 @@ After completing plan edits, BEFORE transition to EVALUATE:
 - Making edits or fixes (that's IMPROVE)
 
 **YES:**
-- How was the Plan Phase, did user and you were on the same page, were the user precise, did you ask questions
-- How was the execution, were there flaws in the execution, misexecuted commands, unclear plan file
-
+- Content quality: Does the code/docs work correctly?
+- Process quality: Was the planning efficient?
 
 Claude writes a report covering:
 
-- **Execution:** What matched the plan, what deviated
-- **Process:** What could have been planned better
-- **Documentation:** Does DOCS.md need updating? (new scripts, changed behavior, new parameters)
-- **Improvements:** What can be improved? With reasoning. ONLY LIST, do NOT implement yet.
-  - Critical: Must fix (breaks functionality, wrong behavior)
-  - Important: Should fix (code quality, maintainability)
-  - Optional: Nice to have (style, minor optimizations)
+### 1. Execution
+- What matched the plan, what deviated
+
+### 2. Process Reflection (CRITICAL)
+Explicitly analyze the planning phase:
+- **Efficiency:** Did we iterate too much? Could we have reached the plan faster?
+- **Questions:** Were my questions focused or scattered?
+- **Assumptions:** Did I make wrong assumptions that needed correction?
+- **User Clarity:** Was the user's intent clear from the start?
+
+**Anti-Pattern:** Long back-and-forth in PLAN before reaching a stable plan. If this happened, identify WHY and how to prevent it next time.
+
+### 3. Documentation
+- Does DOCS.md need updating? (new scripts, changed behavior, new parameters)
+
+### 4. Improvements
+Two categories - BOTH are important:
+
+**Content Improvements (Code/Docs):**
+- Critical: Must fix (breaks functionality, wrong behavior)
+- Important: Should fix (code quality, maintainability)
+- Optional: Nice to have (style, minor optimizations)
+
+**Process Improvements (Workflow):**
+- What would make the next PLAN phase more efficient?
+- Which questions should I ask earlier?
+- Which assumptions should I verify before proposing?
 
 **COMMIT (CRITICAL):** After the report, check: Were edits made during IMPLEMENT? → Commit immediately.
 

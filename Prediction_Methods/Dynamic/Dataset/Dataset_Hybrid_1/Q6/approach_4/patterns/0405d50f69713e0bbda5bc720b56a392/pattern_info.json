@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "0405d50f69713e0bbda5bc720b56a392",
-  "pattern_string": "Aggregate -> Gather -> Aggregate -> Nested Loop (Outer) (Outer) (Outer)",
-  "folder_name": "Aggregate_->_Gather_->_Aggregate_->_Nested_Loop_Outer_Outer_Outer",
-  "pattern_length": 4,
-  "occurrence_count": 131
-}

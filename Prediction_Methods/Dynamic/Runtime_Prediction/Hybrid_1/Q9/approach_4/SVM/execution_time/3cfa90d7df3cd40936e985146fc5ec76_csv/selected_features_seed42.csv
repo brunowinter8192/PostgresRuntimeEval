@@ -1,4 +1,0 @@
-feature;order
-IndexScan_Inner_total_cost;1
-HashJoin_Outer_st2;2
-NestedLoop_st2;3

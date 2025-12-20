@@ -1,7 +1,0 @@
-feature;order
-HashJoin_sel;1
-HashJoin_st1;2
-SeqScan_Outer_sel;3
-SeqScan_Outer_total_cost;4
-HashJoin_nt;5
-SeqScan_Outer_plan_width;6
