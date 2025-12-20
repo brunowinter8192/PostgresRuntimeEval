@@ -11,6 +11,12 @@ SVM_PARAMS = {
     'cache_size': 500
 }
 
+# Online Selection Parameters
+EPSILON = 0.005  # 0.5% minimum improvement
+MIN_ERROR_THRESHOLD = 0.1  # 10% - skip patterns with avg_mre below
+STRATEGIES = ['error', 'size', 'frequency']
+DEFAULT_STRATEGY = 'error'
+
 # Operator Feature-Set (10 base features)
 OPERATOR_FEATURES = [
     'np', 'nt', 'nt1', 'nt2', 'sel',
@@ -22,6 +28,19 @@ OPERATOR_FEATURES = [
 CHILD_FEATURES_TIMING = ['st1', 'rt1', 'st2', 'rt2']
 CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']
 CHILD_FEATURES = CHILD_FEATURES_TIMING + CHILD_FEATURES_STRUCTURAL
+
+# Pattern Feature-Set (14 features, prefixed per operator in pattern)
+PATTERN_FEATURES = [
+    'nt', 'nt1', 'nt2',
+    'np', 'plan_width',
+    'rt1', 'rt2', 'st1', 'st2',
+    'sel', 'reltuples',
+    'parallel_workers',
+    'startup_cost', 'total_cost'
+]
+
+# Target columns
+OPERATOR_TARGETS = ['actual_startup_time', 'actual_total_time']
 
 # Target columns
 TARGET_NAME_MAP = {
@@ -36,6 +55,7 @@ METADATA_COLUMNS = [
     'query_file', 'node_id', 'node_type',
     'depth', 'parent_relationship', 'subplan_name', 'template'
 ]
+OPERATOR_METADATA = METADATA_COLUMNS  # Alias for Online_1 compatibility
 
 # Leaf operators (no child timing features)
 LEAF_OPERATORS = ['Seq Scan', 'Index Scan', 'Index Only Scan']
@@ -71,3 +91,13 @@ def get_operator_features(node_type: str) -> list:
 # Convert operator CSV name to folder name format
 def csv_name_to_folder_name(csv_name: str) -> str:
     return OPERATOR_CSV_TO_FOLDER.get(csv_name, csv_name.replace(' ', '_'))
+
+
+# Get pattern features with prefix
+def get_pattern_features_with_prefix(prefix: str, is_leaf: bool) -> list:
+    features = []
+    for f in PATTERN_FEATURES:
+        if is_leaf and f in CHILD_FEATURES_TIMING:
+            continue
+        features.append(f'{prefix}{f}')
+    return features
