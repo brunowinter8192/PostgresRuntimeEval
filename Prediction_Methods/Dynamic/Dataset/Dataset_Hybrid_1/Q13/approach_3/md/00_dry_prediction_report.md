@@ -11,7 +11,7 @@
 ## Used Patterns
 
 - `1d35fb978b37...` Sort -> Aggregate (Outer)
-- `895c6e8c1a30...` Hash Join -> [Seq Scan (Outer), Hash (Inner)]
+- `422ae017fa27...` Aggregate -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer)
 
 ## Query Trees
 
@@ -20,8 +20,8 @@
 ```
 Node 25370 (Sort) [PATTERN ROOT] - ROOT
   Node 25371 (Aggregate) [consumed]
-    Node 25372 (Aggregate)
-      Node 25373 (Hash Join) [PATTERN ROOT]
+    Node 25372 (Aggregate) [PATTERN ROOT]
+      Node 25373 (Hash Join) [consumed]
         Node 25374 (Seq Scan) [consumed]
         Node 25375 (Hash) [consumed]
           Node 25376 (Index Only Scan)

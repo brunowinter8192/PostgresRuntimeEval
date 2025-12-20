@@ -5,14 +5,13 @@
 - **Total Test Queries:** 150
 - **Unique Plan Structures:** 1
 - **Total Patterns Available:** 250
-- **Patterns Used:** 3
-- **Reduction:** 98.8%
+- **Patterns Used:** 2
+- **Reduction:** 99.2%
 
 ## Used Patterns
 
-- `2724c08067c0...` Aggregate -> Gather Merge (Outer)
+- `7bcfec2259bf...` Limit -> Sort -> Aggregate (Outer) (Outer)
 - `895c6e8c1a30...` Hash Join -> [Seq Scan (Outer), Hash (Inner)]
-- `e296a71f8301...` Limit -> Sort (Outer)
 
 ## Query Trees
 
@@ -21,8 +20,8 @@
 ```
 Node 28820 (Limit) [PATTERN ROOT] - ROOT
   Node 28821 (Sort) [consumed]
-    Node 28822 (Aggregate) [PATTERN ROOT]
-      Node 28823 (Gather Merge) [consumed]
+    Node 28822 (Aggregate) [consumed]
+      Node 28823 (Gather Merge)
         Node 28824 (Incremental Sort)
           Node 28825 (Nested Loop)
             Node 28826 (Merge Join)

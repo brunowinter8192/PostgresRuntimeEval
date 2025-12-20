@@ -1,5 +1,4 @@
 pattern_hash;pattern_string;pattern_length
-2724c08067c017e6455632f46231780c;Aggregate -> Gather Merge (Outer);2
-3cfa90d7df3cd40936e985146fc5ec76;Nested Loop -> [Hash Join (Outer), Index Scan (Inner)];2
-3e2d5a00246ff56483c16003698d4917;Sort -> Hash Join (Outer);2
-895c6e8c1a30a094329d71cef3111fbd;Hash Join -> [Seq Scan (Outer), Hash (Inner)];2
+9d0e407c0aa5052a4246612a4a2e0ad2;Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer) (Inner)] (Outer), Index Scan (Inner)];5
+a54055cece1adb617abae41ca3244142;Hash -> Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer);4
+b149ff282ebc2d2b2e199afbf6e167c9;Aggregate -> Gather Merge -> Sort -> Hash Join (Outer) (Outer) (Outer);4
