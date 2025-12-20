@@ -29,13 +29,15 @@ PLAN (Plan Mode) -> IMPLEMENT -> EVALUATE -> IMPROVE -> CLOSING -> PLAN (new cyc
 EVERY RESPONSE STARTS WITH A PHASE INDICATOR:
 - `📋 PLAN` - Planning phase (Plan Mode active)
 - `🔨 IMPLEMENT` - Implementation phase
-- `🔍 EVALUATE` - Report phase (not Plan Mode)
-- `🛠️ IMPROVE` - Improvements phase (not Plan Mode)
-- `✅ CLOSING` - Cycle completion (not Plan Mode)
+- `🔍 EVALUATE` - Report phase (Plan Mode active - read-only enforced)
+- `🛠️ IMPROVE` - Improvements phase
+- `✅ CLOSING` - Cycle completion
 
-**Note:** Only PLAN uses Claude Code's native Plan Mode system prompt. EVALUATE, IMPROVE and CLOSING are skill-internal phases that happen after IMPLEMENT, regardless of system mode. 
+**Plan Mode Usage:**
+- PLAN: Native Plan Mode for implementation planning
+- EVALUATE: Plan Mode for read-only protection (prevents accidental edits)
 
-**Phase Detection:** System message contains "Plan mode is active" → PLAN phase is active. This is the trigger to return to PLAN from any other phase.
+**Phase Detection:** System message contains "Plan mode is active" → Check context to determine if PLAN or EVALUATE.
 
 ---
 
@@ -145,27 +147,20 @@ After completing plan edits, BEFORE transition to EVALUATE:
 
 **Purpose:** Evaluate the PLAN→IMPLEMENT iteration - both CONTENT and PROCESS.
 
-**ABSOLUTE RULE: ZERO EDITS IN EVALUATE.**
+### Phase Entry
 
-EVALUATE = COLLECT improvements
-IMPROVE = EXECUTE improvements
+1. Ask user: "Activate Plan Mode for EVALUATE (`/plan`)"
+2. Wait for Plan Mode system message
+3. Proceed with evaluation report (read-only enforced by Plan Mode)
 
-**FORBIDDEN in EVALUATE:**
-- ANY file edits (code, docs, config)
-- ANY tool calls that modify files (Edit, Write, Bash with side effects)
-- Executing user remarks immediately
+### Read-Only Enforcement
 
-**ALLOWED in EVALUATE:**
+Plan Mode prevents edits. Only allowed:
 - Read tools (Read, Glob, Grep)
+- Writing to plan file (for improvement collection)
 - Git commit (for IMPLEMENT changes only)
-- Collecting improvements into a list
-- Adding user remarks to the improvement list
 
-**When user gives a remark in EVALUATE:**
-1. ADD it to the improvement list
-2. DO NOT execute it
-3. Ask: "Added to improvements. Any more remarks?"
-4. Only execute in IMPROVE phase
+### Report
 
 Claude writes a report covering:
 
@@ -199,31 +194,29 @@ Two categories - BOTH are important:
 
 **COMMIT (CRITICAL):** After the report, check: Were edits made during IMPLEMENT? → Commit immediately.
 
+### Collecting Improvements
+
 After report + commit:
 1. Ask: "Any remarks?"
-2. Collect additional user feedback into improvement list
-3. Ask: "Proceed to IMPROVE?"
+2. User gives remark → Write to plan file under "## Improvements"
+3. Ask: "More remarks?"
+4. Repeat until user says "done" or "improve"
 
-**CRITICAL:** Wait for EXPLICIT confirmation (e.g., "improve", "proceed", "yes"). User adding remarks is NOT confirmation. Only enter IMPROVE when user explicitly confirms the phase transition.
+### Phase Exit
 
-User confirms → next response starts with 🛠️ IMPROVE
+1. Ensure all improvements are written to plan file
+2. Call ExitPlanMode
+3. Next response starts with 🛠️ IMPROVE
 
 ---
 
 ## Improve Phase (IMPROVE)
 
-**Purpose:** Execute ALL improvements collected in EVALUATE.
-
-**THIS is where edits happen. NOT in EVALUATE.**
-
-Improvement sources:
-- Report findings (DOCS.md updates, code fixes)
-- User remarks collected during EVALUATE
-- Process improvements (CLAUDE.md, skill files)
+**Purpose:** Execute improvements from plan file (like IMPLEMENT, but for improvements).
 
 **Workflow:**
-1. List all collected improvements
-2. Execute each one (Edit, Write, Bash)
+1. Read plan file "## Improvements" section
+2. Execute each improvement (Edit, Write, Bash)
 3. Commit changes
 4. Ask: "Proceed to CLOSING?"
 
