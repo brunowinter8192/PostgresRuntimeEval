@@ -1,5 +1,6 @@
 pattern_hash;usage_count;node_types
 f8231c4dd4c57d8a84a6ba0a53bdb42d;60;Aggregate
+310134da512a875c467ef0794352611a;60;Aggregate
 c53c43965386239f53c764b9a60720dd;60;Nested Loop
 460af52cdecd0ba229546017c25fee3b;60;Aggregate
 4fc84c77ced18a46514c982f23f12deb;60;Aggregate
