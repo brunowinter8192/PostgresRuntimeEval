@@ -537,6 +537,20 @@ bd comment <id> "..."  # Document state for next session
 
 **Issue naming:** `Thesis_Final-<id>` (e.g., `Thesis_Final-q18`)
 
+### Bead Path Format
+
+**CRITICAL:** File paths in beads MUST be relative to `Thesis_Final/` (project root).
+
+```markdown
+WRONG:
+Hybrid_1/Runtime_Prediction/03_Predict.py
+
+RIGHT:
+Prediction_Methods/Hybrid_1/Runtime_Prediction/03_Predict.py
+```
+
+**Why:** Incomplete paths cause failed file reads and require manual path discovery with `find`.
+
 ### Quick Reference
 
 ```bash
