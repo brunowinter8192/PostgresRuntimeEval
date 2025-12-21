@@ -106,9 +106,16 @@ class ReportBuilder:
         self.lines.append('| Hash | Pattern String | Length | Occ | Avg MRE | Error Score |')
         self.lines.append('|------|----------------|--------|-----|---------|-------------|')
 
-        for r in ranking:
-            pattern_str = r['pattern_string'][:40] + '...' if len(r['pattern_string']) > 40 else r['pattern_string']
-            self.lines.append(f'| {r["pattern_hash"][:8]} | {pattern_str} | {r["pattern_length"]} | {r["occurrence_count"]} | {r["avg_mre"]*100:.1f}% | {r["error_score"]:.4f} |')
+        ranking_lookup = {r['pattern_hash']: r for r in ranking}
+
+        for pattern_hash, pattern_info in patterns.items():
+            pattern_str = pattern_info['pattern_string'][:40] + '...' if len(pattern_info['pattern_string']) > 40 else pattern_info['pattern_string']
+
+            if pattern_hash in ranking_lookup:
+                r = ranking_lookup[pattern_hash]
+                self.lines.append(f'| {pattern_hash[:8]} | {pattern_str} | {r["pattern_length"]} | {r["occurrence_count"]} | {r["avg_mre"]*100:.1f}% | {r["error_score"]:.4f} |')
+            else:
+                self.lines.append(f'| {pattern_hash[:8]} | {pattern_str} | {pattern_info["pattern_length"]} | 0 | - | - |')
 
         self.lines.append('')
         self.lines.append('**Legend:**')
