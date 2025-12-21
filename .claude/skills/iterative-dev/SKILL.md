@@ -287,7 +287,7 @@ After report:
 **Workflow:**
 1. Read plan file "## Improvements" section
 2. Execute each improvement (Edit, Write, Bash)
-3. Commit changes
+3. COMITT CHANGES, COMITT CHANGES
 4. Ask: "Proceed to CLOSING?"
 
 User confirms → next response starts with ✅ CLOSING
