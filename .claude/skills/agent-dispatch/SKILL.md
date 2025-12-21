@@ -39,9 +39,31 @@ description: (project)
 - For CSV value search: "Use awk for numeric comparison, not grep"
 - For large result sets: "Count matches first before printing"
 
+## When to Use Agent
+
+**Rule of thumb: >20k token exploration → Agent**
+
+Use agent when:
+- Searching multiple files (>3 files)
+- Broad search scope (entire directory, pattern search)
+- Comparing files (Train vs Test, Static vs Dynamic)
+- Analyzing CSV values (ranges, distributions)
+
+Do NOT use agent when:
+- Single file read (known path)
+- Targeted grep (pattern + scope known)
+- Quick verification (does file X exist?)
+
 ## After Agent Returns
 
-ALWAYS verify agent output:
-1. Read the FILE at LINES
+**Agent = Scout, not Authority**
+
+Agent provides:
+- WHERE: File + lines
+- HOW: Its interpretation
+
+You are responsible for:
+1. ALWAYS verify critical logic yourself (Read FILE at LINES)
 2. Confirm RELEVANT matches your need
-3. Then report to user
+3. Only report to user after verification
+4. When in doubt: check yourself instead of trusting agent output

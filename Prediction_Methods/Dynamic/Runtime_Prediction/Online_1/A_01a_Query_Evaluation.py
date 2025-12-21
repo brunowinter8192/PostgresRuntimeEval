@@ -21,7 +21,7 @@ def evaluate_predictions_workflow(predictions_dir, output_dir):
 # Load all predictions.csv files from nested query directories
 def load_all_predictions(predictions_dir):
     predictions_path = Path(predictions_dir)
-    csv_files = list(predictions_path.glob('*/csv/predictions.csv'))
+    csv_files = list(predictions_path.glob('*/*/csv/predictions.csv'))
 
     dfs = []
     for csv_file in csv_files:
@@ -79,7 +79,7 @@ def export_metrics(overall_mre, template_stats, output_dir):
     overall_file = output_path / 'overall_mre.csv'
     overall_df.to_csv(overall_file, index=False, sep=';')
 
-    template_file = output_path / 'template_mre.csv'
+    template_file = output_path / 'loto_mre.csv'
     template_stats.to_csv(template_file, sep=';')
 
 
@@ -104,7 +104,7 @@ def create_mre_plot(template_stats):
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
-    ax.set_title('Online_1: Query-Level Prediction Error by Template',
+    ax.set_title('Dynamic Online_1 (LOTO): Query-Level Prediction Error by Template',
                  fontsize=15, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, rotation=45, ha='right', fontsize=11)

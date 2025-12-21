@@ -174,8 +174,8 @@ def predict_operators_bottom_up(query_ops, predictions, children_map, df_overvie
         model_exec = load_model(models_dir, node_type, 'execution_time')
         model_start = load_model(models_dir, node_type, 'start_time')
 
-        pred_rt = model_exec.predict(X_exec)[0]
-        pred_st = model_start.predict(X_start)[0]
+        pred_rt = max(0.0, model_exec.predict(X_exec)[0])
+        pred_st = max(0.0, model_start.predict(X_start)[0])
 
         predictions[node_id] = {
             'predicted_startup_time': pred_st,
@@ -252,8 +252,8 @@ def predict_operators_bottom_up(query_ops, predictions, children_map, df_overvie
             model_exec = load_model(models_dir, node_type, 'execution_time')
             model_start = load_model(models_dir, node_type, 'start_time')
 
-            pred_rt = model_exec.predict(X_exec)[0]
-            pred_st = model_start.predict(X_start)[0]
+            pred_rt = max(0.0, model_exec.predict(X_exec)[0])
+            pred_st = max(0.0, model_start.predict(X_start)[0])
 
             predictions[node_id] = {
                 'predicted_startup_time': pred_st,
