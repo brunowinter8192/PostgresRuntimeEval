@@ -158,6 +158,36 @@ After each cycle, check for recurring commands that could be added to `justfile`
 
 **Goal:** Reduce token usage on both input (shorter commands) and output (fewer retries from typos).
 
+### Justfile Evaluation
+
+Beyond adding new recipes, evaluate existing ones:
+
+**Questions:**
+- Did I use justfile commands or fall back to raw commands?
+- Are there recipes I forgot existed?
+- Should existing recipes be modified?
+
+**Improvement Candidates:**
+- Raw commands I used instead of justfile equivalents
+- Recipes with wrong defaults or missing flags
+
+### Hooks Evaluation
+
+Evaluate current hooks for improvements:
+
+**Questions:**
+- Did a hook block something it shouldn't have?
+- Did a hook allow something it should have blocked?
+- Is output silencing helping or hiding problems?
+- Should a recurring command pattern become a hook rule?
+
+**Improvement Candidates:**
+- Commands that failed due to missing hook rules
+- Verbose output that polluted context
+- Security patterns that should be blocked
+
+**Reference:** `~/.claude/scripts/README.md`
+
 ### Report
 
 Claude writes a report covering:
