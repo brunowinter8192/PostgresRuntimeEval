@@ -102,6 +102,14 @@ ACTION: <Add to DOCS.md | Create DOCS.md | Needs cleanup first>
 - `*.csv`, `*.png`, `*.jpg` = data files, exclude from exploration
 - `mapping_config.py` = check for constants before grepping code
 
+### DIRECTORY GUARD
+
+Before using Read tool, verify target is FILE not directory.
+
+1. **If unsure:** Run `ls -F <path>` first (directories end with `/`)
+2. **If EISDIR error:** Immediately switch to `ls` or `find`
+3. **NEVER** assume a path is a file - verify first
+
 ### DATA INSPECTION RULES
 
 When searching values in data files (CSVs, logs):
