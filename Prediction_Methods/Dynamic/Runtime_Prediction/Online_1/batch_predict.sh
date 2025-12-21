@@ -1,5 +1,5 @@
 #!/bin/bash
-HYBRID2_DIR="../../Dataset/Dataset_Hybrid_2/Training_Training"
+HYBRID2_DIR="../../Dataset/Dataset_Hybrid_2"
 OPERATOR_DIR="../../Dataset/Dataset_Operator"
 OUTPUT_DIR="./Evaluation"
 LOG_FILE="$OUTPUT_DIR/progress.log"

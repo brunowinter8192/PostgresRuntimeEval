@@ -1,2 +1,0 @@
-pattern_hash;pattern_string;mre;mre_pct;status
-52c5ec816a9d28d4af954e0780cc226d;Gather Merge -> Sort -> Aggregate -> Seq Scan (Outer) (Outer) (Outer);0.0575441406213864;5.75441406213864;REJECTED

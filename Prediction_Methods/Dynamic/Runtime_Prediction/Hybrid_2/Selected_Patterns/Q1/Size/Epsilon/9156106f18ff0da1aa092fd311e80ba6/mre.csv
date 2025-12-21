@@ -1,2 +1,0 @@
-pattern_hash;pattern_string;mre;mre_pct;status
-9156106f18ff0da1aa092fd311e80ba6;Gather Merge -> Incremental Sort -> Nested Loop (Outer) (Outer);0.1497280736195663;14.97280736195663;REJECTED

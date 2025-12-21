@@ -1,2 +1,0 @@
-pattern_hash;pattern_string;mre;mre_pct;status
-20547233d974f6cfe8d1ad975652fd7e;Aggregate -> Gather Merge -> Incremental Sort (Outer) (Outer);0.1234219550362692;12.34219550362692;REJECTED

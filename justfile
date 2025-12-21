@@ -25,4 +25,18 @@ commit-scope scope msg:
 log n="5":
     git log --oneline -{{n}}
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# BEADS
+# ═══════════════════════════════════════════════════════════════════════════════
 
+# List open beads
+beads:
+    bd list -s open
+
+# Create new bead
+bead-new title:
+    bd create "{{title}}" --label task --priority P2
+
+# Add comment to bead
+bead-comment id msg:
+    bd comment {{id}} "{{msg}}"
