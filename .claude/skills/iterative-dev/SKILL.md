@@ -181,7 +181,6 @@ Claude writes a report that OVERWRITES the plan file:
 #### 1. Execution
 
 - What matched the Plan File, what deviated from the Plan File
-- Does DOCS.md need updating? (new scripts, changed behavior, new parameters)
 
 #### 2. Process Reflection
 
@@ -225,6 +224,25 @@ Every assumption should be either:
 1. Verified by reading code/docs
 2. Explicitly confirmed with user
 3. Documented as "ASSUMPTION: ..." in plan file
+
+##### 2.3 Algorithm Investigation
+
+When investigating WHY something behaves a certain way (selection logic, thresholds, metrics):
+
+1. **ASK FOR SOURCE CODE IMMEDIATELY**
+   - "Where is [metric] calculated?"
+   - "Which file contains the selection logic?"
+
+2. **NEVER assume metric definitions**
+   - avg_mre, error_score, delta - these are algorithm-specific
+   - Read the calculation, don't infer from name
+
+3. **Trace the data flow**
+   - What data goes in? (Training_Test? Test?)
+   - When is it calculated? (Once? Per iteration?)
+   - What triggers recalculation?
+
+**Red Flag:** Making hypothesis about algorithm without reading source = hallucination risk
 
 #### 3. Hooks Evaluation
 
@@ -285,17 +303,39 @@ Identify situations where agent should have been used but wasn't:
 
 Improvements are based on the execution and process reflection.
 
-Two categories - BOTH are very important:
+##### 5.1 Content Improvements (Code/Docs)
 
-**Content Improvements (Code/Docs):**
-- Critical: Must fix (breaks functionality, wrong behavior)
-- Important: Should fix (code quality, maintainability)
-- Optional: Nice to have (style, minor optimizations)
+- **Critical:** Must fix (breaks functionality, wrong behavior)
+- **Important:** Should fix (code quality, maintainability)
+- **Optional:** Nice to have (style, minor optimizations)
 
-**Process Improvements (Workflow):**
-- What would make the next PLAN phase more efficient?
-- Which questions should I ask earlier?
-- Which assumptions should I verify before proposing?
+##### 5.2 Process Improvements
+
+Same 3 categories, but graded by OUTCOME:
+
+- **Critical:** Process issues that WOULD HAVE caused critical code issues
+  - Example: Skipping path verification → wrong file edited
+  - Example: Not reading DOCS.md → wrong arguments used
+
+- **Important:** Process issues that caused detours but correct outcome
+  - Context pollution (too much irrelevant output)
+  - Off-the-rails analysis (wrong hypothesis, user had to correct)
+  - Circles (repeated attempts at same thing)
+  - Example: Wrong assumption about avg_mre → user corrected → correct result with delay
+
+- **Optional:** Minor process inefficiencies
+  - Could have asked better questions
+  - Could have parallelized better
+
+**Key insight:** The OUTCOME determines severity. Wrong process + correct result = Important (not Critical).
+
+##### 5.3 DOCS.md Check (MANDATORY)
+
+**ALWAYS explicitly answer:**
+- Does DOCS.md need updating? YES/NO
+- If YES: What sections? (new scripts, changed parameters, new outputs)
+
+Clean docs are CRITICAL. Every new script, changed behavior, or new parameter MUST be reflected.
 
 #### 6. Open Items
 
