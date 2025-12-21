@@ -74,3 +74,24 @@ The original script iterates over a fixed `OPERATORS_FOLDER_NAMES` list and cras
 - `ffs_config.py` from `/Operator_Level/Runtime_Prediction/`
 
 Both paths must be in sys.path for imports to work.
+
+---
+
+## A_01a - Query_Evaluation.py
+
+**Purpose:** Evaluate LOTO predictions and create MRE report with bar plot.
+
+**Inputs:**
+- Predictions: `Qx/predictions.csv` (from 00_Batch_Workflow.py)
+
+**Outputs:**
+- `{output-dir}/overall_mre.csv` - Overall MRE across all templates
+- `{output-dir}/loto_mre.csv` - MRE per LOTO template
+- `{output-dir}/loto_mre_plot.png` - Bar plot of MRE by template
+
+**Usage:**
+```bash
+python3 A_01a_Query_Evaluation.py --output-dir Evaluation
+```
+
+**Note:** Q13 and Q18 are excluded from results because they contain operators that don't exist in any other template.
