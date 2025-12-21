@@ -299,17 +299,42 @@ Identify situations where agent should have been used but wasn't:
 - Verification after agent output
 - Single targeted grep/glob
 
-#### 5. Improvements
+#### 5. Beads Evaluation
+
+Run `bd list` to check open beads, then evaluate:
+
+##### 5.1 New Beads
+
+Discovered work that should be tracked cross-session?
+- List candidates with proposed title/type
+
+##### 5.2 Update Existing Beads
+
+For each open bead worked on this session:
+- Progress made?
+- New blockers/dependencies?
+- Comments to add?
+
+##### 5.3 Close Completed Beads
+
+For each bead completed this session:
+- Mark for closing with reason
+
+**Format:** `<id>: <reason>`
+
+Example: `Thesis_Final-e0m: Fixed MIN_ERROR_THRESHOLD by adjusting selection logic in 10_Pattern_Selection.py`
+
+#### 6. Improvements
 
 Improvements are based on the execution and process reflection.
 
-##### 5.1 Content Improvements (Code/Docs)
+##### 6.1 Content Improvements (Code/Docs)
 
 - **Critical:** Must fix (breaks functionality, wrong behavior)
 - **Important:** Should fix (code quality, maintainability)
 - **Optional:** Nice to have (style, minor optimizations)
 
-##### 5.2 Process Improvements
+##### 6.2 Process Improvements
 
 Same 3 categories, but graded by OUTCOME:
 
@@ -329,7 +354,7 @@ Same 3 categories, but graded by OUTCOME:
 
 **Key insight:** The OUTCOME determines severity. Wrong process + correct result = Important (not Critical).
 
-##### 5.3 DOCS.md Check (MANDATORY)
+##### 6.3 DOCS.md Check (MANDATORY)
 
 **ALWAYS explicitly answer:**
 - Does DOCS.md need updating? YES/NO
@@ -337,7 +362,7 @@ Same 3 categories, but graded by OUTCOME:
 
 Clean docs are CRITICAL. Every new script, changed behavior, or new parameter MUST be reflected.
 
-#### 6. Open Items
+#### 7. Open Items
 
 List any tasks from the original plan that were NOT executed.
 - These will be handled in CLOSING phase (create Bead or discard)
@@ -365,7 +390,10 @@ After report:
 **Workflow:**
 1. Read plan file "## Improvements" section
 2. Execute each improvement (Edit, Write, Bash)
-3. COMITT CHANGES, COMITT CHANGES
+3. Handle Beads (from RECAP evaluation):
+   - Create new beads: `bd create --title "..." --type=...`
+   - Update beads: `bd comment <id> "..."`
+   - Close beads: `bd close <id> --reason="..."`
 4. Ask: "Proceed to CLOSING?"
 
 User confirms → next response starts with ✅ CLOSING
@@ -377,9 +405,13 @@ User confirms → next response starts with ✅ CLOSING
 Only enter when user confirms (e.g., "proceed", "close", "done").
 
 1. Update DOCS.md (if needed)
-2. Handle open items:
+2. Handle open items (non-beads):
    - For each open item, ASK: "Should [Item X] go to Beads? (cross-session)"
-   - User confirms → `bd create --title "..." --body "..."`
+   - User confirms → handled in next cycle's IMPROVE
    - User declines → Keep in plan file for next iteration
    - If no open items remain: clear plan file (overwrite with single space)
-3. Ask: "New cycle or done for now?"
+3. Finalize:
+   - `bd sync`
+   - `git add . && git commit`
+   - `git push`
+4. Ask: "New cycle or done for now?"

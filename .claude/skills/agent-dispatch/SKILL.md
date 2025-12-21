@@ -81,14 +81,21 @@ Parallel agents are only efficient with **disjoint datasets**.
 
 ## After Agent Returns
 
-**Agent = Scout, not Authority**
+**CRITICAL: Agent = Scout, not Authority**
 
 Agent provides:
 - WHERE: File + lines
 - HOW: Its interpretation
 
-You are responsible for:
-1. ALWAYS verify critical logic yourself (Read FILE at LINES)
+**You MUST:**
+1. **ALWAYS** verify critical logic yourself (Read FILE at LINES)
 2. Confirm RELEVANT matches your need
 3. Only report to user after verification
 4. When in doubt: check yourself instead of trusting agent output
+
+**NEVER** trust agent output blindly. The agent may:
+- Miss files
+- Misinterpret code
+- Return outdated information
+
+**Verify before reporting to user.**

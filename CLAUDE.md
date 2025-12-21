@@ -1,17 +1,15 @@
 # CLAUDE.MD - Thesis1 Project Engineering Reference
 
-## 1. BEADS
+## 1. HOOK COMPLIANCE
 
-**Path:** `.beads/`
+**CRITICAL:** When a hook triggers and tells you to do something, you MUST MUST MUST follow it immediately.
 
-**Core Commands:**
-- `bd list` - List open issues (hook adds `-s open`)
-- `bd create "title" --label task` - New issue
-- `bd comment <id> "..."` - Add note
-- `bd close <id>` - Close issue
-- `bd dep add <issue> <depends-on>` - Dependencies
+**Examples:**
+- Hook says "Activate skill X" → Activate skill X immediately
+- Hook says "Use agent for investigation" → Use agent, don't do manual search
+- Hook says "Verify before proceeding" → Verify before proceeding
 
-Run `bd prime` for full reference.
+**No exceptions.** Hooks are user-configured rules. Ignoring them = ignoring user instructions.
 
 ---
 
