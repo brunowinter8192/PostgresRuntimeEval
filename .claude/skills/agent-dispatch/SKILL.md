@@ -54,6 +54,27 @@ Do NOT use agent when:
 - Targeted grep (pattern + scope known)
 - Quick verification (does file X exist?)
 
+## Parallel Agent Rules
+
+Parallel agents are only efficient with **disjoint datasets**.
+
+**Partition by:**
+- **Layer:** Agent A = Docs only, Agent B = Code only
+- **Scope:** Agent A = Training/, Agent B = Evaluation/
+- **Aspect:** Agent A = Input/Output flow, Agent B = Algorithm logic
+
+**NEVER:** Have multiple agents read the same files.
+
+**BAD:**
+- Agent A: "Investigate Runtime_Prediction/"
+- Agent B: "Investigate Online_1/"
+→ Both read workflow.py, DOCS.md, selection.py = wasted tokens
+
+**GOOD:**
+- Agent A (Architect): "Read ONLY DOCS.md and src/DOCS.md - create module map"
+- Agent B (Inspector): "Read ONLY src/*.py - analyze selection logic"
+→ Disjoint datasets, merge results in main agent
+
 ## After Agent Returns
 
 **Agent = Scout, not Authority**
