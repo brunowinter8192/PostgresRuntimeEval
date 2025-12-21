@@ -20,8 +20,8 @@ from src.mining import mine_patterns_from_query, find_pattern_occurrences_in_dat
 # From mapping_config.py: Configuration constants
 from mapping_config import STRATEGIES, DEFAULT_STRATEGY
 
-# From src/selection.py: Pattern selection loop
-from src.selection import run_pattern_selection
+# From src/selection.py: Pattern selection (online)
+from src.selection import select_patterns_online
 
 # From src/metrics.py: MRE calculation
 from src.metrics import calculate_mre, calculate_query_mre
@@ -69,17 +69,16 @@ def online_prediction_workflow(
     initial_ranking = calculate_ranking(baseline_predictions, pattern_occurrences, patterns, strategy=strategy)
     report.add_patterns_in_query(patterns, initial_ranking)
 
-    selected_patterns, pattern_models, selection_log = run_pattern_selection(
+    selected_patterns, pattern_models, selection_log = select_patterns_online(
         df_tt, df_tv, patterns, pattern_occurrences, initial_ranking,
-        operator_models, baseline_predictions, baseline_mre, report, strategy=strategy
+        operator_models, baseline_predictions, report
     )
 
     final_operator_models = train_all_operators(df_train, None)
     final_pattern_models = train_selected_patterns(df_train, selected_patterns, patterns)
 
-    error_scores = {entry['pattern_hash']: entry['error_score'] for entry in selection_log}
     final_predictions, pattern_assignments, consumed_nodes, prediction_cache = predict_single_query_with_patterns(
-        test_query_ops, final_operator_models, final_pattern_models, patterns, selected_patterns, error_scores,
+        test_query_ops, final_operator_models, final_pattern_models, patterns, selected_patterns,
         return_details=True
     )
     final_mre = calculate_query_mre(final_predictions)

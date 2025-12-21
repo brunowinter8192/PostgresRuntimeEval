@@ -28,6 +28,7 @@ description: (project)
 2. Scope (directory)
 3. Constraints: "Exclude *.csv, *.png" or "Limit depth to 2"
 4. Context if needed (what you already know)
+5. **Follow imports:** "If code imports from external modules, locate and READ those files"
 
 **Exploration Constraints:**
 - Always specify: "Exclude data files (*.csv, *.png, *.jpg)"
@@ -43,11 +44,14 @@ description: (project)
 
 **Rule of thumb: >20k token exploration → Agent**
 
+**Besser einen Agent zu viel als einen zu wenig.**
+
 Use agent when:
 - Searching multiple files (>3 files)
 - Broad search scope (entire directory, pattern search)
 - Comparing files (Train vs Test, Static vs Dynamic)
 - Analyzing CSV values (ranges, distributions)
+- **Comparing implementations** (e.g., Hybrid_2 vs Online_1) - use parallel agents
 
 Do NOT use agent when:
 - Single file read (known path)

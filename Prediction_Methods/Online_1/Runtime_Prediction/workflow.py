@@ -76,9 +76,8 @@ def online_prediction_workflow(
     final_operator_models = train_all_operators(df_train, None)
     final_pattern_models = train_selected_patterns(df_train, selected_patterns, patterns)
 
-    error_scores = {entry['pattern_hash']: entry['error_score'] for entry in selection_log}
     final_predictions, pattern_assignments, consumed_nodes, prediction_cache = predict_single_query_with_patterns(
-        test_query_ops, final_operator_models, final_pattern_models, patterns, selected_patterns, error_scores,
+        test_query_ops, final_operator_models, final_pattern_models, patterns, selected_patterns,
         return_details=True
     )
     final_mre = calculate_query_mre(final_predictions)

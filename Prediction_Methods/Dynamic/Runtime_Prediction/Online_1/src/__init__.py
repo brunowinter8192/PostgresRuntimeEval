@@ -46,12 +46,13 @@ from .prediction import (
     predict_all_queries_operator_only,
     predict_single_query_operator_only,
     predict_all_queries_with_patterns,
-    predict_single_query_with_patterns
+    predict_single_query_with_patterns,
+    predict_all_queries_with_single_pattern
 )
 
-# From selection.py: Pattern selection loop
+# From selection.py: Online pattern selection
 from .selection import (
-    run_pattern_selection
+    select_patterns_online
 )
 
 # From output.py: Save models and CSV outputs
