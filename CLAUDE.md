@@ -33,57 +33,40 @@ Run `bd prime` for full reference.
 
 ---
 
-## 3. PROJECT IDENTITY
+## 3. PROJECT CONTEXT
 
 **Research Domain:** ML-based runtime prediction for SQL queries
 **Benchmark:** TPC-H queries on PostgreSQL
 
----
-
-## 4. SCIENTIFIC FOUNDATION
-
 **Base Paper:** "Learning-based Query Performance Modeling and Prediction" (Akdere, Cetintemel, Upfal - Brown University, 2012)
-
 **Paper Source:** `Misc/Learning-based_Query_Performance_Modeling_and_Pred.md`
 
 ---
 
-## 5. PRIORITY LEVELS
-
-**CRITICAL:** Must follow - violations break the system
-**IMPORTANT:** Should follow - violations reduce quality
-**RECOMMENDED:** Good practice - improves maintainability
-
----
-
-## 6. THESIS-SPECIFIC RULES
-
-### Paper Reference Rule
-
-**CRITICAL:** When the user mentions the paper or asks for comparison with the paper:
-1. STOP
-2. Ask: "I don't know this section. Should I read the paper first before we continue?"
-3. Read `Misc/Learning-based_Query_Performance_Modeling_and_Pred.md` if confirmed
-4. ONLY THEN make claims about what the paper does or doesn't do
-
-**Why:** Making assumptions about paper content leads to wrong comparisons and wasted corrections.
-
----
+## 4. THESIS-SPECIFIC RULES
 
 ### Formatting: Bullet Lists over Tables
 
-**CRITICAL:** In documentation and thesis text, prefer bullet lists over markdown tables.
+**CRITICAL:** User-facing outputs MUST use bullet lists, never tables.
 
-**Rationale:** Tables often have formatting/alignment issues in different viewers.
+**Applies to:**
+- Thesis text (anything the user reads/submits)
+- Script outputs (.md exports, evaluation reports)
+
+**Does NOT apply to:**
+- README.md, DOCS.md (Claude-facing, tables allowed)
+- CLAUDE.md itself (Claude-facing)
+
+**Rationale:** Tables have formatting issues in Word/PDF export. Internal docs stay in markdown viewers where tables render correctly.
 
 **Example:**
 ```markdown
-WRONG:
+WRONG (in thesis/outputs):
 | Strategy | MRE |
 |----------|-----|
 | Size | 3.15% |
 
-RIGHT:
+RIGHT (in thesis/outputs):
 - **Size:** 3.15%
 - **Frequency:** 3.15%
 ```
@@ -113,16 +96,7 @@ RIGHT:
 
 ---
 
-### Module Architecture
-
-**Standalone modules:**
-- Each module: Fixed Input (argparse) → Processing → Fixed Output (export folder)
-- NO automatic cross-module orchestration
-- User orchestrates execution manually
-
----
-
-## 7. CODE ORGANIZATION
+## 5. CODE ORGANIZATION
 
 **CRITICAL:** Every script follows this structure:
 
@@ -182,19 +156,29 @@ RECOMMENDED but optional. Type annotations in function signatures help IDE catch
 
 Let exceptions fly. No try-catch that silently swallows errors affecting business logic. Script must fail if it cannot fulfill its purpose.
 
-**Immediate Stop on Problems:**
-- On ANY unexpected problem during execution: STOP IMMEDIATELY
-- Inform user with clear problem description
-- NEVER autonomously "fix" or implement workarounds
-- Wait for explicit user decision before proceeding
+### Argparse Template
 
-**Examples:** NaN values, missing files, unexpected formats, algorithm errors, dependency issues.
+```python
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
 
-**Why:** An autonomous "fix" can invalidate the entire project. Better to ask once too often than once too little.
+    # Positional arguments
+    parser.add_argument("input", help="Input path")
+
+    # Required flags
+    parser.add_argument("--output-dir", required=True, help="Output directory")
+
+    # Optional with defaults
+    parser.add_argument("--param", type=int, default=5, help="Parameter")
+
+    args = parser.parse_args()
+
+    main_workflow(Path(args.input), args.output_dir, args.param)
+```
 
 ---
 
-## 8. COMMENT RULES
+## 6. COMMENT RULES
 
 **CRITICAL:** Three types of allowed comments only
 
@@ -220,29 +204,7 @@ from data_loader import load_validated_data
 
 ---
 
-## 9. ARGPARSE TEMPLATE
-
-```python
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-
-    # Positional arguments
-    parser.add_argument("input", help="Input path")
-
-    # Required flags
-    parser.add_argument("--output-dir", required=True, help="Output directory")
-
-    # Optional with defaults
-    parser.add_argument("--param", type=int, default=5, help="Parameter")
-
-    args = parser.parse_args()
-
-    main_workflow(Path(args.input), args.output_dir, args.param)
-```
-
----
-
-## 10. ARCHITECTURE STANDARDS
+## 7. ARCHITECTURE STANDARDS
 
 ### Naming Conventions
 
@@ -305,7 +267,32 @@ CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']                # Known at prediction
 
 ---
 
-## 11. DOCUMENTATION STRUCTURE
+### Subdirectory-Modules
+
+When a module is a directory (e.g., `10_Pattern_Selection/`):
+
+**Structure:**
+```
+10_Pattern_Selection/
+├── DOCS.md                     # Entry-point documentation
+├── 10_Pattern_Selection.py     # Entry-point (argparse + orchestrator)
+└── src/                        [See DOCS.md](src/DOCS.md)
+    ├── tree.py                 # Helper modules
+    ├── io.py
+    ├── prediction.py
+    └── DOCS.md                 # Module-level documentation
+```
+
+**Rules:**
+- Entry-point script in root: `NN_Module_Name.py`
+- Own `DOCS.md` at module root for entry-point documentation
+- Helper functions in `src/`
+- `src/DOCS.md` for module-level documentation
+- Parent DOCS.md references with `[See DOCS.md]` link only
+
+---
+
+## 8. DOCUMENTATION STRUCTURE
 
 ### Terminology
 
@@ -511,29 +498,3 @@ Critical algorithm logic, invariants, or non-obvious behavior that affects corre
 ```
 
 This makes dependencies explicit and prevents reinventing existing logic.
-
----
-
-### Subdirectory-Modules
-
-When a module is a directory (e.g., `10_Pattern_Selection/`):
-
-**Structure:**
-```
-10_Pattern_Selection/
-├── DOCS.md                     # Entry-point documentation
-├── 10_Pattern_Selection.py     # Entry-point (argparse + orchestrator)
-└── src/                        [See DOCS.md](src/DOCS.md)
-    ├── tree.py                 # Helper modules
-    ├── io.py
-    ├── prediction.py
-    └── DOCS.md                 # Module-level documentation
-```
-
-**Rules:**
-- Entry-point script in root: `NN_Module_Name.py`
-- Own `DOCS.md` at module root for entry-point documentation
-- Helper functions in `src/`
-- `src/DOCS.md` for module-level documentation
-- Parent DOCS.md references with `[See DOCS.md]` link only
-
