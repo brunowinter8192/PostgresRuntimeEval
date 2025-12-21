@@ -1,2 +1,0 @@
-pattern_hash;pattern_string;mre;mre_pct;status
-dd3706ac3890589c2926a68628da4037;Aggregate -> Gather -> Aggregate -> Seq Scan (Outer) (Outer) (Outer);0.053306923150517695;5.3306923150517695;SELECTED

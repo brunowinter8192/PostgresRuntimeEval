@@ -1,13 +1,44 @@
 # CLAUDE.MD - Thesis1 Project Engineering Reference
 
-## 1. PROJECT IDENTITY
+## 1. JUSTFILE
+
+**Path:** `justfile` (project root)
+
+**Usage:** `just <recipe> [args]`
+
+**Available Recipes:**
+- `just beads` - List open beads
+- `just bead-new "title"` - Create new bead
+- `just bead-comment <id> "msg"` - Add comment to bead
+- `just commit "msg"` - Quick commit
+- `just commit-scope <scope> "msg"` - Commit with scope prefix
+- `just log [n]` - Show recent commits (default: 5)
+
+---
+
+## 2. BEADS
+
+**Path:** `.beads/`
+
+**Core Commands:**
+- `bd list` - List open issues (hook adds `-s open`)
+- `bd create "title" --label task` - New issue
+- `bd comment <id> "..."` - Add note
+- `bd close <id>` - Close issue
+- `bd dep add <issue> <depends-on>` - Dependencies
+
+Run `bd prime` for full reference.
+
+---
+
+## 3. PROJECT IDENTITY
 
 **Research Domain:** ML-based runtime prediction for SQL queries
 **Benchmark:** TPC-H queries on PostgreSQL
 
 ---
 
-## 2. SCIENTIFIC FOUNDATION
+## 4. SCIENTIFIC FOUNDATION
 
 **Base Paper:** "Learning-based Query Performance Modeling and Prediction" (Akdere, Cetintemel, Upfal - Brown University, 2012)
 
@@ -15,7 +46,7 @@
 
 ---
 
-## 3. PRIORITY LEVELS
+## 5. PRIORITY LEVELS
 
 **CRITICAL:** Must follow - violations break the system
 **IMPORTANT:** Should follow - violations reduce quality
@@ -23,7 +54,7 @@
 
 ---
 
-## 4. THESIS-SPECIFIC RULES
+## 6. THESIS-SPECIFIC RULES
 
 ### Paper Reference Rule
 
@@ -89,7 +120,7 @@ RIGHT:
 
 ---
 
-## 5. CODE ORGANIZATION
+## 7. CODE ORGANIZATION
 
 **CRITICAL:** Every script follows this structure:
 
@@ -161,7 +192,7 @@ Let exceptions fly. No try-catch that silently swallows errors affecting busines
 
 ---
 
-## 6. COMMENT RULES
+## 8. COMMENT RULES
 
 **CRITICAL:** Three types of allowed comments only
 
@@ -187,7 +218,7 @@ from data_loader import load_validated_data
 
 ---
 
-## 7. ARGPARSE TEMPLATE
+## 9. ARGPARSE TEMPLATE
 
 ```python
 if __name__ == "__main__":
@@ -209,7 +240,7 @@ if __name__ == "__main__":
 
 ---
 
-## 8. ARCHITECTURE STANDARDS
+## 10. ARCHITECTURE STANDARDS
 
 ### Naming Conventions
 
@@ -272,7 +303,7 @@ CHILD_FEATURES_STRUCTURAL = ['nt1', 'nt2']                # Known at prediction
 
 ---
 
-## 9. DOCUMENTATION STRUCTURE
+## 11. DOCUMENTATION STRUCTURE
 
 ### Terminology
 
@@ -503,61 +534,4 @@ When a module is a directory (e.g., `10_Pattern_Selection/`):
 - Helper functions in `src/`
 - `src/DOCS.md` for module-level documentation
 - Parent DOCS.md references with `[See DOCS.md]` link only
-
----
-
-## 10. TASK MANAGEMENT HIERARCHY
-
-Three levels of task tracking, each for different time horizons:
-
-- **Beads** (`.beads/`) - Cross-session (weeks/months). Persistent issues that survive across sessions.
-- **Plan-File** (`.claude/plans/`) - Within a session (hours). Current iteration plan and open items.
-- **TodoWrite** - Within an iteration (minutes). Immediate task tracking during implementation.
-
-### Beads Usage
-
-**Start of session:**
-```bash
-bd ready              # Show unblocked tasks
-bd show <issue-id>    # Details of specific issue
-```
-
-**During work:**
-```bash
-bd create --title "..." --body "..."   # New issue
-bd comment <id> "progress update"      # Add progress
-bd block <id> --on <other-id>          # Mark dependency
-```
-
-**End of session:**
-```bash
-bd close <id>         # Close completed issue
-bd comment <id> "..."  # Document state for next session
-```
-
-**Issue naming:** `Thesis_Final-<id>` (e.g., `Thesis_Final-q18`)
-
-### Bead Path Format
-
-**CRITICAL:** File paths in beads MUST be relative to `Thesis_Final/` (project root).
-
-```markdown
-WRONG:
-Hybrid_1/Runtime_Prediction/03_Predict.py
-
-RIGHT:
-Prediction_Methods/Hybrid_1/Runtime_Prediction/03_Predict.py
-```
-
-**Why:** Incomplete paths cause failed file reads and require manual path discovery with `find`.
-
-### Quick Reference
-
-```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --status in_progress  # Claim work
-bd close <id>         # Complete work
-bd sync               # Sync with git
-```
 

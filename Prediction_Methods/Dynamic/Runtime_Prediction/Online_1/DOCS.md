@@ -10,6 +10,15 @@ Online learning workflow that trains operator models, mines patterns from a test
 cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Runtime_Prediction/Online_1
 ```
 
+## Prerequisites
+
+Dataset_Hybrid_2 must exist with LOTO splits per template:
+
+```bash
+ls ../../Dataset/Dataset_Hybrid_2/Q1/
+# Expected: Training_Training.csv, Training_Test.csv
+```
+
 ## Directory Structure
 
 ```
@@ -112,8 +121,8 @@ Evaluation/
 **Usage:**
 ```bash
 python3 workflow.py Q1_100_seed_812199069 \
-    ../../Dataset/Dataset_Hybrid_2/Training_Training/Q1/Training_Training.csv \
-    ../../Dataset/Dataset_Hybrid_2/Training_Training/Q1/Training_Test.csv \
+    ../../Dataset/Dataset_Hybrid_2/Q1/Training_Training.csv \
+    ../../Dataset/Dataset_Hybrid_2/Q1/Training_Test.csv \
     ../../Dataset/Dataset_Operator/Q1/training.csv \
     ../../Dataset/Dataset_Operator/Q1/test.csv \
     --output-dir Evaluation
@@ -130,7 +139,7 @@ python3 workflow.py Q1_100_seed_812199069 \
 
 **Inputs:**
 - Reads test queries from `Dataset/Dataset_Operator/{template}/test.csv`
-- Training data from `Dataset/Dataset_Hybrid_2/Training_Training/{template}/`
+- Training data from `Dataset/Dataset_Hybrid_2/{template}/`
 - Training data from `Dataset/Dataset_Operator/{template}/`
 
 **Outputs:**

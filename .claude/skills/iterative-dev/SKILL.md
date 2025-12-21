@@ -1,6 +1,6 @@
 ---
 name: iterative-dev
-description: Manages iterative workflow with plan-implement cycles. Use when user mentions "iterative workflow".
+description: (project)
 ---
 
 # Iterative Development Skill
@@ -23,21 +23,21 @@ Follow all native Plan Mode rules.
 ## CRITICAL CYCLE
 
 ```
-PLAN (Plan Mode) -> IMPLEMENT -> EVALUATE -> IMPROVE -> CLOSING -> PLAN (new cycle)
+PLAN (Plan Mode) -> IMPLEMENT -> RECAP -> IMPROVE -> CLOSING -> PLAN (new cycle)
 ```
 
 EVERY RESPONSE STARTS WITH A PHASE INDICATOR:
 - `📋 PLAN` - Planning phase (Plan Mode active)
 - `🔨 IMPLEMENT` - Implementation phase
-- `🔍 EVALUATE` - Report phase (Plan Mode active - read-only enforced)
+- `🔍 RECAP` - Report phase (Plan Mode active - read-only enforced)
 - `🛠️ IMPROVE` - Improvements phase
 - `✅ CLOSING` - Cycle completion
 
 **Plan Mode Usage:**
 - PLAN: Native Plan Mode for implementation planning
-- EVALUATE: Plan Mode for read-only protection (prevents accidental edits)
+- RECAP: Plan Mode for read-only protection (prevents accidental edits)
 
-**Phase Detection:** System message contains "Plan mode is active" → Check context to determine if PLAN or EVALUATE.
+**Phase Detection:** System message contains "Plan mode is active" → Check context to determine if PLAN or RECAP.
 
 ---
 
@@ -54,22 +54,18 @@ BEFORE any action in a directory (running scripts, editing files, exploring code
 
 This is NON-NEGOTIABLE. Skipping DOCS.md leads to: wrong paths, wrong arguments, wrong understanding.
 
-**Agent Usage:**
-- Decide autonomously whether an agent is necessary
-- Agents are useful for getting an overview of unfamiliar areas
-- Critical information (paths, parameters, dependencies) MUST be verified firsthand
-- When in doubt: Read the file yourself
+**Path Verification (MANDATORY):**
 
-**Prompting the Search Agent:**
-When delegating to search agent, be SPECIFIC:
+BEFORE executing scripts with relative paths:
+1. Verify paths with `ls` command
+2. NEVER assume paths are correct just because script exists
+3. One wrong path = entire workflow fails silently
 
-WRONG: "Find where features are defined"
-RIGHT: "Find where FEATURES constant is defined in Runtime_Prediction/"
-
-WRONG: "How does pattern selection work?"
-RIGHT: "Find the function that filters patterns by MRE threshold"
-
-The agent returns FILE/LINES/RELEVANT - you then read those specific lines to verify and understand.
+**ASK THE FUCKING USER**
+- the user knows best, ask him for reference scripts, 
+	- REFERENCE SCRIPTS OR SOURCE CODE IS A GAME CHANGER, MAKES LIFE MUCH EASIER
+- ask him for things which are critical to understand in order to be able to make a Plan file
+	- USER HAS A BROAD KNOWLEDGE, TAKE ADVANTAGE OF IT
 
 ### Communication
 
@@ -122,19 +118,19 @@ If the planning session requires module execution to refine the plan:
 
 ### After IMPLEMENTATION
 
-**Principle:** One phase per response. Never combine IMPLEMENT and EVALUATE in same response.
+**Principle:** One phase per response. Never combine IMPLEMENT and RECAP in same response.
 
 1. Verify all plan items were executed
 2. **If open points remain:** Inform user: "Open items: [list]"
-3. Ask: "Continue implementing or proceed to EVALUATE?"
+3. Ask: "Continue implementing or proceed to RECAP?"
 
-User confirms → next response starts with 🔍 EVALUATE
+User confirms → next response starts with 🔍 RECAP
 
 ### Ad-hoc Window
 
-After completing plan edits, BEFORE transition to EVALUATE:
+After completing plan edits, BEFORE transition to RECAP:
 
-1. Claude: "Plan edits completed. Proceed to EVALUATE?"
+1. Claude: "Plan edits completed. Proceed to RECAP?"
 2. User can request ad-hoc edits
 3. Claude executes ad-hoc edits
 4. Back to step 1 until user says "eval"
@@ -143,44 +139,82 @@ After completing plan edits, BEFORE transition to EVALUATE:
 
 ---
 
-## Evaluation Phase (EVALUATE)
-
-**Purpose:** Evaluate the PLAN→IMPLEMENT iteration - both CONTENT and PROCESS.
+## Recap Phase (RECAP)
 
 ### Phase Entry
 
-1. Ask user: "Activate Plan Mode for EVALUATE (`/plan`)"
+1. Ask user: "Activate Plan Mode for RECAP (`/plan`)"
 2. Wait for Plan Mode system message
 3. Proceed with evaluation report (read-only enforced by Plan Mode)
 
-### Read-Only Enforcement
+### Justfile Check
 
-Plan Mode prevents edits. Only allowed:
-- Read tools (Read, Glob, Grep)
-- Writing to plan file (for improvement collection)
-- Git commit (for IMPLEMENT changes only)
+After each cycle, check for recurring commands that could be added to `justfile`:
+
+**Candidates:**
+- Commands executed 3+ times in session
+- Commands with complex flags/arguments
+- Commands prone to typos
+
+**Goal:** Reduce token usage on both input (shorter commands) and output (fewer retries from typos).
 
 ### Report
 
 Claude writes a report covering:
 
-### 1. Execution
-- What matched the plan, what deviated
+#### 1. Execution
 
-### 2. Process Reflection (CRITICAL)
-Explicitly analyze the planning phase:
-- **Efficiency:** Did we iterate too much? Could we have reached the plan faster?
-- **Questions:** Were my questions focused or scattered?
-- **Assumptions:** Did I make wrong assumptions that needed correction?
-- **User Clarity:** Was the user's intent clear from the start?
-
-**Anti-Pattern:** Long back-and-forth in PLAN before reaching a stable plan. If this happened, identify WHY and how to prevent it next time.
-
-### 3. Documentation
+- What matched the Plan File, what deviated from the Plan File
 - Does DOCS.md need updating? (new scripts, changed behavior, new parameters)
 
-### 4. Improvements
-Two categories - BOTH are important:
+#### 2. Process Reflection
+
+Explicitly analyze the planning phase across two dimensions:
+
+##### 2.1 Efficiency
+
+###### Questions During Planning
+- Were my questions focused or scattered?
+- Did we iterate too much? Could we have reached the finished plan faster?
+- Did I correctly understand the user's answers?
+- Did the user give insightful answers?
+
+###### Red Flags
+- More than 3 back-and-forth exchanges before stable plan
+- User had to correct my assumptions multiple times
+- I proposed solutions before understanding the problem
+- Execution Path Errors (Most IMPLEMENT failures trace back to skipped verification in PLAN)
+- User did not explicitly state what he wants, gave bad directions
+- User did not understand you
+
+###### References
+- Did I explicitly ask for references early enough?
+- Were the references helpful or did they lead me astray?
+  - Should the references have been more granular or broader?
+
+##### 2.2 Assumptions/Hallucinations
+
+###### Questions
+- Did I make assumptions that needed correction?
+- Was the user's intent clear from the start?
+- Did I verify assumptions or just proceed?
+
+###### Categories
+- **Structural:** Directory layout, file locations, naming conventions
+- **Semantic:** What columns mean, what functions do, data flow
+- **Behavioral:** Expected output format, error handling, edge cases
+
+###### Rule
+Every assumption should be either:
+1. Verified by reading code/docs
+2. Explicitly confirmed with user
+3. Documented as "ASSUMPTION: ..." in plan file
+
+#### 3. Improvements
+
+Improvements are based on the execution and process reflection.
+
+Two categories - BOTH are very important:
 
 **Content Improvements (Code/Docs):**
 - Critical: Must fix (breaks functionality, wrong behavior)
@@ -192,7 +226,9 @@ Two categories - BOTH are important:
 - Which questions should I ask earlier?
 - Which assumptions should I verify before proposing?
 
-**COMMIT (CRITICAL):** After the report, check: Were edits made during IMPLEMENT? → Commit immediately.
+### Commit
+
+**CRITICAL:** After the report, check: Were edits made during IMPLEMENT? → Commit immediately.
 
 ### Collecting Improvements
 

@@ -1,2 +1,0 @@
-pattern_hash;pattern_string;mre;mre_pct;status
-7df893ad48ca148008fc536ad76ff48a;Hash -> Hash Join (Outer);0.17070993590675151;17.07099359067515;REJECTED
