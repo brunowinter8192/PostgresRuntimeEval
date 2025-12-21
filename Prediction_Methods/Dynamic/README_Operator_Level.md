@@ -4,6 +4,18 @@ Operator-level runtime prediction for dynamic LOTO workloads.
 
 **Basiert auf:** [Static Operator_Level](../../Operator_Level/README.md) - adaptiert für LOTO Cross-Validation.
 
+## Dynamic Workload (LOTO)
+
+**LOTO = Leave-One-Template-Out:** Ein komplettes Template ist für Test reserviert, alle anderen für Training.
+
+**Datenaufteilung pro LOTO-Fold:**
+- **Training:** 13 Templates (je 150 Queries = 1950 total)
+- **Test:** 1 Template (150 Queries) - vollständig ungesehen
+
+**14 LOTO-Templates:** Q1, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q12, Q13, Q14, Q18, Q19
+
+Gegensatz: [Static Workloads](../../Operator_Level/README.md) - Train/Test sehen gleiche Templates
+
 ## Konzept
 
 Operator_Level prognostiziert die Laufzeit jedes Query-Operators einzeln und aggregiert bottom-up zur Query-Gesamtzeit.
