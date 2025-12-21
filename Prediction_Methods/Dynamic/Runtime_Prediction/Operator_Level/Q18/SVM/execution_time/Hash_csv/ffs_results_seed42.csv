@@ -1,0 +1,9 @@
+iteration;feature_added;mre;n_features;features
+1;rt1;4.1579370856728115;1;rt1
+2;nt;3.5447418484178757;2;rt1, nt
+3;np;3.48749447593996;3;rt1, nt, np
+4;nt2;3.464281315431717;4;rt1, nt, np, nt2
+5;reltuples;3.4435311047543458;5;rt1, nt, np, nt2, reltuples
+6;parallel_workers;3.433956170386344;6;rt1, nt, np, nt2, reltuples, parallel_workers
+7;st2;3.4289492027240156;7;rt1, nt, np, nt2, reltuples, parallel_workers, st2
+8;rt2;3.4238672644034964;8;rt1, nt, np, nt2, reltuples, parallel_workers, st2, rt2

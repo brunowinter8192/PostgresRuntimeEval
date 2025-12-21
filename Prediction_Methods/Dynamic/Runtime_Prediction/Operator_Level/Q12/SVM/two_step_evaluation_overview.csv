@@ -1,0 +1,27 @@
+operator;target;ffs_feature_count;missing_child_count;final_feature_count;mre_ffs;mre_final;ffs_features;missing_child_features;final_features
+Aggregate;execution_time;1;5;6;0.06490438288434323;0.12242581489367224;rt1;nt1, nt2, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2
+Aggregate;start_time;1;5;6;0.07801916526072188;0.13817494953051884;rt1;nt1, nt2, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2
+Gather;execution_time;1;5;6;0.016747801010299407;0.05914090763406189;rt1;nt1, nt2, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2
+Gather;start_time;1;6;7;0.7020931254903285;1.959276576642114;startup_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost
+Gather_Merge;execution_time;1;5;6;0.13908629625181373;0.15225971543863193;st1;nt1, nt2, rt1, rt2, st2;nt1, nt2, rt1, rt2, st1, st2
+Gather_Merge;start_time;1;5;6;0.13963323980855072;0.15284812663338038;st1;nt1, nt2, rt1, rt2, st2;nt1, nt2, rt1, rt2, st1, st2
+Hash;execution_time;2;6;8;99.65056249931152;142.4723840217586;startup_cost, total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost, total_cost
+Hash;start_time;2;6;8;101.56232049727544;145.18794621658296;startup_cost, total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost, total_cost
+Hash_Join;execution_time;2;5;7;23.388389772774495;47.15052776275952;rt1, total_cost;nt1, nt2, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, total_cost
+Hash_Join;start_time;1;6;7;2.4344686280264543;2.037807832634563;total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, total_cost
+Incremental_Sort;execution_time;7;4;11;0.0008931759144953378;0.005634136508992476;nt, nt1, plan_width, rt1, sel, startup_cost, total_cost;nt2, rt2, st1, st2;nt, nt1, nt2, plan_width, rt1, rt2, sel, st1, st2, startup_cost, total_cost
+Incremental_Sort;start_time;6;4;10;0.0008927063139582591;0.0056340749877620425;nt, nt1, rt1, sel, startup_cost, total_cost;nt2, rt2, st1, st2;nt, nt1, nt2, rt1, rt2, sel, st1, st2, startup_cost, total_cost
+Index_Only_Scan;execution_time;14;0;14;0.04041999947527248;0.04041999947527248;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost
+Index_Only_Scan;start_time;14;0;14;0.2039028283265428;0.2039028283265428;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost
+Index_Scan;execution_time;2;0;2;0.3103882972827126;0.3103882972827126;plan_width, startup_cost;;plan_width, startup_cost
+Index_Scan;start_time;2;0;2;0.2612690929652999;0.2612690929652999;plan_width, startup_cost;;plan_width, startup_cost
+Limit;execution_time;1;6;7;0.5078029239232899;0.5180538114515821;total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, total_cost
+Limit;start_time;1;6;7;0.5068860119872778;0.5170342865667223;total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, total_cost
+Merge_Join;execution_time;3;4;7;0.00336247551417881;0.005311992583362328;nt, rt1, st1;nt1, nt2, rt2, st2;nt, nt1, nt2, rt1, rt2, st1, st2
+Merge_Join;start_time;3;4;7;0.003362038030498874;0.005302240750575822;nt, rt1, st1;nt1, nt2, rt2, st2;nt, nt1, nt2, rt1, rt2, st1, st2
+Nested_Loop;execution_time;5;4;9;0.627948234588437;0.6496366533901915;np, parallel_workers, reltuples, rt2, st2;nt1, nt2, rt1, st1;np, nt1, nt2, parallel_workers, reltuples, rt1, rt2, st1, st2
+Nested_Loop;start_time;5;3;8;0.9096507801628171;2.158044958991927;nt, plan_width, rt1, rt2, st2;nt1, nt2, st1;nt, nt1, nt2, plan_width, rt1, rt2, st1, st2
+Seq_Scan;execution_time;3;0;3;62.94336553624673;62.94336553624673;np, plan_width, sel;;np, plan_width, sel
+Seq_Scan;start_time;3;0;3;1.7962148260194148;1.7962148260194148;np, sel, total_cost;;np, sel, total_cost
+Sort;execution_time;3;5;8;1.149323830045284;1.2390841549594422;plan_width, rt1, sel;nt1, nt2, rt2, st1, st2;nt1, nt2, plan_width, rt1, rt2, sel, st1, st2
+Sort;start_time;3;5;8;1.18977845813944;1.2830073878924906;plan_width, rt1, sel;nt1, nt2, rt2, st1, st2;nt1, nt2, plan_width, rt1, rt2, sel, st1, st2

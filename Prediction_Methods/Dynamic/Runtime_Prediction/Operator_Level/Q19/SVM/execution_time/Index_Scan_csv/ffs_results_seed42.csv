@@ -1,0 +1,7 @@
+iteration;feature_added;mre;n_features;features
+1;plan_width;0.5794419107863685;1;plan_width
+2;nt1;0.44487011439413526;2;plan_width, nt1
+3;reltuples;0.35838973237768795;3;plan_width, nt1, reltuples
+4;startup_cost;0.3083568775048843;4;plan_width, nt1, reltuples, startup_cost
+5;nt2;0.29206192527844954;5;plan_width, nt1, reltuples, startup_cost, nt2
+6;parallel_workers;0.2877964814989748;6;plan_width, nt1, reltuples, startup_cost, nt2, parallel_workers

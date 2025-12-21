@@ -1,0 +1,6 @@
+iteration;feature_added;mre;n_features;features
+1;st2;0.1010628753224176;1;st2
+2;nt1;0.09756159387349536;2;st2, nt1
+3;rt1;0.09505873797372152;3;st2, nt1, rt1
+4;nt;0.09437235700263813;4;st2, nt1, rt1, nt
+5;rt2;0.09412179939176382;5;st2, nt1, rt1, nt, rt2
