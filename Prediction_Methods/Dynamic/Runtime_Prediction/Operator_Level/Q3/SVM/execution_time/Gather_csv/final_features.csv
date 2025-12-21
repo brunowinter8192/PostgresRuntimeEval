@@ -1,8 +1,8 @@
 feature;order
 rt1;1
 total_cost;2
-st1;3
-st2;4
+nt2;3
+nt1;4
 rt2;5
-nt2;6
-nt1;7
+st2;6
+st1;7

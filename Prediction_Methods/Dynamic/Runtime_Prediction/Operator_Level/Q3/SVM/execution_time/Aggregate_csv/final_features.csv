@@ -1,7 +1,7 @@
 feature;order
 rt1;1
-st1;2
-st2;3
+nt2;2
+nt1;3
 rt2;4
-nt2;5
-nt1;6
+st2;5
+st1;6

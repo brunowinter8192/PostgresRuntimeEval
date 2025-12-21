@@ -5,10 +5,10 @@ Gather;execution_time;2;5;7;0.02053849006206737;0.056598211503386675;rt1, total_
 Gather;start_time;3;6;9;2.40870648163927;3.2183940280160144;parallel_workers, sel, startup_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, parallel_workers, rt1, rt2, sel, st1, st2, startup_cost
 Gather_Merge;execution_time;1;5;6;0.12222762166681751;0.14377154702263978;st1;nt1, nt2, rt1, rt2, st2;nt1, nt2, rt1, rt2, st1, st2
 Gather_Merge;start_time;1;5;6;0.12307705947817886;0.14478894693245992;st1;nt1, nt2, rt1, rt2, st2;nt1, nt2, rt1, rt2, st1, st2
-Hash;execution_time;2;6;8;112.00825579288667;167.77337569770046;startup_cost, total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost, total_cost
+Hash;execution_time;2;6;8;112.00825579288667;167.77337569770043;startup_cost, total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost, total_cost
 Hash;start_time;2;6;8;114.15342928335153;170.99642583217263;startup_cost, total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost, total_cost
-Hash_Join;execution_time;2;5;7;27.575126186090337;49.64474998071873;rt1, total_cost;nt1, nt2, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, total_cost
-Hash_Join;start_time;1;6;7;2.3617435079609317;2.228020056351281;total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, total_cost
+Hash_Join;execution_time;2;5;7;27.575126186090337;49.644749980718736;rt1, total_cost;nt1, nt2, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, total_cost
+Hash_Join;start_time;1;6;7;2.3617435079609317;2.2280200563512764;total_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, total_cost
 Incremental_Sort;execution_time;7;4;11;0.0008931759144953378;0.005634136508992476;nt, nt1, plan_width, rt1, sel, startup_cost, total_cost;nt2, rt2, st1, st2;nt, nt1, nt2, plan_width, rt1, rt2, sel, st1, st2, startup_cost, total_cost
 Incremental_Sort;start_time;6;4;10;0.0008927063139582591;0.0056340749877620425;nt, nt1, rt1, sel, startup_cost, total_cost;nt2, rt2, st1, st2;nt, nt1, nt2, rt1, rt2, sel, st1, st2, startup_cost, total_cost
 Index_Only_Scan;execution_time;14;0;14;0.04041999947527248;0.04041999947527248;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost

@@ -17,6 +17,9 @@ Operator_Level/
 ├── DOCS.md
 ├── 00_Batch_Workflow.py
 ├── 01_Forward_Selection.py
+├── 02_Train_Models.py
+├── 03_Query_Prediction.py
+├── A_01a_Query_Evaluation.py
 └── Q1/, Q3/, ... Q19/
     ├── SVM/
     ├── Model/
@@ -31,8 +34,7 @@ Operator_Level/
 
 **Inputs:**
 - Dataset: `../../Dataset/Dataset_Operator/Qx/` (from 01_LOTO_Split.py)
-- Scripts: `/Prediction_Methods/Operator_Level/Runtime_Prediction/` (02, 03)
-- Local: `01_Forward_Selection.py`
+- All scripts are LOCAL (LOTO-compatible versions)
 
 **Outputs per Template:**
 - `Qx/SVM/two_step_evaluation_overview.csv` - FFS results
@@ -46,34 +48,84 @@ python3 00_Batch_Workflow.py
 
 **Workflow per Template:**
 1. `01_Forward_Selection.py` (LOCAL) - Two-step FFS for available operators
-2. `02_Train_Models.py` - Train NuSVR models for available operators
-3. `03_Query_Prediction.py` - Bottom-up prediction with child propagation
+2. `02_Train_Models.py` (LOCAL) - Train NuSVR models for available operators
+3. `03_Query_Prediction.py` (LOCAL) - Bottom-up prediction with passthrough
 
 **Templates:** Q1, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q12, Q13, Q14, Q18, Q19
 
 ---
 
-## 01 - Forward_Selection.py (Local Copy)
-
-**Purpose:** Two-step forward feature selection for available operators in LOTO splits.
-
-**Why local copy instead of using Operator_Level original:**
+## Why Local Scripts?
 
 LOTO splits may not contain all 13 operators. Example: `Index_Only_Scan` only exists in Q13. When Q13 is held-out, the training data for Q13 has no `Index_Only_Scan` operator.
 
-The original script iterates over a fixed `OPERATORS_FOLDER_NAMES` list and crashes on missing folders. This local copy iterates over **available** operator folders instead.
+**Static scripts crash because:**
+- They iterate over fixed `OPERATORS_FOLDER_NAMES` (13 operators)
+- Missing operators → crash or deadlock
 
-**Difference from original:**
+**Local scripts solve this by:**
+- Iterating over **available** operator folders
+- Using **passthrough** for operators without models
+
+---
+
+## 01 - Forward_Selection.py
+
+**Purpose:** Two-step forward feature selection for available operators in LOTO splits.
+
+**Difference from Static:**
 ```python
-# Original: for operator in OPERATORS_FOLDER_NAMES:
-# Local:    for operator in get_available_operators(dataset_dir):
+# Static:  for operator in OPERATORS_FOLDER_NAMES:
+# Local:   for operator in get_available_operators(dataset_dir):
 ```
 
 **Import Dependencies:**
 - `mapping_config.py` from `/Operator_Level/`
 - `ffs_config.py` from `/Operator_Level/Runtime_Prediction/`
 
-Both paths must be in sys.path for imports to work.
+---
+
+## 02 - Train_Models.py
+
+**Purpose:** Train SVM models for available operators in LOTO splits.
+
+**Difference from Static:**
+```python
+# Static:  for operator in OPERATORS_FOLDER_NAMES:
+# Local:   for operator in get_available_operators(dataset_dir):
+```
+
+**Import Dependencies:**
+- `mapping_config.py` from `/Operator_Level/`
+- `ffs_config.py` from `/Operator_Level/Runtime_Prediction/`
+
+---
+
+## 03 - Query_Prediction.py
+
+**Purpose:** Bottom-up prediction with passthrough for missing models.
+
+**Difference from Static:**
+
+When model is missing for an operator:
+- Static: Skips operator → Parents wait forever → Deadlock
+- Local: Uses **passthrough** → Copies max child prediction
+
+**Passthrough Logic:**
+```python
+def predict_passthrough(node_id, children, predictions):
+    max_exec = 0.0
+    max_start = 0.0
+    for child in children:
+        if child['node_id'] in predictions:
+            pred = predictions[child['node_id']]
+            if pred['predicted_total_time'] > max_exec:
+                max_exec = pred['predicted_total_time']
+                max_start = pred['predicted_startup_time']
+    return max_start, max_exec
+```
+
+**Output Column:** `prediction_type` = `model` or `passthrough`
 
 ---
 
@@ -93,5 +145,3 @@ Both paths must be in sys.path for imports to work.
 ```bash
 python3 A_01a_Query_Evaluation.py --output-dir Evaluation
 ```
-
-**Note:** Q13 and Q18 are excluded from results because they contain operators that don't exist in any other template.

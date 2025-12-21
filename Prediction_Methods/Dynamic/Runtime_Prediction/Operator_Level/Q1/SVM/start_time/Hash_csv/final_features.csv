@@ -3,7 +3,7 @@ startup_cost;1
 total_cost;2
 nt2;3
 st1;4
-nt1;5
+rt2;5
 rt1;6
-st2;7
-rt2;8
+nt1;7
+st2;8

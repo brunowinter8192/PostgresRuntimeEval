@@ -1,6 +1,0 @@
-iteration;feature_added;mre;n_features;features
-1;st1;0.13478123104904863;1;st1
-2;parallel_workers;0.1340281441581544;2;st1, parallel_workers
-3;plan_width;0.11882845613449555;3;st1, parallel_workers, plan_width
-4;sel;0.11693055363379849;4;st1, parallel_workers, plan_width, sel
-5;rt1;0.11587988345905045;5;st1, parallel_workers, plan_width, sel, rt1
