@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q6_117_seed_951667596
-**Timestamp:** 2025-12-13 04:01:45
+**Timestamp:** 2025-12-21 23:59:16
 
 ## Data Summary
 
@@ -20,20 +20,29 @@
 
 - Total Patterns: 6
 
-| Hash | Pattern String | Length | Occurrences | Error Score |
-|------|----------------|--------|-------------|-------------|
-| 4fc84c77 | Aggregate -> Gather (Outer) | 2 | 144 | 13.3894 |
-| 634cdbe2 | Gather -> Aggregate (Outer) | 2 | 96 | 7.7175 |
-| a5f39f08 | Aggregate -> Gather -> Aggregate (Outer)... | 3 | 96 | 12.4695 |
-| 184f44de | Aggregate -> Seq Scan (Outer) | 2 | 48 | 4.0548 |
-| 10e10cd4 | Gather -> Aggregate -> Seq Scan (Outer) ... | 3 | 24 | 2.5305 |
-| dd3706ac | Aggregate -> Gather -> Aggregate -> Seq ... | 4 | 24 | 3.4697 |
+| Hash | Pattern String | Length | Occ | Avg MRE | Error Score |
+|------|----------------|--------|-----|---------|-------------|
+| 4fc84c77 | Aggregate -> Gather (Outer) | 2 | 144 | 9.3% | 13.3894 |
+| a5f39f08 | Aggregate -> Gather -> Aggregate (Outer)... | 3 | 96 | 13.0% | 12.4695 |
+| dd3706ac | Aggregate -> Gather -> Aggregate -> Seq ... | 4 | 24 | 14.5% | 3.4697 |
+| 634cdbe2 | Gather -> Aggregate (Outer) | 2 | 96 | 8.0% | 7.7175 |
+| 10e10cd4 | Gather -> Aggregate -> Seq Scan (Outer) ... | 3 | 24 | 10.5% | 2.5305 |
+| 184f44de | Aggregate -> Seq Scan (Outer) | 2 | 48 | 8.4% | 4.0548 |
+
+**Legend:**
+- **Occ:** Pattern occurrences in Training_Test
+- **Avg MRE:** Average MRE of operator predictions at pattern root nodes
+- **Error Score:** Occ x Avg MRE (initial ranking metric)
 
 ## Phase D: Pattern Selection
 
-| Iter | Pattern | Error Score | Delta | Status | MRE After |
+| Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
+| 0 | 4fc84c77 | 13.3894 | N/A | SKIPPED_LOW_ERROR | 17.92% |
+| 1 | 634cdbe2 | 7.7175 | N/A | SKIPPED_LOW_ERROR | 17.92% |
 | 2 | a5f39f08 | 12.4695 | 1.7095% | ACCEPTED | 16.21% |
+| 3 | 184f44de | 2.3138 | N/A | SKIPPED_LOW_ERROR | 16.21% |
+| 4 | dd3706ac | 1.2748 | N/A | SKIPPED_LOW_ERROR | 16.21% |
 ## Query Tree
 
 ```
@@ -49,6 +58,11 @@ Node 9973 (Aggregate) [PATTERN: a5f39f08] - ROOT
 |---------|------|-----------|----------------|
 | Aggregate -> Gather -> Aggrega | a5f39f08 | 9973 | 9974, 9975 |
 
+
+**Legend:**
+- **Error Score:** Score at iteration time (recalculated after each ACCEPT)
+- **Delta:** MRE improvement if pattern is added
+- **Global MRE:** Overall MRE on Training_Test after this iteration
 
 ## Phase E: Final Prediction
 

@@ -1,6 +1,6 @@
 # Runtime_Prediction - Dynamic Online Pattern Selection
 
-Online learning workflow that trains operator models, mines patterns from a test query, and greedily selects patterns that improve prediction accuracy. Adapted for LOTO cross-validation.
+Online learning workflow that trains operator models, mines patterns from a test query, and selects patterns using direct comparison (Paper Section 4). For each pattern: if Pattern-MRE < Operator-MRE → select. Adapted for LOTO cross-validation.
 
 ## Working Directory
 
@@ -90,12 +90,26 @@ Evaluation/
 
 **Constants from Dynamic/mapping_config.py:**
 - `SVM_PARAMS` - NuSVR hyperparameters (kernel, nu, C, gamma)
-- `EPSILON` - Minimum improvement threshold (0.5%)
-- `MIN_ERROR_THRESHOLD` - Skip patterns below this avg_mre (10%)
-- `STRATEGIES` - Available strategies ['error', 'size', 'frequency']
+- `STRATEGIES` - Available strategies ['error', 'size', 'frequency'] (for initial pattern ordering)
 - `DEFAULT_STRATEGY` - Default strategy 'error'
 - `OPERATOR_FEATURES` - Base operator features (10 features)
 - `CHILD_FEATURES_TIMING` - Child timing features (st1, rt1, st2, rt2)
+
+**NOT used in Dynamic Online_1:**
+- `EPSILON` - Not used (no greedy accumulation)
+- `MIN_ERROR_THRESHOLD` - Not used (direct comparison instead)
+
+## Pattern Selection Logic (Paper Section 4)
+
+For each pattern in the query (ordered by strategy):
+1. Calculate Operator-MRE for pattern occurrences in Training_Test
+2. Train Pattern-Model on Training_Training
+3. Calculate Pattern-MRE for same occurrences
+4. If Pattern-MRE < Operator-MRE → SELECTED
+
+**Prediction Phase:**
+- Patterns sorted by `pattern_length` (longest first)
+- Longer patterns consume more nodes, capture more context
 
 ## Module Documentation
 

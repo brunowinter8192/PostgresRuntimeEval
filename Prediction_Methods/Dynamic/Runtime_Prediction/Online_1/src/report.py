@@ -123,22 +123,20 @@ class ReportBuilder:
         self.lines.append('- **Avg MRE:** Average MRE of operator predictions at pattern root nodes')
         self.lines.append('- **Error Score:** Occ x Avg MRE (initial ranking metric)')
         self.lines.append('')
-        self.lines.append('## Phase D: Pattern Selection')
-        self.lines.append('')
-        self.lines.append('| Iter | Pattern | Error Score | Delta | Status | Global MRE |')
-        self.lines.append('|------|---------|-------------|-------|--------|-----------|')
 
-    def add_selection_iteration(self, iteration, pattern_hash, candidate, delta, status, mre_after):
-        delta_str = f'{delta*100:.4f}%' if delta else 'N/A'
-        self.lines.append(f'| {iteration} | {pattern_hash[:8]} | {candidate["error_score"]:.4f} | {delta_str} | {status} | {mre_after*100:.2f}% |')
+    def add_pattern_selection_header(self):
+        self.lines.append('## Phase D: Pattern Selection (Online)')
+        self.lines.append('')
+
+    def add_pattern_comparison(self, pattern_hash, pattern_info, op_mre, pat_mre, decision):
+        pattern_str = pattern_info['pattern_string'][:30]
+        self.lines.append(f'- **{pattern_hash[:8]}** ({pattern_str}...)')
+        self.lines.append(f'  - Operator: {op_mre*100:.2f}%')
+        self.lines.append(f'  - Pattern: {pat_mre*100:.2f}%')
+        self.lines.append(f'  - → {decision}')
+        self.lines.append('')
 
     def add_final_prediction(self, predictions, final_mre, baseline_mre):
-        self.lines.append('')
-        self.lines.append('**Legend:**')
-        self.lines.append('- **Error Score:** Score at iteration time (recalculated after each ACCEPT)')
-        self.lines.append('- **Delta:** MRE improvement if pattern is added')
-        self.lines.append('- **Global MRE:** Overall MRE on Training_Test after this iteration')
-        self.lines.append('')
         self.lines.append('## Phase E: Final Prediction')
         self.lines.append('')
         self.lines.append(f'- Final MRE: {final_mre*100:.2f}%')
