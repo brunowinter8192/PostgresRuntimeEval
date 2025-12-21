@@ -10,11 +10,6 @@
 - `just beads` - List open beads
 - `just bead-new "title"` - Create new bead
 - `just bead-comment <id> "msg"` - Add comment to bead
-- `just commit "msg"` - Quick commit
-- `just commit-scope <scope> "msg"` - Commit with scope prefix
-- `just log [n]` - Show recent commits (default: 5)
-
-**CRITICAL:** ALWAYS use `just commit "msg"`. NEVER use raw `git commit`.
 
 ---
 
