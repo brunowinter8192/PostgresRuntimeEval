@@ -243,7 +243,45 @@ Evaluate current hooks for improvements:
 
 **Reference:** `~/.claude/scripts/README.md`
 
-#### 4. Improvements
+#### 4. Agent Evaluation
+
+Evaluate subagent usage during the cycle (if agents were used).
+
+##### Output Quality
+
+| Aspect | Rating | Criteria |
+|--------|--------|----------|
+| Format | ✅/⚠️/❌ | Did agent follow requested output format? |
+| Relevance | ✅/⚠️/❌ | Were findings relevant to the task? |
+| Completeness | ✅/⚠️/❌ | Did agent find all critical files/info? |
+| Actionability | ✅/⚠️/❌ | Could I act on the output without additional research? |
+
+##### What Helped
+- List concrete benefits from agent usage
+
+##### What Could Be Better
+- Specific improvements for agent prompts or output
+
+##### Missed Agent Usage
+
+Identify situations where agent should have been used but wasn't:
+
+| Situation | What I Did | What I Should Have Done |
+|-----------|-----------|------------------------|
+| ... | Manual search | Use agent for exploration |
+
+**When to Use Agent:**
+- Exploration over >3 files
+- Unknown directory structure
+- Pipeline tracing (input → output)
+- When hook requests it
+
+**When NOT to Use Agent (do it yourself):**
+- Direct reads of known paths
+- Verification after agent output
+- Single targeted grep/glob
+
+#### 5. Improvements
 
 Improvements are based on the execution and process reflection.
 
@@ -259,7 +297,7 @@ Two categories - BOTH are very important:
 - Which questions should I ask earlier?
 - Which assumptions should I verify before proposing?
 
-#### 5. Open Items
+#### 6. Open Items
 
 List any tasks from the original plan that were NOT executed.
 - These will be handled in CLOSING phase (create Bead or discard)
