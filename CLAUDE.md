@@ -14,6 +14,8 @@
 - `just commit-scope <scope> "msg"` - Commit with scope prefix
 - `just log [n]` - Show recent commits (default: 5)
 
+**CRITICAL:** ALWAYS use `just commit "msg"`. NEVER use raw `git commit`.
+
 ---
 
 ## 2. BEADS
