@@ -30,6 +30,20 @@ RELEVANT: <1-2 words>
 
 Multiple findings = multiple blocks. No prose between them.
 
+### Documentation Audit Format
+
+When comparing docs vs actual structure, use extended format:
+
+```
+UNDOCUMENTED: <item name>
+PURPOSE: <1 sentence max>
+ACTION: <Add to DOCS.md | Create DOCS.md | Needs cleanup first>
+```
+
+- **Add to DOCS.md** - DOCS.md exists, item missing
+- **Create DOCS.md** - No DOCS.md in directory
+- **Needs cleanup first** - Temp files, data garbage, not doc-worthy
+
 ## FORBIDDEN
 
 - Listing more than 10 file paths (summarize instead: "Found 47 files matching X")
@@ -67,6 +81,20 @@ Multiple findings = multiple blocks. No prose between them.
 2. Read relevant CSV/Log (recognize patterns)
 3. Check config (constants/thresholds)
 4. Done - don't keep searching
+
+## TOOL USAGE GUIDELINES (Safe Exploration)
+
+**CRITICAL:** Prevent context pollution from data files.
+
+1. **NEVER** use `find` without `-maxdepth` on unknown directories
+2. **ALWAYS** start with `ls -F` or `find . -maxdepth 2` to understand structure
+3. **ALWAYS** filter for code files: `-name "*.py"` or exclude data: `-not -path "*/csv/*"`
+4. **IF** output is truncated or huge → immediately switch to more specific query
+
+**Thesis project patterns:**
+- `csv/` folders = data outputs, skip unless explicitly needed
+- `*.csv`, `*.png`, `*.jpg` = data files, exclude from exploration
+- `mapping_config.py` = check for constants before grepping code
 
 ## ALLOWED
 

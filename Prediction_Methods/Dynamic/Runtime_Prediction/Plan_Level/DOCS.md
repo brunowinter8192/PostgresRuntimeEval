@@ -48,3 +48,22 @@ python3 00_Batch_Workflow.py
 **Templates:** Q1, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q12, Q13, Q14, Q18, Q19
 
 **Note:** Uses Plan_Level_1 scripts via subprocess calls (no local copy needed).
+
+---
+
+## A_01a - Query_Evaluation.py
+
+**Purpose:** Evaluate LOTO predictions and create MRE report with bar plot.
+
+**Inputs:**
+- Predictions: `Qx/02_predictions_*.csv` (from 00_Batch_Workflow.py)
+
+**Outputs:**
+- `{output-dir}/overall_mre.csv` - Overall MRE across all templates
+- `{output-dir}/loto_mre.csv` - MRE per LOTO template
+- `{output-dir}/loto_mre_plot.png` - Bar plot of MRE by template
+
+**Usage:**
+```bash
+python3 A_01a_Query_Evaluation.py --output-dir Evaluation
+```

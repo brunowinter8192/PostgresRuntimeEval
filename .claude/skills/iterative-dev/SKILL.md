@@ -43,6 +43,25 @@ EVERY RESPONSE STARTS WITH A PHASE INDICATOR:
 
 ## Planning Phase (PLAN)
 
+### Scoping (BEFORE Exploration)
+
+BEFORE you explore, clarify with the user:
+
+**1. SCOPE - What is the end goal?**
+→ "What should the output be?"
+→ File? Script? Documentation? Analysis?
+
+**2. SOURCES - Which files/folders are relevant?**
+→ "Which folders should I look at?"
+→ "Is there a reference script?"
+→ User knows the structure better than you
+
+**3. CONNECTIONS - How do the sources relate?**
+→ "How does X use data from Y?"
+→ Only when connections are clear: read DOCS.md
+
+**THEN:** Explore with direction (DOCS.md → relevant scripts → structures)
+
 ### Exploration
 
 **Documentation First (MANDATORY):**
@@ -76,8 +95,8 @@ BEFORE executing scripts with relative paths:
 
 **Proactivity (CRITICAL):**
 - On skill start: Ask context questions IMMEDIATELY, don't wait
-- Form hypotheses and verify them
-- Don't wait for user hints - explore yourself
+- Clarify SCOPE, SOURCES, CONNECTIONS first
+- THEN explore with clear direction
 
 **Questions:**
 - One question at a time, based on previous answer, prefer multiple choice, 'askuserquestion' tool
