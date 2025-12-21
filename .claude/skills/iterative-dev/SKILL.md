@@ -147,50 +147,17 @@ After completing plan edits, BEFORE transition to RECAP:
 2. Wait for Plan Mode system message
 3. Proceed with evaluation report (read-only enforced by Plan Mode)
 
-### Justfile Check
+### Plan File Handling
 
-After each cycle, check for recurring commands that could be added to `justfile`:
+**CRITICAL:** Report OVERWRITES plan file completely.
 
-**Candidates:**
-- Commands executed 3+ times in session
-- Commands with complex flags/arguments
-- Commands prone to typos
-
-**Goal:** Reduce token usage on both input (shorter commands) and output (fewer retries from typos).
-
-### Justfile Evaluation
-
-Beyond adding new recipes, evaluate existing ones:
-
-**Questions:**
-- Did I use justfile commands or fall back to raw commands?
-- Are there recipes I forgot existed?
-- Should existing recipes be modified?
-
-**Improvement Candidates:**
-- Raw commands I used instead of justfile equivalents
-- Recipes with wrong defaults or missing flags
-
-### Hooks Evaluation
-
-Evaluate current hooks for improvements:
-
-**Questions:**
-- Did a hook block something it shouldn't have?
-- Did a hook allow something it should have blocked?
-- Is output silencing helping or hiding problems?
-- Should a recurring command pattern become a hook rule?
-
-**Improvement Candidates:**
-- Commands that failed due to missing hook rules
-- Verbose output that polluted context
-- Security patterns that should be blocked
-
-**Reference:** `~/.claude/scripts/README.md`
+- **Executed tasks:** Only mentioned in Execution summary
+- **Open items:** Listed in "## Open Items" section → handled in CLOSING phase (Bead or discard)
+- **No "ORIGINAL PLAN" section** - plan is consumed by execution
 
 ### Report
 
-Claude writes a report covering:
+Claude writes a report that OVERWRITES the plan file:
 
 #### 1. Execution
 
@@ -240,7 +207,40 @@ Every assumption should be either:
 2. Explicitly confirmed with user
 3. Documented as "ASSUMPTION: ..." in plan file
 
-#### 3. Improvements
+#### 3. Justfile Evaluation
+
+Evaluate justfile usage and potential additions:
+
+**New Recipe Candidates:**
+- Commands executed 3+ times in session
+- Commands with complex flags/arguments
+- Commands prone to typos
+
+**Existing Recipe Review:**
+- Did I use justfile commands or fall back to raw commands?
+- Are there recipes I forgot existed?
+- Should existing recipes be modified?
+
+**Goal:** Reduce token usage on both input (shorter commands) and output (fewer retries from typos).
+
+#### 4. Hooks Evaluation
+
+Evaluate current hooks for improvements:
+
+**Questions:**
+- Did a hook block something it shouldn't have?
+- Did a hook allow something it should have blocked?
+- Is output silencing helping or hiding problems?
+- Should a recurring command pattern become a hook rule?
+
+**Improvement Candidates:**
+- Commands that failed due to missing hook rules
+- Verbose output that polluted context
+- Security patterns that should be blocked
+
+**Reference:** `~/.claude/scripts/README.md`
+
+#### 5. Improvements
 
 Improvements are based on the execution and process reflection.
 
@@ -256,11 +256,16 @@ Two categories - BOTH are very important:
 - Which questions should I ask earlier?
 - Which assumptions should I verify before proposing?
 
+#### 6. Open Items
+
+List any tasks from the original plan that were NOT executed.
+- These will be handled in CLOSING phase (create Bead or discard)
+
 ### Collecting Improvements
 
 After report:
 1. Ask: "Any remarks?"
-2. User gives remark → Write to plan file under "## Improvements"
+2. User gives remark → Add to Improvements section
 3. Ask: "More remarks?"
 4. Repeat until user says "done" or "improve"
 
