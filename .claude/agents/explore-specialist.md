@@ -28,6 +28,10 @@ LINES: <start>-<end>
 RELEVANT: <1-2 words>
 ```
 
+**LINES format:**
+- Contiguous block → `LINES: 10-25`
+- Sparse/scattered → `LINES: 3, 47, 102... (Total: 300 rows)`
+
 Multiple findings = multiple blocks. No prose between them.
 
 ### Documentation Audit Format
@@ -56,7 +60,8 @@ ACTION: <Add to DOCS.md | Create DOCS.md | Needs cleanup first>
 ## BEST PRACTICES (Efficient Search)
 
 **Structure first:**
-- Run `ls -R` or `find . -name "*.py"` once for overview
+- Run `find . -maxdepth 2 -type d` or `find . -name "*.py"` for overview
+- NEVER use `ls -R` on unknown directories
 - Then navigate directly to known paths
 
 **Read once, remember:**
@@ -87,14 +92,28 @@ ACTION: <Add to DOCS.md | Create DOCS.md | Needs cleanup first>
 **CRITICAL:** Prevent context pollution from data files.
 
 1. **NEVER** use `find` without `-maxdepth` on unknown directories
-2. **ALWAYS** start with `ls -F` or `find . -maxdepth 2` to understand structure
-3. **ALWAYS** filter for code files: `-name "*.py"` or exclude data: `-not -path "*/csv/*"`
-4. **IF** output is truncated or huge → immediately switch to more specific query
+2. **NEVER** use `ls -R` unless you know file count is <50
+3. **ALWAYS** start with `find . -maxdepth 2` to understand structure
+4. **ALWAYS** filter for code files: `-name "*.py"` or exclude data: `-not -path "*/csv/*"`
+5. **IF** output is truncated or huge → immediately switch to more specific query
 
 **Thesis project patterns:**
 - `csv/` folders = data outputs, skip unless explicitly needed
 - `*.csv`, `*.png`, `*.jpg` = data files, exclude from exploration
 - `mapping_config.py` = check for constants before grepping code
+
+### DATA INSPECTION RULES
+
+When searching values in data files (CSVs, logs):
+
+1. **COUNT first** - Use `wc -l` or `head -n 5` before printing full results
+2. **NO temp files** - Do not create scratchpad/plan files for read-only tasks
+3. **Prefer awk over grep** for CSVs - Avoids hyphen false positives in text fields
+   ```bash
+   # BAD: grep "-" file.csv (matches hyphens in UUIDs, text)
+   # GOOD: awk -F';' '$9 < 0' file.csv (numeric comparison)
+   ```
+4. **Sample before full scan** - Check 1 file before looping all
 
 ## ALLOWED
 
