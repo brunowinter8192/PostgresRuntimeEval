@@ -81,6 +81,11 @@ ACTION: <Add to DOCS.md | Create DOCS.md | Needs cleanup first>
 - `mapping_config.py` often contains the answer
 - Check constants/thresholds there before searching code
 
+**Related directories:**
+- If expected file NOT in target dir, check parent for sibling folders
+- Common pattern: `Evaluation/` data may live in sibling `Predictions/`
+- When reporting: flag "FILE NOT IN DIR, found in sibling: <path>"
+
 **Efficient approach (3-4 Reads):**
 1. Capture structure (ls/find)
 2. Read relevant CSV/Log (recognize patterns)

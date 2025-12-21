@@ -19,6 +19,7 @@ Runtime_Prediction/
     batch_predict.sh
     A_01a_Query_Evaluation.py
     A_02_Pattern_Analysis.py
+    A_03_Method_Comparison.py
     Evaluation/
         Error/
         Size/
@@ -43,6 +44,9 @@ A_01a_Query_Evaluation ──> Analysis/{Strategy}/
        |
        v
 A_02_Pattern_Analysis ───> Analysis/{Strategy}/
+       |
+       v
+A_03_Method_Comparison ──> Analysis/Comparison/
 ```
 
 ## Output Structure
@@ -75,6 +79,10 @@ Evaluation/
             ...
         Frequency/
             ...
+        Comparison/
+            method_comparison.csv
+            overall_comparison.csv
+            method_comparison.md
 ```
 
 ## Shared Infrastructure
@@ -178,4 +186,30 @@ python3 A_01a_Query_Evaluation.py Evaluation/Error --output-dir Evaluation/Analy
 **Usage:**
 ```bash
 python3 A_02_Pattern_Analysis.py Evaluation/Error --output-dir Evaluation/Analysis/Error
+```
+
+---
+
+## A_03 - Method_Comparison.py
+
+**Purpose:** Compare pattern selection and MRE progression across Hybrid_1, Hybrid_2, and Online_1
+
+**Inputs:**
+- `h1_dir` - Hybrid_1 evaluation directory (positional)
+- `h2_dir` - Hybrid_2 evaluation directory (positional)
+- `o1_dir` - Online_1 analysis directory (positional)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `{output-dir}/method_comparison.csv` - Per-template MRE comparison with pattern hashes
+- `{output-dir}/overall_comparison.csv` - Overall MRE comparison across approaches
+- `{output-dir}/method_comparison.md` - Report with MRE progression and pattern breakdown
+
+**Usage:**
+```bash
+python3 A_03_Method_Comparison.py \
+  ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/Evaluation/approach_3 \
+  ../../Hybrid_2/Runtime_Prediction/Evaluation/Size/Epsilon \
+  Evaluation/Analysis/Size \
+  --output-dir Evaluation/Analysis/Comparison
 ```
