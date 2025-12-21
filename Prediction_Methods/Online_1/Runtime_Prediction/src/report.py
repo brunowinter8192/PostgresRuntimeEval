@@ -106,15 +106,16 @@ class ReportBuilder:
         self.lines.append('| Hash | Pattern String | Length | Occ | Avg MRE | Error Score |')
         self.lines.append('|------|----------------|--------|-----|---------|-------------|')
 
-        ranking_lookup = {r['pattern_hash']: r for r in ranking}
-
-        for pattern_hash, pattern_info in patterns.items():
+        for r in ranking:
+            pattern_hash = r['pattern_hash']
+            pattern_info = patterns.get(pattern_hash, {})
             pattern_str = pattern_info['pattern_string'][:40] + '...' if len(pattern_info['pattern_string']) > 40 else pattern_info['pattern_string']
+            self.lines.append(f'| {pattern_hash[:8]} | {pattern_str} | {r["pattern_length"]} | {r["occurrence_count"]} | {r["avg_mre"]*100:.1f}% | {r["error_score"]:.4f} |')
 
-            if pattern_hash in ranking_lookup:
-                r = ranking_lookup[pattern_hash]
-                self.lines.append(f'| {pattern_hash[:8]} | {pattern_str} | {r["pattern_length"]} | {r["occurrence_count"]} | {r["avg_mre"]*100:.1f}% | {r["error_score"]:.4f} |')
-            else:
+        ranked_hashes = {r['pattern_hash'] for r in ranking}
+        for pattern_hash, pattern_info in patterns.items():
+            if pattern_hash not in ranked_hashes:
+                pattern_str = pattern_info['pattern_string'][:40] + '...' if len(pattern_info['pattern_string']) > 40 else pattern_info['pattern_string']
                 self.lines.append(f'| {pattern_hash[:8]} | {pattern_str} | {pattern_info["pattern_length"]} | 0 | - | - |')
 
         self.lines.append('')
