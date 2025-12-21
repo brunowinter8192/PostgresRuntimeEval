@@ -17,8 +17,10 @@ Misc/
     Cache_Validation/                                        [documented below]
     FFS_Comparison/                                          [documented below]
     Pass_Through/                                            [documented below]
-    Konzepte/
     specification/
+        auto/
+            specification.md                                 (TPC-H Specification)
+            specification_clean.md                           (TPC-H Specification, cleaned)
 ```
 
 ---
@@ -77,8 +79,15 @@ Cache_Validation/
         A_01_Runtime_Variance.py
         csv/
     cold_cache_validation/
+        restart_docker/
+            execute_queries.py
+            csv/
     warm_cache/
+        warm_cache.py
+        csv/
     Comparison_Cold_Warm/
+        compare_cold_warm.py
+        csv/
 ```
 
 ### Plan_Level_CC/A_01 - Runtime_Variance.py
@@ -114,6 +123,60 @@ python3 A_01_Runtime_Variance.py \
 | cv | Coefficient of variation (std/mean * 100) |
 | min/max | Runtime range |
 | range | max - min |
+
+### cold_cache_validation/restart_docker/execute_queries.py
+
+**Purpose:** Cold cache runtime measurement - restarts OrbStack + purges macOS cache before each query execution to ensure true cold cache state.
+
+**Inputs:**
+- `$1` queries_dir: Path to Generated_Queries directory
+
+**Outputs:**
+- `csv/runtime_{timestamp}.csv`: Per-template runtime with mean, std_dev, cv, individual runs
+
+**Configuration:**
+- RUNS=5 per template
+- Skips Q15 (VIEW-based)
+
+**Usage:**
+```bash
+cd Cache_Validation/cold_cache_validation/restart_docker
+python3 execute_queries.py ../../Generated_Queries
+```
+
+### warm_cache/warm_cache.py
+
+**Purpose:** Warm cache runtime measurement - executes 5 runs per template without restart.
+
+**Inputs:**
+- `$1` queries_dir: Path to Generated_Queries directory
+
+**Outputs:**
+- `csv/warm_cache_{timestamp}.csv`: Per-template runtime with mean, std_dev, cv, individual runs
+
+**Usage:**
+```bash
+cd Cache_Validation/warm_cache
+python3 warm_cache.py ../Generated_Queries
+```
+
+### Comparison_Cold_Warm/compare_cold_warm.py
+
+**Purpose:** Compare cold vs warm cache runtimes and analyze first-run effect in warm cache.
+
+**Inputs:**
+- `$1` cold_csv: Path to cold cache runtime CSV
+- `$2` warm_csv: Path to warm cache runtime CSV
+
+**Outputs:**
+- `csv/warm_first_run_effect_{ts}.csv`: Analysis of run_1 vs runs_2-5 in warm cache
+- `csv/cold_vs_warm_{ts}.csv`: Comparison with speedup factor
+
+**Usage:**
+```bash
+cd Cache_Validation/Comparison_Cold_Warm
+python3 compare_cold_warm.py ../cold_cache_validation/restart_docker/csv/runtime_*.csv ../warm_cache/csv/warm_cache_*.csv
+```
 
 ---
 

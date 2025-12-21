@@ -1,6 +1,0 @@
-pattern_name;Q1;Q10;Q12;Q13;Q14;Q18;Q19;Q3;Q4;Q5;Q6;Q7;Q8;Q9
-Aggregate_Sort_Outer;;;1.2234977612687603;;;;;;;;;;;
-Gather_Merge_Incremental_Sort_Outer;;;;;;0.5514533194206089;;;;;;;;
-Gather_Merge_Sort_Outer;10.44734263071451;;;;;;;;;;;;;
-Hash_Join_Seq_Scan_Outer_Hash_Inner;;;;;;74.93740632145733;;;;;;;;
-Nested_Loop_Merge_Join_Outer_Index_Scan_Inner;;;;;;0.6194430816860883;;;;;;;;
