@@ -256,13 +256,9 @@ Two categories - BOTH are very important:
 - Which questions should I ask earlier?
 - Which assumptions should I verify before proposing?
 
-### Commit
-
-**CRITICAL:** After the report, check: Were edits made during IMPLEMENT? → Commit immediately.
-
 ### Collecting Improvements
 
-After report + commit:
+After report:
 1. Ask: "Any remarks?"
 2. User gives remark → Write to plan file under "## Improvements"
 3. Ask: "More remarks?"
