@@ -226,23 +226,7 @@ Every assumption should be either:
 2. Explicitly confirmed with user
 3. Documented as "ASSUMPTION: ..." in plan file
 
-#### 3. Justfile Evaluation
-
-Evaluate justfile usage and potential additions:
-
-**New Recipe Candidates:**
-- Commands executed 3+ times in session
-- Commands with complex flags/arguments
-- Commands prone to typos
-
-**Existing Recipe Review:**
-- Did I use justfile commands or fall back to raw commands?
-- Are there recipes I forgot existed?
-- Should existing recipes be modified?
-
-**Goal:** Reduce token usage on both input (shorter commands) and output (fewer retries from typos).
-
-#### 4. Hooks Evaluation
+#### 3. Hooks Evaluation
 
 Evaluate current hooks for improvements:
 
@@ -259,7 +243,7 @@ Evaluate current hooks for improvements:
 
 **Reference:** `~/.claude/scripts/README.md`
 
-#### 5. Improvements
+#### 4. Improvements
 
 Improvements are based on the execution and process reflection.
 
@@ -275,7 +259,7 @@ Two categories - BOTH are very important:
 - Which questions should I ask earlier?
 - Which assumptions should I verify before proposing?
 
-#### 6. Open Items
+#### 5. Open Items
 
 List any tasks from the original plan that were NOT executed.
 - These will be handled in CLOSING phase (create Bead or discard)

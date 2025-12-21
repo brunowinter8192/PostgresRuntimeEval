@@ -1,19 +1,6 @@
 # CLAUDE.MD - Thesis1 Project Engineering Reference
 
-## 1. JUSTFILE
-
-**Path:** `justfile` (project root)
-
-**Usage:** `just <recipe> [args]`
-
-**Available Recipes:**
-- `just beads` - List open beads
-- `just bead-new "title"` - Create new bead
-- `just bead-comment <id> "msg"` - Add comment to bead
-
----
-
-## 2. BEADS
+## 1. BEADS
 
 **Path:** `.beads/`
 
@@ -28,7 +15,7 @@ Run `bd prime` for full reference.
 
 ---
 
-## 3. PROJECT CONTEXT
+## 2. PROJECT CONTEXT
 
 **Research Domain:** ML-based runtime prediction for SQL queries
 **Benchmark:** TPC-H queries on PostgreSQL
@@ -38,7 +25,7 @@ Run `bd prime` for full reference.
 
 ---
 
-## 4. THESIS-SPECIFIC RULES
+## 3. THESIS-SPECIFIC RULES
 
 ### Formatting: Bullet Lists over Tables
 
@@ -91,7 +78,7 @@ RIGHT (in thesis/outputs):
 
 ---
 
-## 5. CODE ORGANIZATION
+## 4. CODE ORGANIZATION
 
 **CRITICAL:** Every script follows this structure:
 
@@ -173,7 +160,7 @@ if __name__ == "__main__":
 
 ---
 
-## 6. COMMENT RULES
+## 5. COMMENT RULES
 
 **CRITICAL:** Three types of allowed comments only
 
@@ -199,7 +186,7 @@ from data_loader import load_validated_data
 
 ---
 
-## 7. ARCHITECTURE STANDARDS
+## 6. ARCHITECTURE STANDARDS
 
 ### Naming Conventions
 
@@ -287,7 +274,7 @@ When a module is a directory (e.g., `10_Pattern_Selection/`):
 
 ---
 
-## 8. DOCUMENTATION STRUCTURE
+## 7. DOCUMENTATION STRUCTURE
 
 ### Terminology
 
