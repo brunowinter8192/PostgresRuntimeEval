@@ -1,8 +1,8 @@
 feature;order
 startup_cost;1
-st1;2
-nt2;3
-st2;4
-rt1;5
-nt1;6
-rt2;7
+rt2;2
+nt1;3
+nt2;4
+st1;5
+rt1;6
+st2;7

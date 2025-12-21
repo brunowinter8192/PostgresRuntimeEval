@@ -1,4 +1,0 @@
-iteration;feature_added;mre;n_features;features
-1;total_cost;0.14655906232965282;1;total_cost
-2;plan_width;0.0429528083594453;2;total_cost, plan_width
-3;startup_cost;0.035305611709398124;3;total_cost, plan_width, startup_cost

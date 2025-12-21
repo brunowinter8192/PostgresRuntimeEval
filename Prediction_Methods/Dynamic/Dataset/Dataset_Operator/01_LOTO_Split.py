@@ -65,23 +65,21 @@ def export_training(df: pd.DataFrame, template_dir: Path) -> None:
     df.to_csv(template_dir / 'training.csv', index=False, sep=';')
 
 
-# Split training data by node_type into operator folders (all 13 operators)
+# Split training data by node_type into operator folders (only operators with data)
 def export_operator_splits(df: pd.DataFrame, template_dir: Path) -> None:
-    columns = df.columns.tolist()
-
     for node_type in ALL_OPERATORS:
         operator_df = df[df['node_type'] == node_type]
+
+        if len(operator_df) == 0:
+            continue
+
         folder_name = csv_name_to_folder_name(node_type)
         prefixed_folder = f'04a_{folder_name}'
 
         operator_dir = template_dir / prefixed_folder
         operator_dir.mkdir(exist_ok=True, parents=True)
 
-        if len(operator_df) == 0:
-            empty_df = pd.DataFrame(columns=columns)
-            empty_df.to_csv(operator_dir / f'04a_{folder_name}.csv', index=False, sep=';')
-        else:
-            operator_df.to_csv(operator_dir / f'04a_{folder_name}.csv', index=False, sep=';')
+        operator_df.to_csv(operator_dir / f'04a_{folder_name}.csv', index=False, sep=';')
 
 
 # Convert operator CSV name to folder name (Gather Merge -> Gather_Merge)

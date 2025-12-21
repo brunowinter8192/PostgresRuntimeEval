@@ -2,6 +2,16 @@
 
 ML-based runtime prediction for SQL queries using pattern-level SVM models that group parent operators with their children as single prediction units.
 
+## Static Workload
+
+Dieses Verzeichnis verwendet **Static Workloads**: Train und Test sehen dieselben Templates.
+
+**Datenaufteilung pro Template:**
+- **Training:** 120 Queries (Seeds)
+- **Test:** 30 Queries (Seeds)
+
+Gegensatz: [Dynamic Workloads](../Dynamic/README_Hybrid_1.md) - LOTO (Leave-One-Template-Out)
+
 ## Terminology
 
 **Length:** Number of depth levels a pattern spans (vertical depth)

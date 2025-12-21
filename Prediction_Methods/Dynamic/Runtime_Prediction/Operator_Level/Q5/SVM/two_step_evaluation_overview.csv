@@ -5,10 +5,10 @@ Gather;execution_time;1;5;6;0.016747801010299407;0.05914090763406189;rt1;nt1, nt
 Gather;start_time;1;6;7;0.7020931254903285;1.959276576642114;startup_cost;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2, startup_cost
 Gather_Merge;execution_time;1;6;7;0.13501049552184569;0.15032368778901725;sel;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, sel, st1, st2
 Gather_Merge;start_time;1;6;7;0.1351347208119363;0.15076871225513383;sel;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, rt1, rt2, sel, st1, st2
-Hash;execution_time;1;6;7;125.23441971610161;249.69832150506954;plan_width;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, plan_width, rt1, rt2, st1, st2
-Hash;start_time;1;6;7;127.56405292515527;254.6909561114836;plan_width;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, plan_width, rt1, rt2, st1, st2
+Hash;execution_time;1;6;7;125.23441971610161;249.69832150506946;plan_width;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, plan_width, rt1, rt2, st1, st2
+Hash;start_time;1;6;7;127.56405292515527;254.6909561114835;plan_width;nt1, nt2, rt1, rt2, st1, st2;nt1, nt2, plan_width, rt1, rt2, st1, st2
 Hash_Join;execution_time;1;5;6;22.085736830741602;38.90175714901084;rt1;nt1, nt2, rt2, st1, st2;nt1, nt2, rt1, rt2, st1, st2
-Hash_Join;start_time;5;4;9;2.2436493345574338;3.050593553620158;nt2, plan_width, rt1, sel, total_cost;nt1, rt2, st1, st2;nt1, nt2, plan_width, rt1, rt2, sel, st1, st2, total_cost
+Hash_Join;start_time;5;4;9;2.2436493345574338;3.0505935536201605;nt2, plan_width, rt1, sel, total_cost;nt1, rt2, st1, st2;nt1, nt2, plan_width, rt1, rt2, sel, st1, st2, total_cost
 Incremental_Sort;execution_time;7;4;11;0.0008931759144953378;0.005634136508992476;nt, nt1, plan_width, rt1, sel, startup_cost, total_cost;nt2, rt2, st1, st2;nt, nt1, nt2, plan_width, rt1, rt2, sel, st1, st2, startup_cost, total_cost
 Incremental_Sort;start_time;6;4;10;0.0008927063139582591;0.0056340749877620425;nt, nt1, rt1, sel, startup_cost, total_cost;nt2, rt2, st1, st2;nt, nt1, nt2, rt1, rt2, sel, st1, st2, startup_cost, total_cost
 Index_Only_Scan;execution_time;14;0;14;0.04041999947527248;0.04041999947527248;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost;;np, nt, nt1, nt2, parallel_workers, plan_width, reltuples, rt1, rt2, sel, st1, st2, startup_cost, total_cost
