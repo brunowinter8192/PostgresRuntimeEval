@@ -16,6 +16,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from mapping_config import LEAF_OPERATORS, csv_name_to_folder_name, OPERATOR_FEATURES
 
 
+# Get project root via git
+def get_project_root():
+    import subprocess
+    result = subprocess.run(['git', 'rev-parse', '--show-toplevel'],
+                          capture_output=True, text=True, check=True)
+    return Path(result.stdout.strip())
+
+
+# Convert absolute path to relative from project root
+def to_relative_path(path):
+    abs_path = Path(path).resolve()
+    return str(abs_path.relative_to(get_project_root()))
+
+
 # ORCHESTRATOR
 
 def run_prediction_workflow(test_file, overview_file, models_dir, output_file, md_query=None):
@@ -256,8 +270,8 @@ def predict_operators_bottom_up_with_steps(query_ops, predictions, steps, childr
             'node_type': node_type,
             'depth': depth,
             'is_leaf': True,
-            'model_path_exec': str(model_path_exec.resolve()),
-            'model_path_start': str(model_path_start.resolve()),
+            'model_path_exec': to_relative_path(model_path_exec),
+            'model_path_start': to_relative_path(model_path_start),
             'features_exec': features_exec,
             'features_start': features_start,
             'input_values_exec': dict(zip(features_exec, X_exec.iloc[0].tolist())),
@@ -336,8 +350,8 @@ def predict_operators_bottom_up_with_steps(query_ops, predictions, steps, childr
                 'node_type': node_type,
                 'depth': depth,
                 'is_leaf': False,
-                'model_path_exec': str(model_path_exec.resolve()),
-                'model_path_start': str(model_path_start.resolve()),
+                'model_path_exec': to_relative_path(model_path_exec),
+                'model_path_start': to_relative_path(model_path_start),
                 'features_exec': features_exec,
                 'features_start': features_start,
                 'input_values_exec': dict(zip(features_exec, X_exec.iloc[0].tolist())),
@@ -460,9 +474,9 @@ def export_md_report(query_file, test_file, overview_file, models_dir, query_ops
 
     lines.append('## Input Summary')
     lines.append('')
-    lines.append(f'- **Test File:** {Path(test_file).resolve()}')
-    lines.append(f'- **Overview File:** {Path(overview_file).resolve()}')
-    lines.append(f'- **Models Directory:** {Path(models_dir).resolve()}')
+    lines.append(f'- **Test File:** {to_relative_path(test_file)}')
+    lines.append(f'- **Overview File:** {to_relative_path(overview_file)}')
+    lines.append(f'- **Models Directory:** {to_relative_path(models_dir)}')
     lines.append('')
 
     lines.append('## Query Tree')
