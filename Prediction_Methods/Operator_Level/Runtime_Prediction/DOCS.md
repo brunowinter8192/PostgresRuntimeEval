@@ -260,7 +260,7 @@ python3 03_Query_Prediction.py \
     ../Datasets/Baseline/03_test.csv \
     ./Baseline_SVM/SVM/two_step_evaluation_overview.csv \
     ./Baseline_SVM/Model \
-    --md-query Q1_121_seed_984483720
+    --md-query Q1_109_seed_886035348
 ```
 
 ---
