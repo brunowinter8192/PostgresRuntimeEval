@@ -1,4 +1,25 @@
+# === Existing ===
 venv/
 __pycache__/
 *.pyc
 .DS_Store
+
+# === Generated outputs ===
+# Models
+*.pkl
+
+# Evaluation outputs
+**/Evaluation/
+
+# Generated reports in md/ folders
+**/md/*.md
+
+# === TPC-H ===
+# Official files (download from tpc.org)
+TPC-H V3.0.1/dev-tools/
+TPC-H V3.0.1/ref_data/
+TPC-H V3.0.1/specification.*
+TPC-H V3.0.1/EULA.txt
+
+# Generated benchmark data
+*.tbl
