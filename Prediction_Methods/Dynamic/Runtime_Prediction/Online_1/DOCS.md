@@ -86,6 +86,14 @@ Evaluation/
             ...
 ```
 
+**selection_log.csv schema:**
+- `pattern_hash` - Unique pattern identifier
+- `pattern_string` - Human-readable pattern (e.g., "Sort -> Aggregate (Outer)")
+- `error_score` - Pattern ordering score (strategy-dependent)
+- `operator_mre` - MRE using operator models only
+- `pattern_mre` - MRE using pattern model
+- `decision` - SELECTED or NOT_SELECTED
+
 ## Shared Infrastructure
 
 **Constants from Dynamic/mapping_config.py:**
@@ -187,8 +195,10 @@ chmod +x batch_predict.sh
 
 **Usage:**
 ```bash
-python3 A_01a_Query_Evaluation.py Evaluation/Size --output-dir Evaluation/Analysis/Size
+python3 A_01a_Query_Evaluation.py Evaluation --output-dir Evaluation/Analysis/Size
 ```
+
+**Note:** Script globs `*/*/csv/predictions.csv` - expects `Evaluation/{Strategy}/{query}/` structure.
 
 ---
 
@@ -201,7 +211,7 @@ python3 A_01a_Query_Evaluation.py Evaluation/Size --output-dir Evaluation/Analys
 - `--output-dir` - Output directory (required)
 
 **Outputs:**
-- `{output-dir}/patterns_selected.csv` - All ACCEPTED patterns from selection_log
+- `{output-dir}/patterns_selected.csv` - All SELECTED patterns from selection_log
 - `{output-dir}/patterns_used.csv` - Patterns actually applied during prediction
 - `{output-dir}/patterns_comparison.csv` - Selected vs used with usage_rate and status
 
