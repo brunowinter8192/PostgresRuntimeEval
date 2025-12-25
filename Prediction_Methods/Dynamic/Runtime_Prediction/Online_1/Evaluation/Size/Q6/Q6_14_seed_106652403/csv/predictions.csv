@@ -1,3 +1,0 @@
-query_file;node_id;node_type;depth;parent_relationship;actual_startup_time;actual_total_time;predicted_startup_time;predicted_total_time;prediction_type;is_leaf
-Q6_14_seed_106652403;10120;Seq Scan;3;Outer;6.151;811.579;1.9152573799386152;748.4929912677765;operator;True
-Q6_14_seed_106652403;10117;Aggregate;0;;825.176;832.112;844.3726275693083;849.9812708083246;pattern;

@@ -3,7 +3,7 @@ HYBRID2_DIR="../../Dataset/Dataset_Hybrid_2"
 OPERATOR_DIR="../../Dataset/Dataset_Operator"
 OUTPUT_DIR="./Evaluation"
 LOG_FILE="$OUTPUT_DIR/progress.log"
-MAX_JOBS=6
+MAX_JOBS=14
 STRATEGIES="size"
 TEMPLATES="Q1 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10 Q12 Q13 Q14 Q18 Q19"
 
