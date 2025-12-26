@@ -13,6 +13,8 @@ Misc/
     DOCS.md
     Learning-based_Query_Performance_Modeling_and_Pred.md   (Base paper)
     Setup.md                                                 (Environment setup)
+    Diff_TPCH/                                               [documented below]
+    Postgres_Docker/                                         [documented below]
     Generated_Queries/                                       [documented below]
     Cache_Validation/                                        [documented below]
     FFS_Comparison/                                          [documented below]
@@ -21,6 +23,69 @@ Misc/
         auto/
             specification.md                                 (TPC-H Specification)
             specification_clean.md                           (TPC-H Specification, cleaned)
+```
+
+---
+
+## Diff_TPCH
+
+Unified diff between original TPC-H dbgen and PostgreSQL-adapted version.
+
+### Directory Structure
+
+```
+Diff_TPCH/
+    generate_diff.sh
+    diff_output.md
+```
+
+### generate_diff.sh
+
+**Purpose:** Generate unified diff between original and modified TPC-H dbgen directories.
+
+**Inputs:**
+- `$1` OLD_DIR: Path to original TPC-H dbgen directory
+- `$2` NEW_DIR: Path to modified TPC-H dbgen directory
+- `$3` OUTPUT_FILE: Output file path (.md or .txt)
+
+**Excludes:** `*.o`, `*.tbl`, `dbgen`, `qgen`, `.DS_Store`
+
+**Usage:**
+```bash
+cd Misc/Diff_TPCH
+./generate_diff.sh \
+  "/Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen" \
+  "/Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen" \
+  diff_output.md
+```
+
+---
+
+## Postgres_Docker
+
+Docker Compose configuration for PostgreSQL TPC-H environment.
+
+### Directory Structure
+
+```
+Postgres_Docker/
+    docker-compose.yaml
+    .env
+    init/
+        01-schema.sql
+    data/
+```
+
+### Configuration
+
+- **docker-compose.yaml:** PostgreSQL 17-alpine3.22 with pgtune-optimized settings
+- **.env:** Database credentials (POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB)
+- **init/01-schema.sql:** TPC-H schema with trailing delimiter workaround
+
+**Usage:**
+```bash
+cd Misc/Postgres_Docker
+docker compose up -d
 ```
 
 ---
