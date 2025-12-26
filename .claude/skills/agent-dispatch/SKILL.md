@@ -9,7 +9,18 @@ description: (project)
 
 | Agent | Model | Purpose | Output |
 |-------|-------|---------|--------|
-| search-specialist-thesis | Haiku | Codebase exploration, file search | FILE/LINES/RELEVANT |
+| code-investigate-specialist | Haiku | Codebase exploration, file search | FILE/LINES/RELEVANT |
+
+## CRITICAL: Default Behavior
+
+**When this skill is active:**
+1. ALL codebase exploration → code-investigate-specialist
+2. NEVER use Explore subagent type directly
+3. NEVER do manual Glob/Grep chains when Agent can do it
+
+**If you catch yourself typing `subagent_type=Explore`:**
+→ STOP
+→ Use `subagent_type=code-investigate-specialist` instead
 
 ## How to Prompt
 
@@ -42,7 +53,10 @@ description: (project)
 
 ## When to Use Agent
 
+**MANDATORY:** Any exploration/investigation task while this skill is active.
+
 **Rule of thumb: >20k token exploration → Agent**
+**Skill active → Agent (no exceptions)**
 
 **Besser einen Agent zu viel als einen zu wenig.**
 

@@ -1,0 +1,73 @@
+services:
+  postgres:
+    image: postgres:17.6-alpine
+    container_name: tpch-postgres
+    restart: unless-stopped
+    
+    shm_size: 12gb
+    
+    networks:
+      - tpch-network
+    
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    
+    ports:
+      - "5432:5432"
+    
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - type: bind
+        source: ${REPO_BASE_PATH}/TPC-H V3.0.1/dbgen
+        target: /tpch-data
+        read_only: true
+      - type: bind
+        source: ${REPO_BASE_PATH}/Postgres_Docker/init
+        target: /docker-entrypoint-initdb.d
+    
+    command:
+      - "postgres"
+      # PGTune Data Warehouse Config (48GB RAM, 14 CPUs, Linux, SSD)
+      - "-c"
+      - "max_connections=40"
+      - "-c"
+      - "shared_buffers=12GB"
+      - "-c"
+      - "effective_cache_size=36GB"
+      - "-c"
+      - "maintenance_work_mem=2GB"
+      - "-c"
+      - "checkpoint_completion_target=0.9"
+      - "-c"
+      - "wal_buffers=16MB"
+      - "-c"
+      - "default_statistics_target=500"
+      - "-c"
+      - "random_page_cost=1.1"
+      - "-c"
+      - "effective_io_concurrency=200"
+      - "-c"
+      - "work_mem=116508kB"
+      - "-c"
+      - "huge_pages=try"
+      - "-c"
+      - "min_wal_size=4GB"
+      - "-c"
+      - "max_wal_size=16GB"
+      - "-c"
+      - "max_worker_processes=14"
+      - "-c"
+      - "max_parallel_workers_per_gather=7"
+      - "-c"
+      - "max_parallel_workers=14"
+      - "-c"
+      - "max_parallel_maintenance_workers=4"
+
+volumes:
+  postgres_data:
+
+networks:
+  tpch-network:
+    driver: bridge
