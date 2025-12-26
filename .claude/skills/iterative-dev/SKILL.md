@@ -14,6 +14,42 @@ This skill extends native Claude Code Plan Mode with:
 
 Follow all native Plan Mode rules.
 
+## Facts Over Assumptions (CORE PRINCIPLE)
+
+**ALWAYS verify first. NEVER assume.**
+
+Before ANY action, ask yourself:
+- Can I verify this? → VERIFY IT
+- Is this 100% self-evident logic? → Only then proceed
+- Am I guessing? → STOP. Read. Ask.
+
+**The Name Test:**
+> Imagine your name is printed under every statement you make.
+> Would you want your name under "ASSUMPTION" or "FACT"?
+
+**Verification Hierarchy:**
+1. READ the file/code/docs
+2. ASK the user
+3. RUN a command to check
+4. ONLY THEN: proceed
+
+**Assumptions are ONLY acceptable when:**
+- The matter is purely logical (2+2=4)
+- There is literally no way to verify
+- AND you explicitly document it as "ASSUMPTION: ..."
+
+**Red Flags (you're assuming):**
+- "I think..." → STOP, verify
+- "It should be..." → STOP, read
+- "Probably..." → STOP, ask
+- Using tool without checking valid params/types first
+
+**This applies to EVERYTHING:**
+- Tool parameters (check --help first)
+- File paths (ls before using)
+- API responses (read schema/docs)
+- User intent (ask before implementing)
+
 ## Task Management Hierarchy
 
 - **Beads** (`.beads/`) - Cross-session (weeks/months)
