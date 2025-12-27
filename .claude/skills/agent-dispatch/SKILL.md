@@ -53,24 +53,22 @@ description: (project)
 
 ## When to Use Agent
 
-**MANDATORY:** Any exploration/investigation task while this skill is active.
-
-**Rule of thumb: >20k token exploration → Agent**
-**Skill active → Agent (no exceptions)**
+**Einfache Regel:**
+- **File-Pfad vom User** → Direkt lesen (kein Agent)
+- **Directory-Pfad vom User** → Agent (Inhalt unbekannt)
 
 **Besser einen Agent zu viel als einen zu wenig.**
 
 Use agent when:
-- Searching multiple files (>3 files)
-- Broad search scope (entire directory, pattern search)
-- Comparing files (Train vs Test, Static vs Dynamic)
-- Analyzing CSV values (ranges, distributions)
-- **Comparing implementations** (e.g., Hybrid_2 vs Online_1) - use parallel agents
+- User gibt Directory statt File
+- "Wo ist X?" / "Wie funktioniert Y?" Fragen
+- Vergleiche zwischen Directories (z.B. Hybrid_2 vs Online_1)
+- >3 unbekannte Files durchsuchen
 
 Do NOT use agent when:
-- Single file read (known path)
-- Targeted grep (pattern + scope known)
-- Quick verification (does file X exist?)
+- User gibt exakten File-Pfad
+- Einzelne bekannte Files lesen
+- Gezielte Grep/Glob mit klarem Scope
 
 ## Parallel Agent Rules
 
