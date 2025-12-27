@@ -50,6 +50,22 @@ Before ANY action, ask yourself:
 - API responses (read schema/docs)
 - User intent (ask before implementing)
 
+## Verification Tasks
+
+Tasks where you compare X against Y (e.g., "Is everything from diff_output.md documented in A_Setup.md?").
+
+**When reporting gaps:**
+- Don't just say "❌ missing"
+- Proactively explain WHAT the missing item does
+- Saves follow-up questions from user
+
+**Example:**
+```
+BAD:  "qgen.c: #include <stdarg.h> | ❌ Not mentioned"
+GOOD: "qgen.c: #include <stdarg.h> | ❌ Not mentioned
+       → Provides varargs support for buffer_append() printf-style formatting"
+```
+
 ## Task Management Hierarchy
 
 - **Beads** (`.beads/`) - Cross-session (weeks/months)
@@ -125,7 +141,7 @@ BEFORE executing scripts with relative paths:
 - **External Dependencies/Versions:** ASK USER, don't self-verify
 	- Docker images, tool versions, library versions
 	- User knows what was ACTUALLY USED vs what's CURRENTLY AVAILABLE
-	- Reproducibility > Aktualität (especially for thesis/research)
+	- Reproducibility > Recency (especially for thesis/research)
 
 ### Communication
 
@@ -169,7 +185,7 @@ If the planning session requires module execution to refine the plan:
 
 - Plan file MUST reflect current implementation approach
 - NEVER call ExitPlanMode with stale plan
-- **ALWAYS ask "Any remarks?" and wait for user signal** ("done", "weiter", "implement")
+- **ALWAYS ask "Any remarks?" and wait for user signal** ("done", "continue", "implement")
   - Saves tokens (no rejected ExitPlanMode calls)
   - User controls transition timing
 
