@@ -112,6 +112,18 @@ Agent provides:
 
 **Verify before reporting to user.**
 
+## Verification Checklist
+
+Before reporting agent results to user:
+
+- [ ] Read at least 1 critical file mentioned by agent
+- [ ] Confirm key claims (file exists, function does X)
+- [ ] If agent provided summary: spot-check 1-2 details
+
+**If you skip verification:**
+→ State explicitly: "Agent-Output nicht verifiziert"
+→ User kann entscheiden ob das OK ist
+
 ## Known Agent Pitfalls
 
 ### 1. Path Hallucinations
