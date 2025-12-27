@@ -31,14 +31,12 @@
 
 --> alle Werte bis auf den DB Type sind Hardware Parameter welche sich aus dem Systembericht meiner verwendeten Maschine auslesen lassen
 --> alles wurde auf einem MacBook Pro, Apple M4 Pro ausgeführt 
---> als DB Type wurde data warehouse gewählt, dabei stütze ich mich auf die Angaben in der Specification.pdf 
-    --> 5.2.7 Page 93. 
-    The configuration and initialization of the SUT, the database, or the session, including any relevant parameter,
-    switch or option settings, must be based only on externally documented capabilities of the system that can be reasonably interpreted as useful for an ad-hoc decision support workload. This workload is characterized by:
+--> als DB Type wurde data warehouse gewählt, dabei stütze ich mich auf die Angaben in der TPC-H Specification (TPC 2022, S. 93):
+    „The configuration and initialization of the SUT, the database, or the session, including any relevant parameter, switch or option settings, must be based only on externally documented capabilities of the system that can be reasonably interpreted as useful for an ad-hoc decision support workload. This workload is characterized by:
         • Sequential scans of large amounts of data;
         • Aggregation of large amounts of data;
         • Multi-table joins;
-        • Possibly extensive sorting.
+        • Possibly extensive sorting."
         
 --> Das System, die Datenbank sowie die session darf also nur auf basis von extern dokumentierten Informationen konfiguriert werden, pgtune ist so eine Datenquelle
 --> Bei der TPC H benchmark geht es um decision support workloads, welche durch die oben genannten Punkte charakterisiert sind. Diese Punkte matchen exakt mit den data warehouse Angaben in pgtune. 
@@ -97,7 +95,7 @@
 
 ### 1.2.5 Schema.sql
 --> `/Postgres_Docker/init/01-schema.sql`
---> Schema.sql wird beim ersten Start des Containers geladen. Es orientiert sich an der Spezifikation: Database Entities, Relationships, and Characteristics 1.2 Page 13
+--> Schema.sql wird beim ersten Start des Containers geladen. Es orientiert sich an der TPC-H Specification, Abschnitt „Database Entities, Relationships, and Characteristics" (TPC 2022, S. 13).
 --> Es werden die Tabellen erstellt. 
 --> in Zeile 86 - 93 wurde ein Workaround gewählt. Da mit dem dbgen - tool die generierten Tabellen alle einen trailing Delimiter am Anfang und Ende jeder Spalte haben, so hat auch die letzte Spalte diese Syntax. Merke, die mit dbgen generierten Daten dürfen nicht verändert werden. Aber so wie sie generiert sind, sind sie mit PostgreSQL nicht kompatibel. PostgreSQL interpretiert den trailing delimiter ganz rechts als weitere Spalte. Um also die generierten Daten unverändert zu halten und dennoch Postgres kompatibel zu machen wurde dieser Workaround gewählt um eine korrekte Syntax für PostgreSQL zu gewährleisten. 
 
@@ -111,11 +109,11 @@
 --> nach diesen Änderungen war ich in der Lage die executables zu kompilieren, dbgen mit dem scale factor 1. Genaue Befehle wie dies Systemübergreifend möglich ist finden sich in der Specification
 
 
-### 1.3.1 Key Points aus der Specification
-The test database and the qualification database must be populated with data that meets the requirements of Clause 4.2.2 and Clause 4.2.3. DBGen is a TPC provided software package that must be used to produce the data used to populate the database. 4.2.1.1 Page 80
+### 1.3.1 Key Points aus der TPC-H Specification
 
-Executable query text must be generated according to the requirements of Clause 2.1.2 and Clause 2.1.3. . QGen is a
-TPC provided software package that must be used to generate the query text.
+„The test database and the qualification database must be populated with data that meets the requirements of Clause 4.2.2 and Clause 4.2.3. DBGen is a TPC provided software package that must be used to produce the data used to populate the database." (TPC 2022, S. 80)
+
+„Executable query text must be generated according to the requirements of Clause 2.1.2 and Clause 2.1.3. QGen is a TPC provided software package that must be used to generate the query text." (TPC 2022, S. 80)
 
 
 ### 1.3.2 Änderungen an Files im dbgen - Ordner 
@@ -183,8 +181,9 @@ Lösung, Query muss komplett gelesen werden BEVOR sie ausgegeben wird (für LIMI
 #### 1.3.2.4 Spec-Bezug
 --> in den Anpassungen 1 und 2 wurden die ausgegebenen Tables und Queries nicht verändert, es gab lediglich Anpassungen in Hinblick darauf das diese überhaupt erst erstellt werden können. In Anpassung 3 gab es jedoch Änderungen welche die generierten Templates beeinflussten, daher musste hier die Specification einbezogen werden.
 
---> "Date expressions - vendor-specific syntax may be used instead of specified SQL-92 syntax" 2.2.3.3(c)
---> "Vendor-specific SQL syntax may be added to SELECT statement to limit rows returned"
+Die TPC-H Specification erlaubt explizit vendor-spezifische Anpassungen:
+--> „Date expressions - vendor-specific syntax may be used instead of specified SQL-92 syntax" (TPC 2022, Clause 2.2.3.3c)
+--> „Vendor-specific SQL syntax may be added to SELECT statement to limit rows returned" (TPC 2022, Clause 2.2.3.3)
 
 --> das heißt die Änderungen waren in sofern valide als das sie sich nur auf die beiden in der Specification explizit angesprochenen Punkte beziehen und diese respektieren. 
 
@@ -623,17 +622,23 @@ Single Copy --> kann man auch mal im späteren Verlauf checken ob true bei irgen
 --> das hat den folgenden Hintergrund, ich möchte erstmal ein umfassendes Bild um die komplette Arbit bekommen und dann entscheiden an welchen stellen ich in die tiefe gehe, bzw es empfielt sich erstmal einen Plan zu haben wie auch der zeitliche Umfang ist, und dann eben bei bedarf in die tiefe zu gehen
 --> gut 
 
-## feature generierung 
+## feature generierung
 --> beim operator level modelling war es notwendig den explain Analyse operator auszufühen, was die datengenerierung extrem in die länge gezogen hat
---> beim operator level modelling sind die operators im query plan ausschlaggebend dafür wie viele Zeilen es zu einer unique template seed Kombi gibt 
+--> beim operator level modelling sind die operators im query plan ausschlaggebend dafür wie viele Zeilen es zu einer unique template seed Kombi gibt
 
+---
 
+# Quellenverzeichnis
 
+Docker Library (2024). *PostgreSQL Docker Official Images.* Abgerufen am 27.12.2025 von https://github.com/docker-library/postgres.
 
+Docker Library (2024). *PostgreSQL Docker Image Documentation.* Abgerufen am 27.12.2025 von https://github.com/docker-library/docs/blob/master/postgres/README.md.
 
+PGTune (o.J.). *PGTune - PostgreSQL Configuration Calculator.* Abgerufen am 27.12.2025 von https://pgtune.leopard.in.ua/.
 
+PostgreSQL Global Development Group (2024). *PostgreSQL 17 Documentation: Resource Consumption.* Abgerufen am 27.12.2025 von https://www.postgresql.org/docs/current/runtime-config-resource.html.
 
-
+TPC (2022). *TPC-H Benchmark Specification. Revision 3.0.1.* Transaction Processing Performance Council. Verfügbar im TPC-H Kit Download unter `TPC-H V3.0.1/specification.pdf`. Abgerufen am 27.12.2025 von https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp.
 
 
 
