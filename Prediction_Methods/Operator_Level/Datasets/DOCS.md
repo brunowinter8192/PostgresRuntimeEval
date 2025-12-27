@@ -5,7 +5,7 @@
 **CRITICAL:** All commands assume CWD = `Datasets/`
 
 ```bash
-cd ./Prediction_Methods/Operator_Level/Datasets
+cd Prediction_Methods/Operator_Level/Datasets
 ```
 
 ## Directory Structure

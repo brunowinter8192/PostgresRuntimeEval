@@ -5,7 +5,7 @@
 **CRITICAL:** All commands assume CWD = `Data_Generation/`
 
 ```bash
-cd ./Prediction_Methods/Operator_Level/Data_Generation
+cd Prediction_Methods/Operator_Level/Data_Generation
 ```
 
 ## Directory Structure

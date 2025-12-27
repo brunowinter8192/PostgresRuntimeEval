@@ -1,3 +1,5 @@
+https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp
+
 # TPC BENCHMARKTM H
 
 (Decision Support) Standard Specification Revision 3.0

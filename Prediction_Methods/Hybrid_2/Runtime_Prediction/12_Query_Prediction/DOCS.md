@@ -7,7 +7,7 @@ Bottom-up query prediction using operator and pattern models. Generates per-quer
 **CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
 
 ```bash
-cd ./Prediction_Methods/Hybrid_2/Runtime_Prediction
+cd Prediction_Methods/Hybrid_2/Runtime_Prediction
 ```
 
 ## Directory Structure

@@ -7,7 +7,7 @@ Workflow for SVM-based runtime prediction at operator level with Two-Step Forwar
 **CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
 
 ```bash
-cd ./Prediction_Methods/Operator_Level/Runtime_Prediction
+cd Prediction_Methods/Operator_Level/Runtime_Prediction
 ```
 
 ---
