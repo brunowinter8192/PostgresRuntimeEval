@@ -86,6 +86,7 @@ BEFORE you explore, clarify with the user:
 **1. SCOPE - What is the end goal?**
 → "What should the output be?"
 → File? Script? Documentation? Analysis?
+→ **If Documentation:** "Who is the target reader?" (new user vs internal reference)
 
 **2. SOURCES - Which files/folders are relevant?**
 → "Which folders should I look at?"

@@ -96,8 +96,47 @@
 ### 1.2.5 Schema.sql
 --> `/Postgres_Docker/init/01-schema.sql`
 --> Schema.sql wird beim ersten Start des Containers geladen. Es orientiert sich an der TPC-H Specification, Abschnitt „Database Entities, Relationships, and Characteristics" (TPC 2022, S. 13).
---> Es werden die Tabellen erstellt. 
---> in Zeile 86 - 93 wurde ein Workaround gewählt. Da mit dem dbgen - tool die generierten Tabellen alle einen trailing Delimiter am Anfang und Ende jeder Spalte haben, so hat auch die letzte Spalte diese Syntax. Merke, die mit dbgen generierten Daten dürfen nicht verändert werden. Aber so wie sie generiert sind, sind sie mit PostgreSQL nicht kompatibel. PostgreSQL interpretiert den trailing delimiter ganz rechts als weitere Spalte. Um also die generierten Daten unverändert zu halten und dennoch Postgres kompatibel zu machen wurde dieser Workaround gewählt um eine korrekte Syntax für PostgreSQL zu gewährleisten. 
+--> Es werden die Tabellen erstellt.
+--> in Zeile 86 - 93 wurde ein Workaround gewählt. Da mit dem dbgen - tool die generierten Tabellen alle einen trailing Delimiter am Anfang und Ende jeder Spalte haben, so hat auch die letzte Spalte diese Syntax. Merke, die mit dbgen generierten Daten dürfen nicht verändert werden. Aber so wie sie generiert sind, sind sie mit PostgreSQL nicht kompatibel. PostgreSQL interpretiert den trailing delimiter ganz rechts als weitere Spalte. Um also die generierten Daten unverändert zu halten und dennoch Postgres kompatibel zu machen wurde dieser Workaround gewählt um eine korrekte Syntax für PostgreSQL zu gewährleisten.
+
+### 1.2.6 Container Betrieb
+
+#### Umgebungsvariablen konfigurieren
+--> `.env.example` im Project Root kopieren und ausfüllen:
+
+```bash
+cp .env.example .env
+```
+
+--> Folgende Werte in `.env` setzen:
+    POSTGRES_USER=<Benutzername>      # z.B. postgres
+    POSTGRES_PASSWORD=<Passwort>      # sicheres Passwort wählen
+    POSTGRES_DB=tpch                  # Datenbankname für TPC-H
+
+--> docker-compose liest diese Werte automatisch via `env_file: ../../../.env`
+
+#### Container starten
+```bash
+cd Misc/Setup/Postgres_Docker
+docker-compose up -d
+```
+
+#### Verbindung prüfen
+```bash
+docker exec -it tpch-postgres psql -U <POSTGRES_USER> -d tpch -c "\dt"
+```
+
+#### Container Management
+```bash
+# Stoppen
+docker-compose down
+
+# Logs
+docker logs -f tpch-postgres
+
+# PostgreSQL CLI
+docker exec -it tpch-postgres psql -U <POSTGRES_USER> -d tpch
+```
 
 
 ## 1.3 Table Daten und Queries generieren
