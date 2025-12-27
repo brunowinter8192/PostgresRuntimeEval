@@ -118,10 +118,14 @@ BEFORE executing scripts with relative paths:
 3. One wrong path = entire workflow fails silently
 
 **ASK THE FUCKING USER**
-- the user knows best, ask him for reference scripts, 
+- the user knows best, ask him for reference scripts,
 	- REFERENCE SCRIPTS OR SOURCE CODE IS A GAME CHANGER, MAKES LIFE MUCH EASIER
 - ask him for things which are critical to understand in order to be able to make a Plan file
 	- USER HAS A BROAD KNOWLEDGE, TAKE ADVANTAGE OF IT
+- **External Dependencies/Versions:** ASK USER, don't self-verify
+	- Docker images, tool versions, library versions
+	- User knows what was ACTUALLY USED vs what's CURRENTLY AVAILABLE
+	- Reproducibility > Aktualität (especially for thesis/research)
 
 ### Communication
 
@@ -165,6 +169,9 @@ If the planning session requires module execution to refine the plan:
 
 - Plan file MUST reflect current implementation approach
 - NEVER call ExitPlanMode with stale plan
+- **ALWAYS ask "Any remarks?" and wait for user signal** ("done", "weiter", "implement")
+  - Saves tokens (no rejected ExitPlanMode calls)
+  - User controls transition timing
 
 ---
 
