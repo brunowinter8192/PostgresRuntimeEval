@@ -111,3 +111,30 @@ Agent provides:
 - Return outdated information
 
 **Verify before reporting to user.**
+
+## Known Agent Pitfalls
+
+### 1. Path Hallucinations
+Agent guesses paths instead of using `find` output.
+- **Symptom:** `Tool_use_error: File does not exist`
+- **Fix in prompt:** "Only read files explicitly listed in your previous `find` or `ls` output"
+
+### 2. Serial Reads (Latency)
+Agent reads files one-by-one instead of batching.
+- **Symptom:** Multiple sequential Read calls for related files
+- **Fix in prompt:** "Read related config files (makefile, headers) in a single step when possible"
+
+### 3. Missing File Chase
+Agent spends many steps searching for referenced but non-existent files.
+- **Symptom:** 5+ attempts to find a file that doesn't exist
+- **Fix in prompt:** "If a referenced file is missing after 2 search attempts, log as 'MISSING: <file>' and continue"
+
+### 4. Redundant grep + read
+Agent greps, then reads entire file anyway.
+- **Symptom:** grep output followed by full file read
+- **Fix in prompt:** "Use grep with `-C 5` context. Only read full file if context is insufficient"
+
+### 5. C-Code Pattern Blindness
+Simple text search misses array/struct definitions.
+- **Symptom:** "Not found" when values exist in arrays like `defaults[][]`
+- **Fix in prompt:** "Note: TPC-H/C code stores parameters in static arrays (e.g., `defaults[][]`), not individual constants"
