@@ -10,19 +10,19 @@ This DOCS.md covers multiple subdirectories at root level. Per CLAUDE.md convent
 
 ```
 Misc/
-    DOCS.md
-    Learning-based_Query_Performance_Modeling_and_Pred.md   (Base paper)
-    Setup.md                                                 (Environment setup)
-    Diff_TPCH/                                               [documented below]
-    Postgres_Docker/                                         [documented below]
-    Generated_Queries/                                       [documented below]
-    Cache_Validation/                                        [documented below]
-    FFS_Comparison/                                          [documented below]
-    Pass_Through/                                            [documented below]
-    specification/
-        auto/
-            specification.md                                 (TPC-H Specification)
-            specification_clean.md                           (TPC-H Specification, cleaned)
+├── DOCS.md
+├── Learning-based_Query_Performance_Modeling_and_Pred.md   (Base paper)
+├── Setup.md                                                 (Environment setup)
+├── Diff_TPCH/                                               [documented below]
+├── Postgres_Docker/                                         [documented below]
+├── Generated_Queries/                                       [documented below]
+├── Cache_Validation/                                        [documented below]
+├── FFS_Comparison/                                          [documented below]
+├── Pass_Through/                                            [documented below]
+└── specification/
+    └── auto/
+        ├── specification.md                                 (TPC-H Specification)
+        └── specification_clean.md                           (TPC-H Specification, cleaned)
 ```
 
 ---
@@ -35,8 +35,8 @@ Unified diff between original TPC-H dbgen and PostgreSQL-adapted version.
 
 ```
 Diff_TPCH/
-    generate_diff.sh
-    diff_output.md
+├── generate_diff.sh
+└── diff_output.md
 ```
 
 ### generate_diff.sh
@@ -69,18 +69,17 @@ Docker Compose configuration for PostgreSQL TPC-H environment.
 
 ```
 Postgres_Docker/
-    docker-compose.yaml
-    .env
-    init/
-        01-schema.sql
-    data/
+├── docker-compose.yaml
+├── README.md
+└── init/
+    └── 01-schema.sql
 ```
 
 ### Configuration
 
 - **docker-compose.yaml:** PostgreSQL 17-alpine3.22 with pgtune-optimized settings
-- **.env:** Database credentials (POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB)
 - **init/01-schema.sql:** TPC-H schema with trailing delimiter workaround
+- **README.md:** Setup instructions
 
 **Usage:**
 ```bash
@@ -98,8 +97,8 @@ TPC-H query variants generated with different random seeds for benchmark testing
 
 ```
 Generated_Queries/
-    generate_all_variants.sh
-    Q1/ ... Q22/
+├── generate_all_variants.sh
+└── Q1/ ... Q22/
 ```
 
 Each `Q{N}/` folder contains 150 SQL files with naming pattern: `Q{N}_{counter}_seed_{seed}.sql`
@@ -140,19 +139,19 @@ Runtime variance analysis across different cache states and prediction levels.
 
 ```
 Cache_Validation/
-    Plan_Level_CC/
-        A_01_Runtime_Variance.py
-        csv/
-    cold_cache_validation/
-        restart_docker/
-            execute_queries.py
-            csv/
-    warm_cache/
-        warm_cache.py
-        csv/
-    Comparison_Cold_Warm/
-        compare_cold_warm.py
-        csv/
+├── Plan_Level_CC/
+│   ├── A_01_Runtime_Variance.py
+│   └── csv/
+├── cold_cache_validation/
+│   └── restart_docker/
+│       ├── execute_queries.py
+│       └── csv/
+├── warm_cache/
+│   ├── warm_cache.py
+│   └── csv/
+└── Comparison_Cold_Warm/
+    ├── compare_cold_warm.py
+    └── csv/
 ```
 
 ### Plan_Level_CC/A_01 - Runtime_Variance.py
@@ -253,14 +252,14 @@ Comparison tools for evaluating SVM nu parameter impact on Forward Feature Selec
 
 ```
 FFS_Comparison/
-    Plan_Level/
-        01_Compare_Nu.py
-        nu_0.5_summary.csv
-        nu_0.65_summary.csv
-    Operator_Level/
-        01_Compare_Nu.py
-        nu_0.5_overview.csv
-        nu_0.65_overview.csv
+├── Plan_Level/
+│   ├── 01_Compare_Nu.py
+│   ├── nu_0.5_summary.csv
+│   └── nu_0.65_summary.csv
+└── Operator_Level/
+    ├── 01_Compare_Nu.py
+    ├── nu_0.5_overview.csv
+    └── nu_0.65_overview.csv
 ```
 
 ### Plan_Level/01 - Compare_Nu.py
@@ -316,9 +315,9 @@ Analysis tool for identifying pass-through operators (operators whose execution 
 
 ```
 Pass_Through/
-    02_Passthrough_Analysis.py
-    csv/
-        02_passthrough_analysis_{ts}.csv
+├── 02_Passthrough_Analysis.py
+└── csv/
+    └── 02_passthrough_analysis_{ts}.csv
 ```
 
 ### 02 - Passthrough_Analysis.py
