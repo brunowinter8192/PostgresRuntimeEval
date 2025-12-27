@@ -5,7 +5,7 @@
 **CRITICAL:** All commands assume CWD = `Plan_Level/`
 
 ```bash
-cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Runtime_Prediction/Plan_Level
+cd Prediction_Methods/Dynamic/Runtime_Prediction/Plan_Level
 ```
 
 ---

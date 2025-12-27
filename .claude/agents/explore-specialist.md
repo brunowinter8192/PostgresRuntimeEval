@@ -1,5 +1,5 @@
 ---
-name: search-specialist-thesis
+name: code-investigate-specialist
 description: Use this agent for efficient codebase exploration and targeted searches. This agent specializes in finding relevant files, code patterns, and answering questions about the codebase structure using fast Haiku model.
 model: haiku
 color: yellow

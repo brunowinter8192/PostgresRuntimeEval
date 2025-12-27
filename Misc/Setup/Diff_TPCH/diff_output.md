@@ -1,6 +1,6 @@
-diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/bm_utils.c /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/bm_utils.c
---- /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/bm_utils.c	2021-06-09 09:41:24
-+++ /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/bm_utils.c	2025-09-25 00:25:32
+diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store ORIGINAL/dbgen/bm_utils.c MODIFIED/dbgen/bm_utils.c
+--- ORIGINAL/dbgen/bm_utils.c	2021-06-09 09:41:24
++++ MODIFIED/dbgen/bm_utils.c	2025-09-25 00:25:32
 @@ -67,9 +67,13 @@
  #endif            /* HP */
  #include <ctype.h>
@@ -15,9 +15,9 @@ diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude
  #include <fcntl.h>
  #include <sys/types.h>
  #include <sys/stat.h>
-diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/makefile.suite /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/makefile.suite
---- /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/makefile.suite	2021-06-09 09:41:24
-+++ /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/makefile.suite	2025-09-25 02:05:29
+diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store ORIGINAL/dbgen/makefile.suite MODIFIED/dbgen/makefile.suite
+--- ORIGINAL/dbgen/makefile.suite	2021-06-09 09:41:24
++++ MODIFIED/dbgen/makefile.suite	2025-09-25 02:05:29
 @@ -100,15 +100,15 @@
  ################
  ## CHANGE NAME OF ANSI COMPILER HERE
@@ -39,9 +39,9 @@ diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude
  #
  CFLAGS	= -g -DDBNAME=\"dss\" -D$(MACHINE) -D$(DATABASE) -D$(WORKLOAD) -DRNG_TEST -D_FILE_OFFSET_BITS=64 
  LDFLAGS = -O
-diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/qgen.c /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/qgen.c
---- /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/qgen.c	2021-06-09 09:41:24
-+++ /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/qgen.c	2025-09-25 15:59:20
+diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store ORIGINAL/dbgen/qgen.c MODIFIED/dbgen/qgen.c
+--- ORIGINAL/dbgen/qgen.c	2021-06-09 09:41:24
++++ MODIFIED/dbgen/qgen.c	2025-09-25 15:59:20
 @@ -28,6 +28,9 @@
  #define DECLARER
  
@@ -458,9 +458,9 @@ diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude
      fclose(qfp);
      fflush(stdout);
      return;
-diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/tpcd.h /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/tpcd.h
---- /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/tpcd.h	2021-06-09 09:41:24
-+++ /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/tpcd.h	2025-09-25 00:21:31
+diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store ORIGINAL/dbgen/tpcd.h MODIFIED/dbgen/tpcd.h
+--- ORIGINAL/dbgen/tpcd.h	2021-06-09 09:41:24
++++ MODIFIED/dbgen/tpcd.h	2025-09-25 00:21:31
 @@ -49,6 +49,15 @@
  /*
   * database portability defines
@@ -477,9 +477,9 @@ diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude
  #ifdef VECTORWISE
  #define GEN_QUERY_PLAN  "EXPLAIN"
  #define START_TRAN      ""
-diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/varsub.c /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/varsub.c
---- /Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen/varsub.c	2021-06-09 09:41:24
-+++ /Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen/varsub.c	2025-09-25 00:37:47
+diff -Nur --exclude=*.o --exclude=*.tbl --exclude=dbgen --exclude=qgen --exclude=.DS_Store ORIGINAL/dbgen/varsub.c MODIFIED/dbgen/varsub.c
+--- ORIGINAL/dbgen/varsub.c	2021-06-09 09:41:24
++++ MODIFIED/dbgen/varsub.c	2025-09-25 00:37:47
 @@ -40,9 +40,13 @@
  *
  */

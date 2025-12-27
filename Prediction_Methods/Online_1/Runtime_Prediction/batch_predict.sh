@@ -2,7 +2,7 @@
 DATASET_DIR="../../Hybrid_2/Dataset/Baseline"
 OUTPUT_DIR="./Evaluation"
 LOG_FILE="$OUTPUT_DIR/progress.log"
-MAX_JOBS=6
+MAX_JOBS=14
 STRATEGIES="error size frequency"
 
 mkdir -p "$OUTPUT_DIR"

@@ -64,7 +64,7 @@ Dynamic/
 # Phase 1: Create LOTO splits
 cd Dataset/Dataset_Operator
 python3 01_LOTO_Split.py \
-    /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Operator_Level/Datasets/Baseline/02_operator_dataset_with_children.csv \
+    Prediction_Methods/Operator_Level/Datasets/Baseline/02_operator_dataset_with_children.csv \
     --output-dir .
 
 # Phase 2: FFS + Train + Predict

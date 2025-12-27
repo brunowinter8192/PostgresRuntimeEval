@@ -19,7 +19,7 @@ Hybrid pattern-level prediction for Dynamic LOTO workflow.
 **CRITICAL:** All commands assume CWD = `Runtime_Prediction/Hybrid_1/`
 
 ```bash
-cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Runtime_Prediction/Hybrid_1
+cd Prediction_Methods/Dynamic/Runtime_Prediction/Hybrid_1
 ```
 
 ## Approach Definitions

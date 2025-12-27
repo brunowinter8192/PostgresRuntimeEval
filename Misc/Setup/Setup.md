@@ -191,6 +191,12 @@ Lösung, Query muss komplett gelesen werden BEVOR sie ausgegeben wird (für LIMI
 ## 1.4 Ergänzungen
 --> das script zum generieren der `/Diff_TPCH/diff_output.txt` wird nicht in das repo aufgenommen da es den offiziellen dbgen Ordner erfordert, jedoch können die genauen Änderungen an den Files im erwähnten txt File nachvollzogen werden
 
+
+
+
+
+
+
 # 2. Überblick über die Problemstellung 
 --> wird eine Query mit dem explain Operator in Postgres ausgeführt, so berechnet der Postgres interne Optimizer einen Execution Plan welcher den Ablauf der Ausführung sowie die verwendeten Node Types beinhaltet. 
 --> Das Paper welches als Inspiration für diese Arbeit diente will ein fundamentales Problem lösen. in Postgres gibt der optimizer zwar die total costs an, jedoch lässt sich daraus keine Laufzeit ableiten. Das paper und diese Arbeit sucht nach einem Weg auf Basis der Informationen welche der Optimizer liefert und mit Ausführung der Queries und der Runtime als Zielgröße ein ML Modell zu Trainieren welches die Runtime einer Query auf Basis der Infos welche der Optimizer liefert vorhersagt. 
@@ -608,7 +614,7 @@ Single Copy --> kann man auch mal im späteren Verlauf checken ob true bei irgen
 
 
 
-source /Users/brunowinter2000/Documents/Thesis/2025_2026/venv/bin/activate && python3 /Users/brunowinter2000/Documents/Thesis/2025_2026/Data_Generation/Feature_Calculation/basic_explain/text_explain.py
+# Legacy command (venv external to repo)
 
 
 

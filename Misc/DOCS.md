@@ -12,9 +12,10 @@ This DOCS.md covers multiple subdirectories at root level. Per CLAUDE.md convent
 Misc/
 ├── DOCS.md
 ├── Learning-based_Query_Performance_Modeling_and_Pred.md   (Base paper)
-├── Setup.md                                                 (Environment setup)
-├── Diff_TPCH/                                               [documented below]
-├── Postgres_Docker/                                         [documented below]
+├── Setup/                                                   [documented below]
+│   ├── Setup.md                                            (Environment setup)
+│   ├── Postgres_Docker/                                    [documented below]
+│   └── Diff_TPCH/                                          [documented below]
 ├── Generated_Queries/                                       [documented below]
 ├── Cache_Validation/                                        [documented below]
 ├── FFS_Comparison/                                          [documented below]
@@ -27,14 +28,14 @@ Misc/
 
 ---
 
-## Diff_TPCH
+## Setup/Diff_TPCH
 
 Unified diff between original TPC-H dbgen and PostgreSQL-adapted version.
 
 ### Directory Structure
 
 ```
-Diff_TPCH/
+Setup/Diff_TPCH/
 ├── generate_diff.sh
 └── diff_output.md
 ```
@@ -52,23 +53,23 @@ Diff_TPCH/
 
 **Usage:**
 ```bash
-cd Misc/Diff_TPCH
+cd Misc/Setup/Diff_TPCH
 ./generate_diff.sh \
-  "/Users/brunowinter2000/Documents/Thesis/TPC-H V3.0.1/dbgen" \
-  "/Users/brunowinter2000/Documents/Thesis/Thesis_Final/TPC-H V3.0.1/dbgen" \
+  "<path-to-original-tpch>/dbgen" \
+  "<repo-root>/TPC-H V3.0.1/dbgen" \
   diff_output.md
 ```
 
 ---
 
-## Postgres_Docker
+## Setup/Postgres_Docker
 
 Docker Compose configuration for PostgreSQL TPC-H environment.
 
 ### Directory Structure
 
 ```
-Postgres_Docker/
+Setup/Postgres_Docker/
 ├── docker-compose.yaml
 ├── README.md
 └── init/
@@ -80,10 +81,11 @@ Postgres_Docker/
 - **docker-compose.yaml:** PostgreSQL 17-alpine3.22 with pgtune-optimized settings
 - **init/01-schema.sql:** TPC-H schema with trailing delimiter workaround
 - **README.md:** Setup instructions
+- **.env:** Located at repo root (not in this folder)
 
 **Usage:**
 ```bash
-cd Misc/Postgres_Docker
+cd Misc/Setup/Postgres_Docker
 docker compose up -d
 ```
 

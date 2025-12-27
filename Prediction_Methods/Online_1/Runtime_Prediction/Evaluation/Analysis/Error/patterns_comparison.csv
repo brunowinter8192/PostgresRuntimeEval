@@ -3,4 +3,4 @@ a5f39f08c510532e02e96e109e48c0cd;Aggregate -> Gather -> Aggregate (Outer) (Outer
 25df29b5b69835d07c0d8b72b0e46a3b;Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer);60;60;100.0%;Q3,Q10;USED
 4fc84c77ced18a46514c982f23f12deb;Aggregate -> Gather (Outer);60;0;0%;Q3,Q10;NEVER_USED
 35ffb64405c972adec2b1bd3878a66ec;Sort -> Aggregate -> Aggregate (Outer) (Outer);30;30;100.0%;Q13;USED
-fd858367085e17ddeebcdbba5dd3a6ac;Limit -> Sort -> Aggregate -> Gather Merge (Outer) (Outer) (Outer);30;30;100.0%;Q18;USED
+0aa5463f1b91f165f60e8a19a4979344;Limit -> Sort -> Aggregate -> Gather Merge -> Incremental Sort -> Nested Loop -> [Merge Join (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer) (Outer);30;30;100.0%;Q18;USED

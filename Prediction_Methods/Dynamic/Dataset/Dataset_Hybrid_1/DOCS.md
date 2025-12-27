@@ -18,7 +18,7 @@ Pattern dataset preparation for Dynamic LOTO Hybrid_1 workflow.
 **CRITICAL:** All commands assume CWD = `Dataset/Dataset_Hybrid_1/`
 
 ```bash
-cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Dataset/Dataset_Hybrid_1
+cd Prediction_Methods/Dynamic/Dataset/Dataset_Hybrid_1
 ```
 
 ## Konzept

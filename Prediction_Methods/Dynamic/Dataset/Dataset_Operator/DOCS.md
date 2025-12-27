@@ -5,7 +5,7 @@
 **CRITICAL:** All commands assume CWD = `Dataset_Operator/`
 
 ```bash
-cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Dataset/Dataset_Operator
+cd Prediction_Methods/Dynamic/Dataset/Dataset_Operator
 ```
 
 ---
@@ -40,7 +40,7 @@ Dataset_Operator/
 **Usage:**
 ```bash
 python3 01_LOTO_Split.py \
-    /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Operator_Level/Datasets/Baseline/02_operator_dataset_with_children.csv \
+    Prediction_Methods/Operator_Level/Datasets/Baseline/02_operator_dataset_with_children.csv \
     --output-dir .
 ```
 

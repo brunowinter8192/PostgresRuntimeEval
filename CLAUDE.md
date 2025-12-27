@@ -63,8 +63,7 @@ RIGHT (in thesis/outputs):
 - When reading: `pd.read_csv(file, delimiter=';')` or `csv.reader(f, delimiter=';')`
 - When writing: `pd.to_csv(file, sep=';')` or `csv.writer(f, delimiter=';')`
 
-**Fix tool:** `/Users/brunowinter2000/Documents/Thesis/2025_2026/convert_csv_delimiter.py`
-**Usage:** `python3 convert_csv_delimiter.py <csv_file>` (in-place conversion)
+**Fix tool:** External script (not in repo)
 
 ---
 

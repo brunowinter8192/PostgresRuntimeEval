@@ -3,28 +3,31 @@ services:
     image: postgres:17.6-alpine
     container_name: tpch-postgres
     restart: unless-stopped
-    
+
     shm_size: 12gb
-    
+
     networks:
       - tpch-network
-    
+
+    env_file:
+      - ../../../.env
+
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    
+
     ports:
       - "5432:5432"
-    
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - type: bind
-        source: ${REPO_BASE_PATH}/TPC-H V3.0.1/dbgen
+        source: "../../../TPC-H V3.0.1/dbgen"
         target: /tpch-data
         read_only: true
       - type: bind
-        source: ${REPO_BASE_PATH}/Postgres_Docker/init
+        source: ./init
         target: /docker-entrypoint-initdb.d
     
     command:

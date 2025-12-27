@@ -7,7 +7,7 @@ Online learning workflow that trains operator models, mines patterns from a test
 **CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
 
 ```bash
-cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Online_1/Runtime_Prediction
+cd Prediction_Methods/Online_1/Runtime_Prediction
 ```
 
 ## Directory Structure

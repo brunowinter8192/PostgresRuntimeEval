@@ -7,7 +7,7 @@ Greedy pattern selection for runtime prediction improvement. Iteratively evaluat
 **CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
 
 ```bash
-cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Hybrid_2/Runtime_Prediction
+cd Prediction_Methods/Hybrid_2/Runtime_Prediction
 ```
 
 ## Directory Structure

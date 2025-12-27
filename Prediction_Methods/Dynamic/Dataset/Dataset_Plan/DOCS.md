@@ -5,7 +5,7 @@
 **CRITICAL:** All commands assume CWD = `Dataset_Plan/`
 
 ```bash
-cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final/Prediction_Methods/Dynamic/Dataset/Dataset_Plan
+cd Prediction_Methods/Dynamic/Dataset/Dataset_Plan
 ```
 
 ---
