@@ -20,7 +20,7 @@ from .mining import calculate_ranking
 from .metrics import calculate_mre
 
 # From mapping_config.py: Configuration constants
-from mapping_config import EPSILON, MIN_ERROR_THRESHOLD, DEFAULT_STRATEGY
+from mapping_config import MIN_ERROR_THRESHOLD, DEFAULT_STRATEGY
 
 
 # FUNCTIONS
@@ -36,6 +36,7 @@ def run_pattern_selection(
     current_predictions: list,
     baseline_mre: float,
     report,
+    epsilon: float = 0.0,
     min_error_threshold: float = MIN_ERROR_THRESHOLD,
     strategy: str = DEFAULT_STRATEGY
 ) -> tuple:
@@ -84,7 +85,7 @@ def run_pattern_selection(
         new_mre = calculate_mre(new_predictions)
         delta = baseline_mre - new_mre
 
-        if delta > EPSILON:
+        if delta > epsilon:
             status = 'ACCEPTED'
             selected_patterns.add(pattern_hash)
             pattern_models[pattern_hash] = pattern_model
