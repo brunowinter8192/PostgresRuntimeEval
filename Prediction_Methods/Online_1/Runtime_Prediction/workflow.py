@@ -42,7 +42,8 @@ def online_prediction_workflow(
     training_csv: str,
     test_csv: str,
     output_dir: str,
-    strategy: str = DEFAULT_STRATEGY
+    strategy: str = DEFAULT_STRATEGY,
+    epsilon: float = 0.0
 ) -> None:
     query_output_dir = str(Path(output_dir) / strategy.capitalize() / test_query_file)
     report = ReportBuilder(test_query_file, query_output_dir)
@@ -70,7 +71,8 @@ def online_prediction_workflow(
 
     selected_patterns, pattern_models, selection_log = run_pattern_selection(
         df_tt, df_tv, patterns, pattern_occurrences, initial_ranking,
-        operator_models, baseline_predictions, baseline_mre, report, strategy=strategy
+        operator_models, baseline_predictions, baseline_mre, report,
+        epsilon=epsilon, strategy=strategy
     )
 
     final_operator_models = train_all_operators(df_train, None)
@@ -114,6 +116,7 @@ if __name__ == '__main__':
     parser.add_argument("test_csv", help="Path to Test.csv")
     parser.add_argument("--output-dir", required=True, help="Output directory")
     parser.add_argument("--strategy", choices=STRATEGIES, default=DEFAULT_STRATEGY, help="Pattern ordering strategy")
+    parser.add_argument("--epsilon", type=float, default=0.0, help="Min MRE improvement for pattern acceptance")
     args = parser.parse_args()
 
     online_prediction_workflow(
@@ -123,5 +126,6 @@ if __name__ == '__main__':
         args.training_csv,
         args.test_csv,
         args.output_dir,
-        args.strategy
+        args.strategy,
+        args.epsilon
     )

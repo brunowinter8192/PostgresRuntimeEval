@@ -89,7 +89,6 @@ Evaluation/
 
 **Constants from mapping_config.py:**
 - `SVM_PARAMS` - NuSVR hyperparameters (kernel, nu, C, gamma)
-- `EPSILON` - Minimum improvement threshold (0.5%)
 - `MIN_ERROR_THRESHOLD` - Skip patterns below this avg_mre (10%)
 - `STRATEGIES` - Available strategies ['error', 'size', 'frequency']
 - `DEFAULT_STRATEGY` - Default strategy 'error'
@@ -129,6 +128,7 @@ python3 workflow.py Q1_100_seed_812199069 \
 
 **Variables:**
 - `--strategy` - Pattern ordering strategy: error, size, frequency (default: error)
+- `--epsilon` - Min MRE improvement for pattern acceptance (default: 0.0)
 
 ---
 
