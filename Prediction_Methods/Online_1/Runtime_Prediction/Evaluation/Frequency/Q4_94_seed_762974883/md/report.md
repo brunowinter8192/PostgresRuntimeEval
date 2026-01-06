@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q4_94_seed_762974883
-**Timestamp:** 2025-12-22 07:11:59
+**Timestamp:** 2026-01-01 19:19:25
 
 ## Data Summary
 
@@ -47,28 +47,27 @@
 
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
-| 0 | 1d35fb97 | 26.4017 | 0.1167% | REJECTED | 17.92% |
-| 1 | 2724c080 | 19.6008 | 0.0222% | REJECTED | 17.92% |
-| 2 | 1691f6f0 | 7.3257 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 3 | c53c4396 | 141.6847 | -0.0000% | REJECTED | 17.92% |
-| 4 | 29ee00db | 4.4662 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 5 | 715d5c92 | 4.3530 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 6 | f8231c4d | 3.4083 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 7 | 3b447875 | 3.5717 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 8 | f86f2b1b | 0.5091 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 9 | 3f1648ef | 3.0380 | 0.0002% | REJECTED | 17.92% |
-| 10 | 1393818c | 1.1790 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 11 | ab77776a | 0.5091 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 12 | 260efc4f | 1.0349 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 13 | 6e6e9493 | 1.1790 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 14 | 80bd802d | 1.0349 | N/A | SKIPPED_LOW_ERROR | 17.92% |
+| 0 | 1d35fb97 | 26.4017 | 0.1167% | ACCEPTED | 17.81% |
+| 1 | 2724c080 | 7.7852 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 2 | 1691f6f0 | 7.2969 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 3 | c53c4396 | 141.6847 | -0.0000% | REJECTED | 17.81% |
+| 4 | 29ee00db | 4.4636 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 5 | 715d5c92 | 4.3242 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 6 | f8231c4d | 3.4058 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 7 | 3b447875 | 1.1741 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 8 | f86f2b1b | 0.3988 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 9 | 1393818c | 1.1761 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 10 | ab77776a | 0.3988 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 11 | 260efc4f | 1.0354 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 12 | 6e6e9493 | 1.1761 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 13 | 80bd802d | 1.0354 | N/A | SKIPPED_LOW_ERROR | 17.81% |
 ## Query Tree
 
 ```
 Node 6852 (Aggregate) - ROOT
   Node 6853 (Gather Merge)
-    Node 6854 (Sort)
-      Node 6855 (Aggregate)
+    Node 6854 (Sort) [PATTERN: 1d35fb97]
+      Node 6855 (Aggregate) [consumed]
         Node 6856 (Nested Loop)
           Node 6857 (Seq Scan) - LEAF
           Node 6858 (Index Scan) - LEAF
@@ -76,7 +75,9 @@ Node 6852 (Aggregate) - ROOT
 
 ## Pattern Assignments
 
-No patterns selected.
+| Pattern | Hash | Root Node | Consumed Nodes |
+|---------|------|-----------|----------------|
+| Sort -> Aggregate (Outer) | 1d35fb97 | 6854 | 6855 |
 
 
 **Legend:**
@@ -86,15 +87,14 @@ No patterns selected.
 
 ## Phase E: Final Prediction
 
-- Final MRE: 4.62%
+- Final MRE: 4.63%
 - Improvement: 0.41%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 6852 | Aggregate | 1071.80 | 1022.24 | 4.6% | operator |
-| 6853 | Gather Merge | 1071.79 | 1112.82 | 3.8% | operator |
-| 6854 | Sort | 1065.34 | 1061.20 | 0.4% | operator |
-| 6855 | Aggregate | 1065.33 | 923.14 | 13.3% | operator |
+| 6852 | Aggregate | 1071.80 | 1022.22 | 4.6% | operator |
+| 6853 | Gather Merge | 1071.79 | 1112.73 | 3.8% | operator |
+| 6854 | Sort | 1065.34 | 1055.48 | 0.9% | pattern |
 | 6856 | Nested Loop | 1063.20 | 1106.65 | 4.1% | operator |
 | 6857 | Seq Scan | 161.89 | 157.03 | 3.0% | operator |
 | 6858 | Index Scan | 0.06 | 0.38 | 494.4% | operator |
@@ -161,47 +161,35 @@ No patterns selected.
   - total_cost=65864.0300
 - **Output:** st=31.48, rt=1106.65
 
-### Step 4: Node 6855 (Aggregate)
+### Step 4: Node 6854 (Sort) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** 1d35fb97 (Sort -> Aggregate (Outer))
+- **Consumes:** Nodes 6855
 - **Input Features:**
-  - np=0
-  - nt=5
-  - nt1=14935
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=24
-  - reltuples=0.0000
-  - rt1=1106.6527
-  - rt2=0.0000
-  - sel=0.0003
-  - st1=31.4834
-  - st2=0.0000
-  - startup_cost=65938.7100
-  - total_cost=65938.7600
-- **Output:** st=912.04, rt=923.14
+  - Aggregate_Outer_np=0
+  - Aggregate_Outer_nt=5
+  - Aggregate_Outer_nt1=14935
+  - Aggregate_Outer_nt2=0
+  - Aggregate_Outer_parallel_workers=0
+  - Aggregate_Outer_plan_width=24
+  - Aggregate_Outer_reltuples=0.0000
+  - Aggregate_Outer_sel=0.0003
+  - Aggregate_Outer_startup_cost=65938.7100
+  - Aggregate_Outer_total_cost=65938.7600
+  - Sort_np=0
+  - Sort_nt=5
+  - Sort_nt1=5
+  - Sort_nt2=0
+  - Sort_parallel_workers=0
+  - Sort_plan_width=24
+  - Sort_reltuples=0.0000
+  - Sort_sel=1.0000
+  - Sort_startup_cost=65938.8200
+  - Sort_total_cost=65938.8300
+- **Output:** st=1054.32, rt=1055.48
 
-### Step 5: Node 6854 (Sort)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=5
-  - nt1=5
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=24
-  - reltuples=0.0000
-  - rt1=923.1358
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=912.0441
-  - st2=0.0000
-  - startup_cost=65938.8200
-  - total_cost=65938.8300
-- **Output:** st=1059.89, rt=1061.20
-
-### Step 6: Node 6853 (Gather Merge)
+### Step 5: Node 6853 (Gather Merge)
 
 - **Source:** operator
 - **Input Features:**
@@ -212,16 +200,16 @@ No patterns selected.
   - parallel_workers=3
   - plan_width=24
   - reltuples=0.0000
-  - rt1=1061.1996
+  - rt1=1055.4832
   - rt2=0.0000
   - sel=3.0000
-  - st1=1059.8855
+  - st1=1054.3203
   - st2=0.0000
   - startup_cost=66938.8600
   - total_cost=66940.6300
-- **Output:** st=1109.58, rt=1112.82
+- **Output:** st=1109.48, rt=1112.73
 
-### Step 7: Node 6852 (Aggregate) - ROOT
+### Step 6: Node 6852 (Aggregate) - ROOT
 
 - **Source:** operator
 - **Input Features:**
@@ -232,11 +220,11 @@ No patterns selected.
   - parallel_workers=0
   - plan_width=24
   - reltuples=0.0000
-  - rt1=1112.8245
+  - rt1=1112.7283
   - rt2=0.0000
   - sel=0.3333
-  - st1=1109.5799
+  - st1=1109.4834
   - st2=0.0000
   - startup_cost=66938.8600
   - total_cost=66940.7600
-- **Output:** st=1025.08, rt=1022.24
+- **Output:** st=1025.07, rt=1022.22

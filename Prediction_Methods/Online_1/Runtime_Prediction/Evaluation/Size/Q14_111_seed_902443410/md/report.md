@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q14_111_seed_902443410
-**Timestamp:** 2025-12-22 04:48:00
+**Timestamp:** 2026-01-01 18:00:31
 
 ## Data Summary
 
@@ -47,14 +47,14 @@
 
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
-| 0 | 895c6e8c | 75736.1626 | 0.0004% | REJECTED | 17.92% |
-| 1 | 3aab37be | 113504.2307 | -0.0000% | REJECTED | 17.92% |
-| 2 | 4fc84c77 | 13.3894 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 3 | 634cdbe2 | 7.7175 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 4 | 7524c54c | 5.2190 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 5 | f4cb205a | 75544.5822 | 0.0006% | REJECTED | 17.92% |
-| 6 | a5f39f08 | 12.4695 | 1.7095% | ACCEPTED | 16.21% |
-| 7 | 422ae017 | 3.0007 | N/A | SKIPPED_LOW_ERROR | 16.21% |
+| 0 | 895c6e8c | 75736.1626 | 0.0004% | ACCEPTED | 17.92% |
+| 1 | 3aab37be | 94712.4752 | -0.0000% | REJECTED | 17.92% |
+| 2 | 4fc84c77 | 13.3892 | N/A | SKIPPED_LOW_ERROR | 17.92% |
+| 3 | 634cdbe2 | 7.7155 | N/A | SKIPPED_LOW_ERROR | 17.92% |
+| 4 | 7524c54c | 5.0128 | N/A | SKIPPED_LOW_ERROR | 17.92% |
+| 5 | f4cb205a | 41652.9228 | 0.0005% | ACCEPTED | 17.92% |
+| 6 | a5f39f08 | 12.4675 | 1.7089% | ACCEPTED | 16.21% |
+| 7 | 422ae017 | 2.5808 | N/A | SKIPPED_LOW_ERROR | 16.21% |
 | 8 | efde8b38 | 1.7942 | N/A | SKIPPED_LOW_ERROR | 16.21% |
 | 9 | 310134da | 1.7942 | N/A | SKIPPED_LOW_ERROR | 16.21% |
 | 10 | f8295d8b | 1.0024 | N/A | SKIPPED_LOW_ERROR | 16.21% |
@@ -64,17 +64,18 @@
 Node 26504 (Aggregate) [PATTERN: a5f39f08] - ROOT
   Node 26505 (Gather) [consumed]
     Node 26506 (Aggregate) [consumed]
-      Node 26507 (Hash Join)
-        Node 26508 (Seq Scan) - LEAF
-        Node 26509 (Hash)
-          Node 26510 (Seq Scan) - LEAF
+      Node 26507 (Hash Join) [PATTERN: f4cb205a]
+        Node 26508 (Seq Scan) [consumed] - LEAF
+        Node 26509 (Hash) [consumed]
+          Node 26510 (Seq Scan) [consumed] - LEAF
 ```
 
 ## Pattern Assignments
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Aggregate -> Gather -> Aggrega | a5f39f08 | 26504 | 26505, 26506 |
+| Hash Join -> [Seq Scan (Outer) | f4cb205a | 26507 | 26504, 26505, 26506, 26508, 26509, 26510 |
+| Aggregate -> Gather -> Aggrega | a5f39f08 | 26504 | 26505, 26506, 26507, 26508, 26509, 26510 |
 
 
 **Legend:**
@@ -90,98 +91,53 @@ Node 26504 (Aggregate) [PATTERN: a5f39f08] - ROOT
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
 | 26504 | Aggregate | 821.06 | 834.74 | 1.7% | pattern |
-| 26507 | Hash Join | 799.03 | 788.26 | 1.3% | operator |
-| 26508 | Seq Scan | 748.00 | 747.92 | 0.0% | operator |
-| 26509 | Hash | 43.54 | 21.25 | 51.2% | operator |
-| 26510 | Seq Scan | 37.25 | 16.56 | 55.5% | operator |
+| 26507 | Hash Join | 799.03 | 397.01 | 50.3% | pattern |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 26510 (Seq Scan) - LEAF
+### Step 1: Node 26507 (Hash Join) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** f4cb205a (Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)])
+- **Consumes:** Nodes 26504, 26505, 26506, 26508, 26509, 26510
 - **Input Features:**
-  - np=4128
-  - nt=83333
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=25
-  - reltuples=200000.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.4167
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=4961.3300
-- **Output:** st=2.10, rt=16.56
+  - HashJoin_np=0
+  - HashJoin_nt=15746
+  - HashJoin_nt1=15746
+  - HashJoin_nt2=83333
+  - HashJoin_parallel_workers=0
+  - HashJoin_plan_width=33
+  - HashJoin_reltuples=0.0000
+  - HashJoin_sel=0.0000
+  - HashJoin_startup_cost=6003.0000
+  - HashJoin_total_cost=136647.9700
+  - Hash_Inner_np=0
+  - Hash_Inner_nt=83333
+  - Hash_Inner_nt1=83333
+  - Hash_Inner_nt2=0
+  - Hash_Inner_parallel_workers=0
+  - Hash_Inner_plan_width=25
+  - Hash_Inner_reltuples=0.0000
+  - Hash_Inner_sel=1.0000
+  - Hash_Inner_startup_cost=4961.3300
+  - Hash_Inner_total_cost=4961.3300
+  - SeqScan_Outer_np=4128
+  - SeqScan_Outer_nt=83333
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=25
+  - SeqScan_Outer_reltuples=200000.0000
+  - SeqScan_Outer_sel=0.4167
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=4961.3300
+- **Output:** st=44.56, rt=397.01
 
-### Step 2: Node 26508 (Seq Scan) - LEAF
-
-- **Source:** operator
-- **Input Features:**
-  - np=112600
-  - nt=15746
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=16
-  - reltuples=6001215.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.0026
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=130603.6400
-- **Output:** st=3.47, rt=747.92
-
-### Step 3: Node 26509 (Hash)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=83333
-  - nt1=83333
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=25
-  - reltuples=0.0000
-  - rt1=16.5598
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=2.1005
-  - st2=0.0000
-  - startup_cost=4961.3300
-  - total_cost=4961.3300
-- **Output:** st=21.25, rt=21.25
-
-### Step 4: Node 26507 (Hash Join)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=15746
-  - nt1=15746
-  - nt2=83333
-  - parallel_workers=0
-  - plan_width=33
-  - reltuples=0.0000
-  - rt1=747.9159
-  - rt2=21.2487
-  - sel=0.0000
-  - st1=3.4676
-  - st2=21.2480
-  - startup_cost=6003.0000
-  - total_cost=136647.9700
-- **Output:** st=49.31, rt=788.26
-
-### Step 5: Node 26504 (Aggregate) - PATTERN ROOT
+### Step 2: Node 26504 (Aggregate) - PATTERN ROOT
 
 - **Source:** pattern
 - **Pattern:** a5f39f08 (Aggregate -> Gather -> Aggregate (Outer) (Outer))
-- **Consumes:** Nodes 26505, 26506
+- **Consumes:** Nodes 26505, 26506, 26507, 26508, 26509, 26510
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=1

@@ -5,72 +5,50 @@ description: (project)
 
 # Iterative Development Skill
 
-## Overview
-
-This skill extends native Claude Code Plan Mode with:
-- Phase indicators
-- Iterative cycle structure
-- Explicit file vs chat separation
-
-Follow all native Plan Mode rules.
-
-## Facts Over Assumptions (CORE PRINCIPLE)
-
-**ALWAYS verify first. NEVER assume.**
-
-Before ANY action, ask yourself:
-- Can I verify this? → VERIFY IT
-- Is this 100% self-evident logic? → Only then proceed
-- Am I guessing? → STOP. Read. Ask.
-
-**The Name Test:**
-> Imagine your name is printed under every statement you make.
-> Would you want your name under "ASSUMPTION" or "FACT"?
-
-**Verification Hierarchy:**
-1. READ the file/code/docs
-2. ASK the user
-3. RUN a command to check
-4. ONLY THEN: proceed
-
-**Assumptions are ONLY acceptable when:**
-- The matter is purely logical (2+2=4)
-- There is literally no way to verify
-- AND you explicitly document it as "ASSUMPTION: ..."
-
-**Red Flags (you're assuming):**
-- "I think..." → STOP, verify
-- "It should be..." → STOP, read
-- "Probably..." → STOP, ask
-- Using tool without checking valid params/types first
-
-**This applies to EVERYTHING:**
-- Tool parameters (check --help first)
-- File paths (ls before using)
-- API responses (read schema/docs)
-- User intent (ask before implementing)
-
-## Verification Tasks
-
-Tasks where you compare X against Y (e.g., "Is everything from diff_output.md documented in A_Setup.md?").
-
-**When reporting gaps:**
-- Don't just say "❌ missing"
-- Proactively explain WHAT the missing item does
-- Saves follow-up questions from user
-
-**Example:**
-```
-BAD:  "qgen.c: #include <stdarg.h> | ❌ Not mentioned"
-GOOD: "qgen.c: #include <stdarg.h> | ❌ Not mentioned
-       → Provides varargs support for buffer_append() printf-style formatting"
-```
-
 ## Task Management Hierarchy
 
 - **Beads** (`.beads/`) - Cross-session (weeks/months)
 - **Plan-File** (`.claude/plans/`) - Within a session (hours)
 - **TodoWrite** - Within an iteration (minutes)
+
+### Beads CLI Gotchas
+
+**`bd edit --title`** opens vim (interactive) → **FAILS in Claude Code**
+
+**Workarounds:**
+- Rename scope? → `bd comment <id> "New scope: ..."`
+- Merge beads? → `bd close <id> --reason="Merged into <other-id>"`
+- Create with full info: `bd create --title "..." --type=... --description="..."`
+
+**Commands that WORK:**
+- `bd list` / `bd show <id>`
+- `bd create --title "..." --type=...`
+- `bd comment <id> "..."`
+- `bd close <id> --reason="..."`
+- `bd sync`
+
+### Bead Content Requirements
+
+**CRITICAL:** Beads are cross-session. A new session has NO context.
+
+**Rule:** Every bead MUST contain enough information to understand it WITHOUT the original session context.
+
+**On Create:**
+- `--description` is MANDATORY for non-trivial beads
+- Description answers: What? Why? Where? (files/modules affected)
+- Bad: `--title "Fix bug"` (useless in new session)
+- Good: `--title "Fix NaN in search scores" --description="search_workflow returns NaN when query has no matches. Affects src/rag/retriever.py"`
+
+**On Update:**
+- `bd comment` for progress, blockers, decisions
+- Each comment should be self-contained (not "fixed it" but "fixed by adding null check in line 42")
+
+**On Close:**
+- `--reason` must explain WHAT was done, not just "done"
+- Bad: `--reason="Fixed"`
+- Good: `--reason="Added null check in retriever.py:42, now returns empty list instead of NaN"`
+
+**Test:** Can someone in a new session understand this bead without asking?
 
 ## CRITICAL CYCLE
 
@@ -95,6 +73,12 @@ EVERY RESPONSE STARTS WITH A PHASE INDICATOR:
 
 ## Planning Phase (PLAN)
 
+### Beads Check (BEFORE Exploration)
+
+**MANDATORY:** Run `bd list` BEFORE launching any exploration agents.
+
+Beads provide cross-session context. Agent exploration without bead context = wasted effort.
+
 ### Scoping (BEFORE Exploration)
 
 BEFORE you explore, clarify with the user:
@@ -102,7 +86,10 @@ BEFORE you explore, clarify with the user:
 **1. SCOPE - What is the end goal?**
 → "What should the output be?"
 → File? Script? Documentation? Analysis?
-→ **If Documentation:** "Who is the target reader?" (new user vs internal reference)
+→ **If Documentation:** "Who is the target reader?"
+  - **Default assumption:** AI (you) is the primary reader
+  - Docs should be perfect for AI consumption, but human-readable when needed
+  - Optimize for: clarity, structure, completeness (AI needs full context)
 
 **2. SOURCES - Which files/folders are relevant?**
 → "Which folders should I look at?"
@@ -126,13 +113,6 @@ BEFORE any action in a directory (running scripts, editing files, exploring code
 
 This is NON-NEGOTIABLE. Skipping DOCS.md leads to: wrong paths, wrong arguments, wrong understanding.
 
-**Path Verification (MANDATORY):**
-
-BEFORE executing scripts with relative paths:
-1. Verify paths with `ls` command
-2. NEVER assume paths are correct just because script exists
-3. One wrong path = entire workflow fails silently
-
 **ASK THE FUCKING USER**
 - the user knows best, ask him for reference scripts,
 	- REFERENCE SCRIPTS OR SOURCE CODE IS A GAME CHANGER, MAKES LIFE MUCH EASIER
@@ -141,7 +121,7 @@ BEFORE executing scripts with relative paths:
 - **External Dependencies/Versions:** ASK USER, don't self-verify
 	- Docker images, tool versions, library versions
 	- User knows what was ACTUALLY USED vs what's CURRENTLY AVAILABLE
-	- Reproducibility > Recency (especially for thesis/research)
+	- Reproducibility > Recency (especially for research/thesis)
 
 ### Communication
 
@@ -386,33 +366,35 @@ Example: `Thesis_Final-e0m: Fixed MIN_ERROR_THRESHOLD by adjusting selection log
 
 #### 6. Improvements
 
-Improvements are based on the execution and process reflection.
+**CRITICAL:** Every improvement MUST reference a Stellschraube from project CLAUDE.md.
+Improvements without concrete target path are not actionable → reject.
+
+→ **See project CLAUDE.md for available Stellschrauben and paths.**
 
 ##### 6.1 Content Improvements (Code/Docs)
 
+Prioritization:
 - **Critical:** Must fix (breaks functionality, wrong behavior)
 - **Important:** Should fix (code quality, maintainability)
 - **Optional:** Nice to have (style, minor optimizations)
 
+**Handling in IMPROVE Phase:**
+- Code (*.py, *.yml, etc.) → **Bead** (needs own PLAN→IMPLEMENT→RECAP cycle)
+- Docs/README/Stellschrauben → **Direct Edit** in IMPROVE
+
 ##### 6.2 Process Improvements
 
-Same 3 categories, but graded by OUTCOME:
-
-- **Critical:** Process issues that WOULD HAVE caused critical code issues
-  - Example: Skipping path verification → wrong file edited
-  - Example: Not reading DOCS.md → wrong arguments used
-
-- **Important:** Process issues that caused detours but correct outcome
-  - Context pollution (too much irrelevant output)
-  - Off-the-rails analysis (wrong hypothesis, user had to correct)
-  - Circles (repeated attempts at same thing)
-  - Example: Wrong assumption about avg_mre → user corrected → correct result with delay
-
+Prioritization (by OUTCOME):
+- **Critical:** Process errors that WOULD HAVE caused critical code issues
+- **Important:** Process errors that caused detours but correct outcome
 - **Optional:** Minor process inefficiencies
-  - Could have asked better questions
-  - Could have parallelized better
 
-**Key insight:** The OUTCOME determines severity. Wrong process + correct result = Important (not Critical).
+**Handling in IMPROVE Phase:**
+- Stellschrauben (Skills, Commands, Agents, Hooks) → **Direct Edit** in IMPROVE
+- Docs/README → **Direct Edit** in IMPROVE
+- Code → **Bead**
+
+**Key insight:** OUTCOME determines severity. Wrong process + correct result = Important (not Critical).
 
 ##### 6.3 DOCS.md Check (MANDATORY)
 
@@ -431,9 +413,26 @@ List any tasks from the original plan that were NOT executed.
 
 After report:
 1. Ask: "Any remarks?"
-2. User gives remark → Add to Improvements section
+2. User gives remark → **Analyze for system improvement**
 3. Ask: "More remarks?"
 4. Repeat until user says "done" or "improve"
+
+**CRITICAL: Remarks → Analyze → Propose Improvement + Location**
+
+When user gives ANY remark:
+1. **Analyze:** What went wrong? What could be better?
+2. **Propose:** Concrete improvement
+3. **Locate:** WHERE the improvement would happen (Stellschraube from CLAUDE.md)
+
+**Output Format:**
+```
+Remark: [User's remark]
+Analysis: [What went wrong]
+Improvement: [Concrete change]
+Location: [Stellschraube + file path from CLAUDE.md]
+```
+
+**The Goal:** Every remark → concrete improvement proposal with exact location.
 
 ### Phase Exit
 
@@ -445,15 +444,22 @@ After report:
 
 ## Improve Phase (IMPROVE)
 
-**Purpose:** Execute improvements from plan file (like IMPLEMENT, but for improvements).
+**Purpose:** Execute improvements from plan file.
 
-**Workflow:**
+**CRITICAL:** IMPROVE has no validation after it. Therefore:
+- Code → Bead (own cycle with validation)
+- Everything else → Direct Edit
+
+### Workflow
+
 1. Read plan file "## Improvements" section
-2. Execute each improvement (Edit, Write, Bash)
-3. Handle Beads (from RECAP evaluation):
-   - Create new beads: `bd create --title "..." --type=...`
-   - Update beads: `bd comment <id> "..."`
-   - Close beads: `bd close <id> --reason="..."`
+2. For each improvement (see 6.1/6.2 Handling):
+   - **Code?** → `bd create --title "..." --type=...`
+   - **Docs/README/Stellschrauben?** → Direct Edit (Edit, Write)
+3. Handle Beads (from RECAP Section 5):
+   - Create: `bd create --title "..." --type=...`
+   - Update: `bd comment <id> "..."`
+   - Close: `bd close <id> --reason="..."`
 4. Ask: "Proceed to CLOSING?"
 
 User confirms → next response starts with ✅ CLOSING
@@ -464,14 +470,7 @@ User confirms → next response starts with ✅ CLOSING
 
 Only enter when user confirms (e.g., "proceed", "close", "done").
 
-1. Update DOCS.md (if needed)
-2. Handle open items (non-beads):
-   - For each open item, ASK: "Should [Item X] go to Beads? (cross-session)"
-   - User confirms → handled in next cycle's IMPROVE
-   - User declines → Keep in plan file for next iteration
-   - If no open items remain: clear plan file (overwrite with single space)
-3. Finalize:
-   - `bd sync`
-   - `git add . && git commit`
-   - `git push`
+1. `bd sync`
+2. `git add . && git commit`
+3. `git push`
 4. Ask: "New cycle or done for now?"

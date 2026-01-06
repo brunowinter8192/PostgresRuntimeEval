@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q5_117_seed_951667596
-**Timestamp:** 2025-12-22 05:16:49
+**Timestamp:** 2026-01-01 18:17:56
 
 ## Data Summary
 
@@ -117,119 +117,107 @@
 
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
-| 0 | 895c6e8c | 75736.1626 | 0.0004% | REJECTED | 17.92% |
-| 1 | 3aab37be | 113504.2307 | -0.0000% | REJECTED | 17.92% |
-| 2 | 1d35fb97 | 26.4017 | 0.1167% | REJECTED | 17.92% |
-| 3 | 7df893ad | 6131.8766 | -0.0000% | REJECTED | 17.92% |
-| 4 | 2724c080 | 19.6008 | 0.0222% | REJECTED | 17.92% |
-| 5 | 2e0f44ef | 108.1438 | 0.0001% | REJECTED | 17.92% |
-| 6 | 3cfa90d7 | 6.2375 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 7 | 3e2d5a00 | 18.5586 | 0.0007% | REJECTED | 17.92% |
-| 8 | 46f37744 | 2.8144 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 9 | 3754655c | 2.1302 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 10 | f4cb205a | 75544.5822 | 0.0006% | REJECTED | 17.92% |
-| 11 | bb930825 | 172.9284 | -0.0000% | REJECTED | 17.92% |
-| 12 | c0a8d3de | 6113.5159 | -0.0000% | REJECTED | 17.92% |
-| 13 | e0e3c3e1 | 4.0772 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 14 | 91d6e559 | 3.8546 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 15 | 2422d111 | 10.7757 | 0.0001% | REJECTED | 17.92% |
-| 16 | ddb1e0ca | 13.6847 | -5.3651% | REJECTED | 17.92% |
-| 17 | 8a8c43c6 | 1.5375 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 18 | e6c1e0d8 | 2.8144 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 19 | 8823d1e5 | 1.1588 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 20 | 37515ad8 | 168.3286 | -0.0000% | REJECTED | 17.92% |
-| 21 | a54055ce | 6089.1983 | -0.0000% | REJECTED | 17.92% |
-| 22 | bd9dfa7b | 3.3601 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 23 | 444761fb | 24.3176 | -0.0000% | REJECTED | 17.92% |
-| 24 | 460af52c | 1.5375 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 25 | 12e6457c | 2.9009 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 26 | 4db07220 | 5.9049 | 0.0000% | REJECTED | 17.92% |
-| 27 | 627c5619 | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 28 | 39e55ae2 | 1.1935 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 29 | 94adff2c | 1.1588 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 30 | 9d0e407c | 2.9587 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 31 | 545b5e57 | 153.1732 | -0.0000% | REJECTED | 17.92% |
-| 32 | ec92bdaa | 15.1555 | -0.0000% | REJECTED | 17.92% |
-| 33 | 440e6274 | 5.9049 | 0.0000% | REJECTED | 17.92% |
-| 34 | 314469b0 | 20.7410 | 0.0000% | REJECTED | 17.92% |
-| 35 | 7014b260 | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 36 | c42cb45a | 0.4402 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 37 | 14a1f63a | 1.1935 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 38 | 3a31b48f | 1.1588 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 39 | 91ed3a4f | 0.4506 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 40 | f4603221 | 5.9049 | 0.0000% | REJECTED | 17.92% |
-| 41 | 5bfce159 | 2.1340 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 42 | e1d7e5b4 | 13.2381 | -0.0000% | REJECTED | 17.92% |
-| 43 | 54cb7f90 | 20.7410 | 0.0000% | REJECTED | 17.92% |
-| 44 | 6815cf8d | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 45 | 729d307d | 0.4402 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 46 | 843b7fef | 1.1935 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 47 | 0fa21834 | 1.1588 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 48 | d25d9b9f | 0.4506 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 49 | 3d4c3db9 | 5.9049 | 0.0000% | REJECTED | 17.92% |
-| 50 | ef93d4fc | 2.1340 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 51 | c302739b | 13.2381 | -0.0000% | REJECTED | 17.92% |
-| 52 | bf4763ca | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 53 | 8757732f | 0.4402 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 54 | 739b1b7e | 1.1935 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 55 | 4de97842 | 1.1588 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 56 | 2dc34d1b | 0.4506 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 57 | 9ce781b0 | 5.9049 | 0.0000% | REJECTED | 17.92% |
-| 58 | 5ae97df8 | 2.1340 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 59 | 9b0e5572 | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 60 | 00dd2f10 | 0.4402 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 61 | f169a84a | 1.1935 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 62 | 421ce908 | 1.1588 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 63 | 5f022f0d | 0.4506 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 64 | a95bee4e | 5.9049 | 0.0000% | REJECTED | 17.92% |
-| 65 | 5a24af68 | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 66 | 45e3e43d | 0.4402 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 67 | ac1e65be | 1.1935 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 68 | 9325c19d | 1.1588 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 69 | 0e38b2d0 | 0.4506 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 70 | b20b9f6a | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 71 | 96b20505 | 0.4402 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 72 | 6255ff62 | 1.1935 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 73 | 7b82db07 | 1.1588 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 74 | 45767427 | 0.4506 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 75 | d21d6eb9 | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 76 | d0ca624d | 0.4402 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 77 | 8b7a3d08 | 1.1935 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 78 | 7d401e23 | 1.1588 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 79 | 255215ee | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 80 | b7143fa7 | 0.4402 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 81 | 1b84acf9 | 1.1935 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 82 | d959dddb | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 83 | 2b345df9 | 0.4402 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 84 | de57e0e8 | 0.8575 | N/A | SKIPPED_LOW_ERROR | 17.92% |
+| 0 | 895c6e8c | 75736.1626 | 0.0004% | ACCEPTED | 17.92% |
+| 1 | 3aab37be | 94712.4752 | -0.0000% | REJECTED | 17.92% |
+| 2 | 1d35fb97 | 26.4006 | 0.1163% | ACCEPTED | 17.81% |
+| 3 | 7df893ad | 678.6757 | N/A | REJECTED | 17.81% |
+| 4 | 2724c080 | 7.7852 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 5 | 2e0f44ef | 108.1433 | 0.0001% | ACCEPTED | 17.81% |
+| 6 | 3cfa90d7 | 3.5091 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 7 | 3e2d5a00 | 18.3526 | N/A | REJECTED | 17.81% |
+| 8 | 46f37744 | 2.8145 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 9 | 3754655c | 2.1224 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 10 | f4cb205a | 41652.9228 | 0.0005% | ACCEPTED | 17.81% |
+| 11 | bb930825 | 188.3060 | N/A | REJECTED | 17.81% |
+| 12 | e0e3c3e1 | 2.9552 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 13 | 91d6e559 | 3.6292 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 14 | 2422d111 | 1.5987 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 15 | ddb1e0ca | 13.5374 | -5.4908% | REJECTED | 17.81% |
+| 16 | 8a8c43c6 | 2.1945 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 17 | e6c1e0d8 | 2.8145 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 18 | 8823d1e5 | 1.1511 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 19 | 37515ad8 | 180.6991 | N/A | REJECTED | 17.81% |
+| 20 | bd9dfa7b | 1.7976 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 21 | 460af52c | 2.1945 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 22 | 12e6457c | 2.7493 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 23 | 4db07220 | 1.1101 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 24 | 627c5619 | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 25 | 39e55ae2 | 1.1936 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 26 | 94adff2c | 1.1511 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 27 | 545b5e57 | 159.7788 | N/A | REJECTED | 17.81% |
+| 28 | ec92bdaa | 20.9203 | N/A | REJECTED | 17.81% |
+| 29 | 440e6274 | 1.1101 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 30 | 7014b260 | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 31 | 14a1f63a | 1.1936 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 32 | 3a31b48f | 1.1511 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 33 | 91ed3a4f | 0.4938 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 34 | f4603221 | 1.1101 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 35 | e1d7e5b4 | 18.3306 | N/A | REJECTED | 17.81% |
+| 36 | 6815cf8d | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 37 | 843b7fef | 1.1936 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 38 | 0fa21834 | 1.1511 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 39 | d25d9b9f | 0.4938 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 40 | 3d4c3db9 | 1.1101 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 41 | c302739b | 18.3306 | N/A | REJECTED | 17.81% |
+| 42 | bf4763ca | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 43 | 739b1b7e | 1.1936 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 44 | 4de97842 | 1.1511 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 45 | 2dc34d1b | 0.4938 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 46 | 9ce781b0 | 1.1101 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 47 | 9b0e5572 | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 48 | f169a84a | 1.1936 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 49 | 421ce908 | 1.1511 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 50 | 5f022f0d | 0.4938 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 51 | a95bee4e | 1.1101 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 52 | 5a24af68 | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 53 | ac1e65be | 1.1936 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 54 | 9325c19d | 1.1511 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 55 | 0e38b2d0 | 0.4938 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 56 | b20b9f6a | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 57 | 6255ff62 | 1.1936 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 58 | 7b82db07 | 1.1511 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 59 | 45767427 | 0.4938 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 60 | d21d6eb9 | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 61 | 8b7a3d08 | 1.1936 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 62 | 7d401e23 | 1.1511 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 63 | 255215ee | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 64 | 1b84acf9 | 1.1936 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 65 | d959dddb | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 66 | de57e0e8 | 0.4253 | N/A | SKIPPED_LOW_ERROR | 17.81% |
 ## Query Tree
 
 ```
-Node 7261 (Sort) - ROOT
-  Node 7262 (Aggregate)
+Node 7261 (Sort) [PATTERN: 1d35fb97] - ROOT
+  Node 7262 (Aggregate) [consumed]
     Node 7263 (Gather Merge)
       Node 7264 (Aggregate)
         Node 7265 (Sort)
-          Node 7266 (Hash Join)
-            Node 7267 (Nested Loop)
-              Node 7268 (Hash Join)
-                Node 7269 (Seq Scan) - LEAF
-                Node 7270 (Hash)
-                  Node 7271 (Hash Join)
-                    Node 7272 (Seq Scan) - LEAF
-                    Node 7273 (Hash)
-                      Node 7274 (Hash Join)
-                        Node 7275 (Seq Scan) - LEAF
-                        Node 7276 (Hash)
-                          Node 7277 (Seq Scan) - LEAF
+          Node 7266 (Hash Join) [PATTERN: 2e0f44ef]
+            Node 7267 (Nested Loop) [consumed]
+              Node 7268 (Hash Join) [PATTERN: 895c6e8c]
+                Node 7269 (Seq Scan) [consumed] - LEAF
+                Node 7270 (Hash) [consumed]
+                  Node 7271 (Hash Join) [PATTERN: 895c6e8c]
+                    Node 7272 (Seq Scan) [consumed] - LEAF
+                    Node 7273 (Hash) [consumed]
+                      Node 7274 (Hash Join) [PATTERN: f4cb205a]
+                        Node 7275 (Seq Scan) [consumed] - LEAF
+                        Node 7276 (Hash) [consumed]
+                          Node 7277 (Seq Scan) [consumed] - LEAF
               Node 7278 (Index Scan) - LEAF
-            Node 7279 (Hash)
+            Node 7279 (Hash) [consumed]
               Node 7280 (Seq Scan) - LEAF
 ```
 
 ## Pattern Assignments
 
-No patterns selected.
+| Pattern | Hash | Root Node | Consumed Nodes |
+|---------|------|-----------|----------------|
+| Hash Join -> [Seq Scan (Outer) | f4cb205a | 7274 | 7261, 7262, 7266, 7267, 7268, 7269, 7270, 7271, 7272, 7273, 7275, 7276, 7277, 7279 |
+| Hash Join -> [Seq Scan (Outer) | 895c6e8c | 7268 | 7261, 7262, 7266, 7267, 7269, 7270, 7271, 7272, 7273, 7274, 7275, 7276, 7277, 7279 |
+| Hash Join -> [Seq Scan (Outer) | 895c6e8c | 7271 | 7261, 7262, 7266, 7267, 7268, 7269, 7270, 7272, 7273, 7274, 7275, 7276, 7277, 7279 |
+| Sort -> Aggregate (Outer) | 1d35fb97 | 7261 | 7262, 7266, 7267, 7268, 7269, 7270, 7271, 7272, 7273, 7274, 7275, 7276, 7277, 7279 |
+| Hash Join -> [Nested Loop (Out | 2e0f44ef | 7266 | 7261, 7262, 7267, 7268, 7269, 7270, 7271, 7272, 7273, 7274, 7275, 7276, 7277, 7279 |
 
 
 **Legend:**
@@ -239,235 +227,139 @@ No patterns selected.
 
 ## Phase E: Final Prediction
 
-- Final MRE: 3.36%
-- Improvement: 0.39%
+- Final MRE: 1.10%
+- Improvement: 2.64%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 7261 | Sort | 1068.38 | 1104.24 | 3.4% | operator |
-| 7262 | Aggregate | 1068.36 | 1057.92 | 1.0% | operator |
-| 7263 | Gather Merge | 1068.36 | 1124.37 | 5.2% | operator |
-| 7264 | Aggregate | 1060.77 | 1019.95 | 3.8% | operator |
-| 7265 | Sort | 1060.51 | 1074.64 | 1.3% | operator |
-| 7266 | Hash Join | 1060.03 | 1106.89 | 4.4% | operator |
-| 7267 | Nested Loop | 1049.32 | 1102.57 | 5.1% | operator |
-| 7279 | Hash | 2.65 | 14.79 | 457.6% | operator |
-| 7268 | Hash Join | 216.37 | 234.18 | 8.2% | operator |
+| 7261 | Sort | 1068.38 | 1080.14 | 1.1% | pattern |
+| 7263 | Gather Merge | 1068.36 | 1124.36 | 5.2% | operator |
+| 7264 | Aggregate | 1060.77 | 1019.70 | 3.9% | operator |
+| 7265 | Sort | 1060.51 | 1073.11 | 1.2% | operator |
+| 7266 | Hash Join | 1060.03 | 1080.38 | 1.9% | pattern |
+| 7268 | Hash Join | 216.37 | 259.82 | 20.1% | pattern |
 | 7278 | Index Scan | 0.07 | -0.03 | 134.9% | operator |
 | 7280 | Seq Scan | 1.82 | 10.62 | 482.7% | operator |
-| 7269 | Seq Scan | 166.06 | 161.95 | 2.5% | operator |
-| 7270 | Hash | 37.85 | 21.31 | 43.7% | operator |
-| 7271 | Hash Join | 37.13 | 62.87 | 69.3% | operator |
-| 7272 | Seq Scan | 35.11 | 24.87 | 29.2% | operator |
-| 7273 | Hash | 0.43 | 16.80 | 3815.3% | operator |
-| 7274 | Hash Join | 0.43 | 142.84 | 33431.4% | operator |
-| 7275 | Seq Scan | 0.01 | 10.49 | 116508.1% | operator |
-| 7276 | Hash | 0.41 | 16.01 | 3806.1% | operator |
-| 7277 | Seq Scan | 0.41 | 21.39 | 5142.6% | operator |
+| 7271 | Hash Join | 37.13 | 84.97 | 128.9% | pattern |
+| 7274 | Hash Join | 0.43 | 11.62 | 2626.7% | pattern |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 7277 (Seq Scan) - LEAF
+### Step 1: Node 7274 (Hash Join) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** f4cb205a (Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)])
+- **Consumes:** Nodes 7261, 7262, 7266, 7267, 7268, 7269, 7270, 7271, 7272, 7273, 7275, 7276, 7277, 7279
 - **Input Features:**
-  - np=1
-  - nt=1
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=4
-  - reltuples=5.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.2000
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=1.0600
-- **Output:** st=0.12, rt=21.39
+  - HashJoin_np=0
+  - HashJoin_nt=5
+  - HashJoin_nt1=25
+  - HashJoin_nt2=1
+  - HashJoin_parallel_workers=0
+  - HashJoin_plan_width=108
+  - HashJoin_reltuples=0.0000
+  - HashJoin_sel=0.2000
+  - HashJoin_startup_cost=1.0700
+  - HashJoin_total_cost=2.4000
+  - Hash_Inner_np=0
+  - Hash_Inner_nt=1
+  - Hash_Inner_nt1=1
+  - Hash_Inner_nt2=0
+  - Hash_Inner_parallel_workers=0
+  - Hash_Inner_plan_width=4
+  - Hash_Inner_reltuples=0.0000
+  - Hash_Inner_sel=1.0000
+  - Hash_Inner_startup_cost=1.0600
+  - Hash_Inner_total_cost=1.0600
+  - SeqScan_Outer_np=1
+  - SeqScan_Outer_nt=1
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=4
+  - SeqScan_Outer_reltuples=5.0000
+  - SeqScan_Outer_sel=0.2000
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=1.0600
+- **Output:** st=0.12, rt=11.62
 
-### Step 2: Node 7275 (Seq Scan) - LEAF
+### Step 2: Node 7271 (Hash Join) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** 895c6e8c (Hash Join -> [Seq Scan (Outer), Hash (Inner)])
+- **Consumes:** Nodes 7261, 7262, 7266, 7267, 7268, 7269, 7270, 7272, 7273, 7274, 7275, 7276, 7277, 7279
 - **Input Features:**
-  - np=1
-  - nt=25
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=112
-  - reltuples=25.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=1.2500
-- **Output:** st=-0.02, rt=10.49
+  - HashJoin_np=0
+  - HashJoin_nt=12500
+  - HashJoin_nt1=62500
+  - HashJoin_nt2=5
+  - HashJoin_parallel_workers=0
+  - HashJoin_plan_width=116
+  - HashJoin_reltuples=0.0000
+  - HashJoin_sel=0.0400
+  - HashJoin_startup_cost=2.4600
+  - HashJoin_total_cost=4586.8400
+  - Hash_Inner_np=0
+  - Hash_Inner_nt=5
+  - Hash_Inner_nt1=5
+  - Hash_Inner_nt2=0
+  - Hash_Inner_parallel_workers=0
+  - Hash_Inner_plan_width=108
+  - Hash_Inner_reltuples=0.0000
+  - Hash_Inner_sel=1.0000
+  - Hash_Inner_startup_cost=2.4000
+  - Hash_Inner_total_cost=2.4000
+  - SeqScan_Outer_np=3600
+  - SeqScan_Outer_nt=62500
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=8
+  - SeqScan_Outer_reltuples=150000.0000
+  - SeqScan_Outer_sel=0.4167
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=4225.0000
+- **Output:** st=1.05, rt=84.97
 
-### Step 3: Node 7276 (Hash)
+### Step 3: Node 7268 (Hash Join) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** 895c6e8c (Hash Join -> [Seq Scan (Outer), Hash (Inner)])
+- **Consumes:** Nodes 7261, 7262, 7266, 7267, 7269, 7270, 7271, 7272, 7273, 7274, 7275, 7276, 7277, 7279
 - **Input Features:**
-  - np=0
-  - nt=1
-  - nt1=1
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=4
-  - reltuples=0.0000
-  - rt1=21.3899
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=0.1185
-  - st2=0.0000
-  - startup_cost=1.0600
-  - total_cost=1.0600
-- **Output:** st=16.02, rt=16.01
+  - HashJoin_np=0
+  - HashJoin_nt=14756
+  - HashJoin_nt1=73782
+  - HashJoin_nt2=12500
+  - HashJoin_parallel_workers=0
+  - HashJoin_plan_width=116
+  - HashJoin_reltuples=0.0000
+  - HashJoin_sel=0.0000
+  - HashJoin_startup_cost=4743.0900
+  - HashJoin_total_cost=38475.3200
+  - Hash_Inner_np=0
+  - Hash_Inner_nt=12500
+  - Hash_Inner_nt1=12500
+  - Hash_Inner_nt2=0
+  - Hash_Inner_parallel_workers=0
+  - Hash_Inner_plan_width=116
+  - Hash_Inner_reltuples=0.0000
+  - Hash_Inner_sel=1.0000
+  - Hash_Inner_startup_cost=4586.8400
+  - Hash_Inner_total_cost=4586.8400
+  - SeqScan_Outer_np=26136
+  - SeqScan_Outer_nt=73782
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=8
+  - SeqScan_Outer_reltuples=1500000.0000
+  - SeqScan_Outer_sel=0.0492
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=33394.0600
+- **Output:** st=36.18, rt=259.82
 
-### Step 4: Node 7274 (Hash Join)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=5
-  - nt1=25
-  - nt2=1
-  - parallel_workers=0
-  - plan_width=108
-  - reltuples=0.0000
-  - rt1=10.4947
-  - rt2=16.0149
-  - sel=0.2000
-  - st1=-0.0152
-  - st2=16.0154
-  - startup_cost=1.0700
-  - total_cost=2.4000
-- **Output:** st=1.92, rt=142.84
-
-### Step 5: Node 7272 (Seq Scan) - LEAF
-
-- **Source:** operator
-- **Input Features:**
-  - np=3600
-  - nt=62500
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=8
-  - reltuples=150000.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.4167
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=4225.0000
-- **Output:** st=0.28, rt=24.87
-
-### Step 6: Node 7273 (Hash)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=5
-  - nt1=5
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=108
-  - reltuples=0.0000
-  - rt1=142.8439
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=1.9164
-  - st2=0.0000
-  - startup_cost=2.4000
-  - total_cost=2.4000
-- **Output:** st=16.80, rt=16.80
-
-### Step 7: Node 7271 (Hash Join)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=12500
-  - nt1=62500
-  - nt2=5
-  - parallel_workers=0
-  - plan_width=116
-  - reltuples=0.0000
-  - rt1=24.8735
-  - rt2=16.7965
-  - sel=0.0400
-  - st1=0.2761
-  - st2=16.7962
-  - startup_cost=2.4600
-  - total_cost=4586.8400
-- **Output:** st=3.04, rt=62.87
-
-### Step 8: Node 7269 (Seq Scan) - LEAF
-
-- **Source:** operator
-- **Input Features:**
-  - np=26136
-  - nt=73782
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=8
-  - reltuples=1500000.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.0492
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=33394.0600
-- **Output:** st=0.18, rt=161.95
-
-### Step 9: Node 7270 (Hash)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=12500
-  - nt1=12500
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=116
-  - reltuples=0.0000
-  - rt1=62.8708
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=3.0413
-  - st2=0.0000
-  - startup_cost=4586.8400
-  - total_cost=4586.8400
-- **Output:** st=21.31, rt=21.31
-
-### Step 10: Node 7268 (Hash Join)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=14756
-  - nt1=73782
-  - nt2=12500
-  - parallel_workers=0
-  - plan_width=116
-  - reltuples=0.0000
-  - rt1=161.9494
-  - rt2=21.3137
-  - sel=0.0000
-  - st1=0.1788
-  - st2=21.3132
-  - startup_cost=4743.0900
-  - total_cost=38475.3200
-- **Output:** st=24.76, rt=234.18
-
-### Step 11: Node 7278 (Index Scan) - LEAF
+### Step 4: Node 7278 (Index Scan) - LEAF
 
 - **Source:** operator
 - **Input Features:**
@@ -487,7 +379,7 @@ No patterns selected.
   - total_cost=1.1400
 - **Output:** st=0.07, rt=-0.03
 
-### Step 12: Node 7280 (Seq Scan) - LEAF
+### Step 5: Node 7280 (Seq Scan) - LEAF
 
 - **Source:** operator
 - **Input Features:**
@@ -507,67 +399,45 @@ No patterns selected.
   - total_cost=323.0000
 - **Output:** st=0.04, rt=10.62
 
-### Step 13: Node 7267 (Nested Loop)
+### Step 6: Node 7266 (Hash Join) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** 2e0f44ef (Hash Join -> [Nested Loop (Outer), Hash (Inner)])
+- **Consumes:** Nodes 7261, 7262, 7267, 7268, 7269, 7270, 7271, 7272, 7273, 7274, 7275, 7276, 7277, 7279
 - **Input Features:**
-  - np=0
-  - nt=59037
-  - nt1=14756
-  - nt2=5
-  - parallel_workers=0
-  - plan_width=128
-  - reltuples=0.0000
-  - rt1=234.1843
-  - rt2=-0.0251
-  - sel=0.8002
-  - st1=24.7649
-  - st2=0.0674
-  - startup_cost=4743.5200
-  - total_cost=56044.8800
-- **Output:** st=42.56, rt=1102.57
+  - HashJoin_np=0
+  - HashJoin_nt=2362
+  - HashJoin_nt1=59037
+  - HashJoin_nt2=10000
+  - HashJoin_parallel_workers=0
+  - HashJoin_plan_width=116
+  - HashJoin_reltuples=0.0000
+  - HashJoin_sel=0.0000
+  - HashJoin_startup_cost=5216.5200
+  - HashJoin_total_cost=56827.8200
+  - Hash_Inner_np=0
+  - Hash_Inner_nt=10000
+  - Hash_Inner_nt1=10000
+  - Hash_Inner_nt2=0
+  - Hash_Inner_parallel_workers=0
+  - Hash_Inner_plan_width=8
+  - Hash_Inner_reltuples=0.0000
+  - Hash_Inner_sel=1.0000
+  - Hash_Inner_startup_cost=323.0000
+  - Hash_Inner_total_cost=323.0000
+  - NestedLoop_Outer_np=0
+  - NestedLoop_Outer_nt=59037
+  - NestedLoop_Outer_nt1=14756
+  - NestedLoop_Outer_nt2=5
+  - NestedLoop_Outer_parallel_workers=0
+  - NestedLoop_Outer_plan_width=128
+  - NestedLoop_Outer_reltuples=0.0000
+  - NestedLoop_Outer_sel=0.8002
+  - NestedLoop_Outer_startup_cost=4743.5200
+  - NestedLoop_Outer_total_cost=56044.8800
+- **Output:** st=41.72, rt=1080.38
 
-### Step 14: Node 7279 (Hash)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=10000
-  - nt1=10000
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=8
-  - reltuples=0.0000
-  - rt1=10.6168
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=0.0355
-  - st2=0.0000
-  - startup_cost=323.0000
-  - total_cost=323.0000
-- **Output:** st=14.79, rt=14.79
-
-### Step 15: Node 7266 (Hash Join)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=2362
-  - nt1=59037
-  - nt2=10000
-  - parallel_workers=0
-  - plan_width=116
-  - reltuples=0.0000
-  - rt1=1102.5677
-  - rt2=14.7884
-  - sel=0.0000
-  - st1=42.5610
-  - st2=14.7887
-  - startup_cost=5216.5200
-  - total_cost=56827.8200
-- **Output:** st=49.44, rt=1106.89
-
-### Step 16: Node 7265 (Sort)
+### Step 7: Node 7265 (Sort)
 
 - **Source:** operator
 - **Input Features:**
@@ -578,16 +448,16 @@ No patterns selected.
   - parallel_workers=0
   - plan_width=116
   - reltuples=0.0000
-  - rt1=1106.8941
+  - rt1=1080.3751
   - rt2=0.0000
   - sel=1.0000
-  - st1=49.4411
+  - st1=41.7211
   - st2=0.0000
   - startup_cost=56960.1600
   - total_cost=56966.0700
-- **Output:** st=1073.72, rt=1074.64
+- **Output:** st=1072.20, rt=1073.11
 
-### Step 17: Node 7264 (Aggregate)
+### Step 8: Node 7264 (Aggregate)
 
 - **Source:** operator
 - **Input Features:**
@@ -598,16 +468,16 @@ No patterns selected.
   - parallel_workers=0
   - plan_width=136
   - reltuples=0.0000
-  - rt1=1074.6429
+  - rt1=1073.1123
   - rt2=0.0000
   - sel=0.0106
-  - st1=1073.7204
+  - st1=1072.1969
   - st2=0.0000
   - startup_cost=56960.1600
   - total_cost=56990.0000
-- **Output:** st=1017.92, rt=1019.95
+- **Output:** st=1017.73, rt=1019.70
 
-### Step 18: Node 7263 (Gather Merge)
+### Step 9: Node 7263 (Gather Merge)
 
 - **Source:** operator
 - **Input Features:**
@@ -618,51 +488,39 @@ No patterns selected.
   - parallel_workers=3
   - plan_width=136
   - reltuples=0.0000
-  - rt1=1019.9490
+  - rt1=1019.7046
   - rt2=0.0000
   - sel=3.0000
-  - st1=1017.9186
+  - st1=1017.7313
   - st2=0.0000
   - startup_cost=57960.2000
   - total_cost=57998.8500
-- **Output:** st=1121.35, rt=1124.37
+- **Output:** st=1121.35, rt=1124.36
 
-### Step 19: Node 7262 (Aggregate)
+### Step 10: Node 7261 (Sort) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** 1d35fb97 (Sort -> Aggregate (Outer))
+- **Consumes:** Nodes 7262, 7266, 7267, 7268, 7269, 7270, 7271, 7272, 7273, 7274, 7275, 7276, 7277, 7279
 - **Input Features:**
-  - np=0
-  - nt=25
-  - nt1=75
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=136
-  - reltuples=0.0000
-  - rt1=1124.3673
-  - rt2=0.0000
-  - sel=0.3333
-  - st1=1121.3491
-  - st2=0.0000
-  - startup_cost=57960.2000
-  - total_cost=57999.7300
-- **Output:** st=1074.35, rt=1057.92
-
-### Step 20: Node 7261 (Sort) - ROOT
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=25
-  - nt1=25
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=136
-  - reltuples=0.0000
-  - rt1=1057.9185
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=1074.3455
-  - st2=0.0000
-  - startup_cost=58000.3100
-  - total_cost=58000.3700
-- **Output:** st=1102.40, rt=1104.24
+  - Aggregate_Outer_np=0
+  - Aggregate_Outer_nt=25
+  - Aggregate_Outer_nt1=75
+  - Aggregate_Outer_nt2=0
+  - Aggregate_Outer_parallel_workers=0
+  - Aggregate_Outer_plan_width=136
+  - Aggregate_Outer_reltuples=0.0000
+  - Aggregate_Outer_sel=0.3333
+  - Aggregate_Outer_startup_cost=57960.2000
+  - Aggregate_Outer_total_cost=57999.7300
+  - Sort_np=0
+  - Sort_nt=25
+  - Sort_nt1=25
+  - Sort_nt2=0
+  - Sort_parallel_workers=0
+  - Sort_plan_width=136
+  - Sort_reltuples=0.0000
+  - Sort_sel=1.0000
+  - Sort_startup_cost=58000.3100
+  - Sort_total_cost=58000.3700
+- **Output:** st=1078.45, rt=1080.14

@@ -71,7 +71,7 @@ def run_static_selection(
     collision_data = []
 
     current_predictions = predict_all_queries(
-        df_test, operator_models, operator_ffs, {}, pattern_ffs, {}
+        df_test, operator_models, operator_ffs, {}, pattern_ffs, {}, []
     )
 
     operator_baseline_mre = calculate_operator_baseline_mre(current_predictions) if report else {}
@@ -130,9 +130,10 @@ def run_static_selection(
 
         test_models = {**selected_pattern_models, pattern_hash: pattern_model}
         test_info = {**selected_pattern_info, pattern_hash: {'length': pattern_length, 'operator_count': operator_count}}
+        test_order = [h for h, _ in selected_patterns_order] + [pattern_hash]
 
         predictions = predict_all_queries(
-            df_test, operator_models, operator_ffs, test_models, pattern_ffs, test_info
+            df_test, operator_models, operator_ffs, test_models, pattern_ffs, test_info, test_order
         )
 
         new_mre = calculate_mre(predictions)
@@ -210,7 +211,7 @@ def run_error_selection(
     occurrence_counts = error_baseline.set_index('pattern_hash')['occurrence_count'].to_dict() if 'occurrence_count' in error_baseline.columns else {}
 
     current_predictions = predict_all_queries(
-        df_test, operator_models, operator_ffs, {}, pattern_ffs, {}
+        df_test, operator_models, operator_ffs, {}, pattern_ffs, {}, []
     )
 
     operator_baseline_mre = calculate_operator_baseline_mre(current_predictions) if report else {}
@@ -271,9 +272,10 @@ def run_error_selection(
 
         test_models = {**selected_pattern_models, pattern_hash: pattern_model}
         test_info = {**selected_pattern_info, pattern_hash: {'length': pattern_length, 'operator_count': operator_count}}
+        test_order = [h for h, _ in selected_patterns_order] + [pattern_hash]
 
         new_predictions = predict_all_queries(
-            df_test, operator_models, operator_ffs, test_models, pattern_ffs, test_info
+            df_test, operator_models, operator_ffs, test_models, pattern_ffs, test_info, test_order
         )
 
         new_mre = calculate_mre(new_predictions)

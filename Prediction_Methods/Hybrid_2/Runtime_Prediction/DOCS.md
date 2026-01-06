@@ -80,18 +80,18 @@ cd /path/to/Hybrid_2/Runtime_Prediction
 | Strategy | Variant | sorted_patterns | Extra Flags | Output Dir |
 |----------|---------|-----------------|-------------|------------|
 | size | Baseline | 07_patterns_by_size.csv | - | Pattern_Selection/Size/Baseline |
-| size | Epsilon | 07_patterns_by_size.csv | --epsilon 0.005 | Pattern_Selection/Size/Epsilon |
+| size | Epsilon | 07_patterns_by_size.csv | --epsilon 0.001 | Pattern_Selection/Size/Epsilon |
 | frequency | Baseline | 07_patterns_by_frequency.csv | - | Pattern_Selection/Frequency/Baseline |
-| frequency | Epsilon | 07_patterns_by_frequency.csv | --epsilon 0.005 | Pattern_Selection/Frequency/Epsilon |
+| frequency | Epsilon | 07_patterns_by_frequency.csv | --epsilon 0.001 | Pattern_Selection/Frequency/Epsilon |
 | error | Baseline | 08_patterns_by_error.csv | - | Pattern_Selection/Error/Baseline |
-| error | Epsilon | 08_patterns_by_error.csv | --epsilon 0.005 | Pattern_Selection/Error/Epsilon |
+| error | Epsilon | 08_patterns_by_error.csv | --epsilon 0.001 | Pattern_Selection/Error/Epsilon |
 
 ### Variant Descriptions
 
 | Variant | Flag | Description |
 |---------|------|-------------|
 | Baseline | - | Accept any improvement (delta > 0) |
-| Epsilon | --epsilon 0.005 | Require min 0.5% MRE improvement |
+| Epsilon | --epsilon 0.001 | Require min 0.1% MRE improvement |
 
 ### Output per Run
 
@@ -353,14 +353,17 @@ python3 A_02a_Query_Evaluation.py Evaluation/Operator_Training_Test/predictions.
 - `selection_log_file`: Path to selection_log.csv
 
 **Outputs:**
-- `{output-dir}/delta_stats.csv`: Summary statistics
+- `{output-dir}/{prefix}_delta_stats.csv`: Summary statistics
   - Columns: selected_count;mean_delta;median_delta;min_delta;max_delta
-- `{output-dir}/delta_distribution.csv`: Full delta distribution for SELECTED patterns
+- `{output-dir}/{prefix}_delta_distribution.csv`: Full delta distribution for SELECTED patterns
   - Columns: iteration;pattern_hash;delta (sorted by delta DESC)
+
+**Variables:**
+- `--prefix`: Prefix for output filenames (default: none)
 
 **Usage:**
 ```
-python3 A_02a_Epsilon_Analysis.py Pattern_Selection/Error/selection_log.csv --output-dir Evaluation/Pattern_Test_Full_Error/Epsilon
+python3 A_02a_Epsilon_Analysis.py Pattern_Selection/Size/Baseline/selection_log.csv --output-dir Pattern_Selection/Convergence --prefix Size_Baseline
 ```
 
 ---
@@ -369,11 +372,29 @@ python3 A_02a_Epsilon_Analysis.py Pattern_Selection/Error/selection_log.csv --ou
 
 **Purpose:** Determine early stopping point and recommended MRE threshold.
 
-**Outputs:** `{output-dir}/A_02b_phases.csv`, `A_02b_summary.csv`, `A_02b_mre_progression.png`
+**Outputs:**
+- `{output-dir}/{prefix}_A_02b_summary.csv`
+- `{output-dir}/{prefix}_A_02b_mre_progression.png`
+
+**Variables:**
+- `--prefix`: Prefix for output filenames (default: none)
 
 **Usage:**
 ```
-python3 A_02b_Convergence_Analysis.py Pattern_Selection/Error/selection_log.csv --output-dir Evaluation/Pattern_Test_Full_Error/Convergenz
+python3 A_02b_Convergence_Analysis.py Pattern_Selection/Size/Baseline/selection_log.csv --output-dir Pattern_Selection/Convergence --prefix Size_Baseline
+```
+
+---
+
+### A_02d - Convergence_Combined.py
+
+**Purpose:** Create combined convergence plot with all 3 strategies overlaid.
+
+**Outputs:** `{output-dir}/A_02d_convergence_{variant}.png`
+
+**Usage:**
+```
+python3 A_02d_Convergence_Combined.py --base-dir Pattern_Selection --variant Baseline --output-dir Pattern_Selection/Convergence
 ```
 
 ---
@@ -425,5 +446,35 @@ python3 A_03a_Feature_Frequency.py ../../Hybrid_1/Runtime_Prediction/Baseline_SV
 
 # Operators
 python3 A_03a_Feature_Frequency.py ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Operators/operator_overview.csv --output-dir Evaluation/Features/Operators
+```
+
+---
+
+### A_03b - Pattern_Lookup.py
+
+**Purpose:** Find all occurrences of a specific pattern (by hash) in a dataset.
+
+**Workflow:**
+1. Load pattern metadata from patterns.csv
+2. Build tree for each query in dataset
+3. Compute pattern hashes at pattern_length
+4. Match against target hash, record occurrences
+
+**Inputs:**
+- `pattern_hash`: Pattern hash to search for (positional)
+- `--patterns-file`: Path to patterns.csv (pattern metadata)
+- `--dataset-file`: Path to operator dataset CSV (e.g., Test.csv)
+- `--output-dir`: Output directory
+
+**Outputs:**
+- `A_03b_{short_hash}_summary.csv`: Pattern info + match count
+- `A_03b_{short_hash}_matches.csv`: All query/node combinations where pattern occurs
+
+**Usage:**
+```bash
+python3 A_03b_Pattern_Lookup.py 634cdbe24fda21720ccd3dc746d5c979 \
+  --patterns-file ../Data_Generation/Training_Training/csv/01_patterns.csv \
+  --dataset-file ../Dataset/Baseline/Test.csv \
+  --output-dir Evaluation/PatternUsage
 ```
 

@@ -51,34 +51,35 @@ cd Prediction_Methods/Hybrid_2/Runtime_Prediction
 - `--min-error-threshold` - Min avg_mre to consider pattern (default: 0.1, size/frequency only)
 - `--epsilon` - Min MRE improvement required for SELECTED (default: 0.0)
 
-**Usage (Static - Frequency):**
+**Usage (Size/Baseline):**
 ```bash
 python3 10_Pattern_Selection/10_Pattern_Selection.py \
-    --strategy frequency \
-    Pattern_Selection/07_patterns_by_frequency.csv \
-    SVM/Pattern/Training_Training/pattern_ffs_overview.csv \
+    --strategy size \
+    Pattern_Selection/07_patterns_by_size.csv \
+    ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
     ../Dataset/Baseline/Training_Training.csv \
     ../Dataset/Baseline/Training_Test.csv \
     Model/Training_Training/Operator \
-    SVM/Operator/Training_Training \
-    --pattern-output-dir Pattern_Selection/Training_Training/Frequency/Baseline \
+    ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Operators \
+    --pattern-output-dir Pattern_Selection/Size/Baseline \
     --pretrained-dir Model/Training_Training/Pattern \
     --pattern-occurrences-file Pattern_Selection/06_test_pattern_occurrences.csv
 ```
 
-**Usage (Dynamic - Error):**
+**Usage (Size/Epsilon):**
 ```bash
 python3 10_Pattern_Selection/10_Pattern_Selection.py \
-    --strategy error \
-    Pattern_Selection/08_patterns_by_error.csv \
-    SVM/Pattern/Training_Training/pattern_ffs_overview.csv \
+    --strategy size \
+    Pattern_Selection/07_patterns_by_size.csv \
+    ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
     ../Dataset/Baseline/Training_Training.csv \
     ../Dataset/Baseline/Training_Test.csv \
     Model/Training_Training/Operator \
-    SVM/Operator/Training_Training \
-    --pattern-output-dir Pattern_Selection/Training_Training/Error/Baseline \
+    ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Operators \
+    --pattern-output-dir Pattern_Selection/Size/Epsilon \
     --pretrained-dir Model/Training_Training/Pattern \
-    --pattern-occurrences-file Pattern_Selection/06_test_pattern_occurrences.csv
+    --pattern-occurrences-file Pattern_Selection/06_test_pattern_occurrences.csv \
+    --epsilon 0.001
 ```
 
 ---

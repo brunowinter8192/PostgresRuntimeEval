@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q12_92_seed_746566821
-**Timestamp:** 2025-12-22 02:36:26
+**Timestamp:** 2026-01-01 20:02:22
 
 ## Data Summary
 
@@ -48,25 +48,21 @@
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
 | 0 | c53c4396 | 141.6847 | -0.0000% | REJECTED | 17.92% |
-| 1 | 2724c080 | 19.6008 | 0.0222% | REJECTED | 17.92% |
-| 2 | 46f37744 | 2.8144 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 3 | e6c1e0d8 | 2.8144 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 4 | 263b40d6 | 2.1961 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 5 | 5b623fa1 | 2.1961 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 6 | 3754655c | 2.1302 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 7 | 3a2624e2 | 1.6208 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 8 | 898abd49 | 1.6208 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 9 | 460af52c | 1.5375 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 10 | 8a8c43c6 | 1.5375 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 11 | b692b3d9 | 1.0973 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 12 | f9c97829 | 1.0973 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 13 | a0631e25 | 0.9714 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 14 | fbf3ebe8 | 0.9714 | N/A | SKIPPED_LOW_ERROR | 17.92% |
+| 1 | 2724c080 | 19.6008 | 0.0222% | ACCEPTED | 17.90% |
+| 2 | 263b40d6 | 2.1961 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 3 | 5b623fa1 | 2.1961 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 4 | 3754655c | 2.1302 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 5 | 460af52c | 1.5019 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 6 | 8a8c43c6 | 1.5019 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 7 | a0631e25 | 0.9714 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 8 | fbf3ebe8 | 0.9714 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 9 | b692b3d9 | 0.9589 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 10 | f9c97829 | 0.9589 | N/A | SKIPPED_LOW_ERROR | 17.90% |
 ## Query Tree
 
 ```
-Node 25307 (Aggregate) - ROOT
-  Node 25308 (Gather Merge)
+Node 25307 (Aggregate) [PATTERN: 2724c080] - ROOT
+  Node 25308 (Gather Merge) [consumed]
     Node 25309 (Aggregate)
       Node 25310 (Sort)
         Node 25311 (Nested Loop)
@@ -76,7 +72,9 @@ Node 25307 (Aggregate) - ROOT
 
 ## Pattern Assignments
 
-No patterns selected.
+| Pattern | Hash | Root Node | Consumed Nodes |
+|---------|------|-----------|----------------|
+| Aggregate -> Gather Merge (Out | 2724c080 | 25307 | 25308 |
 
 
 **Legend:**
@@ -86,13 +84,12 @@ No patterns selected.
 
 ## Phase E: Final Prediction
 
-- Final MRE: 4.85%
-- Improvement: 0.08%
+- Final MRE: 2.37%
+- Improvement: 2.56%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 25307 | Aggregate | 1003.31 | 954.70 | 4.8% | operator |
-| 25308 | Gather Merge | 1003.30 | 1060.96 | 5.7% | operator |
+| 25307 | Aggregate | 1003.31 | 1027.05 | 2.4% | pattern |
 | 25309 | Aggregate | 983.18 | 941.96 | 4.2% | operator |
 | 25310 | Sort | 982.55 | 1058.10 | 7.7% | operator |
 | 25311 | Nested Loop | 981.60 | 1101.31 | 12.2% | operator |
@@ -201,42 +198,30 @@ No patterns selected.
   - total_cost=147647.6400
 - **Output:** st=927.04, rt=941.96
 
-### Step 6: Node 25308 (Gather Merge)
+### Step 6: Node 25307 (Aggregate) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** 2724c080 (Aggregate -> Gather Merge (Outer))
+- **Consumes:** Nodes 25308
 - **Input Features:**
-  - np=0
-  - nt=35
-  - nt1=7
-  - nt2=0
-  - parallel_workers=5
-  - plan_width=27
-  - reltuples=0.0000
-  - rt1=941.9627
-  - rt2=0.0000
-  - sel=5.0000
-  - st1=927.0359
-  - st2=0.0000
-  - startup_cost=148532.1900
-  - total_cost=148651.9300
-- **Output:** st=1055.99, rt=1060.96
-
-### Step 7: Node 25307 (Aggregate) - ROOT
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=7
-  - nt1=35
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=27
-  - reltuples=0.0000
-  - rt1=1060.9616
-  - rt2=0.0000
-  - sel=0.2000
-  - st1=1055.9893
-  - st2=0.0000
-  - startup_cost=148532.1900
-  - total_cost=148652.2600
-- **Output:** st=951.96, rt=954.70
+  - Aggregate_np=0
+  - Aggregate_nt=7
+  - Aggregate_nt1=35
+  - Aggregate_nt2=0
+  - Aggregate_parallel_workers=0
+  - Aggregate_plan_width=27
+  - Aggregate_reltuples=0.0000
+  - Aggregate_sel=0.2000
+  - Aggregate_startup_cost=148532.1900
+  - Aggregate_total_cost=148652.2600
+  - GatherMerge_Outer_np=0
+  - GatherMerge_Outer_nt=35
+  - GatherMerge_Outer_nt1=7
+  - GatherMerge_Outer_nt2=0
+  - GatherMerge_Outer_parallel_workers=5
+  - GatherMerge_Outer_plan_width=27
+  - GatherMerge_Outer_reltuples=0.0000
+  - GatherMerge_Outer_sel=5.0000
+  - GatherMerge_Outer_startup_cost=148532.1900
+  - GatherMerge_Outer_total_cost=148651.9300
+- **Output:** st=1022.92, rt=1027.05

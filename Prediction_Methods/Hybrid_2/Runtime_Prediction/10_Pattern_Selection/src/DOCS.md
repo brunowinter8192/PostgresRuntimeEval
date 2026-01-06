@@ -36,7 +36,7 @@ Tree node representing a query plan operator.
 | `has_children_at_length(node, length)` | Check subtree depth exists |
 | `compute_pattern_hash(node, length)` | MD5 hash of subtree structure |
 | `extract_pattern_node_ids(node, length)` | Get all node IDs in pattern |
-| `match_pattern(node, pattern_info)` | Find matching pattern for node |
+| `match_pattern(node, pattern_info)` | Find longest matching pattern for node |
 
 ---
 
@@ -102,11 +102,17 @@ Training, prediction, and feature aggregation.
 
 ### Pattern Overlap Resolution
 
-**IMPORTANT:** Bei der Prediction haben groessere Patterns Prioritaet ueber kleinere.
+**IMPORTANT:** Bei der Prediction haben groessere Patterns Prioritaet ueber kleinere. Bei gleicher Laenge gewinnt das frueher selektierte Pattern.
 
-Wenn ein 4-Operator-Pattern und ein 2-Operator-Pattern dieselben Nodes matchen, wird das 4-Operator-Pattern verwendet. Dies entspricht der Paper-Logik (Section 3.4, Algorithm 1): "occurrences of p are consumed by the newly added model".
+Wenn ein 4-Operator-Pattern und ein 2-Operator-Pattern dieselben Nodes matchen, wird das 4-Operator-Pattern verwendet. Bei zwei 4-Operator-Patterns entscheidet die Selection-Reihenfolge (niedrigere Iteration = hoehere Prioritaet). Dies entspricht der Paper-Logik (Section 3.4, Algorithm 1): "occurrences of p are consumed by the newly added model".
 
-**Implementation:** `predict_single_query()` sammelt zuerst alle Pattern-Matches, sortiert sie nach `pattern_length` (groesste zuerst), und wendet sie dann der Reihe nach an. Nodes, die von einem grossen Pattern konsumiert wurden, werden nicht erneut von kleineren Patterns gematcht.
+**Implementation:** `predict_single_query()` sammelt zuerst alle Pattern-Matches, sortiert sie nach:
+1. `pattern_length` (groesste zuerst)
+2. `pattern_order` (frueher selektierte zuerst, als Tiebreaker)
+
+Nodes, die von einem Pattern konsumiert wurden, werden nicht erneut von anderen Patterns gematcht.
+
+**Konsistenz:** Diese Logik ist identisch mit `12_Query_Prediction/src/tree.py:build_pattern_assignments()` um sicherzustellen, dass Selection und Prediction das gleiche Verhalten zeigen.
 
 ---
 

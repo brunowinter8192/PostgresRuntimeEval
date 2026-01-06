@@ -3,7 +3,7 @@ DATASET_DIR="../../Hybrid_2/Dataset/Baseline"
 OUTPUT_DIR="./Evaluation"
 LOG_FILE="$OUTPUT_DIR/progress.log"
 MAX_JOBS=14
-STRATEGIES="error size frequency"
+STRATEGIES="size frequency error"
 
 mkdir -p "$OUTPUT_DIR"
 echo "Started: $(date)" > "$LOG_FILE"
@@ -26,7 +26,8 @@ for strategy in $STRATEGIES; do
                 "$DATASET_DIR/Training.csv" \
                 "$DATASET_DIR/Test.csv" \
                 --output-dir "$OUTPUT_DIR" \
-                --strategy "$strategy"
+                --strategy "$strategy" \
+                --epsilon 0.0
             echo "$(date +%H:%M:%S) - $strategy - $index/$total - $query - DONE" >> "$LOG_FILE"
         ) &
 

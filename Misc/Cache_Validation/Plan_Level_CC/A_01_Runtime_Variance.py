@@ -5,6 +5,7 @@ import argparse
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 import pandas as pd
 
 
@@ -97,6 +98,7 @@ def plot_cv(stats: pd.DataFrame, templates_sorted: list, label: str, output_path
     ax.set_title(f'Coefficient of Variation - {label}', fontsize=15, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels(templates_sorted, rotation=0, fontsize=11)
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f'{y:.0f}%'))
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 
     plt.tight_layout()
@@ -119,11 +121,19 @@ def plot_cv_comparison(stats_baseline: pd.DataFrame, stats_state1: pd.DataFrame,
     bars2 = ax.bar([i + width/2 for i in x], state1_sorted['cv'], width, label='State_1',
                    color='coral', alpha=0.8, edgecolor='black', linewidth=0.8)
 
+    for bar in bars1:
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.15,
+                f'{bar.get_height():.1f}%', ha='center', va='bottom', fontsize=7, rotation=0)
+    for bar in bars2:
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.15,
+                f'{bar.get_height():.1f}%', ha='center', va='bottom', fontsize=7, rotation=0)
+
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('CV (%)', fontsize=13, fontweight='bold')
     ax.set_title('Coefficient of Variation - Comparison', fontsize=15, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels(templates_sorted, rotation=0, fontsize=11)
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f'{y:.0f}%'))
     ax.legend(fontsize=11, loc='upper left')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 

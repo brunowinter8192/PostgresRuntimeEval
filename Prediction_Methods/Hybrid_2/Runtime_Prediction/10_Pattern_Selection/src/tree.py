@@ -131,9 +131,15 @@ def extract_pattern_node_ids(node: QueryNode, remaining_length: int) -> list:
     return node_ids
 
 
-# Match node against available patterns
+# Match node against available patterns (larger patterns first)
 def match_pattern(node: QueryNode, pattern_info: dict) -> str:
-    for pattern_hash, info in pattern_info.items():
+    sorted_patterns = sorted(
+        pattern_info.items(),
+        key=lambda x: x[1]['length'],
+        reverse=True
+    )
+
+    for pattern_hash, info in sorted_patterns:
         pattern_length = info['length']
 
         if not has_children_at_length(node, pattern_length):

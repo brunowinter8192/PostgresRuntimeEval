@@ -35,12 +35,12 @@ from mapping_config import (
 def _build_pattern_assignments(
     all_nodes: list,
     patterns: dict,
-    selected_patterns: set
+    selected_patterns: list
 ) -> tuple:
     consumed_nodes = set()
     pattern_assignments = {}
 
-    # Sort by pattern_length (longest first) - per Paper Section 3.4
+    # Sort by pattern_length (longest first), stable sort preserves selection order at equal length
     sorted_patterns = sorted(
         selected_patterns,
         key=lambda ph: patterns[ph]['pattern_length'],
@@ -107,7 +107,7 @@ def predict_all_queries_with_patterns(
     operator_models: dict,
     pattern_models: dict,
     patterns: dict,
-    selected_patterns: set
+    selected_patterns: list
 ) -> list:
     all_predictions = []
 
@@ -127,7 +127,7 @@ def predict_single_query_with_patterns(
     operator_models: dict,
     pattern_models: dict,
     patterns: dict,
-    selected_patterns: set,
+    selected_patterns: list,
     return_details: bool = False
 ) -> list:
     root = build_tree_from_dataframe(query_ops, include_row_data=True)

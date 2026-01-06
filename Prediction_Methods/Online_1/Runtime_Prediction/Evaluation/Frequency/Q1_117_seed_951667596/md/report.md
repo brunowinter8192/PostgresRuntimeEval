@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q1_117_seed_951667596
-**Timestamp:** 2025-12-22 06:29:09
+**Timestamp:** 2026-01-01 18:51:57
 
 ## Data Summary
 
@@ -42,29 +42,31 @@
 
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
-| 0 | 1d35fb97 | 26.4017 | 0.1167% | REJECTED | 17.92% |
-| 1 | 2724c080 | 19.6008 | 0.0222% | REJECTED | 17.92% |
-| 2 | 1691f6f0 | 7.3257 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 3 | 29ee00db | 4.4662 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 4 | 184f44de | 4.0548 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 5 | 715d5c92 | 4.3530 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 6 | f8231c4d | 3.4083 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 7 | dc1b1da7 | 5.2893 | 0.0025% | REJECTED | 17.92% |
-| 8 | 52c5ec81 | 3.1739 | 0.1045% | REJECTED | 17.92% |
-| 9 | 3dfa6025 | 2.3734 | N/A | SKIPPED_LOW_ERROR | 17.92% |
+| 0 | 1d35fb97 | 26.4017 | 0.1167% | ACCEPTED | 17.81% |
+| 1 | 2724c080 | 7.7852 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 2 | 1691f6f0 | 7.2969 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 3 | 29ee00db | 4.4636 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 4 | 184f44de | 5.7958 | 0.0023% | ACCEPTED | 17.80% |
+| 5 | 715d5c92 | 4.3242 | N/A | SKIPPED_LOW_ERROR | 17.80% |
+| 6 | f8231c4d | 3.4058 | N/A | SKIPPED_LOW_ERROR | 17.80% |
+| 7 | dc1b1da7 | 3.6147 | 0.0016% | ACCEPTED | 17.80% |
+| 8 | 52c5ec81 | 3.1032 | 0.1020% | ACCEPTED | 17.70% |
+| 9 | 3dfa6025 | 2.0224 | N/A | SKIPPED_LOW_ERROR | 17.70% |
 ## Query Tree
 
 ```
 Node 91 (Aggregate) - ROOT
-  Node 92 (Gather Merge)
-    Node 93 (Sort)
-      Node 94 (Aggregate)
-        Node 95 (Seq Scan) - LEAF
+  Node 92 (Gather Merge) [PATTERN: 52c5ec81]
+    Node 93 (Sort) [consumed]
+      Node 94 (Aggregate) [consumed]
+        Node 95 (Seq Scan) [consumed] - LEAF
 ```
 
 ## Pattern Assignments
 
-No patterns selected.
+| Pattern | Hash | Root Node | Consumed Nodes |
+|---------|------|-----------|----------------|
+| Gather Merge -> Sort -> Aggreg | 52c5ec81 | 92 | 93, 94, 95 |
 
 
 **Legend:**
@@ -74,100 +76,65 @@ No patterns selected.
 
 ## Phase E: Final Prediction
 
-- Final MRE: 11.36%
-- Improvement: -0.18%
+- Final MRE: 9.57%
+- Improvement: 1.60%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 91 | Aggregate | 944.72 | 1052.01 | 11.4% | operator |
-| 92 | Gather Merge | 944.67 | 1079.37 | 14.3% | operator |
-| 93 | Sort | 925.37 | 1152.40 | 24.5% | operator |
-| 94 | Aggregate | 925.34 | 972.14 | 5.1% | operator |
-| 95 | Seq Scan | 511.52 | 571.44 | 11.7% | operator |
+| 91 | Aggregate | 944.72 | 1035.17 | 9.6% | operator |
+| 92 | Gather Merge | 944.67 | 953.93 | 1.0% | pattern |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 95 (Seq Scan) - LEAF
+### Step 1: Node 92 (Gather Merge) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** 52c5ec81 (Gather Merge -> Sort -> Aggregate -> Seq Scan (Outer) (Outer) (Outer))
+- **Consumes:** Nodes 93, 94, 95
 - **Input Features:**
-  - np=112600
-  - nt=1179622
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=25
-  - reltuples=6001215.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.1966
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=127603.0400
-- **Output:** st=1.92, rt=571.44
+  - Aggregate_Outer_np=0
+  - Aggregate_Outer_nt=6
+  - Aggregate_Outer_nt1=1179622
+  - Aggregate_Outer_nt2=0
+  - Aggregate_Outer_parallel_workers=0
+  - Aggregate_Outer_plan_width=236
+  - Aggregate_Outer_reltuples=0.0000
+  - Aggregate_Outer_sel=0.0000
+  - Aggregate_Outer_startup_cost=168889.8100
+  - Aggregate_Outer_total_cost=168889.9400
+  - GatherMerge_np=0
+  - GatherMerge_nt=30
+  - GatherMerge_nt1=6
+  - GatherMerge_nt2=0
+  - GatherMerge_parallel_workers=5
+  - GatherMerge_plan_width=236
+  - GatherMerge_reltuples=0.0000
+  - GatherMerge_sel=5.0000
+  - GatherMerge_startup_cost=169890.1000
+  - GatherMerge_total_cost=169893.7300
+  - SeqScan_Outer_np=112600
+  - SeqScan_Outer_nt=1179622
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=25
+  - SeqScan_Outer_reltuples=6001215.0000
+  - SeqScan_Outer_sel=0.1966
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=127603.0400
+  - Sort_Outer_np=0
+  - Sort_Outer_nt=6
+  - Sort_Outer_nt1=6
+  - Sort_Outer_nt2=0
+  - Sort_Outer_parallel_workers=0
+  - Sort_Outer_plan_width=236
+  - Sort_Outer_reltuples=0.0000
+  - Sort_Outer_sel=1.0000
+  - Sort_Outer_startup_cost=168890.0200
+  - Sort_Outer_total_cost=168890.0400
+- **Output:** st=949.34, rt=953.93
 
-### Step 2: Node 94 (Aggregate)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=6
-  - nt1=1179622
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=236
-  - reltuples=0.0000
-  - rt1=571.4358
-  - rt2=0.0000
-  - sel=0.0000
-  - st1=1.9243
-  - st2=0.0000
-  - startup_cost=168889.8100
-  - total_cost=168889.9400
-- **Output:** st=951.34, rt=972.14
-
-### Step 3: Node 93 (Sort)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=6
-  - nt1=6
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=236
-  - reltuples=0.0000
-  - rt1=972.1380
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=951.3397
-  - st2=0.0000
-  - startup_cost=168890.0200
-  - total_cost=168890.0400
-- **Output:** st=1150.42, rt=1152.40
-
-### Step 4: Node 92 (Gather Merge)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=30
-  - nt1=6
-  - nt2=0
-  - parallel_workers=5
-  - plan_width=236
-  - reltuples=0.0000
-  - rt1=1152.4035
-  - rt2=0.0000
-  - sel=5.0000
-  - st1=1150.4210
-  - st2=0.0000
-  - startup_cost=169890.1000
-  - total_cost=169893.7300
-- **Output:** st=1075.01, rt=1079.37
-
-### Step 5: Node 91 (Aggregate) - ROOT
+### Step 2: Node 91 (Aggregate) - ROOT
 
 - **Source:** operator
 - **Input Features:**
@@ -178,11 +145,11 @@ No patterns selected.
   - parallel_workers=0
   - plan_width=236
   - reltuples=0.0000
-  - rt1=1079.3733
+  - rt1=953.9296
   - rt2=0.0000
   - sel=0.2000
-  - st1=1075.0086
+  - st1=949.3414
   - st2=0.0000
   - startup_cost=169890.1000
   - total_cost=169894.8700
-- **Output:** st=1039.52, rt=1052.01
+- **Output:** st=1026.48, rt=1035.17

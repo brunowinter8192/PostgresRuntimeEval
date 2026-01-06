@@ -40,7 +40,7 @@ def run_pattern_selection(
     min_error_threshold: float = MIN_ERROR_THRESHOLD,
     strategy: str = DEFAULT_STRATEGY
 ) -> tuple:
-    selected_patterns = set()
+    selected_patterns = []
     pattern_models = {}
     selection_log = []
     consumed_hashes = set()
@@ -76,7 +76,7 @@ def run_pattern_selection(
             continue
 
         test_models = {**pattern_models, pattern_hash: pattern_model}
-        test_selected = selected_patterns | {pattern_hash}
+        test_selected = selected_patterns + [pattern_hash]
 
         new_predictions = predict_all_queries_with_patterns(
             df_tv, operator_models, test_models, patterns, test_selected
@@ -87,7 +87,7 @@ def run_pattern_selection(
 
         if delta > epsilon:
             status = 'ACCEPTED'
-            selected_patterns.add(pattern_hash)
+            selected_patterns.append(pattern_hash)
             pattern_models[pattern_hash] = pattern_model
             baseline_mre = new_mre
             current_predictions = new_predictions

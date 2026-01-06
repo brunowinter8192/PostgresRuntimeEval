@@ -15,7 +15,6 @@ Runtime_Prediction/
 ├── ffs_config.py                        # FFS parameters and model registry
 ├── 01_Forward_Selection.py              # Unified FFS with configurable model
 ├── 02_Train_Model.py                    # Unified training with configurable model
-├── 03_Summarize_Results.py              # Aggregate predictions by template
 ├── A_01a_Correlation_Analysis.py        # Analysis: Feature correlations
 ├── A_01b_Scatter_Plots.py               # Analysis: Feature vs runtime plots
 ├── A_01c_Sparsity.py                    # Analysis: Feature sparsity (zero counts)
@@ -23,6 +22,7 @@ Runtime_Prediction/
 ├── A_01e_Template_Feature_Values.py     # Analysis: Constant feature values per template
 ├── A_01g_Evaluation_Plot.py             # Analysis: MRE bar plots
 ├── A_01h_Runtime_Plot.py                # Analysis: Mean runtime bar plots
+├── A_01j_Summarize_Results.py           # Analysis: Template and overall summaries
 ├── Baseline_SVM/                        # NuSVR outputs
 │   ├── SVM/                             # [FFS outputs]
 │   ├── Model/                           # [training outputs]
@@ -81,9 +81,7 @@ Uses configuration files from parent directory:
          ↓
   Trained model and predictions (Baseline_<Model>/<output_folder>/)
          ↓
-03_Summarize_Results.py
-         ↓
-Optional: Analysis scripts (A_01a-g, parallel)
+Optional: Analysis scripts (A_01a-j, parallel)
 ```
 
 ### Example Workflow (SVM):
@@ -97,8 +95,8 @@ python 01_Forward_Selection.py ../Datasets/Baseline/training_data.csv --model sv
 python 02_Train_Model.py ../Datasets/Baseline/training_data.csv ../Datasets/Baseline/test_data.csv --model svm
 # Output: Baseline_SVM/SVM/02_model_<timestamp>.pkl, 02_predictions_<timestamp>.csv
 
-# 3. Optional: Summarize results
-python 03_Summarize_Results.py Baseline_SVM/SVM/02_predictions_<timestamp>.csv
+# 3. Optional: Analysis (e.g., summarize results)
+python A_01j_Summarize_Results.py Baseline_SVM/Evaluation/02_predictions_<timestamp>.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 ## Script Documentation
@@ -212,36 +210,7 @@ python 02_Train_Model.py train.csv test.csv --model svm --output-dir /custom/out
 
 ---
 
-### 03 - Summarize_Results.py
-
-**Purpose**: Aggregate prediction results by template and compute overall metrics
-
-**Workflow**:
-1. Load predictions CSV
-2. Extract template ID from query_file
-3. Compute per-template statistics (mean, std, min, max, count, MRE)
-4. Compute overall summary (mean actual/predicted, overall MRE, counts)
-5. Export both summaries
-
-**Inputs**:
-- `predictions_csv` (positional): Predictions CSV from train model script
-
-**Outputs**:
-- `03_template_summary_{timestamp}.csv`: Per-template statistics
-- `03_overall_summary_{timestamp}.csv`: Overall metrics
-
-**Usage**:
-```bash
-python 03_Summarize_Results.py Baseline_SVM/SVM/02_predictions_20251119.csv
-python 03_Summarize_Results.py Baseline_RandomForest/Random_Forest/02_predictions_20251119.csv --output-dir custom/
-```
-
-**Variables**:
-- `--output-dir`: Output directory (default: same directory as input predictions CSV)
-
----
-
-## Analysis Scripts (A_01a-g)
+## Analysis Scripts (A_01a-j)
 
 Analysis scripts are standalone tools, NOT part of the main workflow. They can be run in parallel as needed.
 
@@ -401,3 +370,24 @@ python A_01h_Runtime_Plot.py ../Datasets/Baseline/complete_dataset.csv --output-
 
 **Variables**:
 - `--output-dir`: Output directory (default: Evaluation/)
+
+---
+
+### A_01j - Summarize_Results.py
+
+**Purpose**: Aggregate prediction results by template and compute overall metrics
+
+**Inputs**:
+- `predictions_csv` (positional): Predictions CSV from train model script
+
+**Outputs**:
+- `A_01j_template_summary.csv`: Per-template statistics (mean, std, min, max, count, MRE)
+- `A_01j_overall_summary.csv`: Overall metrics (mean actual/predicted, overall MRE, counts)
+
+**Usage**:
+```bash
+python A_01j_Summarize_Results.py Baseline_SVM/Evaluation/02_predictions_20251215.csv --output-dir Baseline_SVM/Evaluation
+```
+
+**Variables**:
+- `--output-dir`: Output directory (default: same directory as input predictions CSV)

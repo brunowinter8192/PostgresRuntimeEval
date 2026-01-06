@@ -121,7 +121,8 @@ def predict_all_queries(
     operator_ffs: dict,
     pattern_models: dict,
     pattern_ffs: dict,
-    pattern_info: dict
+    pattern_info: dict,
+    pattern_order: list
 ) -> list:
     all_predictions = []
 
@@ -129,7 +130,7 @@ def predict_all_queries(
         query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
 
         predictions = predict_single_query(
-            query_ops, operator_models, operator_ffs, pattern_models, pattern_ffs, pattern_info
+            query_ops, operator_models, operator_ffs, pattern_models, pattern_ffs, pattern_info, pattern_order
         )
 
         all_predictions.extend(predictions)
@@ -137,14 +138,15 @@ def predict_all_queries(
     return all_predictions
 
 
-# Predict single query bottom-up (larger patterns have priority over smaller ones)
+# Predict single query bottom-up (larger patterns have priority, then selection order)
 def predict_single_query(
     query_ops: pd.DataFrame,
     operator_models: dict,
     operator_ffs: dict,
     pattern_models: dict,
     pattern_ffs: dict,
-    pattern_info: dict
+    pattern_info: dict,
+    pattern_order: list
 ) -> list:
     root = build_tree_from_dataframe(query_ops)
     all_nodes = extract_all_nodes(root)
@@ -156,7 +158,13 @@ def predict_single_query(
             info = pattern_info[matched]
             pattern_matches.append((node, matched, info['length'], info['operator_count']))
 
-    pattern_matches.sort(key=lambda x: x[2], reverse=True)
+    def get_pattern_order_index(pattern_hash):
+        try:
+            return pattern_order.index(pattern_hash)
+        except ValueError:
+            return len(pattern_order)
+
+    pattern_matches.sort(key=lambda x: (-x[2], get_pattern_order_index(x[1])))
 
     prediction_cache = {}
     consumed_nodes = set()
