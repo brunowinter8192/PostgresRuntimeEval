@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q10_111_seed_902443410
-**Timestamp:** 2025-12-22 04:36:15
+**Timestamp:** 2026-01-01 17:52:41
 
 ## Data Summary
 
@@ -62,25 +62,24 @@
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
 | 0 | 3aab37be | 113504.2307 | -0.0000% | REJECTED | 17.92% |
-| 1 | 1d35fb97 | 26.4017 | 0.1167% | REJECTED | 17.92% |
-| 2 | 4fc84c77 | 13.3894 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 3 | 2e0f44ef | 108.1438 | 0.0001% | REJECTED | 17.92% |
-| 4 | c53c4396 | 141.6847 | -0.0000% | REJECTED | 17.92% |
-| 5 | e296a71f | 40.3755 | 0.0412% | REJECTED | 17.92% |
-| 6 | 7d4e78be | 89.9904 | 0.0000% | REJECTED | 17.92% |
-| 7 | 5437ac31 | 0.9438 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 8 | 7bcfec22 | 40.3755 | 0.0356% | REJECTED | 17.92% |
-| 9 | b3a45093 | 2.9042 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 10 | 30d6e09b | 89.9904 | 0.0000% | REJECTED | 17.92% |
-| 11 | 2873b8c3 | 94.8003 | 0.0000% | REJECTED | 17.92% |
-| 12 | 284f5967 | 0.6204 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 13 | f4d53e95 | 0.9438 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 14 | 25df29b5 | 33.4481 | 9.8112% | ACCEPTED | 8.11% |
-| 15 | 7a51ce50 | 89.9904 | -0.0000% | REJECTED | 8.11% |
-| 16 | 04a01b61 | 0.2016 | N/A | SKIPPED_LOW_ERROR | 8.11% |
-| 17 | 4cf43b83 | 0.2016 | N/A | SKIPPED_LOW_ERROR | 8.11% |
-| 18 | 843f0c9a | 0.2016 | N/A | SKIPPED_LOW_ERROR | 8.11% |
-| 19 | bef3a974 | 0.2016 | N/A | SKIPPED_LOW_ERROR | 8.11% |
+| 1 | 1d35fb97 | 26.4017 | 0.1167% | ACCEPTED | 17.81% |
+| 2 | 4fc84c77 | 15.8334 | 0.6912% | ACCEPTED | 17.12% |
+| 3 | 2e0f44ef | 108.1438 | 0.0001% | ACCEPTED | 17.12% |
+| 4 | c53c4396 | 8.0758 | N/A | SKIPPED_LOW_ERROR | 17.12% |
+| 5 | e296a71f | 40.3884 | N/A | REJECTED | 17.12% |
+| 6 | 7d4e78be | 83.6779 | N/A | REJECTED | 17.12% |
+| 7 | 5437ac31 | 0.9214 | N/A | SKIPPED_LOW_ERROR | 17.12% |
+| 8 | 7bcfec22 | 40.3884 | 0.0394% | ACCEPTED | 17.08% |
+| 9 | b3a45093 | 5.7725 | N/A | SKIPPED_LOW_ERROR | 17.08% |
+| 10 | 30d6e09b | 83.6779 | N/A | REJECTED | 17.08% |
+| 11 | 2873b8c3 | 121.6368 | N/A | REJECTED | 17.08% |
+| 12 | f4d53e95 | 0.9214 | N/A | SKIPPED_LOW_ERROR | 17.08% |
+| 13 | 25df29b5 | 33.5860 | 9.8522% | ACCEPTED | 7.22% |
+| 14 | 7a51ce50 | 83.6779 | N/A | REJECTED | 7.22% |
+| 15 | 04a01b61 | 0.2016 | N/A | SKIPPED_LOW_ERROR | 7.22% |
+| 16 | 4cf43b83 | 0.2016 | N/A | SKIPPED_LOW_ERROR | 7.22% |
+| 17 | 843f0c9a | 0.2016 | N/A | SKIPPED_LOW_ERROR | 7.22% |
+| 18 | bef3a974 | 0.2016 | N/A | SKIPPED_LOW_ERROR | 7.22% |
 ## Query Tree
 
 ```
@@ -89,11 +88,11 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
     Node 19528 (Aggregate) [consumed]
       Node 19529 (Gather) [consumed]
         Node 19530 (Hash Join)
-          Node 19531 (Hash Join)
-            Node 19532 (Nested Loop)
+          Node 19531 (Hash Join) [PATTERN: 2e0f44ef]
+            Node 19532 (Nested Loop) [consumed]
               Node 19533 (Seq Scan) - LEAF
               Node 19534 (Index Scan) - LEAF
-            Node 19535 (Hash)
+            Node 19535 (Hash) [consumed]
               Node 19536 (Seq Scan) - LEAF
           Node 19537 (Hash)
             Node 19538 (Seq Scan) - LEAF
@@ -103,7 +102,8 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Limit -> Sort -> Aggregate ->  | 25df29b5 | 19526 | 19527, 19528, 19529 |
+| Limit -> Sort -> Aggregate ->  | 25df29b5 | 19526 | 19527, 19528, 19529, 19531, 19532, 19535 |
+| Hash Join -> [Nested Loop (Out | 2e0f44ef | 19531 | 19526, 19527, 19528, 19529, 19532, 19535 |
 
 
 **Legend:**
@@ -119,11 +119,9 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
 | 19526 | Limit | 1156.23 | 1154.98 | 0.1% | pattern |
-| 19530 | Hash Join | 1101.85 | 1063.15 | 3.5% | operator |
-| 19531 | Hash Join | 1098.96 | 1045.91 | 4.8% | operator |
+| 19530 | Hash Join | 1101.85 | 1087.63 | 1.3% | operator |
+| 19531 | Hash Join | 1098.96 | 1101.91 | 0.3% | pattern |
 | 19537 | Hash | 0.01 | 14.54 | 111744.0% | operator |
-| 19532 | Nested Loop | 1051.81 | 1098.41 | 4.4% | operator |
-| 19535 | Hash | 37.12 | 45.64 | 22.9% | operator |
 | 19538 | Seq Scan | 0.01 | 7.19 | 79838.6% | operator |
 | 19533 | Seq Scan | 160.23 | 162.02 | 1.1% | operator |
 | 19534 | Index Scan | 0.06 | -0.02 | 129.5% | operator |
@@ -191,47 +189,7 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
   - total_cost=4225.0000
 - **Output:** st=0.06, rt=29.69
 
-### Step 4: Node 19532 (Nested Loop)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=18756
-  - nt1=18950
-  - nt2=1
-  - parallel_workers=0
-  - plan_width=16
-  - reltuples=0.0000
-  - rt1=162.0224
-  - rt2=-0.0183
-  - sel=0.9898
-  - st1=0.1551
-  - st2=0.0563
-  - startup_cost=0.4300
-  - total_cost=76293.8700
-- **Output:** st=8.68, rt=1098.41
-
-### Step 5: Node 19535 (Hash)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=62500
-  - nt1=62500
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=148
-  - reltuples=0.0000
-  - rt1=29.6885
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=0.0565
-  - st2=0.0000
-  - startup_cost=4225.0000
-  - total_cost=4225.0000
-- **Output:** st=45.64, rt=45.64
-
-### Step 6: Node 19538 (Seq Scan) - LEAF
+### Step 4: Node 19538 (Seq Scan) - LEAF
 
 - **Source:** operator
 - **Input Features:**
@@ -251,27 +209,45 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
   - total_cost=1.2500
 - **Output:** st=0.06, rt=7.19
 
-### Step 7: Node 19531 (Hash Join)
+### Step 5: Node 19531 (Hash Join) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** 2e0f44ef (Hash Join -> [Nested Loop (Outer), Hash (Inner)])
+- **Consumes:** Nodes 19526, 19527, 19528, 19529, 19532, 19535
 - **Input Features:**
-  - np=0
-  - nt=18756
-  - nt1=18756
-  - nt2=62500
-  - parallel_workers=0
-  - plan_width=160
-  - reltuples=0.0000
-  - rt1=1098.4128
-  - rt2=45.6402
-  - sel=0.0000
-  - st1=8.6849
-  - st2=45.6390
-  - startup_cost=5006.6800
-  - total_cost=81349.3600
-- **Output:** st=34.89, rt=1045.91
+  - HashJoin_np=0
+  - HashJoin_nt=18756
+  - HashJoin_nt1=18756
+  - HashJoin_nt2=62500
+  - HashJoin_parallel_workers=0
+  - HashJoin_plan_width=160
+  - HashJoin_reltuples=0.0000
+  - HashJoin_sel=0.0000
+  - HashJoin_startup_cost=5006.6800
+  - HashJoin_total_cost=81349.3600
+  - Hash_Inner_np=0
+  - Hash_Inner_nt=62500
+  - Hash_Inner_nt1=62500
+  - Hash_Inner_nt2=0
+  - Hash_Inner_parallel_workers=0
+  - Hash_Inner_plan_width=148
+  - Hash_Inner_reltuples=0.0000
+  - Hash_Inner_sel=1.0000
+  - Hash_Inner_startup_cost=4225.0000
+  - Hash_Inner_total_cost=4225.0000
+  - NestedLoop_Outer_np=0
+  - NestedLoop_Outer_nt=18756
+  - NestedLoop_Outer_nt1=18950
+  - NestedLoop_Outer_nt2=1
+  - NestedLoop_Outer_parallel_workers=0
+  - NestedLoop_Outer_plan_width=16
+  - NestedLoop_Outer_reltuples=0.0000
+  - NestedLoop_Outer_sel=0.9898
+  - NestedLoop_Outer_startup_cost=0.4300
+  - NestedLoop_Outer_total_cost=76293.8700
+- **Output:** st=37.53, rt=1101.91
 
-### Step 8: Node 19537 (Hash)
+### Step 6: Node 19537 (Hash)
 
 - **Source:** operator
 - **Input Features:**
@@ -291,7 +267,7 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
   - total_cost=1.2500
 - **Output:** st=14.54, rt=14.54
 
-### Step 9: Node 19530 (Hash Join)
+### Step 7: Node 19530 (Hash Join)
 
 - **Source:** operator
 - **Input Features:**
@@ -302,20 +278,20 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
   - parallel_workers=0
   - plan_width=260
   - reltuples=0.0000
-  - rt1=1045.9147
+  - rt1=1101.9114
   - rt2=14.5397
   - sel=0.0400
-  - st1=34.8901
+  - st1=37.5302
   - st2=14.5393
   - startup_cost=5008.2400
   - total_cost=81408.5000
-- **Output:** st=38.16, rt=1063.15
+- **Output:** st=39.36, rt=1087.63
 
-### Step 10: Node 19526 (Limit) - PATTERN ROOT
+### Step 8: Node 19526 (Limit) - PATTERN ROOT
 
 - **Source:** pattern
 - **Pattern:** 25df29b5 (Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer))
-- **Consumes:** Nodes 19527, 19528, 19529
+- **Consumes:** Nodes 19527, 19528, 19529, 19531, 19532, 19535
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=58143

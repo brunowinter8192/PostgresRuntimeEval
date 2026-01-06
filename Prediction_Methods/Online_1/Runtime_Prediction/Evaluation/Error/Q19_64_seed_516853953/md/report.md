@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q19_64_seed_516853953
-**Timestamp:** 2025-12-22 03:11:17
+**Timestamp:** 2026-01-01 20:17:51
 
 ## Data Summary
 
@@ -48,12 +48,12 @@
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
 | 0 | 3aab37be | 113504.2307 | -0.0000% | REJECTED | 17.92% |
-| 1 | 895c6e8c | 75736.1626 | 0.0004% | REJECTED | 17.92% |
-| 2 | f4cb205a | 75544.5822 | 0.0006% | REJECTED | 17.92% |
-| 3 | 4fc84c77 | 13.3894 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 4 | a5f39f08 | 12.4695 | 1.7095% | ACCEPTED | 16.21% |
-| 5 | 422ae017 | 3.0007 | N/A | SKIPPED_LOW_ERROR | 16.21% |
-| 6 | 7524c54c | 3.0007 | N/A | SKIPPED_LOW_ERROR | 16.21% |
+| 1 | 895c6e8c | 75736.1626 | 0.0004% | ACCEPTED | 17.92% |
+| 2 | f4cb205a | 41652.9228 | 0.0005% | ACCEPTED | 17.92% |
+| 3 | 4fc84c77 | 13.3874 | N/A | SKIPPED_LOW_ERROR | 17.92% |
+| 4 | a5f39f08 | 12.4675 | 1.7089% | ACCEPTED | 16.21% |
+| 5 | 422ae017 | 2.5808 | N/A | SKIPPED_LOW_ERROR | 16.21% |
+| 6 | 7524c54c | 2.5808 | N/A | SKIPPED_LOW_ERROR | 16.21% |
 | 7 | 310134da | 1.7942 | N/A | SKIPPED_LOW_ERROR | 16.21% |
 | 8 | efde8b38 | 1.7942 | N/A | SKIPPED_LOW_ERROR | 16.21% |
 | 9 | f8295d8b | 1.0024 | N/A | SKIPPED_LOW_ERROR | 16.21% |
@@ -63,17 +63,18 @@
 Node 31990 (Aggregate) [PATTERN: a5f39f08] - ROOT
   Node 31991 (Gather) [consumed]
     Node 31992 (Aggregate) [consumed]
-      Node 31993 (Hash Join)
-        Node 31994 (Seq Scan) - LEAF
-        Node 31995 (Hash)
-          Node 31996 (Seq Scan) - LEAF
+      Node 31993 (Hash Join) [PATTERN: f4cb205a]
+        Node 31994 (Seq Scan) [consumed] - LEAF
+        Node 31995 (Hash) [consumed]
+          Node 31996 (Seq Scan) [consumed] - LEAF
 ```
 
 ## Pattern Assignments
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Aggregate -> Gather -> Aggrega | a5f39f08 | 31990 | 31991, 31992 |
+| Hash Join -> [Seq Scan (Outer) | f4cb205a | 31993 | 31990, 31991, 31992, 31994, 31995, 31996 |
+| Aggregate -> Gather -> Aggrega | a5f39f08 | 31990 | 31991, 31992, 31993, 31994, 31995, 31996 |
 
 
 **Legend:**
@@ -89,98 +90,53 @@ Node 31990 (Aggregate) [PATTERN: a5f39f08] - ROOT
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
 | 31990 | Aggregate | 840.70 | 834.50 | 0.7% | pattern |
-| 31993 | Hash Join | 820.69 | 782.38 | 4.7% | operator |
-| 31994 | Seq Scan | 773.47 | 750.07 | 3.0% | operator |
-| 31995 | Hash | 45.57 | 12.06 | 73.5% | operator |
-| 31996 | Seq Scan | 45.43 | 31.60 | 30.4% | operator |
+| 31993 | Hash Join | 820.69 | 373.82 | 54.4% | pattern |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 31996 (Seq Scan) - LEAF
+### Step 1: Node 31993 (Hash Join) - PATTERN ROOT
 
-- **Source:** operator
+- **Source:** pattern
+- **Pattern:** f4cb205a (Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)])
+- **Consumes:** Nodes 31990, 31991, 31992, 31994, 31995, 31996
 - **Input Features:**
-  - np=4128
-  - nt=200
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=30
-  - reltuples=200000.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.0010
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=7669.6700
-- **Output:** st=2.66, rt=31.60
+  - HashJoin_np=0
+  - HashJoin_nt=23
+  - HashJoin_nt1=22492
+  - HashJoin_nt2=200
+  - HashJoin_parallel_workers=0
+  - HashJoin_plan_width=12
+  - HashJoin_reltuples=0.0000
+  - HashJoin_sel=0.0000
+  - HashJoin_startup_cost=7672.1700
+  - HashJoin_total_cost=156338.5000
+  - Hash_Inner_np=0
+  - Hash_Inner_nt=200
+  - Hash_Inner_nt1=200
+  - Hash_Inner_nt2=0
+  - Hash_Inner_parallel_workers=0
+  - Hash_Inner_plan_width=30
+  - Hash_Inner_reltuples=0.0000
+  - Hash_Inner_sel=1.0000
+  - Hash_Inner_startup_cost=7669.6700
+  - Hash_Inner_total_cost=7669.6700
+  - SeqScan_Outer_np=4128
+  - SeqScan_Outer_nt=200
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=30
+  - SeqScan_Outer_reltuples=200000.0000
+  - SeqScan_Outer_sel=0.0010
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=7669.6700
+- **Output:** st=84.58, rt=373.82
 
-### Step 2: Node 31994 (Seq Scan) - LEAF
-
-- **Source:** operator
-- **Input Features:**
-  - np=112600
-  - nt=22492
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=21
-  - reltuples=6001215.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.0037
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=148607.2900
-- **Output:** st=2.79, rt=750.07
-
-### Step 3: Node 31995 (Hash)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=200
-  - nt1=200
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=30
-  - reltuples=0.0000
-  - rt1=31.6034
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=2.6638
-  - st2=0.0000
-  - startup_cost=7669.6700
-  - total_cost=7669.6700
-- **Output:** st=12.06, rt=12.06
-
-### Step 4: Node 31993 (Hash Join)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=23
-  - nt1=22492
-  - nt2=200
-  - parallel_workers=0
-  - plan_width=12
-  - reltuples=0.0000
-  - rt1=750.0670
-  - rt2=12.0554
-  - sel=0.0000
-  - st1=2.7883
-  - st2=12.0557
-  - startup_cost=7672.1700
-  - total_cost=156338.5000
-- **Output:** st=77.19, rt=782.38
-
-### Step 5: Node 31990 (Aggregate) - PATTERN ROOT
+### Step 2: Node 31990 (Aggregate) - PATTERN ROOT
 
 - **Source:** pattern
 - **Pattern:** a5f39f08 (Aggregate -> Gather -> Aggregate (Outer) (Outer))
-- **Consumes:** Nodes 31991, 31992
+- **Consumes:** Nodes 31991, 31992, 31993, 31994, 31995, 31996
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=1

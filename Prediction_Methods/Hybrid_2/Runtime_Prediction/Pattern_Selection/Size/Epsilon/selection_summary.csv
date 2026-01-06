@@ -1,2 +1,2 @@
-total_patterns;selected;rejected;skipped_no_ffs;skipped_train_failed;skipped_low_template_count;skipped_low_error;final_mre
-372;8;196;0;0;0;168;0.037617881613542
+total_patterns;selected;rejected;skipped_no_ffs;skipped_train_failed;skipped_low_error;final_mre
+372;13;198;0;0;161;0.035606894528705454

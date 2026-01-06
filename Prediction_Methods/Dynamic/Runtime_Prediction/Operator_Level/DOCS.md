@@ -105,11 +105,15 @@ LOTO splits may not contain all 13 operators. Example: `Index_Only_Scan` only ex
 
 **Purpose:** Bottom-up prediction with passthrough for missing models.
 
-**Difference from Static:**
+**Differences from Static:**
 
-When model is missing for an operator:
-- Static: Skips operator → Parents wait forever → Deadlock
-- Local: Uses **passthrough** → Copies max child prediction
+1. **Passthrough for missing models:**
+   - Static: Skips operator → Parents wait forever → Deadlock
+   - Local: Uses **passthrough** → Copies max child prediction
+
+2. **Clamping negative predictions:**
+   - Static: No clamping (negative predictions possible)
+   - Local: `max(0.0, prediction)` for all model outputs
 
 **Passthrough Logic:**
 ```python

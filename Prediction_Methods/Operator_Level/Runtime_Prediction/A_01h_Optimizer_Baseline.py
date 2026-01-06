@@ -107,8 +107,8 @@ def create_comparison_plot(results, output_dir):
                       label=f"Optimizer LinReg (Overall: {results['overall_optimizer']*100:.1f}%)",
                       color='coral', alpha=0.8)
 
-    ax.bar_label(bars_ml, fmt='%.1f%%', padding=3, fontsize=8, rotation=45)
-    ax.bar_label(bars_opt, fmt='%.1f%%', padding=3, fontsize=8, rotation=-45)
+    ax.bar_label(bars_ml, fmt='%.1f%%', padding=3, fontsize=8, rotation=0)
+    ax.bar_label(bars_opt, fmt='%.1f%%', padding=3, fontsize=8, rotation=0)
 
     ax.set_xlabel('Template', fontsize=12)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=12)

@@ -1,19 +1,6 @@
 # CLAUDE.MD - Thesis1 Project Engineering Reference
 
-## 1. HOOK COMPLIANCE
-
-**CRITICAL:** When a hook triggers and tells you to do something, you MUST MUST MUST follow it immediately.
-
-**Examples:**
-- Hook says "Activate skill X" → Activate skill X immediately
-- Hook says "Use agent for investigation" → Use agent, don't do manual search
-- Hook says "Verify before proceeding" → Verify before proceeding
-
-**No exceptions.** Hooks are user-configured rules. Ignoring them = ignoring user instructions.
-
----
-
-## 2. PROJECT CONTEXT
+## 1. PROJECT CONTEXT
 
 **Research Domain:** ML-based runtime prediction for SQL queries
 **Benchmark:** TPC-H queries on PostgreSQL
@@ -23,7 +10,7 @@
 
 ---
 
-## 3. THESIS-SPECIFIC RULES
+## 2. THESIS-SPECIFIC RULES
 
 ### Formatting: Bullet Lists over Tables
 
@@ -75,7 +62,7 @@ RIGHT (in thesis/outputs):
 
 ---
 
-## 4. CODE ORGANIZATION
+## 3. CODE ORGANIZATION
 
 **CRITICAL:** Every script follows this structure:
 
@@ -157,7 +144,7 @@ if __name__ == "__main__":
 
 ---
 
-## 5. COMMENT RULES
+## 4. COMMENT RULES
 
 **CRITICAL:** Three types of allowed comments only
 
@@ -183,7 +170,7 @@ from data_loader import load_validated_data
 
 ---
 
-## 6. ARCHITECTURE STANDARDS
+## 5. ARCHITECTURE STANDARDS
 
 ### Naming Conventions
 
@@ -271,7 +258,7 @@ When a module is a directory (e.g., `10_Pattern_Selection/`):
 
 ---
 
-## 7. DOCUMENTATION STRUCTURE
+## 6. DOCUMENTATION STRUCTURE
 
 ### Terminology
 

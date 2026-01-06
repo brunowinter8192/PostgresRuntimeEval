@@ -78,10 +78,10 @@ def compute_overall_summary(df: pd.DataFrame) -> pd.DataFrame:
 def export_summaries(template_summary: pd.DataFrame, overall_summary: pd.DataFrame, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
 
-    template_file = output_dir / '03_template_summary.csv'
+    template_file = output_dir / 'A_01j_template_summary.csv'
     template_summary.to_csv(template_file, sep=';', index=False)
 
-    overall_file = output_dir / '03_overall_summary.csv'
+    overall_file = output_dir / 'A_01j_overall_summary.csv'
     overall_summary.to_csv(overall_file, sep=';', index=False)
 
 
