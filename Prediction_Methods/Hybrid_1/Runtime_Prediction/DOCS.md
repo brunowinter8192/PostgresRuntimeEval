@@ -227,10 +227,10 @@ python 02b_Train_Models_Operators.py ../Datasets/Baseline_SVM Baseline_SVM/SVM/O
 - `predictions_file` - Path to predictions.csv (positional)
 
 **Outputs:**
-- `{output-dir}/overall_mre.csv`
-- `{output-dir}/template_mre.csv`
+- `{output-dir}/A_01a_overall_mre.csv`
+- `{output-dir}/A_01a_template_mre.csv`
   - Additional columns when --compare used: baseline_mre_pct, delta_mre_pct, delta_formula
-- `{output-dir}/template_mre_plot.png`
+- `{output-dir}/A_01a_template_mre_plot.png`
 
 **Usage:**
 ```bash

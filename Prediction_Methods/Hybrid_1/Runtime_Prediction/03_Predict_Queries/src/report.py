@@ -25,14 +25,12 @@ def export_md_report(
     plan_hash: str = '',
     passthrough: bool = False
 ) -> None:
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-
     md_dir = Path(output_dir) / 'md'
     md_dir.mkdir(parents=True, exist_ok=True)
 
     template = query_file.split('_')[0]
     hash_suffix = f'_{plan_hash[:8]}' if plan_hash else ''
-    md_file = md_dir / f'03_{template}{hash_suffix}_{timestamp}.md'
+    md_file = md_dir / f'03_{template}{hash_suffix}.md'
 
     lines = build_report_lines(query_file, df_query, predictions, steps, consumed_nodes, pattern_assignments, pattern_info, passthrough)
 
