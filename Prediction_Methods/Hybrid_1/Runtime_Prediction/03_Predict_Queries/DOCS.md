@@ -63,7 +63,7 @@ When --passthrough flag is set, these operators copy their child's prediction if
 - `{output-dir}/predictions.csv`
   - Columns: query_file, node_id, node_type, depth, parent_relationship, subplan_name, actual_startup_time, actual_total_time, predicted_startup_time, predicted_total_time, prediction_type (pattern/operator/passthrough), pattern_hash
 - `{output-dir}/patterns.csv` - Pattern usage summary (pattern_hash, usage_count, node_types)
-- `{output-dir}/md/03_{template}_{plan_hash[:8]}_{timestamp}.md` - One MD report per unique plan structure (with --report flag)
+- `{output-dir}/md/03_{template}_{plan_hash[:8]}.md` - One MD report per unique plan structure (with --report flag)
 
 **Usage:**
 ```bash
