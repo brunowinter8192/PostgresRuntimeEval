@@ -17,22 +17,22 @@ from mapping_config import PLAN_TARGET, PLAN_METADATA
 
 # ORCHESTRATOR
 
-# Train linear regression on optimizer costs and evaluate
-def optimizer_baseline_workflow(train_csv: Path, test_csv: Path, output_dir: Path) -> None:
-    train_df, test_df = load_datasets(train_csv, test_csv)
+# Train linear regression on optimizer costs and compare with ML predictions
+def optimizer_baseline_workflow(train_csv: Path, test_csv: Path, predictions_csv: Path, output_dir: Path) -> None:
+    train_df = load_csv(train_csv)
+    test_df = load_csv(test_csv)
+    pred_df = load_csv(predictions_csv)
     model = train_linear_regression(train_df)
-    results_df, overall_mre = predict_and_evaluate(model, test_df)
-    fig = create_mre_plot(results_df)
-    export_results(results_df, overall_mre, len(train_df), len(test_df), fig, output_dir)
+    results = evaluate_comparison(model, test_df, pred_df)
+    export_results(results, output_dir)
+    create_comparison_plot(results, output_dir)
 
 
 # FUNCTIONS
 
-# Load train and test datasets
-def load_datasets(train_csv: Path, test_csv: Path) -> tuple:
-    train_df = pd.read_csv(train_csv, delimiter=';')
-    test_df = pd.read_csv(test_csv, delimiter=';')
-    return train_df, test_df
+# Load CSV file
+def load_csv(csv_path: Path) -> pd.DataFrame:
+    return pd.read_csv(csv_path, delimiter=';')
 
 
 # Train linear regression on p_tot_cost
@@ -44,85 +44,103 @@ def train_linear_regression(train_df: pd.DataFrame) -> LinearRegression:
     return model
 
 
-# Generate predictions and calculate MRE
-def predict_and_evaluate(model: LinearRegression, test_df: pd.DataFrame) -> tuple:
+# Evaluate both optimizer baseline and ML predictions
+def evaluate_comparison(model: LinearRegression, test_df: pd.DataFrame, pred_df: pd.DataFrame) -> dict:
+    test_df = test_df.copy()
+    test_df['template'] = test_df[PLAN_METADATA[1]].apply(lambda x: x.replace('.sql', ''))
+
     X_test = test_df[['p_tot_cost']]
-    y_test = test_df[PLAN_TARGET]
+    optimizer_pred = model.predict(X_test)
+    optimizer_pred = np.maximum(optimizer_pred, 0)
+    test_df['optimizer_pred'] = optimizer_pred
 
-    predictions = model.predict(X_test)
-    predictions = np.maximum(predictions, 0)
+    pred_df = pred_df.copy()
+    pred_df['query_file_clean'] = pred_df['query_file'].str.replace('.sql', '', regex=False)
+    test_df['query_file_clean'] = test_df[PLAN_METADATA[0]].str.replace('.sql', '', regex=False)
 
-    relative_errors = np.abs(y_test - predictions) / y_test
-    overall_mre = relative_errors.mean()
+    test_df = test_df.merge(
+        pred_df[['query_file_clean', 'predicted_ms']],
+        on='query_file_clean',
+        how='left'
+    )
 
-    results_df = pd.DataFrame({
-        PLAN_METADATA[0]: test_df[PLAN_METADATA[0]],
-        PLAN_METADATA[1]: test_df[PLAN_METADATA[1]],
-        'actual_ms': y_test,
-        'predicted_ms': predictions,
-        'relative_error': relative_errors
-    })
+    test_df['mre_optimizer'] = np.abs(test_df['optimizer_pred'] - test_df[PLAN_TARGET]) / test_df[PLAN_TARGET]
+    test_df['mre_ml'] = np.abs(test_df['predicted_ms'] - test_df[PLAN_TARGET]) / test_df[PLAN_TARGET]
 
-    return results_df, overall_mre
+    overall_optimizer = test_df['mre_optimizer'].mean()
+    overall_ml = test_df['mre_ml'].mean()
 
+    template_comparison = test_df.groupby('template').agg({
+        'mre_optimizer': 'mean',
+        'mre_ml': 'mean'
+    }).round(4)
+    template_comparison['mre_optimizer_pct'] = template_comparison['mre_optimizer'] * 100
+    template_comparison['mre_ml_pct'] = template_comparison['mre_ml'] * 100
+    template_comparison = template_comparison.reindex(sorted(template_comparison.index, key=lambda x: int(x[1:])))
 
-# Create MRE bar plot by template
-def create_mre_plot(results_df: pd.DataFrame):
-    template_mre = results_df.groupby(PLAN_METADATA[1])['relative_error'].mean().reset_index()
-    template_mre['sort_key'] = template_mre[PLAN_METADATA[1]].str.extract(r'(\d+)').astype(int)
-    template_mre = template_mre.sort_values('sort_key').drop(columns=['sort_key'])
-
-    fig, ax = plt.subplots(figsize=(16, 8))
-
-    templates = template_mre[PLAN_METADATA[1]].tolist()
-    mre_values = template_mre['relative_error'].values * 100
-
-    x = np.arange(len(templates))
-    bars = ax.bar(x, mre_values, width=0.5, color='indianred', alpha=0.8,
-                  edgecolor='black', linewidth=0.8)
-
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
-    ax.set_title('Optimizer Cost Baseline - Runtime Prediction Error by Template',
-                 fontsize=15, fontweight='bold', pad=20)
-    ax.set_xticks(x)
-    ax.set_xticklabels(templates, rotation=0, fontsize=11)
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
-
-    for bar in bars:
-        height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height,
-                f'{height:.1f}%',
-                ha='center', va='bottom', fontsize=9, fontweight='bold')
-
-    plt.tight_layout()
-    return fig
+    return {
+        'overall_optimizer': overall_optimizer,
+        'overall_ml': overall_ml,
+        'template_comparison': template_comparison
+    }
 
 
-# Export predictions, summary, and plot
-def export_results(results_df: pd.DataFrame, overall_mre: float,
-                   n_train: int, n_test: int, fig, output_dir: Path) -> None:
+# Export comparison results to CSV
+def export_results(results: dict, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    predictions_file = output_dir / 'A_01i_optimizer_predictions.csv'
-    results_df.to_csv(predictions_file, sep=';', index=False)
-
-    summary_df = pd.DataFrame({
-        'metric': ['overall_mre', 'train_samples', 'test_samples', 'feature', 'model'],
-        'value': [f'{overall_mre:.4f}', str(n_train), str(n_test), 'p_tot_cost', 'LinearRegression']
+    overall_df = pd.DataFrame({
+        'method': ['ML (SVM)', 'Optimizer Cost (LinReg)'],
+        'mre': [results['overall_ml'], results['overall_optimizer']],
+        'mre_pct': [results['overall_ml'] * 100, results['overall_optimizer'] * 100]
     })
-    summary_file = output_dir / 'A_01i_optimizer_summary.csv'
-    summary_df.to_csv(summary_file, sep=';', index=False)
+    overall_df.to_csv(output_dir / 'A_01i_optimizer_baseline_overall.csv', sep=';', index=False)
 
-    plot_file = output_dir / 'A_01i_optimizer_mre_plot.png'
-    fig.savefig(plot_file, dpi=300, bbox_inches='tight')
-    plt.close(fig)
+    results['template_comparison'].to_csv(output_dir / 'A_01i_optimizer_baseline_template.csv', sep=';')
+
+
+# Create bar plot comparing ML vs Optimizer
+def create_comparison_plot(results: dict, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    template_df = results['template_comparison']
+    templates = template_df.index.tolist()
+    x = np.arange(len(templates))
+    width = 0.35
+
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    bars_ml = ax.bar(x - width/2, template_df['mre_ml_pct'], width,
+                     label=f"ML (Overall: {results['overall_ml']*100:.1f}%)",
+                     color='steelblue', alpha=0.8)
+    bars_opt = ax.bar(x + width/2, template_df['mre_optimizer_pct'], width,
+                      label=f"Optimizer LinReg (Overall: {results['overall_optimizer']*100:.1f}%)",
+                      color='coral', alpha=0.8)
+
+    ax.bar_label(bars_ml, fmt='%.1f%%', padding=3, fontsize=8, rotation=0)
+    ax.bar_label(bars_opt, fmt='%.1f%%', padding=3, fontsize=8, rotation=0)
+
+    ax.set_xlabel('Template', fontsize=12)
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
+    ax.set_title('ML Prediction vs. Optimizer Cost Baseline (Plan-Level)', fontsize=14, fontweight='bold')
+    ax.set_xticks(x)
+    ax.set_xticklabels(templates, fontsize=10)
+    ax.legend(fontsize=11)
+    ax.grid(axis='y', alpha=0.3)
+
+    y_max = max(template_df['mre_ml_pct'].max(), template_df['mre_optimizer_pct'].max())
+    ax.set_ylim(0, y_max * 1.35)
+
+    plt.tight_layout()
+    plt.savefig(output_dir / 'A_01i_optimizer_baseline_plot.png', dpi=150)
+    plt.close()
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Optimizer cost baseline for runtime prediction")
+    parser = argparse.ArgumentParser(description="Optimizer cost baseline vs ML comparison")
     parser.add_argument("train_csv", help="Training dataset CSV")
     parser.add_argument("test_csv", help="Test dataset CSV")
+    parser.add_argument("predictions_csv", help="ML predictions CSV")
     parser.add_argument("--output-dir", required=True, help="Output directory")
 
     args = parser.parse_args()
@@ -130,5 +148,6 @@ if __name__ == "__main__":
     optimizer_baseline_workflow(
         Path(args.train_csv),
         Path(args.test_csv),
+        Path(args.predictions_csv),
         Path(args.output_dir)
     )

@@ -4,6 +4,7 @@
 
 import sys
 import argparse
+import hashlib
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -30,18 +31,65 @@ def to_relative_path(path):
     return str(abs_path.relative_to(get_project_root()))
 
 
+# Compute hash for unique plan structure
+def compute_plan_hash(query_ops):
+    sorted_ops = query_ops.sort_values('node_id')
+    structure = [(row['node_type'], row['depth'], row['parent_relationship'])
+                 for _, row in sorted_ops.iterrows()]
+    return hashlib.md5(str(structure).encode()).hexdigest()
+
+
 # ORCHESTRATOR
 
-def run_prediction_workflow(test_file, overview_file, models_dir, output_file, md_query=None):
+def run_prediction_workflow(test_file, overview_file, models_dir, output_file, md_query=None, report=False, report_dir=None):
     df_test = load_test_data(test_file)
     df_overview = load_overview(overview_file)
 
-    if md_query:
+    if report:
+        run_with_reports(df_test, df_overview, models_dir, test_file, overview_file, output_file, report_dir)
+    elif md_query:
         query_ops = df_test[df_test['query_file'] == md_query].copy()
         predictions, steps = predict_single_query_with_steps(query_ops, df_overview, models_dir)
         export_md_report(md_query, test_file, overview_file, models_dir, query_ops, predictions, steps)
     else:
         all_predictions = predict_all_queries(df_test, df_overview, models_dir)
+        export_predictions(all_predictions, output_file)
+
+
+# Run predictions with MD reports for first query of each unique plan
+def run_with_reports(df_test, df_overview, models_dir, test_file, overview_file, output_file, report_dir):
+    all_predictions = []
+    reported_plans = set()
+
+    for query_file in df_test['query_file'].unique():
+        query_ops = df_test[df_test['query_file'] == query_file].copy()
+
+        plan_hash = compute_plan_hash(query_ops)
+        should_report = plan_hash not in reported_plans
+
+        if should_report:
+            predictions, steps = predict_single_query_with_steps(query_ops, df_overview, models_dir)
+            reported_plans.add(plan_hash)
+            export_md_report(query_file, test_file, overview_file, models_dir, query_ops, predictions, steps, report_dir, plan_hash)
+        else:
+            predictions = predict_single_query(query_ops, df_overview, models_dir)
+
+        for node_id, pred in predictions.items():
+            op_row = query_ops[query_ops['node_id'] == node_id].iloc[0]
+            all_predictions.append({
+                'query_file': query_file,
+                'node_id': node_id,
+                'node_type': pred['node_type'],
+                'depth': op_row['depth'],
+                'parent_relationship': op_row['parent_relationship'],
+                'subplan_name': op_row['subplan_name'],
+                'actual_startup_time': op_row['actual_startup_time'],
+                'actual_total_time': op_row['actual_total_time'],
+                'predicted_startup_time': pred['predicted_startup_time'],
+                'predicted_total_time': pred['predicted_total_time']
+            })
+
+    if output_file:
         export_predictions(all_predictions, output_file)
 
 
@@ -419,7 +467,7 @@ def build_feature_vector(operator_row, features, st1=0, rt1=0, st2=0, rt2=0):
 # Build query tree string from operators
 def build_query_tree(query_ops):
     query_ops_main = query_ops[query_ops['subplan_name'].isna() | (query_ops['subplan_name'] == '')]
-    query_ops_sorted = query_ops_main.sort_values('depth')
+    query_ops_sorted = query_ops_main.sort_values('node_id')
 
     lines = []
     min_depth = query_ops_sorted['depth'].min()
@@ -455,15 +503,21 @@ def format_feature_values(feature_dict):
 
 
 # Export MD report for single query prediction
-def export_md_report(query_file, test_file, overview_file, models_dir, query_ops, predictions, steps):
+def export_md_report(query_file, test_file, overview_file, models_dir, query_ops, predictions, steps, report_dir=None, plan_hash=None):
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     timestamp_display = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    script_dir = Path(__file__).parent
-    md_dir = script_dir / 'md'
-    md_dir.mkdir(exist_ok=True)
+    if report_dir:
+        md_dir = Path(report_dir)
+    else:
+        md_dir = Path(__file__).parent / 'md'
+    md_dir.mkdir(parents=True, exist_ok=True)
 
-    md_file = md_dir / f'03_query_prediction_{query_file}_{timestamp}.md'
+    template = query_file.split('_')[0]
+    if plan_hash:
+        md_file = md_dir / f'03_{template}_{plan_hash[:8]}.md'
+    else:
+        md_file = md_dir / f'03_query_prediction_{query_file}_{timestamp}.md'
 
     lines = []
     lines.append('# Query Prediction Report')
@@ -544,7 +598,9 @@ if __name__ == "__main__":
     parser.add_argument("models_dir", help="Directory containing trained models")
     parser.add_argument("--output-file", help="Output CSV file for predictions")
     parser.add_argument("--md-query", help="Generate MD report for single query")
+    parser.add_argument("--report", action="store_true", help="Generate MD report for first query of each unique plan")
+    parser.add_argument("--report-dir", help="Output directory for MD reports (default: md/ in script dir)")
 
     args = parser.parse_args()
 
-    run_prediction_workflow(args.test_file, args.overview_file, args.models_dir, args.output_file, args.md_query)
+    run_prediction_workflow(args.test_file, args.overview_file, args.models_dir, args.output_file, args.md_query, args.report, args.report_dir)

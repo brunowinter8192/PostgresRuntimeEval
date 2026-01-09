@@ -8,10 +8,10 @@ Discovers and catalogs all parent-child operator patterns from the operator data
 Data_Generation/
 ├── 01_Find_Patterns.py                   # Pattern discovery (all lengths)
 └── csv/                                  # [outputs]
-    └── 01_patterns_{ts}.csv              # Pattern inventory with occurrences
+    └── 01_patterns.csv                   # Pattern inventory with occurrences
 ```
 
-**Input data (external):** `Operator_Level/Datasets/Baseline/03_training.csv`
+**Input data (external):** `Operator_Level/Datasets/Baseline/01_operator_dataset_cleaned.csv`
 
 ## Workflow Execution Order
 
@@ -37,7 +37,7 @@ Data_Generation/
 - `input_file` - Path to operator dataset CSV (positional)
 
 **Outputs:**
-- `csv/01_patterns_{timestamp}.csv`
+- `csv/01_patterns.csv`
   - Columns: pattern_hash, pattern_string, pattern_length, operator_count, occurrence_count, example_query_file
   - pattern_length: Number of depth levels (see README Terminology)
   - operator_count: Total nodes in pattern (Size)

@@ -5,6 +5,50 @@ description: Vector search over indexed documents
 
 # RAG MCP Tools
 
+## Activation Rule
+
+**CRITICAL:** Use RAG MCP tools ONLY when user writes exactly `rag` in their prompt.
+
+**Triggers RAG:**
+- "rag schau was das Paper sagt"
+- "rag wie haben wir das gemacht"
+- "check mal rag"
+
+**Does NOT trigger RAG:**
+- "raggie", "ragms", "raggg" (keine Varianten)
+- Prompts ohne das Wort "rag"
+
+**Rule:** Exact match only. No RAG = no RAG tools.
+
+---
+
+## Honesty & Precision (CRITICAL)
+
+**MANDATORY:** For every RAG response:
+
+1. **Provide exact section references** - Not "Section 5", but "Section 5.3.2"
+2. **Flag figures/graphics** - If data is only in a figure you cannot read, IMMEDIATELY say: "The values are in Figure X, I can only read the text"
+3. **Communicate uncertainty immediately** - If you cannot find a value in the text, DO NOT guess. Say: "This value is not stated in the text"
+4. **No summaries as facts** - "7-114%" is WRONG if you only have "7.30% average" and "114% single example"
+
+**Example WRONG:**
+> "The paper achieved 7-114% MRE (Section 5)"
+
+**Example RIGHT:**
+> "The text states 7.30% average for 11 templates (Section 5.3.2). The 114% comes from a single example in Section 3.4. The per-template values are only in Figure 6(d), which I cannot read."
+
+5. **State context and scope** - Distinguish between general statements and specific examples
+
+**Example WRONG:**
+> "The paper identifies the Materialize operator as the main cause for prediction errors (Section 3.4)"
+
+**Example RIGHT:**
+> "Using Template-13 as example, the paper identifies the Materialize operator as the main cause for prediction errors (Section 3.4). This is a specific example to motivate the hybrid approach, not a general statement about all templates."
+
+**Rationale:** User is writing a thesis. Incorrect citations = scientific misconduct.
+
+---
+
 ## Available Tools
 
 | Tool | Purpose |
@@ -22,18 +66,19 @@ description: Vector search over indexed documents
 1. `list_collections()` → see available collections
 2. `search(collection="...", query="...")` → semantic search (concepts)
 3. `search_keyword(collection="...", query="...")` → keyword search (exact terms)
-4. `read_document(collection, document, start_chunk)` → read more context
+4. `read_document(collection, document, start_chunk, num_chunks=5)` → read more context
 
 **Decision Guide:**
 
 | User Intent | Tool |
 |-------------|------|
-| "Was ist X?" / "Erkläre X" | `search` (semantic) |
-| "Wo steht X?" / "Definition von X" | `search_keyword` (BM25) |
+| User writes "rag" + question | Use RAG tools |
+| "What is X?" / "Explain X" | `search` (semantic) |
+| "Where is X?" / "Definition of X" | `search_keyword` (BM25) |
 | Technical terms, column names | `search_keyword` |
 | Conceptual understanding | `search` |
-| Konzeptfrage mit anderer Terminologie | HyDE Pattern (see below) |
-| "Lies mehr davon" / need full section | `read_document` |
+| Conceptual question with different terminology | HyDE Pattern (see below) |
+| "Read more of this" / need full section | `read_document` |
 
 **Drill-Down Pattern:**
 ```
@@ -41,6 +86,22 @@ description: Vector search over indexed documents
 2. read_document(start_chunk=40, num_chunks=10) → read full section
 3. search_keyword("l_suppkey")             → find exact definition
 ```
+
+**Workflow-Hierarchie:**
+
+`read_document` ist ein Follow-up Tool - immer nach search/search_keyword verwenden.
+
+```
+search / search_keyword
+         ↓
+    Chunk klar? → fertig
+         ↓ nein
+    read_document(start_chunk aus Result)
+```
+
+**Faustregel:** Wenn der Chunk-Inhalt nicht vollständig klar ist → `read_document` für Context.
+
+**Komplexe Queries:** Bei komplexen User-Fragen zuerst `search` mit `neighbors=1-2`, dann bei Bedarf `read_document`.
 
 ---
 
@@ -70,13 +131,6 @@ description: Vector search over indexed documents
 - Looking for exact terms (use `search_keyword`)
 - User already describes the concept well
 - Technical definitions or column names
-
----
-
-**Context Expansion:**
-- Search results show `Chunk: X`
-- Use `read_document(start_chunk=X-2, num_chunks=10)` to read surrounding context
-- Useful when search result is partial/truncated
 
 ---
 
@@ -114,15 +168,9 @@ When `neighbors > 0`, each result includes adjacent chunks for better context:
 
 ## When to Use
 
-Use RAG search when:
 - User asks about content in indexed documents
 - User needs specific information from the knowledge base
 - Answering questions that require document context
-
-Do NOT use when:
-- Information is in codebase files (use Grep/Read instead)
-- User asks about general knowledge (use your training data)
-- Document hasn't been indexed yet
 
 ---
 
@@ -150,18 +198,6 @@ mcp__rag__search(query="mindset behavior", top_k=3, neighbors=1)
 Returns 3 results, each with prev + match + next chunk concatenated.
 
 ---
-
-## Output Format
-
-```
---- Result 1 (score: 0.7421) ---
-Collection: specification | Document: specification.md | Chunk: 42
-[full content, overlap-deduplicated]
-
---- Result 2 (score: 0.6812) ---
-Collection: specification | Document: specification.md | Chunk: 87
-[full content, overlap-deduplicated]
-```
 
 **Note:**
 - Content is automatically deduplicated - overlapping text between chunks is merged cleanly.
@@ -214,55 +250,27 @@ mcp__rag__search_keyword(query="TPC-H benchmark", collection="specification", to
 
 ---
 
-## Data Structure
-
-```
-data/documents/
-  {collection}/           <- Filter with collection="..."
-    raw/
-      {document}.md       <- Original from MinerU
-    {document}.md         <- Cleaned version (indexed)
-    {document}.json       <- Chunked for indexing
-```
-
-**Multi-Document Collections:**
-- Ein Ordner kann mehrere MD-Files enthalten → 1 Collection mit N Documents
-- Beispiel: `Thesis/` mit `1.Einleitung.md`, `2.Grundlagen.md`, `A_Setup.md`
-- `list_documents(collection="Thesis")` zeigt alle Documents
-- `search(collection="Thesis", document="A_Setup.md")` filtert auf ein Document
-
----
-
 ## Indexed Collections
 
 Use `mcp__rag__list_collections` to see available collections.
 
 ---
 
-## Thesis-Specific Collections
+# Thesis Specifics
 
-| Collection | Content | Use Case | Document Filter |
-|------------|---------|----------|-----------------|
-| `Thesis` | Existing thesis chapters | Consistency checking, terminology | `document="3.Plan_Level_Fließ.md"` etc. |
-| `Learning-based_Query_Performance_Modeling_and_Pred` | Base paper (Akdere et al.) | Method definitions, citations | — |
-| `postgresql-17-US` | PostgreSQL 17 Documentation | Technical definitions, EXPLAIN output | — |
-| `specification` | TPC-H Benchmark Specification | Query definitions, schema details | — |
+Swap this section for different projects.
 
-### Search Examples
+## Relevant Collections
 
-```
-# Check term usage in existing thesis chapter
-mcp__rag__search(query="Optimizer Baseline", collection="Thesis", document="3.Plan_Level_Fließ.md")
+| Collection | Content |
+|------------|---------|
+| `Thesis` | Existing thesis chapters (multi-document) |
+| `Learning-based_Query_Performance_Modeling_and_Pred` | Base paper (Akdere et al.) |
+| `postgresql-17-US` | PostgreSQL 17 Documentation |
+| `specification` | TPC-H Benchmark Specification |
+| `Richtlinien wiss. Arbeiten_01.09.2025` | Formatting and citation guidelines |
 
-# Find paper definition
-mcp__rag__search(query="operator-level prediction", collection="Learning-based_Query_Performance_Modeling_and_Pred")
-
-# PostgreSQL technical details
-mcp__rag__search(query="actual_total_time EXPLAIN", collection="postgresql-17-US")
-
-# TPC-H schema
-mcp__rag__search(query="LINEITEM table", collection="specification")
-```
+**Note:** Collection `Thesis` contains multiple documents. Use `list_documents(collection="Thesis")` to see all, or filter with `document="3.Plan_Level_Fließ.md"`.
 
 ---
 
@@ -336,4 +344,16 @@ Read continuous text from a document starting at a specific chunk index.
 Document: chunks.md | Chunks 50-59
 
 [continuous text, overlap-deduplicated]
+```
+
+**Examples:**
+```
+# Nach search: Chunk 42 gefunden, mehr Context holen
+mcp__rag__read_document(collection="specification", document="specification.md", start_chunk=40, num_chunks=10)
+
+# Nach search_keyword: Definition gefunden, Umgebung lesen
+mcp__rag__read_document(collection="Thesis", document="3.Plan_Level_Fließ.md", start_chunk=15, num_chunks=5)
+
+# Default: 5 chunks ab Position 100
+mcp__rag__read_document(collection="postgresql-17-US", document="postgresql-17-US.md", start_chunk=100)
 ```

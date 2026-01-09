@@ -42,6 +42,10 @@ def extract_template_id(query_file):
 def calculate_overall_mre(root_ops):
     return root_ops['mre'].mean()
 
+# Extract numeric part from template for sorting
+def sort_template_key(template):
+    return int(template[1:])
+
 # Calculate statistics per template
 def calculate_template_stats(root_ops):
     template_stats = root_ops.groupby('template').agg({
@@ -52,7 +56,7 @@ def calculate_template_stats(root_ops):
     template_stats.columns = ['mean_mre', 'std_mre', 'query_count', 'mean_predicted_ms', 'mean_actual_ms']
     template_stats['mean_mre_pct'] = template_stats['mean_mre'] * 100
     template_stats = template_stats[['mean_mre_pct', 'mean_mre', 'std_mre', 'query_count', 'mean_predicted_ms', 'mean_actual_ms']]
-    template_stats = template_stats.sort_index()
+    template_stats = template_stats.sort_index(key=lambda x: x.map(sort_template_key))
     return template_stats
 
 
@@ -83,9 +87,9 @@ def export_metrics(overall_mre, template_stats, output_dir):
         'value': [overall_mre],
         'percentage': [overall_mre * 100]
     })
-    overall_file = output_path / 'overall_mre.csv'
+    overall_file = output_path / 'A_01a_overall_mre.csv'
     overall_df.to_csv(overall_file, index=False, sep=';')
-    template_file = output_path / 'template_mre.csv'
+    template_file = output_path / 'A_01a_template_mre.csv'
     template_stats.to_csv(template_file, sep=';')
 
 # Create and save MRE bar plot by template
@@ -120,7 +124,7 @@ def create_mre_plot(template_stats):
 
 # Save plot to file
 def save_plot(fig, output_dir):
-    plot_file = Path(output_dir) / 'template_mre_plot.png'
+    plot_file = Path(output_dir) / 'A_01a_template_mre_plot.png'
     fig.savefig(plot_file, dpi=300, bbox_inches='tight')
     plt.close(fig)
 

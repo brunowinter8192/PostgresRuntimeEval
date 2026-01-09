@@ -192,8 +192,7 @@ def sort_by_size(patterns: list) -> list:
 def export_results(patterns: list, output_dir: str) -> None:
     csv_dir = Path(output_dir) / 'csv'
     csv_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = csv_dir / f'01_patterns_{timestamp}.csv'
+    output_file = csv_dir / '01_patterns.csv'
 
     df = pd.DataFrame(patterns)
     df.to_csv(output_file, sep=';', index=False)
