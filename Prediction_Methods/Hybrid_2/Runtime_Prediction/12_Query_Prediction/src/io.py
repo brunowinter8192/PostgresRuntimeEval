@@ -169,21 +169,3 @@ def export_predictions(predictions: list, output_dir: str) -> None:
 
     df = pd.DataFrame(predictions)
     df.to_csv(output_path / 'predictions.csv', sep=';', index=False)
-
-    export_pattern_usage(df, output_path)
-
-
-# Export pattern usage summary to separate CSV
-def export_pattern_usage(df: pd.DataFrame, output_path: Path) -> None:
-    pattern_df = df[df['pattern_hash'].notna()].copy()
-
-    if pattern_df.empty:
-        return
-
-    usage = pattern_df.groupby('pattern_hash').agg(
-        usage_count=('pattern_hash', 'count'),
-        node_types=('node_type', lambda x: ', '.join(sorted(x.unique())))
-    ).reset_index()
-
-    usage = usage.sort_values('usage_count', ascending=False)
-    usage.to_csv(output_path / 'patterns.csv', sep=';', index=False)

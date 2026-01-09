@@ -319,7 +319,7 @@ Analysis tool for identifying pass-through operators (operators whose execution 
 Pass_Through/
 ├── 02_Passthrough_Analysis.py
 └── csv/
-    └── 02_passthrough_analysis_{ts}.csv
+    └── 02_passthrough_analysis.csv
 ```
 
 ### 02 - Passthrough_Analysis.py
@@ -331,7 +331,7 @@ Pass_Through/
 - `--output-dir` (required): Output directory for CSV results
 
 **Outputs:**
-- `csv/02_passthrough_analysis_{timestamp}.csv`
+- `csv/02_passthrough_analysis.csv`
   - Columns: node_type, instance_count, mean_parent_time, mean_max_child_time, ratio_pct
   - ratio_pct ~100% indicates passthrough behavior
 

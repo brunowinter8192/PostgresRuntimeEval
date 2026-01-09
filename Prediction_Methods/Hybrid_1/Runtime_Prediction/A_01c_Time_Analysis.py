@@ -4,7 +4,6 @@
 import argparse
 import pandas as pd
 from pathlib import Path
-from datetime import datetime
 
 
 # ORCHESTRATOR
@@ -82,8 +81,7 @@ def compute_range_metrics(stats: pd.DataFrame) -> pd.DataFrame:
 def export_results(stats: pd.DataFrame, output_dir: str) -> None:
     output_path = Path(output_dir)
     output_path.mkdir(exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = output_path / f'operator_range_analysis_{timestamp}.csv'
+    output_file = output_path / 'A_01c_operator_range_analysis.csv'
     stats.to_csv(output_file, index=False, sep=';')
 
 

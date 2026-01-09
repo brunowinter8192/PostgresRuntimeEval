@@ -127,7 +127,10 @@ Runtime_Prediction/
 │   └── Error/{Baseline,Epsilon}/selected_patterns.csv
 └── Evaluation/
     ├── Operator_Training_Test/predictions.csv
-    └── {Strategy}/predictions.csv
+    ├── {Strategy}/{Config}/predictions.csv
+    └── PatternUsage/
+        ├── A_02c_patterns.csv
+        └── A_02c_summary.csv
 ```
 
 ## Script Documentation
@@ -401,24 +404,29 @@ python3 A_02d_Convergence_Combined.py --base-dir Pattern_Selection --variant Bas
 
 ### A_02c - Pattern_Usage.py
 
-**Purpose:** Analyze how often each selected pattern was actually used for predictions.
+**Purpose:** Cross-strategy comparison of pattern usage and Beifang-Analyse.
 
 **Workflow:**
-1. Load predictions.csv
+1. Scan Evaluation directory for all `{Strategy}/{Config}/predictions.csv`
 2. Filter rows where prediction_type == 'pattern'
-3. Group by pattern_hash, count occurrences
-4. Calculate percentage of total pattern predictions
+3. Group by pattern_hash per strategy, count occurrences
+4. Build cross-strategy table with count column (1-6)
+5. Load selected pattern counts from Pattern_Selection
+6. Compare selected vs. used patterns (Beifang = selected - used)
 
 **Inputs:**
-- `predictions_file`: Path to predictions.csv (from 12_Query_Prediction)
+- `evaluation_dir`: Path to Evaluation directory (positional)
+- `--selection-dir`: Path to Pattern_Selection directory (required)
 
 **Outputs:**
-- `{output-dir}/pattern_usage.csv`
-  - Columns: pattern_hash;usage_count;percentage
+- `{output-dir}/A_02c_patterns.csv` - Cross-strategy usage table
+  - Columns: pattern_hash;Frequency_Baseline;...;Error_Epsilon;count
+- `{output-dir}/A_02c_summary.csv` - Beifang summary
+  - Columns: strategy;selected;used;beifang
 
 **Usage:**
 ```
-python3 A_02c_Pattern_Usage.py Evaluation/Size/Epsilon/predictions.csv --output-dir Evaluation/Size/Epsilon
+python3 A_02c_Pattern_Usage.py Evaluation/ --selection-dir Pattern_Selection --output-dir Evaluation/PatternUsage
 ```
 
 ---

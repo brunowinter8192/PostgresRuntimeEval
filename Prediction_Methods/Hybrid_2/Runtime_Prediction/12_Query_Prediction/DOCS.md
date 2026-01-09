@@ -33,7 +33,6 @@ cd Prediction_Methods/Hybrid_2/Runtime_Prediction
 
 **Outputs:**
 - `predictions.csv` - Node-level predictions with actual/predicted times, pattern_hash column
-- `patterns.csv` - Pattern usage summary (pattern_hash, usage_count, node_types)
 - `md/12_{template}_{plan_hash[:8]}_{timestamp}.md` - One MD report per unique plan structure
 
 **Variables:**

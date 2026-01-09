@@ -5,7 +5,12 @@ import argparse
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from datetime import datetime
+
+
+# Extract numeric part from template for sorting
+def sort_template_key(template):
+    return int(template[1:])
+
 
 # ORCHESTRATOR
 
@@ -56,42 +61,43 @@ def create_pivot_tables(df):
         columns='template',
         aggfunc='mean'
     ).round(2)
+    cross_total = cross_total[sorted(cross_total.columns, key=sort_template_key)]
     cross_startup = df.pivot_table(
         values='mre_startup_pct',
         index='node_type',
         columns='template',
         aggfunc='mean'
     ).round(2)
+    cross_startup = cross_startup[sorted(cross_startup.columns, key=sort_template_key)]
     return cross_total, cross_startup
 
 # Export all six pivot tables to CSV
 def export_results(pattern_total, pattern_startup, operator_total, operator_startup, overall_total, overall_startup, output_dir):
     output_path = Path(output_dir) / 'csv'
     output_path.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    
+
     pattern_total.index.name = 'node_type (Pattern Mean MRE Total Time %)'
-    output_file = output_path / f'pattern_mean_mre_total_pct_{timestamp}.csv'
+    output_file = output_path / 'A_01b_pattern_mean_mre_total_pct.csv'
     pattern_total.to_csv(output_file, sep=';')
-    
+
     pattern_startup.index.name = 'node_type (Pattern Mean MRE Startup Time %)'
-    output_file = output_path / f'pattern_mean_mre_startup_pct_{timestamp}.csv'
+    output_file = output_path / 'A_01b_pattern_mean_mre_startup_pct.csv'
     pattern_startup.to_csv(output_file, sep=';')
-    
+
     operator_total.index.name = 'node_type (Operator Mean MRE Total Time %)'
-    output_file = output_path / f'operator_mean_mre_total_pct_{timestamp}.csv'
+    output_file = output_path / 'A_01b_operator_mean_mre_total_pct.csv'
     operator_total.to_csv(output_file, sep=';')
-    
+
     operator_startup.index.name = 'node_type (Operator Mean MRE Startup Time %)'
-    output_file = output_path / f'operator_mean_mre_startup_pct_{timestamp}.csv'
+    output_file = output_path / 'A_01b_operator_mean_mre_startup_pct.csv'
     operator_startup.to_csv(output_file, sep=';')
-    
+
     overall_total.index.name = 'node_type (Mean MRE Total Time %)'
-    output_file = output_path / f'node_type_mean_mre_total_pct_{timestamp}.csv'
+    output_file = output_path / 'A_01b_node_type_mean_mre_total_pct.csv'
     overall_total.to_csv(output_file, sep=';')
-    
+
     overall_startup.index.name = 'node_type (Mean MRE Startup Time %)'
-    output_file = output_path / f'node_type_mean_mre_startup_pct_{timestamp}.csv'
+    output_file = output_path / 'A_01b_node_type_mean_mre_startup_pct.csv'
     overall_startup.to_csv(output_file, sep=';')
 
 if __name__ == '__main__':

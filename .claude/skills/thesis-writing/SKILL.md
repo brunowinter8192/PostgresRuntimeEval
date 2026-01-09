@@ -3,13 +3,13 @@ name: thesis-writing
 description: Thesis prose style guide and rules. (project)
 ---
 
-# Thesis Writing Skill
+# Writing Skill
 
 ## Overview
 
-Style guide for academic thesis prose. Contains rules, prohibitions, and terminology standards.
+Style guide for academic prose. Contains rules, prohibitions, and terminology standards.
 
-**Thesis language is German** - all writing examples remain in German.
+**language is German** - examples remain in German as they demonstrate correct German academic writing.
 
 ---
 
@@ -33,56 +33,71 @@ User input is colloquial, imprecise, shorthand. Claude transforms into precise t
 - One step at a time
 - Wait for user confirmation before proceeding
 
+### ASK THE FUCKING USER
+
+- User fragen für Referenz-Dateien (macht das Leben leichter)
+- User fragen für kritische Infos zum Verständnis
+- User hat breites Wissen - nutze es
+
+### One Question at a Time
+
+- Eine Frage auf einmal
+- Fragen bauen aufeinander auf
+- Multiple Choice bevorzugen (AskUserQuestion tool)
+- Nur acten wenn alles klar ist
+
+### Any Remarks vor Exit
+
+- IMMER "Any remarks?" fragen bevor ExitPlanMode
+- User kontrolliert den Übergang
+
 ### Parallel Editing Awareness
 
-**Rule:** User macht parallel Edits im MD. Vor jedem Edit:
-1. Wenn User Zeilennummern nennt → diese Zeilen LESEN
-2. Aktuellen Stand der Datei prüfen bevor Edit
-3. Nur das editieren was explizit angefragt wurde
-4. NIEMALS User-Edits rückgängig machen
+**CRITICAL:** User edits the SAME .md file in PARALLEL!
 
-**Rationale:** User editiert gleichzeitig. Ohne vorheriges Lesen werden User-Änderungen überschrieben.
+**Before EVERY Edit - ALWAYS:**
+1. RE-READ affected lines (even if recently read)
+2. ONLY edit what is explicitly in the plan
+3. DO NOT touch surrounding text
+4. NEVER revert user changes
+
+**On Edit error "File has been modified":**
+- File was changed in parallel
+- Re-read and adjust edit
+- DO NOT restore old version
+
+**Rationale:** User edits simultaneously. Every edit without prior reading risks overwriting user changes.
 
 ### Edit Workflow
 
 **Phase 1: PLAN**
-- User aktiviert Plan Mode
-- User macht Changes oder sagt was geschrieben werden soll
-- Claude aktualisiert iterativ den Plan
-- Alle Findings und Remarks werden im Plan gesammelt
-- Wenn genug Material: EIN Edit statt viele kleine
+- User activates Plan Mode
+- User makes changes or describes what needs to be written
+- Claude updates plan iteratively
+- All findings and remarks collected in plan
+- When enough material: ONE edit instead of many small ones
 
 **Phase 2: IMPLEMENT**
-- Plan wird ausgeführt
-- Edits werden zusammen gemacht
+- Plan is executed
+- Edits are done together
 
 **Phase 3: CLEANUP**
-- Nach jeder vollständigen Ausführung: Plan-Datei komplett überschreiben
-- Nur offene Aktionen bleiben im Plan
-- Erledigte Aufgaben werden entfernt
-- Kein Ballast aus vorherigen Iterationen
+- After each complete execution: overwrite plan file completely
+- Only open actions remain in plan
+- Completed tasks are removed
+- No baggage from previous iterations
 
-**Rule:** In JEDER Response klar angeben: "Phase: PLAN" oder "Phase: IMPLEMENT"
+**Rule:** In EVERY response clearly state: "Phase: PLAN" or "Phase: IMPLEMENT"
 
-### Fachliche Verifikation
+### Technical Verification
 
-**Rule:** Vor JEDEM Edit - Kopf einschalten:
-- Sind die Aussagen fachlich korrekt?
-- Stimmen Dateipfade? (mit `ls` oder `find` prüfen)
-- Stimmen Zitate und Jahreszahlen?
-- Stimmt die Terminologie?
+**Rule:** Before EVERY edit - think first:
+- Are the statements technically correct?
+- Are file paths correct, if referenced as source? (check with `ls` or `find`)
+- Are citations and years correct?
+- Is terminology consistent?
 
-**Bei Zweifel:** User SOFORT konfrontieren, nicht raten.
-
-**Beispiele für Prüfung:**
-- Pfad im Plan → `ls` ausführen, existiert die Datei?
-- Paper-Zitat "(Akdere et al. 2012)" → Sources in SKILL.md prüfen → 2011, zwei Autoren
-- Technische Aussage → RAG durchsuchen oder User fragen
-
-**Pattern:** LESEN → EDITIEREN
-- Vor jedem Edit: Zeile lesen
-- Wenn User keine Zeile nennt → FRAGEN
-- NIEMALS blind editieren
+**When in doubt:** Confront user IMMEDIATELY, don't guess.
 
 **Prohibited:**
 - Running additional analyses "while we're at it"
@@ -120,7 +135,7 @@ User input is colloquial, imprecise, shorthand. Claude transforms into precise t
 
 ---
 
-## Prohibitions
+## CRITICAL WORDING
 
 Check EVERY sentence against these rules.
 
@@ -133,25 +148,36 @@ Check EVERY sentence against these rules.
 - RIGHT: "Der Grund ist, dass die Features..."
 
 **2. No hyphen after parenthesis**
-- WRONG: "(`predictions.csv`) - die Optimizer-Costs"
-- RIGHT: "(`predictions.csv`). Die Optimizer-Costs"
+- WRONG: "... - die Optimizer-Costs"
+- RIGHT: "... . Die Optimizer-Costs"
 
 **3. No long parenthetical explanations**
 - WRONG: "(8 Basis-Features plus Operator-Zähler)"
 - RIGHT: Separate sentence or reformulate
 
-**4. No bold sub-headings inside sections**
-- WRONG: "**Warum funktioniert das?**"
-- RIGHT: Use `##` headers or topic sentences
-- EXCEPTION: Structural bold text like `**Kernfragen**` is allowed (becomes bold in Word)
+**4. No bold in thesis prose**
+- WRONG: "**Warum funktioniert das?**", "**Kernfragen**"
+- RIGHT: Use `##` headers or `*italic*` for emphasis
 
 ### Language
 
-**5. English only for introduced terms**
+**5. Englische Wörter in deutschem Text**
 
-English words only if the term is in the Terminology table. Otherwise German.
-- WRONG: "Operator-Typen", "Disk-Pages", "Passthrough-Ratio"
-- RIGHT: "Arten von Operators", "Tech-Stack" (introduced term)
+a) **Großschreibung:** Englische Substantive werden großgeschrieben (deutsche Grammatik gilt)
+   - RIGHT: "die Prediction", "das Pattern", "die Query"
+   - Rule: Englisch im deutschen Text = Substantiv = groß
+
+b) **Englische Komposita:** Getrennt, NIEMALS Bindestrich
+   - WRONG: "Pattern-Selection", "Length-First", "Hash-Join"
+   - RIGHT: "Pattern Selection", "Length First", "Hash Join"
+
+c) **Englisch-Deutsch:** NIEMALS Bindestrich-Mischung
+   - WRONG: "Prediction-Methode", "Pattern-Auswahl", "Query-Struktur"
+   - RIGHT: Komplett Englisch ODER komplett Deutsch umformulieren
+
+d) **Deutsche Komposita:** Bindestrich nur wenn es sonst schlecht klingt
+   - Normal: "Datensatzstruktur", "Vorhersagemethode" (zusammen)
+   - Selten: Bindestrich nur bei Lesbarkeit
 
 **6. Always use proper umlauts**
 - WRONG: "fuehren", "wuerde", "aendern", "Ueberblick"
@@ -200,6 +226,11 @@ Rule: If a table cell contains prose/categories instead of numbers, convert to s
 - Allowed: References to .py files in parentheses, e.g., `(tree.py:158-161)`
 - Rule: Code stays in repo, thesis explains what the code does
 
+**13. No filenames in prose**
+- WRONG: "Die Details lassen sich in `01_Feature_Selection.py` nachvollziehen."
+- RIGHT: "Die Details lassen sich in der Feature Selection nachvollziehen.¹"
+- Rule: Filenames belong in footnotes, not in thesis text. Use descriptive German text instead.
+
 ---
 
 # Thesis-Specific Content
@@ -208,15 +239,16 @@ Swap this section for different projects.
 
 ---
 
-## RAG Collections
+## RAG-First for Thesis Questions
 
-See `RAG_MCP` skill for available collections and search patterns.
+**Rule:** When user talks about "the thesis":
+1. ALWAYS search RAG first (Collection: `Thesis`)
+2. EXCEPTION: User explicitly refers to the current .md being edited
 
-**Key collections for thesis:**
-- `Thesis` - existing chapters (use `document=` filter for specific chapter)
-- `Learning-based_Query_Performance_Modeling_and_Pred` - base paper
-- `postgresql-17-US` - PostgreSQL docs
-- `specification` - TPC-H spec
+**Examples:**
+- "How did we do this in Plan-Level?" → RAG search
+- "Check line 75" → Read current .md (no RAG)
+- "Is this consistent with chapter 3?" → RAG search
 
 ---
 
@@ -226,19 +258,29 @@ See `RAG_MCP` skill for available collections and search patterns.
 
 | Type | Format | Example |
 |------|--------|---------|
-| **Literature** (external sources) | In-text citation | (Akdere und Çetintemel, 2011, S. 5) |
+| **Literature** (external sources) | In-text citation | Akdere und Çetintemel (2011, Abschnitt 3.4) |
 | **Repository** (own code/output) | Footnote with relative path | ¹ |
 
 ### Literature Citations
 
-**Without section** (reference to entire work):
-...orientiert sich an den Methoden von Akdere und Çetintemel (2011)...
+**3 Varianten:**
 
-**With section** (specific passage):
-- In sentence: Akdere und Çetintemel (2011, Abstract) definieren...
-- Separate: ...(Akdere und Çetintemel, 2011, Abschnitt 3.2).
+1. **Allgemeine Referenz (ganzes Werk, kein Abschnitt):**
+   `Akdere und Çetintemel (2011) begegnen diesen Fragen...`
 
-**Comma rule:** Comma after author only in parenthetical (separate) reference.
+2. **Integriert mit Abschnitt (Autor = Subjekt):**
+   `Akdere und Çetintemel (2011, Abschnitt 3.4) schlagen drei Strategien vor.`
+
+3. **Separater Hinweis (nach Aussage, KEIN Komma nach Autor!):**
+   `Diese Definition folgt dem Paper (Akdere und Çetintemel 2011, Abschnitt 3.2).`
+
+**Komma-Regel:**
+- Integriert (Variante 1+2): `Autor (Jahr, Abschnitt)` ← Komma vor Abschnitt
+- Separat (Variante 3): `(Autor Jahr, Abschnitt)` ← KEIN Komma nach Autor!
+
+**"Das Paper" im Text:**
+- OK wenn Zitation am Satzende folgt
+- Sonst Inline-Zitation verwenden
 
 ### Repository References (Footnotes)
 
@@ -259,7 +301,7 @@ Das Script trainiert die Modelle.¹
 - `Hybrid_2/Dataset/Operators/Training_Training/`
 - `Prediction_Methods/Dynamic/Runtime_Prediction/A_01a_overview.png`
 
-### Appendix (Anhang)
+### Appendix
 
 Appendix files live in repo as `.md` files and get copy-pasted into Word.
 
@@ -290,21 +332,22 @@ Consistent terms throughout the thesis. List is iteratively extended.
 
 | Correct | Meaning | Source | Forbidden |
 |---------|---------|--------|-----------|
-| Modellierungsansatz | Ansatz zur Modellierung (Plan-Level, Operator-Level, Hybrid) | Paper: "modeling approach" | Vorhersagemethode, Methode, Ansatz |
-| Methoden | Übergeordnete Vorgehensweisen | Paper | Methodiken, Vorgehensweisen |
-| MRE | Mean Relative Error / Mittlerer relativer Fehler | Paper | |
-| Prediction | Vorhersage | User | |
-| Query | Datenbankabfrage | User | Abfrage, Datenbankabfrage |
-| Optimizer Cost Model | Kostenbasiertes Vorhersagemodell des Optimizers | (Akdere und Çetintemel, 2011) | |
-| Tech-Stack | Technologie-Stack (Hardware, Software, Konfiguration) | User | |
-| Pattern Selection | Auswahl von Patterns für Modelltraining | User | Greedy Pattern Selection |
-| Plan | Baumstruktur aus Nodes/Operators | Thesis 3.1 | Planbaum |
+| Modellierungsansatz | Modeling approach (Plan-Level, Operator-Level, Hybrid) | Paper: "modeling approach" | Vorhersagemethode, Methode, Ansatz |
+| Methoden | Overarching procedures | Paper | Methodiken, Vorgehensweisen |
+| MRE | Mean Relative Error | Paper | |
+| Prediction | Forecast/prediction | User | Vorhersage |
+| Query | Database query | User | Abfrage, Datenbankabfrage |
+| Optimizer Cost Model | Cost-based prediction model of the optimizer | (Akdere und Çetintemel, 2011) | |
+| Tech-Stack | Technology stack (hardware, software, config) | User | |
+| Pattern Selection | Selection of patterns for model training | User | Greedy Pattern Selection |
+| Plan | Tree structure of Nodes/Operators | Thesis 3.1 | Planbaum |
+| Frequency | Anzahl Vorkommen eines Patterns in Trainingsdaten | User | Occurrence |
 
 ---
 
 ## Word Formatting
 
-### Code Blocks
+### Code Blocks (Appendix)
 
 - Font: Courier New
 - Size: 10pt
@@ -329,7 +372,7 @@ Consistent terms throughout the thesis. List is iteratively extended.
 
 **Example in Word:**
 
-[PNG zentriert]
+[PNG centered]
 
 *Abbildung 3.1: MRE pro Template bei Plan-Level Modellierung*
 
@@ -390,11 +433,11 @@ TPC. (2022). TPC Benchmark H (TPC-H) Standard Specification. Revision 3.0.1.
 
 ### Short Citations
 
-| Source | In sentence | Separate |
-|--------|-------------|----------|
-| Paper | Akdere und Çetintemel (2011) | (Akdere und Çetintemel, 2011, Abschnitt X.X) |
-| TPC-H Spec | TPC (2022) | (TPC, 2022, S. X) |
-| PostgreSQL Docs | PostgreSQL (2025) | (PostgreSQL, 2025, S. X) |
+| Source | Integriert | Separat (kein Komma nach Autor!) |
+|--------|------------|----------------------------------|
+| Paper | Akdere und Çetintemel (2011) | (Akdere und Çetintemel 2011, Abschnitt X.X) |
+| TPC-H Spec | TPC (2022) | (TPC 2022, S. X) |
+| PostgreSQL Docs | PostgreSQL (2025) | (PostgreSQL 2025, S. X) |
 | GitHub Repo | — | Footnotes only |
 
 **Note:** Paper PDF has no page numbers → use section references ("Abschnitt X.X")

@@ -4,7 +4,6 @@
 import argparse
 import pandas as pd
 from pathlib import Path
-from datetime import datetime
 
 
 # ORCHESTRATOR
@@ -97,8 +96,7 @@ def build_children_map(query_ops: pd.DataFrame) -> dict:
 def export_results(results: pd.DataFrame, output_dir: str) -> None:
     csv_dir = Path(output_dir) / 'csv'
     csv_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = csv_dir / f'02_passthrough_analysis_{timestamp}.csv'
+    output_file = csv_dir / '02_passthrough_analysis.csv'
     results.to_csv(output_file, sep=';', index=False)
 
 

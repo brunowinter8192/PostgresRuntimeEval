@@ -21,8 +21,6 @@ Datasets/
 ├── A_01a_InitSub_Analysis.py            # Analysis script for InitPlan/SubPlan template identification
 ├── A_01b_Leaf_Validation.py             # Validation script for Scan leaf node structure
 ├── A_01e_Verify_Plans.py                # Verify plan hash distribution across datasets
-├── Raw/                                 # Raw input data
-│   └── operator_dataset_*.csv           # Input from Data_Generation
 └── Baseline/                            # Output directory for all generated CSV files
     ├── A_01a_InitSub_Templates.csv      # From A_01a (optional)
     ├── A_01b_scan_leaf_issues.csv       # From A_01b (optional)
