@@ -52,7 +52,9 @@ def calculate_template_stats(root_ops):
     template_stats.columns = ['mean_mre', 'std_mre', 'query_count', 'mean_predicted_ms', 'mean_actual_ms']
     template_stats['mean_mre_pct'] = template_stats['mean_mre'] * 100
     template_stats = template_stats[['mean_mre_pct', 'mean_mre', 'std_mre', 'query_count', 'mean_predicted_ms', 'mean_actual_ms']]
-    template_stats = template_stats.sort_index()
+    template_stats = template_stats.reindex(
+        sorted(template_stats.index, key=lambda x: int(x[1:]))
+    )
     
     return template_stats
 
@@ -68,10 +70,10 @@ def export_metrics(overall_mre, template_stats, output_dir):
         'percentage': [overall_mre * 100]
     })
 
-    overall_file = output_path / 'overall_mre.csv'
+    overall_file = output_path / 'A_01a_overall_mre.csv'
     overall_df.to_csv(overall_file, index=False, sep=';')
 
-    template_file = output_path / 'template_mre.csv'
+    template_file = output_path / 'A_01a_template_mre.csv'
     template_stats.to_csv(template_file, sep=';')
 
 
@@ -116,7 +118,7 @@ def create_mre_plot(template_stats):
 
 # Save plot to file
 def save_plot(fig, output_dir):
-    plot_file = Path(output_dir) / 'template_mre_plot.png'
+    plot_file = Path(output_dir) / 'A_01a_template_mre_plot.png'
     plot_file.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(plot_file, dpi=300, bbox_inches='tight')
     plt.close(fig)

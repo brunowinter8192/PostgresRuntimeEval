@@ -26,7 +26,7 @@ description: Vector search over indexed documents
 
 **MANDATORY:** For every RAG response:
 
-1. **Provide exact section references** - Not "Section 5", but "Section 5.3.2"
+1. **Provide exact quotes only** - NEVER cite section numbers. Quote the relevant text directly. Section numbers are unreliable (OCR errors, version differences).
 2. **Flag figures/graphics** - If data is only in a figure you cannot read, IMMEDIATELY say: "The values are in Figure X, I can only read the text"
 3. **Communicate uncertainty immediately** - If you cannot find a value in the text, DO NOT guess. Say: "This value is not stated in the text"
 4. **No summaries as facts** - "7-114%" is WRONG if you only have "7.30% average" and "114% single example"
@@ -35,15 +35,15 @@ description: Vector search over indexed documents
 > "The paper achieved 7-114% MRE (Section 5)"
 
 **Example RIGHT:**
-> "The text states 7.30% average for 11 templates (Section 5.3.2). The 114% comes from a single example in Section 3.4. The per-template values are only in Figure 6(d), which I cannot read."
+> "The paper states: 'For these 11 templates the average error is 7.30%'. The 114% comes from a specific example: 'the prediction error is 114%'. The per-template values are only in Figure 6(d), which I cannot read."
 
 5. **State context and scope** - Distinguish between general statements and specific examples
 
 **Example WRONG:**
-> "The paper identifies the Materialize operator as the main cause for prediction errors (Section 3.4)"
+> "The paper identifies the Materialize operator as the main cause for prediction errors"
 
 **Example RIGHT:**
-> "Using Template-13 as example, the paper identifies the Materialize operator as the main cause for prediction errors (Section 3.4). This is a specific example to motivate the hybrid approach, not a general statement about all templates."
+> "Using Template-13 as example, the paper states: 'the Materialize operator... is responsible for most of the error'. This is a specific example to motivate the hybrid approach, not a general statement about all templates."
 
 **Rationale:** User is writing a thesis. Incorrect citations = scientific misconduct.
 

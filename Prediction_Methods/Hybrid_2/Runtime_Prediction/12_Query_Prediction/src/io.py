@@ -168,4 +168,4 @@ def export_predictions(predictions: list, output_dir: str) -> None:
     output_path.mkdir(parents=True, exist_ok=True)
 
     df = pd.DataFrame(predictions)
-    df.to_csv(output_path / 'predictions.csv', sep=';', index=False)
+    df.to_csv(output_path / '12_predictions.csv', sep=';', index=False)

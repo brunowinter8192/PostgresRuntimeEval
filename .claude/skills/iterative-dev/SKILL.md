@@ -474,3 +474,20 @@ Only enter when user confirms (e.g., "proceed", "close", "done").
 2. `git add . && git commit`
 3. `git push`
 4. Ask: "New cycle or done for now?"
+
+---
+
+## Project Specifics (Thesis)
+
+### DOCS.md Authority
+
+**CRITICAL:** DOCS.md is the source of truth for:
+- Script arguments and paths
+- Input/Output file locations
+- Pipeline dependencies
+
+**Rules:**
+1. If DOCS says path X → USE path X
+2. If path X doesn't exist → ASK USER, don't assume "outdated"
+3. NEVER claim "DOCS is outdated" without explicit verification failure + user confirmation
+4. External workflow paths (Hybrid_1, etc.) are EXCEPTIONS that user must explicitly provide

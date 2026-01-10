@@ -126,8 +126,12 @@ Runtime_Prediction/
 │   ├── Frequency/{Baseline,Epsilon}/selected_patterns.csv
 │   └── Error/{Baseline,Epsilon}/selected_patterns.csv
 └── Evaluation/
-    ├── Operator_Training_Test/predictions.csv
-    ├── {Strategy}/{Config}/predictions.csv
+    ├── Operator_Training_Test/12_predictions.csv
+    ├── {Strategy}/{Config}/
+    │   ├── 12_predictions.csv
+    │   ├── A_01a_overall_mre.csv
+    │   ├── A_01a_template_mre.csv
+    │   └── A_01a_template_mre_plot.png
     └── PatternUsage/
         ├── A_02c_patterns.csv
         └── A_02c_summary.csv
