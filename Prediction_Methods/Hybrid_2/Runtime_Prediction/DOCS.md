@@ -490,3 +490,63 @@ python3 A_03b_Pattern_Lookup.py 634cdbe24fda21720ccd3dc746d5c979 \
   --output-dir Evaluation/PatternUsage
 ```
 
+---
+
+### A_01b - Optimizer_Baseline.py
+
+**Purpose:** Calculate Optimizer cost model baseline using linear regression on total_cost.
+
+**Workflow:**
+1. Load Training and Test datasets
+2. Train LinReg: total_cost → actual_total_time (depth=0 only)
+3. Predict on Test set
+4. Calculate MRE per template
+
+**Inputs:**
+- `train_csv`: Training dataset (positional)
+- `test_csv`: Test dataset (positional)
+- `--output-dir`: Output directory
+
+**Outputs:**
+- `A_01b_optimizer_overall_mre.csv`
+- `A_01b_optimizer_template_mre.csv`
+
+**Usage:**
+```bash
+python3 A_01b_Optimizer_Baseline.py ../Dataset/Baseline/Training.csv ../Dataset/Baseline/Test.csv --output-dir Evaluation/Overall/Baseline
+```
+
+---
+
+### A_01c - Combined_Strategy_Plot.py
+
+**Purpose:** Create combined bar chart comparing all strategies (Size, Frequency, Error, Optimizer).
+
+**Workflow:**
+1. Load template MRE CSVs from all strategies
+2. Create grouped bar chart (4 bars per template)
+3. Export combined CSV and PNG
+
+**Inputs:**
+- `--size-mre`: Path to Size template_mre.csv
+- `--frequency-mre`: Path to Frequency template_mre.csv
+- `--error-mre`: Path to Error template_mre.csv
+- `--optimizer-mre`: Path to Optimizer template_mre.csv
+- `--output-dir`: Output directory
+- `--variant`: Variant name for title (Baseline/Epsilon)
+
+**Outputs:**
+- `A_01c_combined_strategy_mre.csv`
+- `A_01c_combined_strategy_plot.png`
+
+**Usage:**
+```bash
+python3 A_01c_Combined_Strategy_Plot.py \
+  --size-mre Evaluation/Size/Baseline/A_01a_template_mre.csv \
+  --frequency-mre Evaluation/Frequency/Baseline/A_01a_template_mre.csv \
+  --error-mre Evaluation/Error/Baseline/A_01a_template_mre.csv \
+  --optimizer-mre Evaluation/Overall/Baseline/A_01b_optimizer_template_mre.csv \
+  --output-dir Evaluation/Overall/Baseline \
+  --variant Baseline
+```
+
