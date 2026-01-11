@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q3_22_seed_172284651
-**Timestamp:** 2026-01-01 19:14:19
+**Timestamp:** 2026-01-11 18:31:58
 
 ## Data Summary
 
@@ -35,15 +35,15 @@
 | 25df29b5 | Limit -> Sort -> Aggregate -> Gather (Ou... | 4 | 48 | 69.7% | 33.4481 |
 | 694ae2c3 | Gather -> Nested Loop (Outer) | 2 | 24 | 2.7% | 0.6475 |
 | 071a1ee5 | Aggregate -> Gather -> Nested Loop (Oute... | 3 | 24 | 1.2% | 0.2995 |
-| 925caafa | Gather -> Nested Loop -> [Hash Join (Out... | 3 | 24 | 2.7% | 0.6475 |
 | 128ec77a | Sort -> Aggregate -> Gather -> Nested Lo... | 4 | 24 | 3.8% | 0.9012 |
+| 925caafa | Gather -> Nested Loop -> [Hash Join (Out... | 3 | 24 | 2.7% | 0.6475 |
 | 7b066ef4 | Aggregate -> Gather -> Nested Loop -> [H... | 4 | 24 | 1.2% | 0.2995 |
+| b68c8b96 | Limit -> Sort -> Aggregate -> Gather -> ... | 5 | 24 | 68.3% | 16.3813 |
 | 8d7fa5fd | Gather -> Nested Loop -> [Hash Join -> [... | 4 | 24 | 2.7% | 0.6475 |
 | 9d8bc76c | Nested Loop -> [Hash Join -> [Seq Scan (... | 4 | 24 | 3.0% | 0.7171 |
-| b68c8b96 | Limit -> Sort -> Aggregate -> Gather -> ... | 5 | 24 | 68.3% | 16.3813 |
 | ac6af82a | Sort -> Aggregate -> Gather -> Nested Lo... | 5 | 24 | 3.8% | 0.9012 |
-| 5a77e21f | Aggregate -> Gather -> Nested Loop -> [H... | 5 | 24 | 1.2% | 0.2995 |
 | 3e93cf76 | Gather -> Nested Loop -> [Hash Join -> [... | 5 | 24 | 2.7% | 0.6475 |
+| 5a77e21f | Aggregate -> Gather -> Nested Loop -> [H... | 5 | 24 | 1.2% | 0.2995 |
 | 5eedbd1b | Limit -> Sort -> Aggregate -> Gather -> ... | 6 | 24 | 68.3% | 16.3813 |
 | 64cd7a0c | Sort -> Aggregate -> Gather -> Nested Lo... | 6 | 24 | 3.8% | 0.9012 |
 | ff421d05 | Aggregate -> Gather -> Nested Loop -> [H... | 6 | 24 | 1.2% | 0.2995 |
@@ -61,21 +61,33 @@
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
 | 0 | 895c6e8c | 75736.1626 | 0.0004% | ACCEPTED | 17.92% |
-| 1 | 3aab37be | 94712.4752 | -0.0000% | REJECTED | 17.92% |
-| 2 | 1d35fb97 | 26.4006 | 0.1163% | ACCEPTED | 17.81% |
-| 3 | f4cb205a | 41652.9228 | 0.0005% | ACCEPTED | 17.81% |
-| 4 | 4fc84c77 | 15.8293 | 0.6905% | ACCEPTED | 17.12% |
-| 5 | 3cfa90d7 | 6.2450 | N/A | SKIPPED_LOW_ERROR | 17.12% |
-| 6 | e0e3c3e1 | 4.0850 | N/A | SKIPPED_LOW_ERROR | 17.12% |
-| 7 | e296a71f | 40.3884 | N/A | REJECTED | 17.12% |
-| 8 | 7bcfec22 | 40.3884 | 0.0394% | ACCEPTED | 17.08% |
-| 9 | b3a45093 | 5.7725 | N/A | SKIPPED_LOW_ERROR | 17.08% |
-| 10 | 25df29b5 | 33.5860 | 9.8522% | ACCEPTED | 7.22% |
-| 11 | 9d8bc76c | 0.7302 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 12 | b68c8b96 | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 13 | 5eedbd1b | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 14 | d64c42c6 | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 15 | ea3737ca | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
+| 1 | 3aab37be | 113504.2307 | -0.0000% | REJECTED | 17.92% |
+| 2 | 1d35fb97 | 26.4017 | 0.1163% | ACCEPTED | 17.81% |
+| 3 | f4cb205a | 75544.5822 | 0.0005% | ACCEPTED | 17.81% |
+| 4 | 4fc84c77 | 13.3894 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 5 | 3cfa90d7 | 6.2375 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 6 | e0e3c3e1 | 4.0772 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 7 | e296a71f | 40.3755 | N/A | REJECTED | 17.81% |
+| 8 | 7bcfec22 | 40.3755 | 0.0394% | ACCEPTED | 17.77% |
+| 9 | b3a45093 | 2.9042 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 10 | 25df29b5 | 33.4481 | 9.8522% | ACCEPTED | 7.92% |
+| 11 | 694ae2c3 | 0.6475 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 12 | 071a1ee5 | 0.2995 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 13 | 128ec77a | 0.9012 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 14 | 925caafa | 0.6475 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 15 | 7b066ef4 | 0.2995 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 16 | b68c8b96 | 16.3813 | -0.0154% | REJECTED | 7.92% |
+| 17 | 8d7fa5fd | 0.6475 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 18 | 9d8bc76c | 0.7171 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 19 | ac6af82a | 0.9012 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 20 | 3e93cf76 | 0.6475 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 21 | 5a77e21f | 0.2995 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 22 | 5eedbd1b | 16.3813 | -0.0154% | REJECTED | 7.92% |
+| 23 | 64cd7a0c | 0.9012 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 24 | ff421d05 | 0.2995 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 25 | d64c42c6 | 16.3813 | -0.0154% | REJECTED | 7.92% |
+| 26 | eb451e77 | 0.9012 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 27 | ea3737ca | 16.3813 | -0.0154% | REJECTED | 7.92% |
 ## Query Tree
 
 ```

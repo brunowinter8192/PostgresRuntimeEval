@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q1_111_seed_902443410
-**Timestamp:** 2026-01-01 19:53:40
+**Timestamp:** 2026-01-11 19:27:35
 
 ## Data Summary
 
@@ -43,20 +43,16 @@
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
 | 0 | 1d35fb97 | 26.4017 | 0.1167% | ACCEPTED | 17.81% |
-| 1 | 2724c080 | 7.7852 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 2 | 1691f6f0 | 7.2969 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 3 | 184f44de | 5.7958 | 0.0023% | ACCEPTED | 17.80% |
-| 4 | 29ee00db | 4.4636 | N/A | SKIPPED_LOW_ERROR | 17.80% |
-| 5 | 715d5c92 | 4.3242 | N/A | SKIPPED_LOW_ERROR | 17.80% |
-| 6 | dc1b1da7 | 3.6147 | 0.0016% | ACCEPTED | 17.80% |
-| 7 | f8231c4d | 3.4005 | N/A | SKIPPED_LOW_ERROR | 17.80% |
-| 8 | 52c5ec81 | 3.1032 | 0.1020% | ACCEPTED | 17.70% |
-| 9 | 3dfa6025 | 2.0224 | N/A | SKIPPED_LOW_ERROR | 17.70% |
+| 1 | 2724c080 | 7.7852 | 0.0346% | ACCEPTED | 17.77% |
+| 2 | 184f44de | 5.7958 | 0.0023% | ACCEPTED | 17.77% |
+| 3 | 29ee00db | 4.4857 | 0.2706% | ACCEPTED | 17.50% |
+| 4 | f8231c4d | 2.1781 | 0.2456% | ACCEPTED | 17.25% |
+| 5 | 3dfa6025 | 0.8661 | 0.0234% | ACCEPTED | 17.23% |
 ## Query Tree
 
 ```
-Node 61 (Aggregate) - ROOT
-  Node 62 (Gather Merge) [PATTERN: 52c5ec81]
+Node 61 (Aggregate) [PATTERN: 3dfa6025] - ROOT
+  Node 62 (Gather Merge) [consumed]
     Node 63 (Sort) [consumed]
       Node 64 (Aggregate) [consumed]
         Node 65 (Seq Scan) [consumed] - LEAF
@@ -66,7 +62,7 @@ Node 61 (Aggregate) - ROOT
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Gather Merge -> Sort -> Aggreg | 52c5ec81 | 62 | 63, 64, 65 |
+| Aggregate -> Gather Merge -> S | 3dfa6025 | 61 | 62, 63, 64, 65 |
 
 
 **Legend:**
@@ -76,21 +72,20 @@ Node 61 (Aggregate) - ROOT
 
 ## Phase E: Final Prediction
 
-- Final MRE: 10.95%
-- Improvement: 1.62%
+- Final MRE: 2.24%
+- Improvement: 10.32%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 61 | Aggregate | 933.05 | 1035.18 | 10.9% | operator |
-| 62 | Gather Merge | 933.00 | 953.93 | 2.2% | pattern |
+| 61 | Aggregate | 933.05 | 953.98 | 2.2% | pattern |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 62 (Gather Merge) - PATTERN ROOT
+### Step 1: Node 61 (Aggregate) - PATTERN ROOT
 
 - **Source:** pattern
-- **Pattern:** 52c5ec81 (Gather Merge -> Sort -> Aggregate -> Seq Scan (Outer) (Outer) (Outer))
-- **Consumes:** Nodes 63, 64, 65
+- **Pattern:** 3dfa6025 (Aggregate -> Gather Merge -> Sort -> Aggregate -> Seq Scan (Outer) (Outer) (Outer) (Outer))
+- **Consumes:** Nodes 62, 63, 64, 65
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=6
@@ -102,16 +97,26 @@ Node 61 (Aggregate) - ROOT
   - Aggregate_Outer_sel=0.0000
   - Aggregate_Outer_startup_cost=169310.8200
   - Aggregate_Outer_total_cost=169310.9600
-  - GatherMerge_np=0
-  - GatherMerge_nt=30
-  - GatherMerge_nt1=6
-  - GatherMerge_nt2=0
-  - GatherMerge_parallel_workers=5
-  - GatherMerge_plan_width=236
-  - GatherMerge_reltuples=0.0000
-  - GatherMerge_sel=5.0000
-  - GatherMerge_startup_cost=170311.1100
-  - GatherMerge_total_cost=170314.7400
+  - Aggregate_np=0
+  - Aggregate_nt=6
+  - Aggregate_nt1=30
+  - Aggregate_nt2=0
+  - Aggregate_parallel_workers=0
+  - Aggregate_plan_width=236
+  - Aggregate_reltuples=0.0000
+  - Aggregate_sel=0.2000
+  - Aggregate_startup_cost=170311.1100
+  - Aggregate_total_cost=170315.8800
+  - GatherMerge_Outer_np=0
+  - GatherMerge_Outer_nt=30
+  - GatherMerge_Outer_nt1=6
+  - GatherMerge_Outer_nt2=0
+  - GatherMerge_Outer_parallel_workers=5
+  - GatherMerge_Outer_plan_width=236
+  - GatherMerge_Outer_reltuples=0.0000
+  - GatherMerge_Outer_sel=5.0000
+  - GatherMerge_Outer_startup_cost=170311.1100
+  - GatherMerge_Outer_total_cost=170314.7400
   - SeqScan_Outer_np=112600
   - SeqScan_Outer_nt=1191651
   - SeqScan_Outer_nt1=0
@@ -132,24 +137,4 @@ Node 61 (Aggregate) - ROOT
   - Sort_Outer_sel=1.0000
   - Sort_Outer_startup_cost=169311.0400
   - Sort_Outer_total_cost=169311.0500
-- **Output:** st=949.34, rt=953.93
-
-### Step 2: Node 61 (Aggregate) - ROOT
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=6
-  - nt1=30
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=236
-  - reltuples=0.0000
-  - rt1=953.9290
-  - rt2=0.0000
-  - sel=0.2000
-  - st1=949.3409
-  - st2=0.0000
-  - startup_cost=170311.1100
-  - total_cost=170315.8800
-- **Output:** st=1026.41, rt=1035.18
+- **Output:** st=949.38, rt=953.98

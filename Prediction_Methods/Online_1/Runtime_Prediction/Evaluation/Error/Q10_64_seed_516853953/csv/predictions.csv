@@ -1,3 +1,5 @@
-query_file;node_id;node_type;depth;parent_relationship;actual_startup_time;actual_total_time;predicted_startup_time;predicted_total_time;prediction_type
-Q10_64_seed_516853953;20804;Hash Join;4;Outer;39.785;1117.764;37.22601216358454;730.6254703322533;pattern
-Q10_64_seed_516853953;20800;Limit;0;;1166.177;1166.992;1153.9130705054893;1154.74125256424;pattern
+query_file;node_id;node_type;depth;parent_relationship;actual_startup_time;actual_total_time;predicted_startup_time;predicted_total_time;prediction_type;is_leaf
+Q10_64_seed_516853953;20812;Seq Scan;6;Outer;0.009;0.009;0.06128368059525324;7.194474264237783;operator;True
+Q10_64_seed_516853953;20805;Hash Join;5;Outer;39.708;1114.878;36.96901127117376;725.0834396659263;pattern;
+Q10_64_seed_516853953;20811;Hash;5;Inner;0.013;0.013;14.539339481092867;14.53971731681122;operator;False
+Q10_64_seed_516853953;20800;Limit;0;;1166.177;1166.992;1150.3841367414875;1151.1496367414875;pattern;

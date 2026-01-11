@@ -1,3 +1,2 @@
 query_file;node_id;node_type;depth;parent_relationship;actual_startup_time;actual_total_time;predicted_startup_time;predicted_total_time;prediction_type
-Q19_80_seed_648118449;32119;Hash Join;3;Outer;99.731;812.87;84.58406204774771;373.8306768472087;pattern
-Q19_80_seed_648118449;32116;Aggregate;0;;828.14;834.527;829.1939512383292;834.4991021016942;pattern
+Q19_80_seed_648118449;32116;Aggregate;0;;828.14;834.527;835.8593596655758;841.1718138694363;pattern

@@ -1,17 +1,29 @@
 iteration;pattern_hash;pattern_string;error_score;new_mre;delta;status;mre_after
 0;895c6e8c1a30a094329d71cef3111fbd;Hash Join -> [Seq Scan (Outer), Hash (Inner)];75736.16258656548;0.17923505511149673;4.262639974800253e-06;ACCEPTED;0.17923505511149673
-1;3aab37bea1a884da206eb32f2c1ae5ba;Hash -> Seq Scan (Outer);94712.47521857166;0.17923505536512;-2.5362326128153256e-10;REJECTED;0.17923505511149673
-2;1d35fb978b379d4a820897907e56ab7b;Sort -> Aggregate (Outer);26.400597457342585;0.1780718553276872;0.001163199783809521;ACCEPTED;0.1780718553276872
-3;f4cb205adfd108034c883c87871a6da8;Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)];41652.92278452959;0.17806657835585551;5.276971831696953e-06;ACCEPTED;0.17806657835585551
-4;4fc84c77ced18a46514c982f23f12deb;Aggregate -> Gather (Outer);15.829283803233128;0.17116121197217388;0.006905366383681638;ACCEPTED;0.17116121197217388
-5;3cfa90d7df3cd40936e985146fc5ec76;Nested Loop -> [Hash Join (Outer), Index Scan (Inner)];6.245004280761726;;;SKIPPED_LOW_ERROR;0.17116121197217388
-6;e0e3c3e1b229568ff01695a42f46d8ea;Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)];4.085037835052093;;;SKIPPED_LOW_ERROR;0.17116121197217388
-7;e296a71f830144e9c017d1502a6dcc01;Limit -> Sort (Outer);40.38843562145354;0.17116121197217388;0.0;REJECTED;0.17116121197217388
-8;7bcfec2259bf8f077d86cc017740ebd6;Limit -> Sort -> Aggregate (Outer) (Outer);40.38843562145354;0.1707669941152774;0.0003942178568964727;ACCEPTED;0.1707669941152774
-9;b3a4509347209a6fe95e44fff8ff3908;Sort -> Aggregate -> Gather (Outer) (Outer);5.772492926324229;;;SKIPPED_LOW_ERROR;0.1707669941152774
-10;25df29b5b69835d07c0d8b72b0e46a3b;Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer);33.586003180316084;0.07224486639642863;0.09852212771884877;ACCEPTED;0.07224486639642863
-11;9d8bc76cb8526870dbde907b3a58239f;Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)];0.7301652394434255;;;SKIPPED_LOW_ERROR;0.07224486639642863
-12;b68c8b9694ca5d771418ab335df27acf;Limit -> Sort -> Aggregate -> Gather -> Nested Loop (Outer) (Outer) (Outer) (Outer);0.2810163578884408;;;SKIPPED_LOW_ERROR;0.07224486639642863
-13;5eedbd1bf7bcbb951c7d986a8ae8b5bf;Limit -> Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);0.2810163578884408;;;SKIPPED_LOW_ERROR;0.07224486639642863
-14;d64c42c6bb777c4d3a051e9bfcb33675;Limit -> Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);0.2810163578884408;;;SKIPPED_LOW_ERROR;0.07224486639642863
-15;ea3737caf833d467cc79f6ed0c3f82c6;Limit -> Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);0.2810163578884408;;;SKIPPED_LOW_ERROR;0.07224486639642863
+1;3aab37bea1a884da206eb32f2c1ae5ba;Hash -> Seq Scan (Outer);113504.23066370949;0.17923505536512;-2.5362326128153256e-10;REJECTED;0.17923505511149673
+2;1d35fb978b379d4a820897907e56ab7b;Sort -> Aggregate (Outer);26.401728332825463;0.1780718553276872;0.001163199783809521;ACCEPTED;0.1780718553276872
+3;f4cb205adfd108034c883c87871a6da8;Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)];75544.58223814215;0.17806657835585551;5.276971831696953e-06;ACCEPTED;0.17806657835585551
+4;4fc84c77ced18a46514c982f23f12deb;Aggregate -> Gather (Outer);13.389386687486567;;;SKIPPED_LOW_ERROR;0.17806657835585551
+5;3cfa90d7df3cd40936e985146fc5ec76;Nested Loop -> [Hash Join (Outer), Index Scan (Inner)];6.237479210584092;;;SKIPPED_LOW_ERROR;0.17806657835585551
+6;e0e3c3e1b229568ff01695a42f46d8ea;Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)];4.077175778751588;;;SKIPPED_LOW_ERROR;0.17806657835585551
+7;e296a71f830144e9c017d1502a6dcc01;Limit -> Sort (Outer);40.375480931209395;0.17806657835585551;0.0;REJECTED;0.17806657835585551
+8;7bcfec2259bf8f077d86cc017740ebd6;Limit -> Sort -> Aggregate (Outer) (Outer);40.375480931209395;0.17767236049895904;0.0003942178568964727;ACCEPTED;0.17767236049895904
+9;b3a4509347209a6fe95e44fff8ff3908;Sort -> Aggregate -> Gather (Outer) (Outer);2.904205879341764;;;SKIPPED_LOW_ERROR;0.17767236049895904
+10;25df29b5b69835d07c0d8b72b0e46a3b;Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer);33.44810198551294;0.07915023278011028;0.09852212771884876;ACCEPTED;0.07915023278011028
+11;694ae2c30b44b8e21dd83c29effb0b4b;Gather -> Nested Loop (Outer);0.6475453341759521;;;SKIPPED_LOW_ERROR;0.07915023278011028
+12;071a1ee51957c11275fcdf6a16992ea8;Aggregate -> Gather -> Nested Loop (Outer) (Outer);0.29951158949270973;;;SKIPPED_LOW_ERROR;0.07915023278011028
+13;128ec77a89a13711c504c9cce0baad5e;Sort -> Aggregate -> Gather -> Nested Loop (Outer) (Outer) (Outer);0.9011746816431352;;;SKIPPED_LOW_ERROR;0.07915023278011028
+14;925caafaa36549b6e0787b2834e45faf;Gather -> Nested Loop -> [Hash Join (Outer), Index Scan (Inner)] (Outer);0.6475453341759521;;;SKIPPED_LOW_ERROR;0.07915023278011028
+15;7b066ef450fd05f9ba4fc844e708c08d;Aggregate -> Gather -> Nested Loop -> [Hash Join (Outer), Index Scan (Inner)] (Outer) (Outer);0.29951158949270973;;;SKIPPED_LOW_ERROR;0.07915023278011028
+16;b68c8b9694ca5d771418ab335df27acf;Limit -> Sort -> Aggregate -> Gather -> Nested Loop (Outer) (Outer) (Outer) (Outer);16.381314846776434;0.07930389129966356;-0.00015365851955327636;REJECTED;0.07915023278011028
+17;8d7fa5fd2bc1034adb4fd2309940765f;Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)] (Outer);0.6475453341759521;;;SKIPPED_LOW_ERROR;0.07915023278011028
+18;9d8bc76cb8526870dbde907b3a58239f;Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)];0.7171105879035107;;;SKIPPED_LOW_ERROR;0.07915023278011028
+19;ac6af82a2d694cf6a5b0ad71084dd412;Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer);0.9011746816431352;;;SKIPPED_LOW_ERROR;0.07915023278011028
+20;3e93cf7610f3d575b2bb88576461f18a;Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer);0.6475453341759521;;;SKIPPED_LOW_ERROR;0.07915023278011028
+21;5a77e21f7a170052d82bc013d675c535;Aggregate -> Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer);0.29951158949270973;;;SKIPPED_LOW_ERROR;0.07915023278011028
+22;5eedbd1bf7bcbb951c7d986a8ae8b5bf;Limit -> Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);16.381314846776434;0.07930389401578308;-0.0001536612356728001;REJECTED;0.07915023278011028
+23;64cd7a0cd7af4552576b5746a9dd0c2b;Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer);0.9011746816431352;;;SKIPPED_LOW_ERROR;0.07915023278011028
+24;ff421d0575f5d9359dccd784342f0159;Aggregate -> Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer);0.29951158949270973;;;SKIPPED_LOW_ERROR;0.07915023278011028
+25;d64c42c6bb777c4d3a051e9bfcb33675;Limit -> Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);16.381314846776434;0.07930389685720621;-0.00015366407709592467;REJECTED;0.07915023278011028
+26;eb451e770afeb8e7c55506c2f8a90504;Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer);0.9011746816431352;;;SKIPPED_LOW_ERROR;0.07915023278011028
+27;ea3737caf833d467cc79f6ed0c3f82c6;Limit -> Sort -> Aggregate -> Gather -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);16.381314846776434;0.07930389600612983;-0.00015366322601954863;REJECTED;0.07915023278011028

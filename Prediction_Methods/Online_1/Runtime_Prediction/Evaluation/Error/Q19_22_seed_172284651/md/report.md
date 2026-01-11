@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q19_22_seed_172284651
-**Timestamp:** 2026-01-01 20:16:55
+**Timestamp:** 2026-01-11 20:02:59
 
 ## Data Summary
 
@@ -50,20 +50,20 @@
 | 0 | 3aab37be | 113504.2307 | -0.0000% | REJECTED | 17.92% |
 | 1 | 895c6e8c | 75736.1626 | 0.0004% | ACCEPTED | 17.92% |
 | 2 | f4cb205a | 41652.9228 | 0.0005% | ACCEPTED | 17.92% |
-| 3 | 4fc84c77 | 13.3874 | N/A | SKIPPED_LOW_ERROR | 17.92% |
-| 4 | a5f39f08 | 12.4675 | 1.7089% | ACCEPTED | 16.21% |
-| 5 | 422ae017 | 2.5808 | N/A | SKIPPED_LOW_ERROR | 16.21% |
-| 6 | 7524c54c | 2.5808 | N/A | SKIPPED_LOW_ERROR | 16.21% |
-| 7 | 310134da | 1.7942 | N/A | SKIPPED_LOW_ERROR | 16.21% |
-| 8 | efde8b38 | 1.7942 | N/A | SKIPPED_LOW_ERROR | 16.21% |
-| 9 | f8295d8b | 1.0024 | N/A | SKIPPED_LOW_ERROR | 16.21% |
+| 3 | 4fc84c77 | 13.3874 | 0.7524% | ACCEPTED | 17.17% |
+| 4 | a5f39f08 | 7.4789 | 0.9566% | ACCEPTED | 16.21% |
+| 5 | 422ae017 | 2.5808 | 0.0024% | ACCEPTED | 16.21% |
+| 6 | 310134da | 1.7942 | 0.0191% | ACCEPTED | 16.19% |
+| 7 | efde8b38 | 2.2456 | N/A | REJECTED | 16.19% |
+| 8 | 7524c54c | 1.6899 | N/A | REJECTED | 16.19% |
+| 9 | f8295d8b | 0.8975 | 0.0064% | ACCEPTED | 16.19% |
 ## Query Tree
 
 ```
-Node 31668 (Aggregate) [PATTERN: a5f39f08] - ROOT
+Node 31668 (Aggregate) [PATTERN: f8295d8b] - ROOT
   Node 31669 (Gather) [consumed]
     Node 31670 (Aggregate) [consumed]
-      Node 31671 (Hash Join) [PATTERN: f4cb205a]
+      Node 31671 (Hash Join) [consumed]
         Node 31672 (Seq Scan) [consumed] - LEAF
         Node 31673 (Hash) [consumed]
           Node 31674 (Seq Scan) [consumed] - LEAF
@@ -73,8 +73,7 @@ Node 31668 (Aggregate) [PATTERN: a5f39f08] - ROOT
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Hash Join -> [Seq Scan (Outer) | f4cb205a | 31671 | 31668, 31669, 31670, 31672, 31673, 31674 |
-| Aggregate -> Gather -> Aggrega | a5f39f08 | 31668 | 31669, 31670, 31671, 31672, 31673, 31674 |
+| Aggregate -> Gather -> Aggrega | f8295d8b | 31668 | 31669, 31670, 31671, 31672, 31673, 31674 |
 
 
 **Legend:**
@@ -84,58 +83,19 @@ Node 31668 (Aggregate) [PATTERN: a5f39f08] - ROOT
 
 ## Phase E: Final Prediction
 
-- Final MRE: 2.15%
-- Improvement: 8.32%
+- Final MRE: 2.97%
+- Improvement: 7.50%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 31668 | Aggregate | 816.91 | 834.50 | 2.2% | pattern |
-| 31671 | Hash Join | 797.02 | 373.83 | 53.1% | pattern |
+| 31668 | Aggregate | 816.91 | 841.17 | 3.0% | pattern |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 31671 (Hash Join) - PATTERN ROOT
+### Step 1: Node 31668 (Aggregate) - PATTERN ROOT
 
 - **Source:** pattern
-- **Pattern:** f4cb205a (Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)])
-- **Consumes:** Nodes 31668, 31669, 31670, 31672, 31673, 31674
-- **Input Features:**
-  - HashJoin_np=0
-  - HashJoin_nt=23
-  - HashJoin_nt1=22489
-  - HashJoin_nt2=203
-  - HashJoin_parallel_workers=0
-  - HashJoin_plan_width=12
-  - HashJoin_reltuples=0.0000
-  - HashJoin_sel=0.0000
-  - HashJoin_startup_cost=7672.2000
-  - HashJoin_total_cost=156338.5300
-  - Hash_Inner_np=0
-  - Hash_Inner_nt=203
-  - Hash_Inner_nt1=203
-  - Hash_Inner_nt2=0
-  - Hash_Inner_parallel_workers=0
-  - Hash_Inner_plan_width=30
-  - Hash_Inner_reltuples=0.0000
-  - Hash_Inner_sel=1.0000
-  - Hash_Inner_startup_cost=7669.6700
-  - Hash_Inner_total_cost=7669.6700
-  - SeqScan_Outer_np=4128
-  - SeqScan_Outer_nt=203
-  - SeqScan_Outer_nt1=0
-  - SeqScan_Outer_nt2=0
-  - SeqScan_Outer_parallel_workers=0
-  - SeqScan_Outer_plan_width=30
-  - SeqScan_Outer_reltuples=200000.0000
-  - SeqScan_Outer_sel=0.0010
-  - SeqScan_Outer_startup_cost=0.0000
-  - SeqScan_Outer_total_cost=7669.6700
-- **Output:** st=84.58, rt=373.83
-
-### Step 2: Node 31668 (Aggregate) - PATTERN ROOT
-
-- **Source:** pattern
-- **Pattern:** a5f39f08 (Aggregate -> Gather -> Aggregate (Outer) (Outer))
+- **Pattern:** f8295d8b (Aggregate -> Gather -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer) (Outer) (Outer))
 - **Consumes:** Nodes 31669, 31670, 31671, 31672, 31673, 31674
 - **Input Features:**
   - Aggregate_Outer_np=0
@@ -168,4 +128,34 @@ Node 31668 (Aggregate) [PATTERN: a5f39f08] - ROOT
   - Gather_Outer_sel=5.0000
   - Gather_Outer_startup_cost=157338.7000
   - Gather_Outer_total_cost=157339.2100
-- **Output:** st=829.19, rt=834.50
+  - HashJoin_Outer_np=0
+  - HashJoin_Outer_nt=23
+  - HashJoin_Outer_nt1=22489
+  - HashJoin_Outer_nt2=203
+  - HashJoin_Outer_parallel_workers=0
+  - HashJoin_Outer_plan_width=12
+  - HashJoin_Outer_reltuples=0.0000
+  - HashJoin_Outer_sel=0.0000
+  - HashJoin_Outer_startup_cost=7672.2000
+  - HashJoin_Outer_total_cost=156338.5300
+  - Hash_Inner_np=0
+  - Hash_Inner_nt=203
+  - Hash_Inner_nt1=203
+  - Hash_Inner_nt2=0
+  - Hash_Inner_parallel_workers=0
+  - Hash_Inner_plan_width=30
+  - Hash_Inner_reltuples=0.0000
+  - Hash_Inner_sel=1.0000
+  - Hash_Inner_startup_cost=7669.6700
+  - Hash_Inner_total_cost=7669.6700
+  - SeqScan_Outer_np=4128
+  - SeqScan_Outer_nt=203
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=30
+  - SeqScan_Outer_reltuples=200000.0000
+  - SeqScan_Outer_sel=0.0010
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=7669.6700
+- **Output:** st=835.86, rt=841.17
