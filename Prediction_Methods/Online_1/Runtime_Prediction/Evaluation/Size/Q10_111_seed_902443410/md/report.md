@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q10_111_seed_902443410
-**Timestamp:** 2026-01-01 17:52:41
+**Timestamp:** 2026-01-11 16:18:21
 
 ## Data Summary
 
@@ -25,30 +25,30 @@
 | 3aab37be | Hash -> Seq Scan (Outer) | 2 | 336 | 33781.0% | 113504.2307 |
 | 1d35fb97 | Sort -> Aggregate (Outer) | 2 | 192 | 13.8% | 26.4017 |
 | 4fc84c77 | Aggregate -> Gather (Outer) | 2 | 144 | 9.3% | 13.3894 |
+| e296a71f | Limit -> Sort (Outer) | 2 | 72 | 56.1% | 40.3755 |
+| 5437ac31 | Gather -> Hash Join (Outer) | 2 | 24 | 3.9% | 0.9438 |
 | 2e0f44ef | Hash Join -> [Nested Loop (Outer), Hash ... | 2 | 144 | 75.1% | 108.1438 |
 | c53c4396 | Nested Loop -> [Seq Scan (Outer), Index ... | 2 | 96 | 147.6% | 141.6847 |
-| e296a71f | Limit -> Sort (Outer) | 2 | 72 | 56.1% | 40.3755 |
-| 7d4e78be | Hash Join -> [Hash Join (Outer), Hash (I... | 2 | 48 | 187.5% | 89.9904 |
-| 5437ac31 | Gather -> Hash Join (Outer) | 2 | 24 | 3.9% | 0.9438 |
 | 7bcfec22 | Limit -> Sort -> Aggregate (Outer) (Oute... | 3 | 72 | 56.1% | 40.3755 |
 | b3a45093 | Sort -> Aggregate -> Gather (Outer) (Out... | 3 | 72 | 4.0% | 2.9042 |
-| 30d6e09b | Hash Join -> [Hash Join -> [Nested Loop ... | 3 | 48 | 187.5% | 89.9904 |
-| 2873b8c3 | Hash Join -> [Nested Loop -> [Seq Scan (... | 3 | 48 | 197.5% | 94.8003 |
+| 7d4e78be | Hash Join -> [Hash Join (Outer), Hash (I... | 2 | 48 | 187.5% | 89.9904 |
 | 284f5967 | Aggregate -> Gather -> Hash Join (Outer)... | 3 | 24 | 2.6% | 0.6204 |
-| f4d53e95 | Gather -> Hash Join -> [Hash Join (Outer... | 3 | 24 | 3.9% | 0.9438 |
 | 25df29b5 | Limit -> Sort -> Aggregate -> Gather (Ou... | 4 | 48 | 69.7% | 33.4481 |
-| 7a51ce50 | Hash Join -> [Hash Join -> [Nested Loop ... | 4 | 48 | 187.5% | 89.9904 |
 | 6abf8d66 | Sort -> Aggregate -> Gather -> Hash Join... | 4 | 24 | 2.1% | 0.5062 |
-| 183d8335 | Aggregate -> Gather -> Hash Join -> [Has... | 4 | 24 | 2.6% | 0.6204 |
-| dd59eb74 | Gather -> Hash Join -> [Hash Join -> [Ne... | 4 | 24 | 3.9% | 0.9438 |
+| f4d53e95 | Gather -> Hash Join -> [Hash Join (Outer... | 3 | 24 | 3.9% | 0.9438 |
 | 04a01b61 | Limit -> Sort -> Aggregate -> Gather -> ... | 5 | 24 | 71.1% | 17.0668 |
+| 183d8335 | Aggregate -> Gather -> Hash Join -> [Has... | 4 | 24 | 2.6% | 0.6204 |
+| 2873b8c3 | Hash Join -> [Nested Loop -> [Seq Scan (... | 3 | 48 | 197.5% | 94.8003 |
+| 30d6e09b | Hash Join -> [Hash Join -> [Nested Loop ... | 3 | 48 | 187.5% | 89.9904 |
 | 41017f66 | Sort -> Aggregate -> Gather -> Hash Join... | 5 | 24 | 2.1% | 0.5062 |
-| 95d67a9e | Aggregate -> Gather -> Hash Join -> [Has... | 5 | 24 | 2.6% | 0.6204 |
-| c9d5d7a8 | Gather -> Hash Join -> [Hash Join -> [Ne... | 5 | 24 | 3.9% | 0.9438 |
 | 4cf43b83 | Limit -> Sort -> Aggregate -> Gather -> ... | 6 | 24 | 71.1% | 17.0668 |
+| dd59eb74 | Gather -> Hash Join -> [Hash Join -> [Ne... | 4 | 24 | 3.9% | 0.9438 |
+| 95d67a9e | Aggregate -> Gather -> Hash Join -> [Has... | 5 | 24 | 2.6% | 0.6204 |
+| 7a51ce50 | Hash Join -> [Hash Join -> [Nested Loop ... | 4 | 48 | 187.5% | 89.9904 |
 | 313b221c | Sort -> Aggregate -> Gather -> Hash Join... | 6 | 24 | 2.1% | 0.5062 |
-| b8f6401f | Aggregate -> Gather -> Hash Join -> [Has... | 6 | 24 | 2.6% | 0.6204 |
 | 843f0c9a | Limit -> Sort -> Aggregate -> Gather -> ... | 7 | 24 | 71.1% | 17.0668 |
+| c9d5d7a8 | Gather -> Hash Join -> [Hash Join -> [Ne... | 5 | 24 | 3.9% | 0.9438 |
+| b8f6401f | Aggregate -> Gather -> Hash Join -> [Has... | 6 | 24 | 2.6% | 0.6204 |
 | 449d0c12 | Sort -> Aggregate -> Gather -> Hash Join... | 7 | 24 | 2.1% | 0.5062 |
 | bef3a974 | Limit -> Sort -> Aggregate -> Gather -> ... | 8 | 24 | 71.1% | 17.0668 |
 
@@ -63,31 +63,41 @@
 |------|---------|-------------|-------|--------|-----------|
 | 0 | 3aab37be | 113504.2307 | -0.0000% | REJECTED | 17.92% |
 | 1 | 1d35fb97 | 26.4017 | 0.1167% | ACCEPTED | 17.81% |
-| 2 | 4fc84c77 | 15.8334 | 0.6912% | ACCEPTED | 17.12% |
-| 3 | 2e0f44ef | 108.1438 | 0.0001% | ACCEPTED | 17.12% |
-| 4 | c53c4396 | 8.0758 | N/A | SKIPPED_LOW_ERROR | 17.12% |
-| 5 | e296a71f | 40.3884 | N/A | REJECTED | 17.12% |
-| 6 | 7d4e78be | 83.6779 | N/A | REJECTED | 17.12% |
-| 7 | 5437ac31 | 0.9214 | N/A | SKIPPED_LOW_ERROR | 17.12% |
-| 8 | 7bcfec22 | 40.3884 | 0.0394% | ACCEPTED | 17.08% |
-| 9 | b3a45093 | 5.7725 | N/A | SKIPPED_LOW_ERROR | 17.08% |
-| 10 | 30d6e09b | 83.6779 | N/A | REJECTED | 17.08% |
-| 11 | 2873b8c3 | 121.6368 | N/A | REJECTED | 17.08% |
-| 12 | f4d53e95 | 0.9214 | N/A | SKIPPED_LOW_ERROR | 17.08% |
-| 13 | 25df29b5 | 33.5860 | 9.8522% | ACCEPTED | 7.22% |
-| 14 | 7a51ce50 | 83.6779 | N/A | REJECTED | 7.22% |
-| 15 | 04a01b61 | 0.2016 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 16 | 4cf43b83 | 0.2016 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 17 | 843f0c9a | 0.2016 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 18 | bef3a974 | 0.2016 | N/A | SKIPPED_LOW_ERROR | 7.22% |
+| 2 | 4fc84c77 | 13.3894 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 3 | e296a71f | 40.3755 | N/A | REJECTED | 17.81% |
+| 4 | 5437ac31 | 0.9438 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 5 | 2e0f44ef | 108.1438 | 0.0001% | ACCEPTED | 17.81% |
+| 6 | c53c4396 | 141.6847 | -0.0000% | REJECTED | 17.81% |
+| 7 | 7bcfec22 | 40.3755 | 0.0394% | ACCEPTED | 17.77% |
+| 8 | b3a45093 | 2.9042 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 9 | 7d4e78be | 89.9904 | N/A | REJECTED | 17.77% |
+| 10 | 284f5967 | 0.6204 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 11 | 25df29b5 | 33.4481 | 9.8522% | ACCEPTED | 7.92% |
+| 12 | 6abf8d66 | 0.5062 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 13 | f4d53e95 | 0.9438 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 14 | 04a01b61 | 17.0668 | 0.0045% | ACCEPTED | 7.91% |
+| 15 | 183d8335 | 0.6204 | N/A | SKIPPED_LOW_ERROR | 7.91% |
+| 16 | 2873b8c3 | 94.8003 | N/A | REJECTED | 7.91% |
+| 17 | 30d6e09b | 89.9904 | N/A | REJECTED | 7.91% |
+| 18 | 41017f66 | 0.5062 | N/A | SKIPPED_LOW_ERROR | 7.91% |
+| 19 | 4cf43b83 | 17.0668 | -0.0000% | REJECTED | 7.91% |
+| 20 | dd59eb74 | 0.9438 | N/A | SKIPPED_LOW_ERROR | 7.91% |
+| 21 | 95d67a9e | 0.6204 | N/A | SKIPPED_LOW_ERROR | 7.91% |
+| 22 | 7a51ce50 | 89.9904 | N/A | REJECTED | 7.91% |
+| 23 | 313b221c | 0.5062 | N/A | SKIPPED_LOW_ERROR | 7.91% |
+| 24 | 843f0c9a | 17.0668 | -0.0000% | REJECTED | 7.91% |
+| 25 | c9d5d7a8 | 0.9438 | N/A | SKIPPED_LOW_ERROR | 7.91% |
+| 26 | b8f6401f | 0.6204 | N/A | SKIPPED_LOW_ERROR | 7.91% |
+| 27 | 449d0c12 | 0.5062 | N/A | SKIPPED_LOW_ERROR | 7.91% |
+| 28 | bef3a974 | 17.0668 | -0.0000% | REJECTED | 7.91% |
 ## Query Tree
 
 ```
-Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
+Node 19526 (Limit) [PATTERN: 04a01b61] - ROOT
   Node 19527 (Sort) [consumed]
     Node 19528 (Aggregate) [consumed]
       Node 19529 (Gather) [consumed]
-        Node 19530 (Hash Join)
+        Node 19530 (Hash Join) [consumed]
           Node 19531 (Hash Join) [PATTERN: 2e0f44ef]
             Node 19532 (Nested Loop) [consumed]
               Node 19533 (Seq Scan) - LEAF
@@ -102,8 +112,8 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Limit -> Sort -> Aggregate ->  | 25df29b5 | 19526 | 19527, 19528, 19529, 19531, 19532, 19535 |
-| Hash Join -> [Nested Loop (Out | 2e0f44ef | 19531 | 19526, 19527, 19528, 19529, 19532, 19535 |
+| Limit -> Sort -> Aggregate ->  | 04a01b61 | 19526 | 19527, 19528, 19529, 19530, 19531, 19532, 19535 |
+| Hash Join -> [Nested Loop (Out | 2e0f44ef | 19531 | 19526, 19527, 19528, 19529, 19530, 19532, 19535 |
 
 
 **Legend:**
@@ -113,13 +123,12 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
 
 ## Phase E: Final Prediction
 
-- Final MRE: 0.11%
-- Improvement: 70.09%
+- Final MRE: 0.44%
+- Improvement: 69.76%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 19526 | Limit | 1156.23 | 1154.98 | 0.1% | pattern |
-| 19530 | Hash Join | 1101.85 | 1087.63 | 1.3% | operator |
+| 19526 | Limit | 1156.23 | 1151.19 | 0.4% | pattern |
 | 19531 | Hash Join | 1098.96 | 1101.91 | 0.3% | pattern |
 | 19537 | Hash | 0.01 | 14.54 | 111744.0% | operator |
 | 19538 | Seq Scan | 0.01 | 7.19 | 79838.6% | operator |
@@ -213,7 +222,7 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
 
 - **Source:** pattern
 - **Pattern:** 2e0f44ef (Hash Join -> [Nested Loop (Outer), Hash (Inner)])
-- **Consumes:** Nodes 19526, 19527, 19528, 19529, 19532, 19535
+- **Consumes:** Nodes 19526, 19527, 19528, 19529, 19530, 19532, 19535
 - **Input Features:**
   - HashJoin_np=0
   - HashJoin_nt=18756
@@ -267,31 +276,11 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
   - total_cost=1.2500
 - **Output:** st=14.54, rt=14.54
 
-### Step 7: Node 19530 (Hash Join)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=18756
-  - nt1=18756
-  - nt2=25
-  - parallel_workers=0
-  - plan_width=260
-  - reltuples=0.0000
-  - rt1=1101.9114
-  - rt2=14.5397
-  - sel=0.0400
-  - st1=37.5302
-  - st2=14.5393
-  - startup_cost=5008.2400
-  - total_cost=81408.5000
-- **Output:** st=39.36, rt=1087.63
-
-### Step 8: Node 19526 (Limit) - PATTERN ROOT
+### Step 7: Node 19526 (Limit) - PATTERN ROOT
 
 - **Source:** pattern
-- **Pattern:** 25df29b5 (Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer))
-- **Consumes:** Nodes 19527, 19528, 19529, 19531, 19532, 19535
+- **Pattern:** 04a01b61 (Limit -> Sort -> Aggregate -> Gather -> Hash Join (Outer) (Outer) (Outer) (Outer))
+- **Consumes:** Nodes 19527, 19528, 19529, 19530, 19531, 19532, 19535
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=58143
@@ -313,6 +302,16 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
   - Gather_Outer_sel=3.1000
   - Gather_Outer_startup_cost=6008.2400
   - Gather_Outer_total_cost=88222.8000
+  - HashJoin_Outer_np=0
+  - HashJoin_Outer_nt=18756
+  - HashJoin_Outer_nt1=18756
+  - HashJoin_Outer_nt2=25
+  - HashJoin_Outer_parallel_workers=0
+  - HashJoin_Outer_plan_width=260
+  - HashJoin_Outer_reltuples=0.0000
+  - HashJoin_Outer_sel=0.0400
+  - HashJoin_Outer_startup_cost=5008.2400
+  - HashJoin_Outer_total_cost=81408.5000
   - Limit_np=0
   - Limit_nt=20
   - Limit_nt1=58143
@@ -333,4 +332,4 @@ Node 19526 (Limit) [PATTERN: 25df29b5] - ROOT
   - Sort_Outer_sel=1.0000
   - Sort_Outer_startup_cost=91223.5400
   - Sort_Outer_total_cost=91368.9000
-- **Output:** st=1154.15, rt=1154.98
+- **Output:** st=1150.42, rt=1151.19

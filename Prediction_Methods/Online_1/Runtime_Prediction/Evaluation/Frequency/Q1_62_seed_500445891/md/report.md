@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q1_62_seed_500445891
-**Timestamp:** 2026-01-01 18:52:55
+**Timestamp:** 2026-01-11 17:51:51
 
 ## Data Summary
 
@@ -43,15 +43,15 @@
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
 | 0 | 1d35fb97 | 26.4017 | 0.1167% | ACCEPTED | 17.81% |
-| 1 | 2724c080 | 7.7852 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 2 | 1691f6f0 | 7.2969 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 3 | 29ee00db | 4.4636 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 4 | 184f44de | 5.7958 | 0.0023% | ACCEPTED | 17.80% |
-| 5 | 715d5c92 | 4.3242 | N/A | SKIPPED_LOW_ERROR | 17.80% |
-| 6 | f8231c4d | 3.4058 | N/A | SKIPPED_LOW_ERROR | 17.80% |
-| 7 | dc1b1da7 | 3.6147 | 0.0016% | ACCEPTED | 17.80% |
-| 8 | 52c5ec81 | 3.1032 | 0.1020% | ACCEPTED | 17.70% |
-| 9 | 3dfa6025 | 2.0224 | N/A | SKIPPED_LOW_ERROR | 17.70% |
+| 1 | 2724c080 | 19.6008 | 0.0346% | ACCEPTED | 17.77% |
+| 2 | 1691f6f0 | 7.3257 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 3 | 29ee00db | 4.4662 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 4 | 184f44de | 4.0548 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 5 | 715d5c92 | 4.3530 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 6 | f8231c4d | 3.4083 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 7 | dc1b1da7 | 5.2893 | N/A | REJECTED | 17.77% |
+| 8 | 52c5ec81 | 3.1739 | 0.0894% | ACCEPTED | 17.68% |
+| 9 | 3dfa6025 | 2.3734 | N/A | SKIPPED_LOW_ERROR | 17.68% |
 ## Query Tree
 
 ```

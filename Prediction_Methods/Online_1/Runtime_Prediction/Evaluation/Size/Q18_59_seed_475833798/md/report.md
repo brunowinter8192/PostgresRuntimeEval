@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q18_59_seed_475833798
-**Timestamp:** 2026-01-01 18:08:16
+**Timestamp:** 2026-01-11 16:45:02
 
 ## Data Summary
 
@@ -22,70 +22,70 @@
 
 | Hash | Pattern String | Length | Occ | Avg MRE | Error Score |
 |------|----------------|--------|-----|---------|-------------|
-| 895c6e8c | Hash Join -> [Seq Scan (Outer), Hash (In... | 2 | 364 | 20806.6% | 75736.1626 |
 | 1d35fb97 | Sort -> Aggregate (Outer) | 2 | 192 | 13.8% | 26.4017 |
 | 2724c080 | Aggregate -> Gather Merge (Outer) | 2 | 168 | 11.7% | 19.6008 |
 | 3e2d5a00 | Sort -> Hash Join (Outer) | 2 | 96 | 19.3% | 18.5586 |
 | e296a71f | Limit -> Sort (Outer) | 2 | 72 | 56.1% | 40.3755 |
+| 3e579ee9 | Hash -> Aggregate (Outer) | 2 | 24 | 92.2% | 22.1283 |
 | 44ca42df | Gather Merge -> Incremental Sort (Outer) | 2 | 24 | 54.5% | 13.0757 |
 | 8a78742e | Incremental Sort -> Nested Loop (Outer) | 2 | 24 | 0.6% | 0.1344 |
-| 4b856d44 | Nested Loop -> [Merge Join (Outer), Inde... | 2 | 24 | 53.7% | 12.8846 |
-| 56dc70e5 | Merge Join -> [Sort (Outer), Sort (Inner... | 2 | 24 | 0.6% | 0.1353 |
-| 3e579ee9 | Hash -> Aggregate (Outer) | 2 | 24 | 92.2% | 22.1283 |
 | a02337a9 | Aggregate -> Index Scan (Outer) | 2 | 24 | 52.3% | 12.5548 |
 | be4808de | Sort -> Seq Scan (Outer) | 2 | 24 | 1457.3% | 349.7507 |
+| 895c6e8c | Hash Join -> [Seq Scan (Outer), Hash (In... | 2 | 364 | 20806.6% | 75736.1626 |
 | 7bcfec22 | Limit -> Sort -> Aggregate (Outer) (Oute... | 3 | 72 | 56.1% | 40.3755 |
 | ddb1e0ca | Sort -> Aggregate -> Gather Merge (Outer... | 3 | 48 | 28.5% | 13.6847 |
 | 20547233 | Aggregate -> Gather Merge -> Incremental... | 3 | 24 | 56.7% | 13.5972 |
-| 9156106f | Gather Merge -> Incremental Sort -> Nest... | 3 | 24 | 54.5% | 13.0757 |
-| 42f3ebc2 | Incremental Sort -> Nested Loop -> [Merg... | 3 | 24 | 0.6% | 0.1344 |
-| b6901c4f | Nested Loop -> [Merge Join -> [Sort (Out... | 3 | 24 | 53.7% | 12.8846 |
-| 7b9e50b6 | Merge Join -> [Sort -> Hash Join (Outer)... | 3 | 24 | 0.6% | 0.1353 |
-| 108510a7 | Sort -> Hash Join -> [Seq Scan (Outer), ... | 3 | 24 | 61.3% | 14.7039 |
-| fa8016c8 | Hash Join -> [Seq Scan (Outer), Hash -> ... | 3 | 24 | 73.6% | 17.6637 |
+| 4b856d44 | Nested Loop -> [Merge Join (Outer), Inde... | 2 | 24 | 53.7% | 12.8846 |
+| 56dc70e5 | Merge Join -> [Sort (Outer), Sort (Inner... | 2 | 24 | 0.6% | 0.1353 |
 | 81649f1e | Hash -> Aggregate -> Index Scan (Outer) ... | 3 | 24 | 92.2% | 22.1283 |
-| fd858367 | Limit -> Sort -> Aggregate -> Gather Mer... | 4 | 24 | 28.9% | 6.9274 |
-| 9609a2d3 | Sort -> Aggregate -> Gather Merge -> Inc... | 4 | 24 | 53.4% | 12.8272 |
+| 9156106f | Gather Merge -> Incremental Sort -> Nest... | 3 | 24 | 54.5% | 13.0757 |
+| 108510a7 | Sort -> Hash Join -> [Seq Scan (Outer), ... | 3 | 24 | 61.3% | 14.7039 |
+| 42f3ebc2 | Incremental Sort -> Nested Loop -> [Merg... | 3 | 24 | 0.6% | 0.1344 |
 | 5a10b80e | Aggregate -> Gather Merge -> Incremental... | 4 | 24 | 56.7% | 13.5972 |
+| 9609a2d3 | Sort -> Aggregate -> Gather Merge -> Inc... | 4 | 24 | 53.4% | 12.8272 |
+| fa8016c8 | Hash Join -> [Seq Scan (Outer), Hash -> ... | 3 | 24 | 73.6% | 17.6637 |
+| fd858367 | Limit -> Sort -> Aggregate -> Gather Mer... | 4 | 24 | 28.9% | 6.9274 |
+| 0591a930 | Sort -> Aggregate -> Gather Merge -> Inc... | 5 | 24 | 53.4% | 12.8272 |
+| 6ce7e974 | Limit -> Sort -> Aggregate -> Gather Mer... | 5 | 24 | 28.9% | 6.9274 |
 | 77cc594c | Gather Merge -> Incremental Sort -> Nest... | 4 | 24 | 54.5% | 13.0757 |
-| f7190cfe | Incremental Sort -> Nested Loop -> [Merg... | 4 | 24 | 0.6% | 0.1344 |
-| 64890ff2 | Nested Loop -> [Merge Join -> [Sort -> H... | 4 | 24 | 53.7% | 12.8846 |
-| cdf32396 | Merge Join -> [Sort -> Hash Join -> [Seq... | 4 | 24 | 0.6% | 0.1353 |
+| 7b9e50b6 | Merge Join -> [Sort -> Hash Join (Outer)... | 3 | 24 | 0.6% | 0.1353 |
+| b6901c4f | Nested Loop -> [Merge Join -> [Sort (Out... | 3 | 24 | 53.7% | 12.8846 |
 | b947fceb | Sort -> Hash Join -> [Seq Scan (Outer), ... | 4 | 24 | 61.3% | 14.7039 |
 | c50b85fa | Hash Join -> [Seq Scan (Outer), Hash -> ... | 4 | 24 | 73.6% | 17.6637 |
-| 6ce7e974 | Limit -> Sort -> Aggregate -> Gather Mer... | 5 | 24 | 28.9% | 6.9274 |
-| 0591a930 | Sort -> Aggregate -> Gather Merge -> Inc... | 5 | 24 | 53.4% | 12.8272 |
+| 3f59a731 | Limit -> Sort -> Aggregate -> Gather Mer... | 6 | 24 | 28.9% | 6.9274 |
+| da164244 | Sort -> Hash Join -> [Seq Scan (Outer), ... | 5 | 24 | 61.3% | 14.7039 |
+| f7190cfe | Incremental Sort -> Nested Loop -> [Merg... | 4 | 24 | 0.6% | 0.1344 |
 | fe1d68e6 | Aggregate -> Gather Merge -> Incremental... | 5 | 24 | 56.7% | 13.5972 |
 | 1f89191d | Gather Merge -> Incremental Sort -> Nest... | 5 | 24 | 54.5% | 13.0757 |
-| da27e563 | Incremental Sort -> Nested Loop -> [Merg... | 5 | 24 | 0.6% | 0.1344 |
-| 757104e0 | Nested Loop -> [Merge Join -> [Sort -> H... | 5 | 24 | 53.7% | 12.8846 |
-| 21ad4177 | Merge Join -> [Sort -> Hash Join -> [Seq... | 5 | 24 | 0.6% | 0.1353 |
-| da164244 | Sort -> Hash Join -> [Seq Scan (Outer), ... | 5 | 24 | 61.3% | 14.7039 |
-| 3f59a731 | Limit -> Sort -> Aggregate -> Gather Mer... | 6 | 24 | 28.9% | 6.9274 |
+| 64890ff2 | Nested Loop -> [Merge Join -> [Sort -> H... | 4 | 24 | 53.7% | 12.8846 |
 | 9aab693e | Sort -> Aggregate -> Gather Merge -> Inc... | 6 | 24 | 53.4% | 12.8272 |
+| cdf32396 | Merge Join -> [Sort -> Hash Join -> [Seq... | 4 | 24 | 0.6% | 0.1353 |
+| 0aa5463f | Limit -> Sort -> Aggregate -> Gather Mer... | 7 | 24 | 28.9% | 6.9274 |
+| 21ad4177 | Merge Join -> [Sort -> Hash Join -> [Seq... | 5 | 24 | 0.6% | 0.1353 |
 | 3833e018 | Aggregate -> Gather Merge -> Incremental... | 6 | 24 | 56.7% | 13.5972 |
+| da27e563 | Incremental Sort -> Nested Loop -> [Merg... | 5 | 24 | 0.6% | 0.1344 |
+| 5dab29bd | Merge Join -> [Sort -> Hash Join -> [Seq... | 6 | 24 | 0.6% | 0.1353 |
+| 697afc49 | Sort -> Aggregate -> Gather Merge -> Inc... | 7 | 24 | 53.4% | 12.8272 |
+| 757104e0 | Nested Loop -> [Merge Join -> [Sort -> H... | 5 | 24 | 53.7% | 12.8846 |
 | f632c59a | Gather Merge -> Incremental Sort -> Nest... | 6 | 24 | 54.5% | 13.0757 |
 | ae2eedbb | Incremental Sort -> Nested Loop -> [Merg... | 6 | 24 | 0.6% | 0.1344 |
-| f97027ec | Nested Loop -> [Merge Join -> [Sort -> H... | 6 | 24 | 53.7% | 12.8846 |
-| 5dab29bd | Merge Join -> [Sort -> Hash Join -> [Seq... | 6 | 24 | 0.6% | 0.1353 |
-| 0aa5463f | Limit -> Sort -> Aggregate -> Gather Mer... | 7 | 24 | 28.9% | 6.9274 |
-| 697afc49 | Sort -> Aggregate -> Gather Merge -> Inc... | 7 | 24 | 53.4% | 12.8272 |
 | bf6e7b10 | Aggregate -> Gather Merge -> Incremental... | 7 | 24 | 56.7% | 13.5972 |
+| f62c331d | Limit -> Sort -> Aggregate -> Gather Mer... | 8 | 24 | 28.9% | 6.9274 |
+| f97027ec | Nested Loop -> [Merge Join -> [Sort -> H... | 6 | 24 | 53.7% | 12.8846 |
+| 8b13b27f | Sort -> Aggregate -> Gather Merge -> Inc... | 8 | 24 | 53.4% | 12.8272 |
 | a7f0dd84 | Gather Merge -> Incremental Sort -> Nest... | 7 | 24 | 54.5% | 13.0757 |
 | c66d3a14 | Incremental Sort -> Nested Loop -> [Merg... | 7 | 24 | 0.6% | 0.1344 |
 | d3e76c7b | Nested Loop -> [Merge Join -> [Sort -> H... | 7 | 24 | 53.7% | 12.8846 |
-| f62c331d | Limit -> Sort -> Aggregate -> Gather Mer... | 8 | 24 | 28.9% | 6.9274 |
-| 8b13b27f | Sort -> Aggregate -> Gather Merge -> Inc... | 8 | 24 | 53.4% | 12.8272 |
-| 249a576d | Aggregate -> Gather Merge -> Incremental... | 8 | 24 | 56.7% | 13.5972 |
 | 0564d0b3 | Gather Merge -> Incremental Sort -> Nest... | 8 | 24 | 54.5% | 13.0757 |
-| b06f5887 | Incremental Sort -> Nested Loop -> [Merg... | 8 | 24 | 0.6% | 0.1344 |
+| 249a576d | Aggregate -> Gather Merge -> Incremental... | 8 | 24 | 56.7% | 13.5972 |
 | 530c0110 | Limit -> Sort -> Aggregate -> Gather Mer... | 9 | 24 | 28.9% | 6.9274 |
-| c4e52017 | Sort -> Aggregate -> Gather Merge -> Inc... | 9 | 24 | 53.4% | 12.8272 |
+| b06f5887 | Incremental Sort -> Nested Loop -> [Merg... | 8 | 24 | 0.6% | 0.1344 |
 | 053642a5 | Aggregate -> Gather Merge -> Incremental... | 9 | 24 | 56.7% | 13.5972 |
+| c4e52017 | Sort -> Aggregate -> Gather Merge -> Inc... | 9 | 24 | 53.4% | 12.8272 |
 | e2c63171 | Gather Merge -> Incremental Sort -> Nest... | 9 | 24 | 54.5% | 13.0757 |
 | 3f0eb924 | Limit -> Sort -> Aggregate -> Gather Mer... | 10 | 24 | 28.9% | 6.9274 |
-| fd242865 | Sort -> Aggregate -> Gather Merge -> Inc... | 10 | 24 | 53.4% | 12.8272 |
 | f4f9ccef | Aggregate -> Gather Merge -> Incremental... | 10 | 24 | 56.7% | 13.5972 |
+| fd242865 | Sort -> Aggregate -> Gather Merge -> Inc... | 10 | 24 | 53.4% | 12.8272 |
 | 267d3d4e | Limit -> Sort -> Aggregate -> Gather Mer... | 11 | 24 | 28.9% | 6.9274 |
 | e32c11b5 | Sort -> Aggregate -> Gather Merge -> Inc... | 11 | 24 | 53.4% | 12.8272 |
 | f27bf3b8 | Limit -> Sort -> Aggregate -> Gather Mer... | 12 | 24 | 28.9% | 6.9274 |
@@ -99,57 +99,81 @@
 
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
-| 0 | 895c6e8c | 75736.1626 | 0.0004% | ACCEPTED | 17.92% |
-| 1 | 1d35fb97 | 26.4006 | 0.1163% | ACCEPTED | 17.81% |
-| 2 | 2724c080 | 7.7852 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 3 | 3e2d5a00 | 18.5791 | 0.0008% | ACCEPTED | 17.81% |
-| 4 | e296a71f | 40.3884 | N/A | REJECTED | 17.81% |
-| 5 | 44ca42df | 13.0757 | N/A | REJECTED | 17.81% |
-| 6 | 8a78742e | 0.1344 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 7 | 4b856d44 | 12.8846 | N/A | REJECTED | 17.81% |
-| 8 | 56dc70e5 | 0.1353 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 9 | a02337a9 | 12.5548 | N/A | REJECTED | 17.81% |
-| 10 | be4808de | 349.7507 | N/A | REJECTED | 17.81% |
-| 11 | 7bcfec22 | 40.3884 | 0.0394% | ACCEPTED | 17.77% |
-| 12 | ddb1e0ca | 0.8507 | N/A | SKIPPED_LOW_ERROR | 17.77% |
-| 13 | 9156106f | 13.0757 | N/A | REJECTED | 17.77% |
-| 14 | 42f3ebc2 | 0.1344 | N/A | SKIPPED_LOW_ERROR | 17.77% |
-| 15 | b6901c4f | 12.8846 | N/A | REJECTED | 17.77% |
-| 16 | 7b9e50b6 | 0.1353 | N/A | SKIPPED_LOW_ERROR | 17.77% |
-| 17 | 108510a7 | 14.7234 | N/A | REJECTED | 17.77% |
-| 18 | fa8016c8 | 18.6818 | N/A | REJECTED | 17.77% |
-| 19 | fd858367 | 6.6700 | 1.9511% | ACCEPTED | 15.82% |
-| 20 | f7190cfe | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 21 | 64890ff2 | 12.8846 | N/A | REJECTED | 15.82% |
-| 22 | cdf32396 | 0.1353 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 23 | b947fceb | 14.7234 | N/A | REJECTED | 15.82% |
-| 24 | c50b85fa | 18.6818 | N/A | REJECTED | 15.82% |
-| 25 | 6ce7e974 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 26 | da27e563 | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 27 | 757104e0 | 12.8846 | N/A | REJECTED | 15.82% |
-| 28 | 21ad4177 | 0.1353 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 29 | da164244 | 14.7234 | N/A | REJECTED | 15.82% |
-| 30 | 3f59a731 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 31 | ae2eedbb | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 32 | f97027ec | 12.8846 | N/A | REJECTED | 15.82% |
-| 33 | 5dab29bd | 0.1353 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 34 | 0aa5463f | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 35 | c66d3a14 | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 36 | d3e76c7b | 12.8846 | N/A | REJECTED | 15.82% |
-| 37 | f62c331d | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 38 | b06f5887 | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 39 | 530c0110 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 40 | 3f0eb924 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 41 | 267d3d4e | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 42 | f27bf3b8 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
+| 0 | 1d35fb97 | 26.4017 | 0.1167% | ACCEPTED | 17.81% |
+| 1 | 2724c080 | 19.6008 | 0.0346% | ACCEPTED | 17.77% |
+| 2 | 3e2d5a00 | 18.5586 | N/A | REJECTED | 17.77% |
+| 3 | e296a71f | 40.3755 | N/A | REJECTED | 17.77% |
+| 4 | 3e579ee9 | 22.1283 | N/A | REJECTED | 17.77% |
+| 5 | 44ca42df | 13.0757 | N/A | REJECTED | 17.77% |
+| 6 | 8a78742e | 0.1344 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 7 | a02337a9 | 12.5548 | N/A | REJECTED | 17.77% |
+| 8 | be4808de | 349.7507 | N/A | REJECTED | 17.77% |
+| 9 | 895c6e8c | 75736.1626 | 0.0001% | ACCEPTED | 17.77% |
+| 10 | 7bcfec22 | 40.3755 | 0.0394% | ACCEPTED | 17.73% |
+| 11 | ddb1e0ca | 13.6847 | -5.5461% | REJECTED | 17.73% |
+| 12 | 20547233 | 13.5972 | N/A | REJECTED | 17.73% |
+| 13 | 4b856d44 | 12.8846 | N/A | REJECTED | 17.73% |
+| 14 | 56dc70e5 | 0.1353 | N/A | SKIPPED_LOW_ERROR | 17.73% |
+| 15 | 81649f1e | 22.1283 | N/A | REJECTED | 17.73% |
+| 16 | 9156106f | 13.0757 | N/A | REJECTED | 17.73% |
+| 17 | 108510a7 | 14.7039 | N/A | REJECTED | 17.73% |
+| 18 | 42f3ebc2 | 0.1344 | N/A | SKIPPED_LOW_ERROR | 17.73% |
+| 19 | 5a10b80e | 13.5972 | -0.0716% | REJECTED | 17.73% |
+| 20 | 9609a2d3 | 12.8272 | 0.0071% | ACCEPTED | 17.73% |
+| 21 | fa8016c8 | 17.6637 | N/A | REJECTED | 17.73% |
+| 22 | fd858367 | 6.9274 | N/A | REJECTED | 17.73% |
+| 23 | 0591a930 | 12.8272 | N/A | REJECTED | 17.73% |
+| 24 | 6ce7e974 | 6.9274 | 1.9440% | ACCEPTED | 15.78% |
+| 25 | 77cc594c | 13.0757 | N/A | REJECTED | 15.78% |
+| 26 | 7b9e50b6 | 0.1353 | N/A | SKIPPED_LOW_ERROR | 15.78% |
+| 27 | b6901c4f | 12.8846 | N/A | REJECTED | 15.78% |
+| 28 | b947fceb | 14.7039 | N/A | REJECTED | 15.78% |
+| 29 | c50b85fa | 17.6637 | N/A | REJECTED | 15.78% |
+| 30 | 3f59a731 | 6.9274 | N/A | REJECTED | 15.78% |
+| 31 | da164244 | 14.7039 | N/A | REJECTED | 15.78% |
+| 32 | f7190cfe | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.78% |
+| 33 | fe1d68e6 | 13.5972 | N/A | REJECTED | 15.78% |
+| 34 | 1f89191d | 13.0757 | N/A | REJECTED | 15.78% |
+| 35 | 64890ff2 | 12.8846 | N/A | REJECTED | 15.78% |
+| 36 | 9aab693e | 12.8272 | -1.9440% | REJECTED | 15.78% |
+| 37 | cdf32396 | 0.1353 | N/A | SKIPPED_LOW_ERROR | 15.78% |
+| 38 | 0aa5463f | 6.9274 | N/A | REJECTED | 15.78% |
+| 39 | 21ad4177 | 0.1353 | N/A | SKIPPED_LOW_ERROR | 15.78% |
+| 40 | 3833e018 | 13.5972 | -2.0226% | REJECTED | 15.78% |
+| 41 | da27e563 | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.78% |
+| 42 | 5dab29bd | 0.1353 | N/A | SKIPPED_LOW_ERROR | 15.78% |
+| 43 | 697afc49 | 12.8272 | -1.9440% | REJECTED | 15.78% |
+| 44 | 757104e0 | 12.8846 | N/A | REJECTED | 15.78% |
+| 45 | f632c59a | 13.0757 | -1.9511% | REJECTED | 15.78% |
+| 46 | ae2eedbb | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.78% |
+| 47 | bf6e7b10 | 13.5972 | -2.0226% | REJECTED | 15.78% |
+| 48 | f62c331d | 6.9274 | N/A | REJECTED | 15.78% |
+| 49 | f97027ec | 12.8846 | N/A | REJECTED | 15.78% |
+| 50 | 8b13b27f | 12.8272 | -1.9440% | REJECTED | 15.78% |
+| 51 | a7f0dd84 | 13.0757 | -1.9511% | REJECTED | 15.78% |
+| 52 | c66d3a14 | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.78% |
+| 53 | d3e76c7b | 12.8846 | N/A | REJECTED | 15.78% |
+| 54 | 0564d0b3 | 13.0757 | -1.9511% | REJECTED | 15.78% |
+| 55 | 249a576d | 13.5972 | -2.0226% | REJECTED | 15.78% |
+| 56 | 530c0110 | 6.9274 | N/A | REJECTED | 15.78% |
+| 57 | b06f5887 | 0.1344 | N/A | SKIPPED_LOW_ERROR | 15.78% |
+| 58 | 053642a5 | 13.5972 | -2.0226% | REJECTED | 15.78% |
+| 59 | c4e52017 | 12.8272 | -1.9440% | REJECTED | 15.78% |
+| 60 | e2c63171 | 13.0757 | -1.9511% | REJECTED | 15.78% |
+| 61 | 3f0eb924 | 6.9274 | N/A | REJECTED | 15.78% |
+| 62 | f4f9ccef | 13.5972 | -2.0226% | REJECTED | 15.78% |
+| 63 | fd242865 | 12.8272 | -1.9440% | REJECTED | 15.78% |
+| 64 | 267d3d4e | 6.9274 | N/A | REJECTED | 15.78% |
+| 65 | e32c11b5 | 12.8272 | -1.9440% | REJECTED | 15.78% |
+| 66 | f27bf3b8 | 6.9274 | N/A | REJECTED | 15.78% |
 ## Query Tree
 
 ```
-Node 30484 (Limit) [PATTERN: fd858367] - ROOT
+Node 30484 (Limit) [PATTERN: 6ce7e974] - ROOT
   Node 30485 (Sort) [consumed]
     Node 30486 (Aggregate) [consumed]
       Node 30487 (Gather Merge) [consumed]
-        Node 30488 (Incremental Sort)
+        Node 30488 (Incremental Sort) [consumed]
           Node 30489 (Nested Loop)
             Node 30490 (Merge Join)
               Node 30491 (Sort)
@@ -167,8 +191,8 @@ Node 30484 (Limit) [PATTERN: fd858367] - ROOT
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Limit -> Sort -> Aggregate ->  | fd858367 | 30484 | 30485, 30486, 30487, 30492, 30493, 30494 |
-| Hash Join -> [Seq Scan (Outer) | 895c6e8c | 30492 | 30484, 30485, 30486, 30487, 30493, 30494 |
+| Limit -> Sort -> Aggregate ->  | 6ce7e974 | 30484 | 30485, 30486, 30487, 30488, 30492, 30493, 30494 |
+| Hash Join -> [Seq Scan (Outer) | 895c6e8c | 30492 | 30484, 30485, 30486, 30487, 30488, 30493, 30494 |
 
 
 **Legend:**
@@ -184,7 +208,6 @@ Node 30484 (Limit) [PATTERN: fd858367] - ROOT
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
 | 30484 | Limit | 3042.77 | 3050.24 | 0.2% | pattern |
-| 30488 | Incremental Sort | 2889.46 | 2910.23 | 0.7% | operator |
 | 30489 | Nested Loop | 2889.40 | 1400.02 | 51.5% | operator |
 | 30490 | Merge Join | 2889.36 | 2910.61 | 0.7% | operator |
 | 30499 | Index Scan | 0.02 | 0.07 | 288.2% | operator |
@@ -241,7 +264,7 @@ Node 30484 (Limit) [PATTERN: fd858367] - ROOT
 
 - **Source:** pattern
 - **Pattern:** 895c6e8c (Hash Join -> [Seq Scan (Outer), Hash (Inner)])
-- **Consumes:** Nodes 30484, 30485, 30486, 30487, 30493, 30494
+- **Consumes:** Nodes 30484, 30485, 30486, 30487, 30488, 30493, 30494
 - **Input Features:**
   - HashJoin_np=0
   - HashJoin_nt=131527
@@ -395,31 +418,11 @@ Node 30484 (Limit) [PATTERN: fd858367] - ROOT
   - total_cost=430663.5800
 - **Output:** st=339.08, rt=1400.02
 
-### Step 10: Node 30488 (Incremental Sort)
-
-- **Source:** operator
-- **Input Features:**
-  - np=0
-  - nt=526215
-  - nt1=526215
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=44
-  - reltuples=0.0000
-  - rt1=1400.0160
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=339.0813
-  - st2=0.0000
-  - startup_cost=340523.4300
-  - total_cost=445005.3300
-- **Output:** st=2910.23, rt=2910.23
-
-### Step 11: Node 30484 (Limit) - PATTERN ROOT
+### Step 10: Node 30484 (Limit) - PATTERN ROOT
 
 - **Source:** pattern
-- **Pattern:** fd858367 (Limit -> Sort -> Aggregate -> Gather Merge (Outer) (Outer) (Outer))
-- **Consumes:** Nodes 30485, 30486, 30487, 30492, 30493, 30494
+- **Pattern:** 6ce7e974 (Limit -> Sort -> Aggregate -> Gather Merge -> Incremental Sort (Outer) (Outer) (Outer) (Outer))
+- **Consumes:** Nodes 30485, 30486, 30487, 30488, 30492, 30493, 30494
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=1631266
@@ -441,6 +444,16 @@ Node 30484 (Limit) [PATTERN: fd858367] - ROOT
   - GatherMerge_Outer_sel=3.1000
   - GatherMerge_Outer_startup_cost=341523.4700
   - GatherMerge_Outer_total_cost=637679.1300
+  - IncrementalSort_Outer_np=0
+  - IncrementalSort_Outer_nt=526215
+  - IncrementalSort_Outer_nt1=526215
+  - IncrementalSort_Outer_nt2=0
+  - IncrementalSort_Outer_parallel_workers=0
+  - IncrementalSort_Outer_plan_width=44
+  - IncrementalSort_Outer_reltuples=0.0000
+  - IncrementalSort_Outer_sel=1.0000
+  - IncrementalSort_Outer_startup_cost=340523.4300
+  - IncrementalSort_Outer_total_cost=445005.3300
   - Limit_np=0
   - Limit_nt=100
   - Limit_nt1=1631266

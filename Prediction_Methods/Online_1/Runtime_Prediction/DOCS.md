@@ -21,6 +21,7 @@ Runtime_Prediction/
     A_02_Pattern_Analysis.py
     A_03_Method_Comparison.py
     A_04_Strategy_Comparison.py
+    A_05_Pattern_Count.py
     Evaluation/
         Error/
         Size/
@@ -251,4 +252,24 @@ python3 A_03_Method_Comparison.py \
 **Usage:**
 ```bash
 python3 A_04_Strategy_Comparison.py Evaluation --output-dir Evaluation/Analysis/Overall
+```
+
+---
+
+## A_05 - Pattern_Count.py
+
+**Purpose:** Count patterns found per query and aggregate by template
+
+**Inputs:**
+- `evaluation_dir` - Path to Evaluation directory (positional)
+- `--strategy` - Strategy to analyze: Error, Size, Frequency (default: Error)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `{output-dir}/A_05_pattern_counts_per_query.csv` - Pattern count for each query
+- `{output-dir}/A_05_pattern_counts_per_template.csv` - Min/max/avg/std per template
+
+**Usage:**
+```bash
+python3 A_05_Pattern_Count.py Evaluation --strategy Error --output-dir Evaluation/Analysis/Overall
 ```

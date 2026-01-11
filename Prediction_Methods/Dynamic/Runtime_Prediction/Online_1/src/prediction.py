@@ -35,7 +35,7 @@ from mapping_config import (
 def _build_pattern_assignments(
     all_nodes: list,
     patterns: dict,
-    selected_patterns: set
+    selected_patterns: list
 ) -> tuple:
     consumed_nodes = set()
     pattern_assignments = {}
@@ -107,7 +107,7 @@ def predict_all_queries_with_patterns(
     operator_models: dict,
     pattern_models: dict,
     patterns: dict,
-    selected_patterns: set
+    selected_patterns: list
 ) -> list:
     all_predictions = []
 
@@ -127,7 +127,7 @@ def predict_single_query_with_patterns(
     operator_models: dict,
     pattern_models: dict,
     patterns: dict,
-    selected_patterns: set,
+    selected_patterns: list,
     return_details: bool = False
 ) -> list:
     root = build_tree_from_dataframe(query_ops, include_row_data=True)
@@ -261,27 +261,3 @@ def _predict_pattern(node, query_ops: pd.DataFrame, model: dict, prediction_cach
 
     input_features = {f: aggregated.get(f, 0) for f in features}
     return pred_start, pred_exec, input_features
-
-
-# Predict all queries with single pattern active
-def predict_all_queries_with_single_pattern(
-    df: pd.DataFrame,
-    operator_models: dict,
-    pattern_model: dict,
-    patterns: dict,
-    target_pattern_hash: str
-) -> list:
-    all_predictions = []
-
-    for query_file in df['query_file'].unique():
-        query_ops = df[df['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
-
-        predictions = predict_single_query_with_patterns(
-            query_ops, operator_models,
-            {target_pattern_hash: pattern_model},
-            patterns,
-            {target_pattern_hash}
-        )
-        all_predictions.extend(predictions)
-
-    return all_predictions

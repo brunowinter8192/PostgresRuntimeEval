@@ -1,6 +1,6 @@
 # Runtime_Prediction - Dynamic Online Pattern Selection
 
-Online learning workflow that trains operator models, mines patterns from a test query, and selects patterns using direct comparison (Paper Section 4). For each pattern: if Pattern-MRE < Operator-MRE → select. Adapted for LOTO cross-validation.
+Online learning workflow that trains operator models, mines patterns from a test query, and greedily selects patterns that improve prediction accuracy. Adapted for LOTO cross-validation.
 
 ## Working Directory
 
@@ -87,37 +87,42 @@ Evaluation/
 ```
 
 **selection_log.csv schema:**
+- `iteration` - Selection iteration number
 - `pattern_hash` - Unique pattern identifier
 - `pattern_string` - Human-readable pattern (e.g., "Sort -> Aggregate (Outer)")
 - `error_score` - Pattern ordering score (strategy-dependent)
-- `operator_mre` - MRE using operator models only
-- `pattern_mre` - MRE using pattern model
-- `decision` - SELECTED or NOT_SELECTED
+- `new_mre` - MRE after adding this pattern
+- `delta` - MRE improvement (baseline - new_mre)
+- `status` - ACCEPTED, REJECTED, SKIPPED_LOW_ERROR, or SKIPPED_TRAIN_FAILED
+- `mre_after` - Global MRE after this iteration
 
 ## Shared Infrastructure
 
 **Constants from Dynamic/mapping_config.py:**
 - `SVM_PARAMS` - NuSVR hyperparameters (kernel, nu, C, gamma)
-- `STRATEGIES` - Available strategies ['error', 'size', 'frequency'] (for initial pattern ordering)
+- `MIN_ERROR_THRESHOLD` - Skip patterns below this avg_mre (10%)
+- `STRATEGIES` - Available strategies ['error', 'size', 'frequency']
 - `DEFAULT_STRATEGY` - Default strategy 'error'
 - `OPERATOR_FEATURES` - Base operator features (10 features)
 - `CHILD_FEATURES_TIMING` - Child timing features (st1, rt1, st2, rt2)
 
-**NOT used in Dynamic Online_1:**
-- `EPSILON` - Not used (no greedy accumulation)
-- `MIN_ERROR_THRESHOLD` - Not used (direct comparison instead)
+## Selection Algorithm
 
-## Pattern Selection Logic (Paper Section 4)
+**Ranking (mining.py):**
+- Size: `operator_count` ASC, `occurrence_count` DESC, `pattern_hash` ASC
+- Frequency: `occurrence_count` DESC, `operator_count` ASC, `pattern_hash` ASC
+- Error: `error_score` DESC, `pattern_hash` ASC
 
-For each pattern in the query (ordered by strategy):
-1. Calculate Operator-MRE for pattern occurrences in Training_Test
-2. Train Pattern-Model on Training_Training
-3. Calculate Pattern-MRE for same occurrences
-4. If Pattern-MRE < Operator-MRE → SELECTED
+**Selection Loop (selection.py):**
 
-**Prediction Phase:**
-- Patterns sorted by `pattern_length` (longest first)
-- Longer patterns consume more nodes, capture more context
+| Verhalten | Size/Frequency | Error |
+|-----------|----------------|-------|
+| avg_mre < 10% Skip | Ja | Nein |
+| Reranking bei SELECT | Nein (statisch) | Ja (dynamisch) |
+
+**Prediction Assignment (prediction.py):**
+- Längere Patterns haben Vorrang (Length DESC)
+- Bei gleicher Länge: Selection Order (stable sort)
 
 ## Module Documentation
 
@@ -152,6 +157,7 @@ python3 workflow.py Q1_100_seed_812199069 \
 
 **Variables:**
 - `--strategy` - Pattern ordering strategy: error, size, frequency (default: error)
+- `--epsilon` - Min MRE improvement for pattern acceptance (default: 0.0)
 
 ---
 

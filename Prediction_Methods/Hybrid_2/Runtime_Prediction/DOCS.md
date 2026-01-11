@@ -537,7 +537,8 @@ python3 A_01b_Optimizer_Baseline.py ../Dataset/Baseline/Training.csv ../Dataset/
 
 **Outputs:**
 - `A_01c_combined_strategy_mre.csv`
-- `A_01c_combined_strategy_plot.png`
+- `A_01c_combined_strategy_plot.png` (4 Strategien: Size, Frequency, Error, Optimizer)
+- `A_01c_hybrid_strategy_plot.png` (3 Strategien: Size, Frequency, Error - ohne Optimizer)
 
 **Usage:**
 ```bash

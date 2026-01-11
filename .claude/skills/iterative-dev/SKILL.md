@@ -154,6 +154,19 @@ This is NON-NEGOTIABLE. Skipping DOCS.md leads to: wrong paths, wrong arguments,
 - Plan grows organically through conversation
 - Only call ExitPlanMode when plan reflects current understanding
 
+### Verification Planning (MANDATORY)
+
+**BEFORE finalizing plan, ask yourself:**
+- How will I verify that the implementation succeeded?
+- What command/test/check proves correctness?
+
+**Plan file MUST include a Verification section:**
+- Concrete command to run
+- Expected output/behavior
+- What to check (file exists, content matches, test passes, etc.)
+
+**Verification is PART of IMPLEMENT, not optional.**
+
 ### Execution During Planning
 
 If the planning session requires module execution to refine the plan:
@@ -402,7 +415,14 @@ Prioritization (by OUTCOME):
 - Does DOCS.md need updating? YES/NO
 - If YES: What sections? (new scripts, changed parameters, new outputs)
 
-Clean docs are CRITICAL. Every new script, changed behavior, or new parameter MUST be reflected.
+**CRITICAL - NON-NEGOTIABLE:**
+- DOCS/README updates are **NEVER optional**
+- DOCS/README updates are **NEVER skippable**
+- DOCS/README updates are **NEVER "insignificant"**
+- Every new script, changed behavior, or new parameter MUST be reflected **IMMEDIATELY**
+- Skipping DOCS updates = **BROKEN WORKFLOW** for future sessions
+- "Analysis scripts don't need docs" = **WRONG** - ALL scripts need docs
+- If Open Items include DOCS update → **DO IT IN IMPROVE, NOT LATER**
 
 #### 7. Open Items
 
@@ -452,15 +472,19 @@ Location: [Stellschraube + file path from CLAUDE.md]
 
 ### Workflow
 
-1. Read plan file "## Improvements" section
-2. For each improvement (see 6.1/6.2 Handling):
+1. Read plan file "## Improvements" and "## Open Items" sections
+2. **DOCS/README updates FIRST** - these are NEVER skippable:
+   - If any new script was created → update DOCS.md
+   - If any script behavior changed → update DOCS.md
+   - If any new output was generated → update DOCS.md
+3. For each other improvement (see 6.1/6.2 Handling):
    - **Code?** → `bd create --title "..." --type=...`
-   - **Docs/README/Stellschrauben?** → Direct Edit (Edit, Write)
-3. Handle Beads (from RECAP Section 5):
+   - **Stellschrauben?** → Direct Edit (Edit, Write)
+4. Handle Beads (from RECAP Section 5):
    - Create: `bd create --title "..." --type=...`
    - Update: `bd comment <id> "..."`
    - Close: `bd close <id> --reason="..."`
-4. Ask: "Proceed to CLOSING?"
+5. Ask: "Proceed to CLOSING?"
 
 User confirms → next response starts with ✅ CLOSING
 

@@ -133,7 +133,7 @@ def train_single_pattern(df: pd.DataFrame, pattern_hash: str, pattern_info: dict
 
 
 # Train selected patterns on full training data
-def train_selected_patterns(df: pd.DataFrame, selected_patterns: set, patterns: dict) -> dict:
+def train_selected_patterns(df: pd.DataFrame, selected_patterns: list, patterns: dict) -> dict:
     pattern_models = {}
 
     for pattern_hash in selected_patterns:
