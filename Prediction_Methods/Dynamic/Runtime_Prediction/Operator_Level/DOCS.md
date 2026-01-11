@@ -20,6 +20,7 @@ Operator_Level/
 ├── 02_Train_Models.py
 ├── 03_Query_Prediction.py
 ├── A_01a_Query_Evaluation.py
+├── A_01b_Static_Dynamic_Comparison.py
 └── Q1/, Q3/, ... Q19/
     ├── SVM/
     ├── Model/
@@ -179,4 +180,25 @@ python3 03_Query_Prediction.py test.csv overview.csv Model/ --report --report-di
 **Usage:**
 ```bash
 python3 A_01a_Query_Evaluation.py --output-dir Evaluation
+```
+
+---
+
+## A_01b - Static_Dynamic_Comparison.py
+
+**Purpose:** Compare Static vs Dynamic MRE per template with grouped bar plot.
+
+**Inputs:**
+- `--static-csv`: Static template MRE CSV (from Baseline_SVM)
+- Dynamic: `Evaluation/loto_mre.csv` (relative to script)
+
+**Outputs:**
+- `{output-dir}/A_01b_static_dynamic_comparison.csv` - Combined MRE data
+- `{output-dir}/A_01b_static_dynamic_comparison.png` - Grouped bar plot
+
+**Usage:**
+```bash
+python3 A_01b_Static_Dynamic_Comparison.py \
+  --static-csv ../../Operator_Level/Runtime_Prediction/Baseline_SVM/Evaluation/A_01f_template_mre.csv \
+  --output-dir Evaluation
 ```
