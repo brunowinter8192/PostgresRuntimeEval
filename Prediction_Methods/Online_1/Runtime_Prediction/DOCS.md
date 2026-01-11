@@ -20,6 +20,7 @@ Runtime_Prediction/
     A_01a_Query_Evaluation.py
     A_02_Pattern_Analysis.py
     A_03_Method_Comparison.py
+    A_04_Strategy_Comparison.py
     Evaluation/
         Error/
         Size/
@@ -94,6 +95,24 @@ Evaluation/
 - `DEFAULT_STRATEGY` - Default strategy 'error'
 - `OPERATOR_FEATURES` - Base operator features (10 features)
 - `CHILD_FEATURES_TIMING` - Child timing features (st1, rt1, st2, rt2)
+
+## Selection Algorithm
+
+**Ranking (mining.py):**
+- Size: `operator_count` ASC, `occurrence_count` DESC, `pattern_hash` ASC
+- Frequency: `occurrence_count` DESC, `operator_count` ASC, `pattern_hash` ASC
+- Error: `error_score` DESC, `pattern_hash` ASC
+
+**Selection Loop (selection.py):**
+
+| Verhalten | Size/Frequency | Error |
+|-----------|----------------|-------|
+| avg_mre < 10% Skip | Ja | Nein |
+| Reranking bei SELECT | Nein (statisch) | Ja (dynamisch) |
+
+**Prediction Assignment (prediction.py):**
+- Längere Patterns haben Vorrang (Length DESC)
+- Bei gleicher Länge: Selection Order (stable sort)
 
 ## Module Documentation
 
@@ -212,4 +231,24 @@ python3 A_03_Method_Comparison.py \
   ../../Hybrid_2/Runtime_Prediction/Evaluation/Size/Epsilon \
   Evaluation/Analysis/Size \
   --output-dir Evaluation/Analysis/Comparison
+```
+
+---
+
+## A_04 - Strategy_Comparison.py
+
+**Purpose:** Compare pattern selection and usage across Error/Size/Frequency strategies within Online_1
+
+**Inputs:**
+- `evaluation_dir` - Path to Evaluation directory containing Error/, Size/, Frequency/ (positional)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `{output-dir}/A_04_strategy_summary.csv` - Count of queries with differences
+- `{output-dir}/A_04_selection_differences.csv` - Queries where strategies selected different patterns
+- `{output-dir}/A_04_usage_differences.csv` - Queries where strategies used different patterns
+
+**Usage:**
+```bash
+python3 A_04_Strategy_Comparison.py Evaluation --output-dir Evaluation/Analysis/Overall
 ```
