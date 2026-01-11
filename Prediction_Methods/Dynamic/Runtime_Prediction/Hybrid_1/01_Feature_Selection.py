@@ -3,6 +3,7 @@
 # INFRASTRUCTURE
 import argparse
 import re
+import sys
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -13,19 +14,13 @@ from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.metrics import make_scorer
 from multiprocessing import Pool
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+# From mapping_config.py: Non-feature suffixes for pattern datasets
+from mapping_config import NON_FEATURE_SUFFIXES
+
 ALL_TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 ALL_APPROACHES = ['approach_3']
 TARGET_TYPES = ['execution_time', 'start_time']
-NON_FEATURE_SUFFIXES = [
-    '_node_id',
-    '_node_type',
-    '_depth',
-    '_parent_relationship',
-    '_subplan_name',
-    '_template',
-    'actual_startup_time',
-    'actual_total_time'
-]
 FFS_SEED = 42
 FFS_MIN_FEATURES = 1
 
