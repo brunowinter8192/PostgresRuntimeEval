@@ -50,6 +50,12 @@ description: (project)
 
 **Test:** Can someone in a new session understand this bead without asking?
 
+**Path Rule:**
+- ALL paths in beads MUST be relative to PROJECT ROOT
+- Bad: `Plan_Level/script.py` (ambiguous)
+- Good: `Prediction_Methods/Dynamic/Runtime_Prediction/Plan_Level/script.py`
+- Test: Could someone `cd` to project root and use this path directly?
+
 ## CRITICAL CYCLE
 
 ```
