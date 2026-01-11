@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q6_59_seed_475833798
-**Timestamp:** 2026-01-01 18:24:00
+**Timestamp:** 2026-01-11 17:12:03
 
 ## Data Summary
 
@@ -42,21 +42,22 @@
 | 1 | 634cdbe2 | 7.7175 | N/A | SKIPPED_LOW_ERROR | 17.92% |
 | 2 | 184f44de | 4.0548 | N/A | SKIPPED_LOW_ERROR | 17.92% |
 | 3 | a5f39f08 | 12.4695 | 1.7095% | ACCEPTED | 16.21% |
-| 4 | dd3706ac | 1.2748 | N/A | SKIPPED_LOW_ERROR | 16.21% |
+| 4 | 10e10cd4 | 2.5305 | N/A | REJECTED | 16.21% |
+| 5 | dd3706ac | 3.4697 | 0.2258% | ACCEPTED | 15.99% |
 ## Query Tree
 
 ```
-Node 10317 (Aggregate) [PATTERN: a5f39f08] - ROOT
+Node 10317 (Aggregate) [PATTERN: dd3706ac] - ROOT
   Node 10318 (Gather) [consumed]
     Node 10319 (Aggregate) [consumed]
-      Node 10320 (Seq Scan) - LEAF
+      Node 10320 (Seq Scan) [consumed] - LEAF
 ```
 
 ## Pattern Assignments
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Aggregate -> Gather -> Aggrega | a5f39f08 | 10317 | 10318, 10319 |
+| Aggregate -> Gather -> Aggrega | dd3706ac | 10317 | 10318, 10319, 10320 |
 
 
 **Legend:**
@@ -66,41 +67,20 @@ Node 10317 (Aggregate) [PATTERN: a5f39f08] - ROOT
 
 ## Phase E: Final Prediction
 
-- Final MRE: 4.31%
-- Improvement: 9.37%
+- Final MRE: 0.58%
+- Improvement: 13.10%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 10317 | Aggregate | 795.85 | 830.13 | 4.3% | pattern |
-| 10320 | Seq Scan | 774.02 | 750.64 | 3.0% | operator |
+| 10317 | Aggregate | 795.85 | 791.27 | 0.6% | pattern |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 10320 (Seq Scan) - LEAF
-
-- **Source:** operator
-- **Input Features:**
-  - np=112600
-  - nt=23898
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=12
-  - reltuples=6001215.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.0040
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=139605.4700
-- **Output:** st=4.75, rt=750.64
-
-### Step 2: Node 10317 (Aggregate) - PATTERN ROOT
+### Step 1: Node 10317 (Aggregate) - PATTERN ROOT
 
 - **Source:** pattern
-- **Pattern:** a5f39f08 (Aggregate -> Gather -> Aggregate (Outer) (Outer))
-- **Consumes:** Nodes 10318, 10319
+- **Pattern:** dd3706ac (Aggregate -> Gather -> Aggregate -> Seq Scan (Outer) (Outer) (Outer))
+- **Consumes:** Nodes 10318, 10319, 10320
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=1
@@ -132,4 +112,14 @@ Node 10317 (Aggregate) [PATTERN: a5f39f08] - ROOT
   - Gather_Outer_sel=5.0000
   - Gather_Outer_startup_cost=140724.9600
   - Gather_Outer_total_cost=140725.4700
-- **Output:** st=824.72, rt=830.13
+  - SeqScan_Outer_np=112600
+  - SeqScan_Outer_nt=23898
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=12
+  - SeqScan_Outer_reltuples=6001215.0000
+  - SeqScan_Outer_sel=0.0040
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=139605.4700
+- **Output:** st=785.07, rt=791.27

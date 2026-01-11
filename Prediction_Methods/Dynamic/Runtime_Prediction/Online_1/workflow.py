@@ -20,8 +20,8 @@ from src.mining import mine_patterns_from_query, find_pattern_occurrences_in_dat
 # From mapping_config.py: Configuration constants
 from mapping_config import STRATEGIES, DEFAULT_STRATEGY
 
-# From src/selection.py: Pattern selection (online)
-from src.selection import select_patterns_online
+# From src/selection.py: Pattern selection loop
+from src.selection import run_pattern_selection
 
 # From src/metrics.py: MRE calculation
 from src.metrics import calculate_mre, calculate_query_mre
@@ -42,7 +42,8 @@ def online_prediction_workflow(
     training_csv: str,
     test_csv: str,
     output_dir: str,
-    strategy: str = DEFAULT_STRATEGY
+    strategy: str = DEFAULT_STRATEGY,
+    epsilon: float = 0.0
 ) -> None:
     query_output_dir = str(Path(output_dir) / strategy.capitalize() / test_query_file)
     report = ReportBuilder(test_query_file, query_output_dir)
@@ -69,9 +70,10 @@ def online_prediction_workflow(
     initial_ranking = calculate_ranking(baseline_predictions, pattern_occurrences, patterns, strategy=strategy)
     report.add_patterns_in_query(patterns, initial_ranking)
 
-    selected_patterns, pattern_models, selection_log = select_patterns_online(
+    selected_patterns, pattern_models, selection_log = run_pattern_selection(
         df_tt, df_tv, patterns, pattern_occurrences, initial_ranking,
-        operator_models, baseline_predictions, report
+        operator_models, baseline_predictions, baseline_mre, report,
+        epsilon=epsilon, strategy=strategy
     )
 
     final_operator_models = train_all_operators(df_train, None)
@@ -115,6 +117,7 @@ if __name__ == '__main__':
     parser.add_argument("test_csv", help="Path to test.csv")
     parser.add_argument("--output-dir", required=True, help="Output directory")
     parser.add_argument("--strategy", choices=STRATEGIES, default=DEFAULT_STRATEGY, help="Pattern ordering strategy")
+    parser.add_argument("--epsilon", type=float, default=0.0, help="Min MRE improvement for pattern acceptance")
     args = parser.parse_args()
 
     online_prediction_workflow(
@@ -124,5 +127,6 @@ if __name__ == '__main__':
         args.training_csv,
         args.test_csv,
         args.output_dir,
-        args.strategy
+        args.strategy,
+        args.epsilon
     )

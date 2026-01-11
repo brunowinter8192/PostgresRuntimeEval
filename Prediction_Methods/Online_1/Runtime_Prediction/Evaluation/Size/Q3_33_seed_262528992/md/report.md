@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q3_33_seed_262528992
-**Timestamp:** 2026-01-01 18:14:36
+**Timestamp:** 2026-01-11 16:56:40
 
 ## Data Summary
 
@@ -22,28 +22,28 @@
 
 | Hash | Pattern String | Length | Occ | Avg MRE | Error Score |
 |------|----------------|--------|-----|---------|-------------|
-| 895c6e8c | Hash Join -> [Seq Scan (Outer), Hash (In... | 2 | 364 | 20806.6% | 75736.1626 |
 | 3aab37be | Hash -> Seq Scan (Outer) | 2 | 336 | 33781.0% | 113504.2307 |
 | 1d35fb97 | Sort -> Aggregate (Outer) | 2 | 192 | 13.8% | 26.4017 |
 | 4fc84c77 | Aggregate -> Gather (Outer) | 2 | 144 | 9.3% | 13.3894 |
-| 3cfa90d7 | Nested Loop -> [Hash Join (Outer), Index... | 2 | 140 | 4.5% | 6.2375 |
 | e296a71f | Limit -> Sort (Outer) | 2 | 72 | 56.1% | 40.3755 |
 | 694ae2c3 | Gather -> Nested Loop (Outer) | 2 | 24 | 2.7% | 0.6475 |
-| f4cb205a | Hash Join -> [Seq Scan (Outer), Hash -> ... | 3 | 168 | 44967.0% | 75544.5822 |
-| e0e3c3e1 | Nested Loop -> [Hash Join -> [Seq Scan (... | 3 | 116 | 3.5% | 4.0772 |
+| 895c6e8c | Hash Join -> [Seq Scan (Outer), Hash (In... | 2 | 364 | 20806.6% | 75736.1626 |
+| 3cfa90d7 | Nested Loop -> [Hash Join (Outer), Index... | 2 | 140 | 4.5% | 6.2375 |
 | 7bcfec22 | Limit -> Sort -> Aggregate (Outer) (Oute... | 3 | 72 | 56.1% | 40.3755 |
 | b3a45093 | Sort -> Aggregate -> Gather (Outer) (Out... | 3 | 72 | 4.0% | 2.9042 |
 | 071a1ee5 | Aggregate -> Gather -> Nested Loop (Oute... | 3 | 24 | 1.2% | 0.2995 |
-| 925caafa | Gather -> Nested Loop -> [Hash Join (Out... | 3 | 24 | 2.7% | 0.6475 |
+| f4cb205a | Hash Join -> [Seq Scan (Outer), Hash -> ... | 3 | 168 | 44967.0% | 75544.5822 |
 | 25df29b5 | Limit -> Sort -> Aggregate -> Gather (Ou... | 4 | 48 | 69.7% | 33.4481 |
 | 128ec77a | Sort -> Aggregate -> Gather -> Nested Lo... | 4 | 24 | 3.8% | 0.9012 |
+| 925caafa | Gather -> Nested Loop -> [Hash Join (Out... | 3 | 24 | 2.7% | 0.6475 |
+| e0e3c3e1 | Nested Loop -> [Hash Join -> [Seq Scan (... | 3 | 116 | 3.5% | 4.0772 |
 | 7b066ef4 | Aggregate -> Gather -> Nested Loop -> [H... | 4 | 24 | 1.2% | 0.2995 |
+| b68c8b96 | Limit -> Sort -> Aggregate -> Gather -> ... | 5 | 24 | 68.3% | 16.3813 |
 | 8d7fa5fd | Gather -> Nested Loop -> [Hash Join -> [... | 4 | 24 | 2.7% | 0.6475 |
 | 9d8bc76c | Nested Loop -> [Hash Join -> [Seq Scan (... | 4 | 24 | 3.0% | 0.7171 |
-| b68c8b96 | Limit -> Sort -> Aggregate -> Gather -> ... | 5 | 24 | 68.3% | 16.3813 |
 | ac6af82a | Sort -> Aggregate -> Gather -> Nested Lo... | 5 | 24 | 3.8% | 0.9012 |
-| 5a77e21f | Aggregate -> Gather -> Nested Loop -> [H... | 5 | 24 | 1.2% | 0.2995 |
 | 3e93cf76 | Gather -> Nested Loop -> [Hash Join -> [... | 5 | 24 | 2.7% | 0.6475 |
+| 5a77e21f | Aggregate -> Gather -> Nested Loop -> [H... | 5 | 24 | 1.2% | 0.2995 |
 | 5eedbd1b | Limit -> Sort -> Aggregate -> Gather -> ... | 6 | 24 | 68.3% | 16.3813 |
 | 64cd7a0c | Sort -> Aggregate -> Gather -> Nested Lo... | 6 | 24 | 3.8% | 0.9012 |
 | ff421d05 | Aggregate -> Gather -> Nested Loop -> [H... | 6 | 24 | 1.2% | 0.2995 |
@@ -60,24 +60,34 @@
 
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
-| 0 | 895c6e8c | 75736.1626 | 0.0004% | ACCEPTED | 17.92% |
-| 1 | 3aab37be | 94712.4752 | -0.0000% | REJECTED | 17.92% |
-| 2 | 1d35fb97 | 26.4006 | 0.1163% | ACCEPTED | 17.81% |
-| 3 | 4fc84c77 | 15.8328 | 0.6911% | ACCEPTED | 17.12% |
-| 4 | 3cfa90d7 | 6.2269 | N/A | SKIPPED_LOW_ERROR | 17.12% |
-| 5 | e296a71f | 40.3884 | N/A | REJECTED | 17.12% |
-| 6 | 694ae2c3 | 0.6474 | N/A | SKIPPED_LOW_ERROR | 17.12% |
-| 7 | f4cb205a | 41652.9228 | -0.0000% | REJECTED | 17.12% |
-| 8 | e0e3c3e1 | 4.0670 | N/A | SKIPPED_LOW_ERROR | 17.12% |
-| 9 | 7bcfec22 | 40.3884 | 0.0394% | ACCEPTED | 17.08% |
-| 10 | b3a45093 | 5.7725 | N/A | SKIPPED_LOW_ERROR | 17.08% |
-| 11 | 925caafa | 0.6474 | N/A | SKIPPED_LOW_ERROR | 17.08% |
-| 12 | 25df29b5 | 33.5860 | 9.8522% | ACCEPTED | 7.22% |
-| 13 | 9d8bc76c | 0.7121 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 14 | b68c8b96 | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 15 | 5eedbd1b | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 16 | d64c42c6 | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 17 | ea3737ca | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
+| 0 | 3aab37be | 113504.2307 | -0.0000% | REJECTED | 17.92% |
+| 1 | 1d35fb97 | 26.4017 | 0.1167% | ACCEPTED | 17.81% |
+| 2 | 4fc84c77 | 13.3894 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 3 | e296a71f | 40.3755 | N/A | REJECTED | 17.81% |
+| 4 | 694ae2c3 | 0.6475 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 5 | 895c6e8c | 75736.1626 | 0.0001% | ACCEPTED | 17.81% |
+| 6 | 3cfa90d7 | 6.2375 | N/A | SKIPPED_LOW_ERROR | 17.81% |
+| 7 | 7bcfec22 | 40.3755 | 0.0394% | ACCEPTED | 17.77% |
+| 8 | b3a45093 | 2.9042 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 9 | 071a1ee5 | 0.2995 | N/A | SKIPPED_LOW_ERROR | 17.77% |
+| 10 | f4cb205a | 75544.5822 | 0.0005% | ACCEPTED | 17.77% |
+| 11 | 25df29b5 | 33.4481 | 9.8522% | ACCEPTED | 7.92% |
+| 12 | 128ec77a | 0.9012 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 13 | 925caafa | 0.6475 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 14 | e0e3c3e1 | 4.0772 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 15 | 7b066ef4 | 0.2995 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 16 | b68c8b96 | 16.3813 | -0.0154% | REJECTED | 7.92% |
+| 17 | 8d7fa5fd | 0.6475 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 18 | 9d8bc76c | 0.7171 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 19 | ac6af82a | 0.9012 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 20 | 3e93cf76 | 0.6475 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 21 | 5a77e21f | 0.2995 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 22 | 5eedbd1b | 16.3813 | -0.0154% | REJECTED | 7.92% |
+| 23 | 64cd7a0c | 0.9012 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 24 | ff421d05 | 0.2995 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 25 | d64c42c6 | 16.3813 | -0.0154% | REJECTED | 7.92% |
+| 26 | eb451e77 | 0.9012 | N/A | SKIPPED_LOW_ERROR | 7.92% |
+| 27 | ea3737ca | 16.3813 | -0.0154% | REJECTED | 7.92% |
 ## Query Tree
 
 ```
@@ -86,10 +96,10 @@ Node 5111 (Limit) [PATTERN: 25df29b5] - ROOT
     Node 5113 (Aggregate) [consumed]
       Node 5114 (Gather) [consumed]
         Node 5115 (Nested Loop)
-          Node 5116 (Hash Join) [PATTERN: 895c6e8c]
+          Node 5116 (Hash Join) [PATTERN: f4cb205a]
             Node 5117 (Seq Scan) [consumed] - LEAF
             Node 5118 (Hash) [consumed]
-              Node 5119 (Seq Scan) - LEAF
+              Node 5119 (Seq Scan) [consumed] - LEAF
           Node 5120 (Index Scan) - LEAF
 ```
 
@@ -97,8 +107,8 @@ Node 5111 (Limit) [PATTERN: 25df29b5] - ROOT
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Limit -> Sort -> Aggregate ->  | 25df29b5 | 5111 | 5112, 5113, 5114, 5116, 5117, 5118 |
-| Hash Join -> [Seq Scan (Outer) | 895c6e8c | 5116 | 5111, 5112, 5113, 5114, 5117, 5118 |
+| Limit -> Sort -> Aggregate ->  | 25df29b5 | 5111 | 5112, 5113, 5114, 5116, 5117, 5118, 5119 |
+| Hash Join -> [Seq Scan (Outer) | f4cb205a | 5116 | 5111, 5112, 5113, 5114, 5117, 5118, 5119 |
 
 
 **Legend:**
@@ -114,38 +124,17 @@ Node 5111 (Limit) [PATTERN: 25df29b5] - ROOT
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
 | 5111 | Limit | 1166.07 | 1195.93 | 2.6% | pattern |
-| 5115 | Nested Loop | 1129.41 | 1122.84 | 0.6% | operator |
-| 5116 | Hash Join | 201.84 | 256.38 | 27.0% | pattern |
+| 5115 | Nested Loop | 1129.41 | 1122.41 | 0.6% | operator |
+| 5116 | Hash Join | 201.84 | 218.85 | 8.4% | pattern |
 | 5120 | Index Scan | 0.03 | -0.02 | 174.1% | operator |
-| 5119 | Seq Scan | 28.77 | 36.69 | 27.5% | operator |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 5119 (Seq Scan) - LEAF
-
-- **Source:** operator
-- **Input Features:**
-  - np=3600
-  - nt=12479
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=4
-  - reltuples=150000.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.0832
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=4381.2500
-- **Output:** st=0.35, rt=36.69
-
-### Step 2: Node 5116 (Hash Join) - PATTERN ROOT
+### Step 1: Node 5116 (Hash Join) - PATTERN ROOT
 
 - **Source:** pattern
-- **Pattern:** 895c6e8c (Hash Join -> [Seq Scan (Outer), Hash (Inner)])
-- **Consumes:** Nodes 5111, 5112, 5113, 5114, 5117, 5118
+- **Pattern:** f4cb205a (Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)])
+- **Consumes:** Nodes 5111, 5112, 5113, 5114, 5117, 5118, 5119
 - **Input Features:**
   - HashJoin_np=0
   - HashJoin_nt=47252
@@ -167,19 +156,19 @@ Node 5111 (Limit) [PATTERN: 25df29b5] - ROOT
   - Hash_Inner_sel=1.0000
   - Hash_Inner_startup_cost=4381.2500
   - Hash_Inner_total_cost=4381.2500
-  - SeqScan_Outer_np=26136
-  - SeqScan_Outer_nt=236664
+  - SeqScan_Outer_np=3600
+  - SeqScan_Outer_nt=12479
   - SeqScan_Outer_nt1=0
   - SeqScan_Outer_nt2=0
   - SeqScan_Outer_parallel_workers=0
-  - SeqScan_Outer_plan_width=16
-  - SeqScan_Outer_reltuples=1500000.0000
-  - SeqScan_Outer_sel=0.1578
+  - SeqScan_Outer_plan_width=4
+  - SeqScan_Outer_reltuples=150000.0000
+  - SeqScan_Outer_sel=0.0832
   - SeqScan_Outer_startup_cost=0.0000
-  - SeqScan_Outer_total_cost=32184.3900
-- **Output:** st=29.92, rt=256.38
+  - SeqScan_Outer_total_cost=4381.2500
+- **Output:** st=30.20, rt=218.85
 
-### Step 3: Node 5120 (Index Scan) - LEAF
+### Step 2: Node 5120 (Index Scan) - LEAF
 
 - **Source:** operator
 - **Input Features:**
@@ -199,7 +188,7 @@ Node 5111 (Limit) [PATTERN: 25df29b5] - ROOT
   - total_cost=0.7300
 - **Output:** st=0.06, rt=-0.02
 
-### Step 4: Node 5115 (Nested Loop)
+### Step 3: Node 5115 (Nested Loop)
 
 - **Source:** operator
 - **Input Features:**
@@ -210,20 +199,20 @@ Node 5111 (Limit) [PATTERN: 25df29b5] - ROOT
   - parallel_workers=0
   - plan_width=24
   - reltuples=0.0000
-  - rt1=256.3833
+  - rt1=218.8504
   - rt2=-0.0185
   - sel=0.7135
-  - st1=29.9221
+  - st1=30.2011
   - st2=0.0563
   - startup_cost=4537.6700
   - total_cost=73065.4100
-- **Output:** st=31.38, rt=1122.84
+- **Output:** st=30.72, rt=1122.41
 
-### Step 5: Node 5111 (Limit) - PATTERN ROOT
+### Step 4: Node 5111 (Limit) - PATTERN ROOT
 
 - **Source:** pattern
 - **Pattern:** 25df29b5 (Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer))
-- **Consumes:** Nodes 5112, 5113, 5114, 5116, 5117, 5118
+- **Consumes:** Nodes 5112, 5113, 5114, 5116, 5117, 5118, 5119
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=313554

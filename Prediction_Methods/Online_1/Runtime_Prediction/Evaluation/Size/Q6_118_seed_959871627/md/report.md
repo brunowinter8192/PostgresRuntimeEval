@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q6_118_seed_959871627
-**Timestamp:** 2026-01-01 18:22:10
+**Timestamp:** 2026-01-11 17:08:45
 
 ## Data Summary
 
@@ -42,21 +42,22 @@
 | 1 | 634cdbe2 | 7.7175 | N/A | SKIPPED_LOW_ERROR | 17.92% |
 | 2 | 184f44de | 4.0548 | N/A | SKIPPED_LOW_ERROR | 17.92% |
 | 3 | a5f39f08 | 12.4695 | 1.7095% | ACCEPTED | 16.21% |
-| 4 | dd3706ac | 1.2748 | N/A | SKIPPED_LOW_ERROR | 16.21% |
+| 4 | 10e10cd4 | 2.5305 | N/A | REJECTED | 16.21% |
+| 5 | dd3706ac | 3.4697 | 0.2258% | ACCEPTED | 15.99% |
 ## Query Tree
 
 ```
-Node 9977 (Aggregate) [PATTERN: a5f39f08] - ROOT
+Node 9977 (Aggregate) [PATTERN: dd3706ac] - ROOT
   Node 9978 (Gather) [consumed]
     Node 9979 (Aggregate) [consumed]
-      Node 9980 (Seq Scan) - LEAF
+      Node 9980 (Seq Scan) [consumed] - LEAF
 ```
 
 ## Pattern Assignments
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Aggregate -> Gather -> Aggrega | a5f39f08 | 9977 | 9978, 9979 |
+| Aggregate -> Gather -> Aggrega | dd3706ac | 9977 | 9978, 9979, 9980 |
 
 
 **Legend:**
@@ -66,41 +67,20 @@ Node 9977 (Aggregate) [PATTERN: a5f39f08] - ROOT
 
 ## Phase E: Final Prediction
 
-- Final MRE: 2.91%
-- Improvement: 2.91%
+- Final MRE: 7.45%
+- Improvement: -1.63%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 9977 | Aggregate | 854.97 | 830.10 | 2.9% | pattern |
-| 9980 | Seq Scan | 833.26 | 750.59 | 9.9% | operator |
+| 9977 | Aggregate | 854.97 | 791.26 | 7.5% | pattern |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 9980 (Seq Scan) - LEAF
-
-- **Source:** operator
-- **Input Features:**
-  - np=112600
-  - nt=22639
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=12
-  - reltuples=6001215.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.0038
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=139605.4700
-- **Output:** st=4.74, rt=750.59
-
-### Step 2: Node 9977 (Aggregate) - PATTERN ROOT
+### Step 1: Node 9977 (Aggregate) - PATTERN ROOT
 
 - **Source:** pattern
-- **Pattern:** a5f39f08 (Aggregate -> Gather -> Aggregate (Outer) (Outer))
-- **Consumes:** Nodes 9978, 9979
+- **Pattern:** dd3706ac (Aggregate -> Gather -> Aggregate -> Seq Scan (Outer) (Outer) (Outer))
+- **Consumes:** Nodes 9978, 9979, 9980
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=1
@@ -132,4 +112,14 @@ Node 9977 (Aggregate) [PATTERN: a5f39f08] - ROOT
   - Gather_Outer_sel=5.0000
   - Gather_Outer_startup_cost=140718.6700
   - Gather_Outer_total_cost=140719.1800
-- **Output:** st=824.69, rt=830.10
+  - SeqScan_Outer_np=112600
+  - SeqScan_Outer_nt=22639
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=12
+  - SeqScan_Outer_reltuples=6001215.0000
+  - SeqScan_Outer_sel=0.0038
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=139605.4700
+- **Output:** st=785.06, rt=791.26
