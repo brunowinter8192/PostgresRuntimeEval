@@ -52,17 +52,22 @@ def process_task(task: tuple) -> None:
     train_patterns(template, approach, pattern_dataset, template_output)
 
 
-# Train pattern models for used_patterns
+# Train pattern models for used_patterns using FFS features from overview
 def train_patterns(template: str, approach: str, pattern_dataset: Path, output_dir: Path) -> None:
-    used_patterns_file = pattern_dataset / 'used_patterns.csv'
-    used_patterns_df = pd.read_csv(used_patterns_file, delimiter=';')
-    if used_patterns_df.empty:
-        return
-    used_hashes = set(used_patterns_df['pattern_hash'].tolist())
+    overview_file = output_dir / 'SVM' / 'two_step_evaluation_overview.csv'
 
+    if not overview_file.exists():
+        print(f"  Skipping: no SVM/two_step_evaluation_overview.csv (run 01_Feature_Selection.py first)")
+        return
+
+    overview_df = pd.read_csv(overview_file, delimiter=';')
+    if overview_df.empty:
+        return
+
+    feature_map = build_feature_map(overview_df)
     patterns_dir = pattern_dataset / 'patterns'
 
-    for pattern_hash in used_hashes:
+    for (pattern_hash, target_type), feature_cols in feature_map.items():
         pattern_dir = patterns_dir / pattern_hash
         training_file = pattern_dir / 'training_cleaned.csv'
 
@@ -74,35 +79,49 @@ def train_patterns(template: str, approach: str, pattern_dataset: Path, output_d
         if len(df) < 10:
             continue
 
-        feature_cols = get_pattern_features(df)
-
-        if not feature_cols:
+        available_features = [f for f in feature_cols if f in df.columns]
+        if not available_features:
             continue
 
-        X = df[feature_cols].fillna(0)
+        X = df[available_features].fillna(0)
 
-        for target_type in TARGET_TYPES:
-            target_col = TARGET_NAME_MAP[target_type]
+        target_col = TARGET_NAME_MAP[target_type]
+        if target_col not in df.columns:
+            continue
 
-            if target_col not in df.columns:
-                continue
+        y = df[target_col]
 
-            y = df[target_col]
+        if y.std() == 0:
+            continue
 
-            if y.std() == 0:
-                continue
+        model = Pipeline([
+            ('scaler', MaxAbsScaler()),
+            ('model', NuSVR(**SVM_PARAMS))
+        ])
+        model.fit(X, y)
 
-            model = Pipeline([
-                ('scaler', MaxAbsScaler()),
-                ('model', NuSVR(**SVM_PARAMS))
-            ])
-            model.fit(X, y)
+        model_dir = output_dir / 'Model' / target_type / pattern_hash
+        model_dir.mkdir(parents=True, exist_ok=True)
 
-            model_dir = output_dir / 'Model' / target_type / pattern_hash
-            model_dir.mkdir(parents=True, exist_ok=True)
+        with open(model_dir / 'model.pkl', 'wb') as f:
+            pickle.dump({'model': model, 'features': available_features}, f)
 
-            with open(model_dir / 'model.pkl', 'wb') as f:
-                pickle.dump({'model': model, 'features': feature_cols}, f)
+
+# Build feature map from overview: (pattern_hash, target) -> [features]
+def build_feature_map(overview_df: pd.DataFrame) -> dict:
+    feature_map = {}
+    for _, row in overview_df.iterrows():
+        pattern_hash = row['pattern_hash']
+        target = row['target']
+        features_str = row['final_features']
+
+        if pd.isna(features_str) or features_str.strip() == '':
+            continue
+
+        features = [f.strip() for f in features_str.split(',')]
+        feature_map[(pattern_hash, target)] = features
+
+    return feature_map
 
 
 # Get feature columns for pattern training (excludes timing features)

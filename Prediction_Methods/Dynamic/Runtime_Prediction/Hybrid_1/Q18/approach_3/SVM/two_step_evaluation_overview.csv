@@ -1,0 +1,5 @@
+pattern_hash;target;ffs_feature_count;missing_child_count;final_feature_count;mre_ffs;mre_final;mre_delta;final_features
+7bcfec2259bf8f077d86cc017740ebd6;execution_time;2;7;9;0.0034;0.0219;0.0185;Aggregate_Outer_rt1, Aggregate_Outer_rt2, Aggregate_Outer_st1, Aggregate_Outer_st2, Limit_rt1, Sort_Outer_rt1, Sort_Outer_rt2, Sort_Outer_st1, Sort_Outer_st2
+7bcfec2259bf8f077d86cc017740ebd6;start_time;2;7;9;0.0034;0.0215;0.0181;Aggregate_Outer_rt1, Aggregate_Outer_rt2, Aggregate_Outer_st1, Aggregate_Outer_st2, Limit_st1, Sort_Outer_rt1, Sort_Outer_rt2, Sort_Outer_st1, Sort_Outer_st2
+895c6e8c1a30a094329d71cef3111fbd;execution_time;7;3;10;3.2649;3.7495;0.4846;HashJoin_rt2, HashJoin_sel, HashJoin_st2, HashJoin_startup_cost, Hash_Inner_rt1, Hash_Inner_rt2, Hash_Inner_st1, Hash_Inner_st2, Hash_Inner_startup_cost, Hash_Inner_total_cost
+895c6e8c1a30a094329d71cef3111fbd;start_time;2;4;6;0.6104;1.1137;0.5033;HashJoin_np, Hash_Inner_rt1, Hash_Inner_rt2, Hash_Inner_st1, Hash_Inner_st2, Hash_Inner_startup_cost

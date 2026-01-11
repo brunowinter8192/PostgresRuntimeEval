@@ -1,0 +1,5 @@
+pattern_hash;target;ffs_feature_count;missing_child_count;final_feature_count;mre_ffs;mre_final;mre_delta;final_features
+422ae017fa27104671904e4f61703f9d;execution_time;1;8;9;0.0226;0.0387;0.0161;Aggregate_rt1, HashJoin_Outer_rt1, HashJoin_Outer_rt2, HashJoin_Outer_st1, HashJoin_Outer_st2, Hash_Inner_rt1, Hash_Inner_rt2, Hash_Inner_st1, Hash_Inner_st2
+422ae017fa27104671904e4f61703f9d;start_time;1;8;9;0.0226;0.0387;0.0161;Aggregate_rt1, HashJoin_Outer_rt1, HashJoin_Outer_rt2, HashJoin_Outer_st1, HashJoin_Outer_st2, Hash_Inner_rt1, Hash_Inner_rt2, Hash_Inner_st1, Hash_Inner_st2
+1d35fb978b379d4a820897907e56ab7b;execution_time;6;2;8;0.1050;0.1081;0.0031;Aggregate_Outer_nt1, Aggregate_Outer_rt1, Aggregate_Outer_rt2, Aggregate_Outer_sel, Aggregate_Outer_st1, Aggregate_Outer_st2, Aggregate_Outer_startup_cost, Sort_rt1
+1d35fb978b379d4a820897907e56ab7b;start_time;6;2;8;0.1042;0.1072;0.0029;Aggregate_Outer_nt1, Aggregate_Outer_rt1, Aggregate_Outer_rt2, Aggregate_Outer_sel, Aggregate_Outer_st1, Aggregate_Outer_st2, Aggregate_Outer_startup_cost, Sort_rt1

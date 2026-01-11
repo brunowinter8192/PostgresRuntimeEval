@@ -1,0 +1,11 @@
+feature;order
+Aggregate_st1;1
+Aggregate_nt;2
+Aggregate_nt1;3
+Aggregate_sel;4
+Aggregate_plan_width;5
+Gather_Outer_nt;6
+Gather_Outer_nt1;7
+Gather_Outer_sel;8
+Gather_Outer_parallel_workers;9
+Aggregate_Outer_nt;10

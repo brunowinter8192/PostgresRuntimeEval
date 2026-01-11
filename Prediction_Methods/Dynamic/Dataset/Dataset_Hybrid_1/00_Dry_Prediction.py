@@ -59,7 +59,8 @@ def load_pattern_info(patterns_file: Path) -> tuple:
         pattern_info[pattern_hash] = {
             'pattern_string': row['pattern_string'],
             'length': int(row['pattern_length']),
-            'operator_count': row.get('operator_count', row['pattern_length'])
+            'operator_count': row.get('operator_count', row['pattern_length']),
+            'occurrence_count': int(row.get('occurrence_count', 0))
         }
 
     return pattern_info, pattern_order
@@ -103,7 +104,8 @@ def export_used_patterns(used_patterns: set, pattern_info: dict, output_dir: Pat
         rows.append({
             'pattern_hash': pattern_hash,
             'pattern_string': info.get('pattern_string', ''),
-            'pattern_length': info.get('length', 0)
+            'pattern_length': info.get('length', 0),
+            'occurrence_count': info.get('occurrence_count', 0)
         })
 
     df = pd.DataFrame(rows)

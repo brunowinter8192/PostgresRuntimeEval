@@ -1,0 +1,11 @@
+feature;order
+HashJoin_st1;1
+HashJoin_st2;2
+HashJoin_np;3
+HashJoin_rt2;4
+HashJoin_reltuples;5
+Hash_Inner_st1;6
+HashJoin_nt2;7
+HashJoin_parallel_workers;8
+Hash_Inner_rt1;9
+HashJoin_sel;10

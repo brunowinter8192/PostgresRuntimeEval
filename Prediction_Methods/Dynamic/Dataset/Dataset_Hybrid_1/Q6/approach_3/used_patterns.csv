@@ -1,2 +1,2 @@
-pattern_hash;pattern_string;pattern_length
-a5f39f08c510532e02e96e109e48c0cd;Aggregate -> Gather -> Aggregate (Outer) (Outer);3
+pattern_hash;pattern_string;pattern_length;occurrence_count
+a5f39f08c510532e02e96e109e48c0cd;Aggregate -> Gather -> Aggregate (Outer) (Outer);3;450

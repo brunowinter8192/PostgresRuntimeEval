@@ -24,8 +24,10 @@ Hybrid_1 verwendet die FFS-trainierten Operator-Models aus Operator_Level:
 Runtime_Prediction/Hybrid_1/
 ├── DOCS.md
 ├── 00_Batch_Workflow.py
+├── 01_Feature_Selection.py
 ├── 02_Pretrain_Models.py
 ├── 03_Predict.py
+├── report.py
 ├── A_01a_Query_Evaluation.py
 ├── A_02_Compare_Methods.py
 ├── Evaluation/
@@ -35,10 +37,18 @@ Runtime_Prediction/Hybrid_1/
 │       └── loto_mre_plot.png
 └── Q*/
     └── {approach}/
+        ├── SVM/
+        │   ├── two_step_evaluation_overview.csv
+        │   └── {target}/{hash}_csv/
+        │       ├── ffs_results_seed42.csv
+        │       ├── selected_features_seed42.csv
+        │       └── final_features.csv
         ├── Model/
         │   ├── execution_time/{hash}/model.pkl
         │   └── start_time/{hash}/model.pkl
-        └── predictions.csv
+        ├── predictions.csv
+        └── md/                    (--report only)
+            └── 03_{template}.md
 ```
 
 ## Workflow Dependency Graph
@@ -48,11 +58,17 @@ Runtime_Prediction/Hybrid_1/
 ../Operator_Level/{Q*}/SVM/two_step_evaluation_overview.csv (Operator Features)
                     |
                     v
-Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv
+Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv (from 00_Dry_Prediction)
 Dataset/Dataset_Hybrid_1/{Q*}/{approach}/patterns/{hash}/training_cleaned.csv
                     |
                     v
-         02_Pretrain_Models.py (Pattern-Training only)
+         01_Feature_Selection.py (Pattern FFS)
+                    |
+                    v
+         {Q*}/{approach}/SVM/two_step_evaluation_overview.csv
+                    |
+                    v
+         02_Pretrain_Models.py (Pattern-Training with FFS features)
                     |
                     v
          {Q*}/{approach}/Model/{target}/{hash}/model.pkl
@@ -77,12 +93,36 @@ python3 00_Batch_Workflow.py
 1. `02_Pretrain_Models.py` - Train pattern models
 2. `03_Predict.py` - Run hybrid prediction
 
-## 02 - Pretrain_Models.py
+## 01 - Feature_Selection.py
 
-**Purpose:** Train SVM models for patterns. Operators come from Operator_Level.
+**Purpose:** Forward feature selection for pattern models using used_patterns from Dry-Run.
 
 **Inputs:**
-- `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv` - Patterns to train
+- `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv` - Patterns to process (from Dry-Run)
+- `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/patterns/{hash}/training_cleaned.csv` - Training data
+
+**Outputs per Template:**
+- `{Q*}/{approach}/SVM/two_step_evaluation_overview.csv` - FFS results with final_features
+- `{Q*}/{approach}/SVM/{target}/{hash}_csv/ffs_results_seed42.csv`
+- `{Q*}/{approach}/SVM/{target}/{hash}_csv/selected_features_seed42.csv`
+- `{Q*}/{approach}/SVM/{target}/{hash}_csv/final_features.csv`
+
+**Variables:**
+- `--templates` - Templates to process (default: all 14)
+- `--approaches` - Approaches to process (default: approach_3)
+
+**Usage:**
+```bash
+python3 01_Feature_Selection.py
+python3 01_Feature_Selection.py --templates Q1 Q3
+```
+
+## 02 - Pretrain_Models.py
+
+**Purpose:** Train SVM models for patterns using FFS-selected features. Operators come from Operator_Level.
+
+**Inputs:**
+- `{Q*}/{approach}/SVM/two_step_evaluation_overview.csv` - FFS results with features (from 01_Feature_Selection)
 - `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/patterns/{hash}/training_cleaned.csv` - Training data
 
 **Outputs per Template:**
@@ -108,22 +148,25 @@ python3 02_Pretrain_Models.py --templates Q1 Q3
 
 **Inputs:**
 - `../../Dataset/Dataset_Operator/{Q*}/test.csv` - Test data
-- `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv` - Pattern matching list
+- `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/patterns_filtered.csv` - Pattern matching list
 - `{Q*}/{approach}/Model/` - Pattern models from 02_Pretrain_Models.py
 - `../Operator_Level/{Q*}/Model/` - Operator models (FFS-trained)
 - `../Operator_Level/{Q*}/SVM/two_step_evaluation_overview.csv` - Operator features
 
 **Outputs per Template:**
 - `{Q*}/{approach}/predictions.csv` - Hybrid predictions
+- `{Q*}/{approach}/md/03_{template}.md` - Debug reports (--report only)
 
 **Variables:**
 - `--templates` - Templates to process (default: all 14)
 - `--approaches` - Approaches to process (default: approach_3)
+- `--report` - Generate MD reports for debugging (default: off)
 
 **Usage:**
 ```bash
 python3 03_Predict.py
 python3 03_Predict.py --templates Q1 Q3
+python3 03_Predict.py --templates Q1 --report
 ```
 
 **Pattern Matching:**

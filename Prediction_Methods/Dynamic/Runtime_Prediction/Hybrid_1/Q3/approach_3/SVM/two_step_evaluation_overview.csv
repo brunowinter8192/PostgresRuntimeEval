@@ -1,0 +1,5 @@
+pattern_hash;target;ffs_feature_count;missing_child_count;final_feature_count;mre_ffs;mre_final;mre_delta;final_features
+25df29b5b69835d07c0d8b72b0e46a3b;execution_time;3;12;15;0.0021;0.0115;0.0094;Aggregate_Outer_rt1, Aggregate_Outer_rt2, Aggregate_Outer_st1, Aggregate_Outer_st2, Gather_Outer_rt1, Gather_Outer_rt2, Gather_Outer_st1, Gather_Outer_st2, Limit_rt1, Limit_st1, Sort_Outer_rt1, Sort_Outer_rt2, Sort_Outer_st1, Sort_Outer_st2, Sort_Outer_total_cost
+25df29b5b69835d07c0d8b72b0e46a3b;start_time;3;12;15;0.0021;0.0115;0.0094;Aggregate_Outer_rt1, Aggregate_Outer_rt2, Aggregate_Outer_st1, Aggregate_Outer_st2, Gather_Outer_rt1, Gather_Outer_rt2, Gather_Outer_st1, Gather_Outer_st2, Limit_rt1, Limit_st1, Sort_Outer_rt1, Sort_Outer_rt2, Sort_Outer_st1, Sort_Outer_st2, Sort_Outer_total_cost
+f4cb205adfd108034c883c87871a6da8;execution_time;1;4;5;105.0422;176.3574;71.3152;Hash_Inner_rt1, Hash_Inner_rt2, Hash_Inner_st1, Hash_Inner_st2, SeqScan_Outer_reltuples
+f4cb205adfd108034c883c87871a6da8;start_time;3;3;6;0.3059;0.4733;0.1674;HashJoin_np, Hash_Inner_rt1, Hash_Inner_rt2, Hash_Inner_st1, Hash_Inner_st2, SeqScan_Outer_plan_width

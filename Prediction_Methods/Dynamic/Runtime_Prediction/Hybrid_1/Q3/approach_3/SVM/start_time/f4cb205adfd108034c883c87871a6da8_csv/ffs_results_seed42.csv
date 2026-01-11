@@ -1,0 +1,39 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Hash_Inner_st1;True;0.4265589072913369;1;Hash_Inner_st1
+2;SeqScan_Outer_plan_width;True;0.32264276104941364;2;Hash_Inner_st1, SeqScan_Outer_plan_width
+3;HashJoin_np;True;0.3058542200445683;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+4;HashJoin_nt1;False;0.3410730694199895;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+5;HashJoin_reltuples;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+6;HashJoin_parallel_workers;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+7;SeqScan_Outer_nt1;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+8;SeqScan_Outer_nt2;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+9;SeqScan_Outer_startup_cost;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+10;SeqScan_Outer_parallel_workers;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+11;Hash_Inner_np;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+12;Hash_Inner_nt2;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+13;Hash_Inner_reltuples;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+14;Hash_Inner_parallel_workers;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+15;Hash_Inner_st2;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+16;Hash_Inner_rt2;False;0.34349665304832994;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+17;HashJoin_st1;False;0.3684302645530877;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+18;HashJoin_sel;False;0.3831138206235493;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+19;SeqScan_Outer_np;False;0.3843578633684014;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+20;SeqScan_Outer_reltuples;False;0.3847921682856028;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+21;HashJoin_rt1;False;0.411376583984388;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+22;Hash_Inner_plan_width;False;0.43749228389823147;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+23;SeqScan_Outer_total_cost;False;0.4563140272976677;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+24;Hash_Inner_startup_cost;False;0.4563140272976677;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+25;Hash_Inner_total_cost;False;0.4563140272976677;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+26;HashJoin_total_cost;False;0.4633822228781197;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+27;HashJoin_rt2;False;0.46857056354477117;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+28;HashJoin_st2;False;0.46858923316054196;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+29;HashJoin_startup_cost;False;0.4790323251348136;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+30;Hash_Inner_rt1;False;0.48831247938816136;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+31;SeqScan_Outer_sel;False;0.5607518408994474;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+32;HashJoin_plan_width;False;0.5645524020936658;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+33;HashJoin_nt2;False;0.7449596676718834;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+34;SeqScan_Outer_nt;False;0.7449596676718834;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+35;Hash_Inner_nt;False;0.7449596676718834;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+36;Hash_Inner_nt1;False;0.7449596676718834;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+37;HashJoin_nt;False;0.7787624802096694;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np
+38;Hash_Inner_sel;False;0.8576904413478228;3;Hash_Inner_st1, SeqScan_Outer_plan_width, HashJoin_np

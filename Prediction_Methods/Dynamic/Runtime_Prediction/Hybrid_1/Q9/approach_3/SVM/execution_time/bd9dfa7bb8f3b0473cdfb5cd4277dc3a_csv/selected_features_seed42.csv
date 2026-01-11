@@ -1,0 +1,5 @@
+feature;order
+NestedLoop_total_cost;1
+NestedLoop_rt1;2
+IndexScan_Inner_plan_width;3
+NestedLoop_startup_cost;4
