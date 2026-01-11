@@ -1,0 +1,29 @@
+iteration;feature_tested;was_selected;mre;n_features_selected;selected_features
+1;Aggregate_Outer_rt1;True;0.11424542843063248;1;Aggregate_Outer_rt1
+2;Sort_rt1;True;0.11342049818931559;2;Aggregate_Outer_rt1, Sort_rt1
+3;Aggregate_Outer_sel;True;0.11322199764272547;3;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel
+4;Aggregate_Outer_startup_cost;True;0.1072397952093322;4;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost
+5;Aggregate_Outer_nt1;True;0.10455849123634897;5;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1
+6;Aggregate_Outer_st1;True;0.10423769443693764;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+7;Sort_st1;False;0.10492829469432112;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+8;Aggregate_Outer_total_cost;False;0.10493464541843389;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+9;Sort_plan_width;False;0.10496197800026866;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+10;Aggregate_Outer_plan_width;False;0.10496197800026866;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+11;Sort_startup_cost;False;0.10502850769807226;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+12;Sort_total_cost;False;0.1050341852097686;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+13;Sort_np;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+14;Sort_nt2;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+15;Sort_reltuples;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+16;Sort_parallel_workers;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+17;Sort_st2;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+18;Sort_rt2;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+19;Aggregate_Outer_np;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+20;Aggregate_Outer_nt2;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+21;Aggregate_Outer_reltuples;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+22;Aggregate_Outer_parallel_workers;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+23;Aggregate_Outer_st2;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+24;Aggregate_Outer_rt2;False;0.10611708545149201;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+25;Sort_nt;False;0.10628036805172462;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+26;Sort_nt1;False;0.10628036805172462;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+27;Aggregate_Outer_nt;False;0.10628036805172462;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1
+28;Sort_sel;False;0.10790020479147026;6;Aggregate_Outer_rt1, Sort_rt1, Aggregate_Outer_sel, Aggregate_Outer_startup_cost, Aggregate_Outer_nt1, Aggregate_Outer_st1

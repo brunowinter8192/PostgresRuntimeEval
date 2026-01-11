@@ -1,0 +1,10 @@
+feature;order
+HashJoin_st1;1
+HashJoin_st2;2
+NestedLoop_Outer_st1;3
+IndexScan_Inner_total_cost;4
+HashJoin_nt;5
+HashJoin_nt1;6
+NestedLoop_Outer_nt;7
+NestedLoop_Outer_nt1;8
+NestedLoop_Outer_total_cost;9

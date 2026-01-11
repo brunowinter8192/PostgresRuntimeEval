@@ -16,6 +16,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 # From mapping_config.py: Configuration constants
 from mapping_config import csv_name_to_folder_name, LEAF_OPERATORS
 
+# From report.py: Report export
+from report import export_md_report
+
 ALL_TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 ALL_APPROACHES = ['approach_3']
 
@@ -27,8 +30,8 @@ OUTPUT_DIR = SCRIPT_DIR
 
 
 # ORCHESTRATOR
-def batch_predict(templates: list, approaches: list) -> None:
-    tasks = [(template, approach) for template in templates for approach in approaches]
+def batch_predict(templates: list, approaches: list, report: bool = False) -> None:
+    tasks = [(template, approach, report) for template in templates for approach in approaches]
     with Pool(6) as pool:
         pool.map(process_task, tasks)
 
@@ -37,7 +40,7 @@ def batch_predict(templates: list, approaches: list) -> None:
 
 # Process single template-approach combination
 def process_task(task: tuple) -> None:
-    template, approach = task
+    template, approach, report = task
     print(f"{template}/{approach}...")
 
     template_output = OUTPUT_DIR / template / approach
@@ -48,11 +51,11 @@ def process_task(task: tuple) -> None:
         print(f"  Skipping: no Model/ directory (run 02_Pretrain_Models.py first)")
         return
 
-    run_predict(template, approach, pattern_dataset, template_output)
+    run_predict(template, approach, pattern_dataset, template_output, report)
 
 
 # Run hybrid prediction for a template
-def run_predict(template: str, approach: str, pattern_dataset: Path, output_dir: Path) -> None:
+def run_predict(template: str, approach: str, pattern_dataset: Path, output_dir: Path, report: bool = False) -> None:
     test_file = OPERATOR_DATASET_DIR / template / 'test.csv'
     model_dir = output_dir / 'Model'
 
@@ -65,11 +68,29 @@ def run_predict(template: str, approach: str, pattern_dataset: Path, output_dir:
 
     pattern_models = load_pattern_models(model_dir, list(pattern_info.keys()))
 
-    predictions = predict_all_queries(
-        df_test, operator_models, operator_features, pattern_models, pattern_info, pattern_order
-    )
+    if report:
+        all_predictions = []
+        for query_file in df_test['query_file'].unique():
+            query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
 
-    export_predictions(predictions, output_dir)
+            predictions, steps, consumed_nodes, pattern_assignments = predict_single_query(
+                query_ops, operator_models, operator_features, pattern_models, pattern_info, pattern_order,
+                collect_steps=True
+            )
+
+            all_predictions.extend(predictions)
+
+            export_md_report(
+                query_file, query_ops, predictions, steps, consumed_nodes,
+                pattern_assignments, pattern_info, str(output_dir)
+            )
+
+        export_predictions(all_predictions, output_dir)
+    else:
+        predictions = predict_all_queries(
+            df_test, operator_models, operator_features, pattern_models, pattern_info, pattern_order
+        )
+        export_predictions(predictions, output_dir)
 
 
 # ============== IO FUNCTIONS ==============
@@ -330,7 +351,7 @@ def predict_all_queries(
     for query_file in df_test['query_file'].unique():
         query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
 
-        predictions = predict_single_query(
+        predictions, _, _, _ = predict_single_query(
             query_ops, operator_models, operator_features, pattern_models, pattern_info, pattern_order
         )
 
@@ -346,8 +367,9 @@ def predict_single_query(
     operator_features: dict,
     pattern_models: dict,
     pattern_info: dict,
-    pattern_order: list
-) -> list:
+    pattern_order: list,
+    collect_steps: bool = False
+) -> tuple:
     root = build_tree_from_dataframe(query_ops)
     all_nodes = extract_all_nodes(root)
     nodes_by_depth = sorted(all_nodes, key=lambda n: n.depth, reverse=True)
@@ -358,12 +380,15 @@ def predict_single_query(
 
     prediction_cache = {}
     predictions = []
+    steps = []
+    step_num = 0
 
     for node in nodes_by_depth:
         if node.node_id in consumed_nodes and node.node_id not in pattern_assignments:
             continue
 
         row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
+        step_num += 1
 
         if node.node_id in pattern_assignments:
             pattern_hash = pattern_assignments[node.node_id]
@@ -378,12 +403,51 @@ def predict_single_query(
                 prediction_cache[nid] = result
 
             predictions.append(create_prediction_result(row, result['start'], result['exec'], 'pattern', pattern_hash))
+
+            if collect_steps:
+                consumed_children = [(c.node_id, c.node_type) for c in node.children]
+                steps.append({
+                    'step': step_num,
+                    'depth': node.depth,
+                    'prediction_type': 'pattern',
+                    'pattern_hash': pattern_hash,
+                    'pattern_string': info.get('pattern_string', ''),
+                    'parent_node_id': node.node_id,
+                    'parent_node_type': node.node_type,
+                    'consumed_children': consumed_children,
+                    'predicted_startup_time': result['start'],
+                    'predicted_total_time': result['exec']
+                })
         else:
             result = predict_operator(node, query_ops, operator_models, operator_features, prediction_cache)
             prediction_cache[node.node_id] = result
             predictions.append(create_prediction_result(row, result['start'], result['exec'], result['type']))
 
-    return predictions
+            if collect_steps:
+                if result['type'] == 'passthrough':
+                    steps.append({
+                        'step': step_num,
+                        'depth': node.depth,
+                        'prediction_type': 'passthrough',
+                        'node_id': node.node_id,
+                        'node_type': node.node_type,
+                        'reason': 'Passthrough operator - copying child prediction',
+                        'predicted_startup_time': result['start'],
+                        'predicted_total_time': result['exec']
+                    })
+                else:
+                    steps.append({
+                        'step': step_num,
+                        'depth': node.depth,
+                        'prediction_type': 'operator',
+                        'node_id': node.node_id,
+                        'node_type': node.node_type,
+                        'reason': 'No pattern match',
+                        'predicted_startup_time': result['start'],
+                        'predicted_total_time': result['exec']
+                    })
+
+    return predictions, steps, consumed_nodes, pattern_assignments
 
 
 # Predict using pattern model
@@ -593,5 +657,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--templates", nargs="+", default=ALL_TEMPLATES, help="Templates to process")
     parser.add_argument("--approaches", nargs="+", default=ALL_APPROACHES, help="Approaches to process")
+    parser.add_argument("--report", action="store_true", help="Generate MD reports for debugging")
     args = parser.parse_args()
-    batch_predict(args.templates, args.approaches)
+    batch_predict(args.templates, args.approaches, args.report)

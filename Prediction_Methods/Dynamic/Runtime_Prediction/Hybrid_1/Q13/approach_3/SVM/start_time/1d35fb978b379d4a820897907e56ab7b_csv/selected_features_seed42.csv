@@ -1,0 +1,7 @@
+feature;order
+Aggregate_Outer_rt1;1
+Sort_rt1;2
+Aggregate_Outer_sel;3
+Aggregate_Outer_startup_cost;4
+Aggregate_Outer_nt1;5
+Aggregate_Outer_st1;6

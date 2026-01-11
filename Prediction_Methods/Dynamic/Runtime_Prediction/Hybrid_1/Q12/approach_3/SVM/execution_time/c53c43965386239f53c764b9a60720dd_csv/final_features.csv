@@ -1,0 +1,3 @@
+feature;order
+IndexScan_Inner_startup_cost;1
+NestedLoop_startup_cost;2
