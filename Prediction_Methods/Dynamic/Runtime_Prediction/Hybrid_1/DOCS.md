@@ -2,18 +2,6 @@
 
 Hybrid pattern-level prediction for Dynamic LOTO workflow.
 
-## Basis: Static Hybrid_1
-
-**Übernommen von** `Hybrid_1/Runtime_Prediction/`:
-- `01_Feature_Selection.py` - Forward Feature Selection für Patterns
-- `02_Train_Models.py` - SVM Model Training
-- `03_Predict_Queries/` - Hybrid Bottom-Up Prediction
-
-**Neu in Dynamic:**
-- `02_Pretrain_Models.py` - FFS + Training für alle LOTO templates
-- `03_Predict.py` - Prediction für alle LOTO templates
-- `A_01a_Query_Evaluation.py` - LOTO-aggregierte Evaluation
-
 ## Working Directory
 
 **CRITICAL:** All commands assume CWD = `Runtime_Prediction/Hybrid_1/`
@@ -22,23 +10,24 @@ Hybrid pattern-level prediction for Dynamic LOTO workflow.
 cd Prediction_Methods/Dynamic/Runtime_Prediction/Hybrid_1
 ```
 
-## Approach Definitions
+## Prerequisite
 
-**Pattern Pool:** Verwendet Static Hybrid_1 patterns (372) als gemeinsame Referenz.
+**CRITICAL:** `Operator_Level/` muss vor Hybrid_1 durchgelaufen sein.
 
-| Approach | no_passthrough | threshold | Beschreibung |
-|----------|---------------|-----------|--------------|
-| approach_3 | False | 150 | Alle Patterns, keine Filter |
-| approach_4 | True | 150 | Ohne Passthrough-Operatoren als Root |
+Hybrid_1 verwendet die FFS-trainierten Operator-Models aus Operator_Level:
+- Models: `../Operator_Level/{Q*}/Model/{target}/{operator}/model.pkl`
+- Features: `../Operator_Level/{Q*}/SVM/two_step_evaluation_overview.csv`
 
 ## Directory Structure
 
 ```
 Runtime_Prediction/Hybrid_1/
 ├── DOCS.md
+├── 00_Batch_Workflow.py
 ├── 02_Pretrain_Models.py
 ├── 03_Predict.py
 ├── A_01a_Query_Evaluation.py
+├── A_02_Compare_Methods.py
 ├── Evaluation/
 │   └── {approach}/
 │       ├── overall_mre.csv
@@ -46,90 +35,106 @@ Runtime_Prediction/Hybrid_1/
 │       └── loto_mre_plot.png
 └── Q*/
     └── {approach}/
-        ├── SVM/
-        │   └── two_step_evaluation_overview.csv
         ├── Model/
         │   ├── execution_time/{hash}/model.pkl
-        │   ├── start_time/{hash}/model.pkl
-        │   └── Operators/ (symlinks to Operator_Level)
+        │   └── start_time/{hash}/model.pkl
         └── predictions.csv
 ```
 
 ## Workflow Dependency Graph
 
 ```
+../Operator_Level/{Q*}/Model/          (Operator Models - FFS trained)
+../Operator_Level/{Q*}/SVM/two_step_evaluation_overview.csv (Operator Features)
+                    |
+                    v
 Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv
-                         |
-                         v
-              02_Pretrain_Models.py
-                         |
-                         v
-              {Q*}/{approach}/Model/
-                         |
-                         v
-                  03_Predict.py
-                         |
-                         v
-              {Q*}/{approach}/predictions.csv
-                         |
-                         v
-              A_01a_Query_Evaluation.py
-                         |
-                         v
-              Evaluation/{approach}/loto_mre_plot.png
+Dataset/Dataset_Hybrid_1/{Q*}/{approach}/patterns/{hash}/training_cleaned.csv
+                    |
+                    v
+         02_Pretrain_Models.py (Pattern-Training only)
+                    |
+                    v
+         {Q*}/{approach}/Model/{target}/{hash}/model.pkl
+                    |
+                    v
+              03_Predict.py
+                    |
+                    v
+         {Q*}/{approach}/predictions.csv
 ```
+
+## 00 - Batch_Workflow.py
+
+**Purpose:** Run complete Hybrid_1 workflow (Pattern-Training + Prediction).
+
+**Usage:**
+```bash
+python3 00_Batch_Workflow.py
+```
+
+**Executes:**
+1. `02_Pretrain_Models.py` - Train pattern models
+2. `03_Predict.py` - Run hybrid prediction
 
 ## 02 - Pretrain_Models.py
 
-**Purpose:** FFS and model training for all LOTO templates. Run once before prediction.
+**Purpose:** Train SVM models for patterns. Operators come from Operator_Level.
 
 **Inputs:**
-- `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/` - Pattern training datasets
 - `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv` - Patterns to train
-
-**Dependency:**
-- `../Operator_Level/{Q*}/Model/` - Operator-level fallback models (symlinked)
+- `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/patterns/{hash}/training_cleaned.csv` - Training data
 
 **Outputs per Template:**
-- `{Q*}/{approach}/SVM/two_step_evaluation_overview.csv` - FFS results
 - `{Q*}/{approach}/Model/{target}/{hash}/model.pkl` - Pattern models
-- `{Q*}/{approach}/Model/Operators/` - Symlinks to Operator_Level
+
+**Pattern Features:**
+- All columns except metadata and targets
+- **Timing-Features excluded:** `*_st1`, `*_rt1`, `*_st2`, `*_rt2` (filled from prediction cache at runtime)
 
 **Variables:**
 - `--templates` - Templates to process (default: all 14)
-- `--approaches` - Approaches to process (default: approach_3, approach_4)
+- `--approaches` - Approaches to process (default: approach_3)
 
 **Usage:**
 ```bash
 python3 02_Pretrain_Models.py
-python3 02_Pretrain_Models.py --templates Q1 Q3 --approaches approach_3
+python3 02_Pretrain_Models.py --templates Q1 Q3
 ```
 
 ## 03 - Predict.py
 
-**Purpose:** Hybrid bottom-up prediction using pretrained models.
+**Purpose:** Hybrid bottom-up prediction using pattern models + Operator_Level models.
 
 **Inputs:**
 - `../../Dataset/Dataset_Operator/{Q*}/test.csv` - Test data
 - `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv` - Pattern matching list
-- `{Q*}/{approach}/Model/` - Pretrained models from 02_Pretrain_Models.py
+- `{Q*}/{approach}/Model/` - Pattern models from 02_Pretrain_Models.py
+- `../Operator_Level/{Q*}/Model/` - Operator models (FFS-trained)
+- `../Operator_Level/{Q*}/SVM/two_step_evaluation_overview.csv` - Operator features
 
 **Outputs per Template:**
 - `{Q*}/{approach}/predictions.csv` - Hybrid predictions
 
 **Variables:**
 - `--templates` - Templates to process (default: all 14)
-- `--approaches` - Approaches to process (default: approach_3, approach_4)
+- `--approaches` - Approaches to process (default: approach_3)
 
 **Usage:**
 ```bash
 python3 03_Predict.py
-python3 03_Predict.py --templates Q1 Q3 --approaches approach_3
+python3 03_Predict.py --templates Q1 Q3
 ```
 
-**Pattern Matching:** Uses `used_patterns.csv` for matching - same patterns that were trained.
+**Pattern Matching:**
+- Greedy assignment: longest patterns first
+- Tie-breaking: `pattern_length` DESC, then `occurrence_count` DESC
+- Single-Pattern-Constraint: Skip if pattern would consume ALL nodes
 
-**Single-Pattern-Constraint:** If a pattern would consume ALL nodes as the first match, it is skipped and shorter patterns are tried. Ensures hybrid prediction (at least 1 pattern + 1 operator).
+**Operator Fallback:**
+- Model exists → Prediction with `max(0.0, ...)`
+- No model + Leaf → `{start: 0.0, exec: 0.0}`
+- No model + Non-Leaf → `max(child predictions)` (Passthrough)
 
 ## A_01a - Query_Evaluation.py
 
@@ -147,8 +152,3 @@ python3 03_Predict.py --templates Q1 Q3 --approaches approach_3
 ```bash
 python3 A_01a_Query_Evaluation.py approach_3 --output-dir Evaluation/approach_3
 ```
-
-**LOTO Aggregation:**
-- Collects predictions from all 14 templates
-- Each template was test set exactly once
-- Plot shows MRE when each template was held out

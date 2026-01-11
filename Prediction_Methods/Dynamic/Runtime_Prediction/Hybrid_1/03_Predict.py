@@ -5,6 +5,7 @@ import sys
 import argparse
 import pickle
 import hashlib
+import joblib
 from pathlib import Path
 from multiprocessing import Pool
 
@@ -13,7 +14,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 # From mapping_config.py: Configuration constants
-from mapping_config import csv_name_to_folder_name
+from mapping_config import csv_name_to_folder_name, LEAF_OPERATORS
 
 ALL_TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 ALL_APPROACHES = ['approach_3']
@@ -21,6 +22,7 @@ ALL_APPROACHES = ['approach_3']
 SCRIPT_DIR = Path(__file__).resolve().parent
 DATASET_DIR = SCRIPT_DIR.parent.parent / 'Dataset' / 'Dataset_Hybrid_1'
 OPERATOR_DATASET_DIR = SCRIPT_DIR.parent.parent / 'Dataset' / 'Dataset_Operator'
+OPERATOR_LEVEL_DIR = SCRIPT_DIR.parent / 'Operator_Level'
 OUTPUT_DIR = SCRIPT_DIR
 
 
@@ -56,11 +58,15 @@ def run_predict(template: str, approach: str, pattern_dataset: Path, output_dir:
 
     df_test = load_test_data(test_file)
     pattern_info, pattern_order = load_pattern_info(pattern_dataset / 'used_patterns.csv')
-    operator_models = load_operator_models(model_dir)
+
+    operator_level_dir = OPERATOR_LEVEL_DIR / template
+    operator_models = load_operator_models(operator_level_dir)
+    operator_features = load_operator_features(operator_level_dir)
+
     pattern_models = load_pattern_models(model_dir, list(pattern_info.keys()))
 
     predictions = predict_all_queries(
-        df_test, operator_models, pattern_models, pattern_info, pattern_order
+        df_test, operator_models, operator_features, pattern_models, pattern_info, pattern_order
     )
 
     export_predictions(predictions, output_dir)
@@ -77,7 +83,10 @@ def load_test_data(test_file: Path) -> pd.DataFrame:
 # Load pattern info from used_patterns.csv
 def load_pattern_info(patterns_csv: Path) -> tuple:
     df = pd.read_csv(patterns_csv, delimiter=';')
-    df_sorted = df.sort_values('pattern_length', ascending=False)
+    df_sorted = df.sort_values(
+        ['pattern_length', 'occurrence_count'],
+        ascending=[False, False]
+    ).reset_index(drop=True)
     pattern_order = df_sorted['pattern_hash'].tolist()
 
     info = {}
@@ -90,12 +99,12 @@ def load_pattern_info(patterns_csv: Path) -> tuple:
     return info, pattern_order
 
 
-# Load operator models from Model/Operators/{target}/{op_name}/model.pkl
-def load_operator_models(model_dir: Path) -> dict:
+# Load operator models from Operator_Level/{template}/Model/{target}/{op_name}/model.pkl
+def load_operator_models(operator_level_dir: Path) -> dict:
     models = {'execution_time': {}, 'start_time': {}}
 
     for target in ['execution_time', 'start_time']:
-        target_dir = model_dir / 'Operators' / target
+        target_dir = operator_level_dir / 'Model' / target
 
         if not target_dir.exists():
             continue
@@ -105,10 +114,32 @@ def load_operator_models(model_dir: Path) -> dict:
                 model_file = op_dir / 'model.pkl'
 
                 if model_file.exists():
-                    with open(model_file, 'rb') as f:
-                        models[target][op_dir.name] = pickle.load(f)
+                    models[target][op_dir.name] = joblib.load(model_file)
 
     return models
+
+
+# Load operator features from Operator_Level/{template}/SVM/two_step_evaluation_overview.csv
+def load_operator_features(operator_level_dir: Path) -> dict:
+    overview_file = operator_level_dir / 'SVM' / 'two_step_evaluation_overview.csv'
+
+    if not overview_file.exists():
+        return {'execution_time': {}, 'start_time': {}}
+
+    df = pd.read_csv(overview_file, delimiter=';')
+    features = {'execution_time': {}, 'start_time': {}}
+
+    for _, row in df.iterrows():
+        operator = row['operator']
+        target = row['target']
+        features_str = row['final_features']
+
+        if pd.isna(features_str) or features_str.strip() == '':
+            continue
+
+        features[target][operator] = [f.strip() for f in features_str.split(',')]
+
+    return features
 
 
 # Load pattern models from Model/{target}/{hash}/model.pkl
@@ -289,6 +320,7 @@ def get_children_from_full_query(full_query_ops: pd.DataFrame, parent_node_id: i
 def predict_all_queries(
     df_test: pd.DataFrame,
     operator_models: dict,
+    operator_features: dict,
     pattern_models: dict,
     pattern_info: dict,
     pattern_order: list
@@ -299,7 +331,7 @@ def predict_all_queries(
         query_ops = df_test[df_test['query_file'] == query_file].sort_values('node_id').reset_index(drop=True)
 
         predictions = predict_single_query(
-            query_ops, operator_models, pattern_models, pattern_info, pattern_order
+            query_ops, operator_models, operator_features, pattern_models, pattern_info, pattern_order
         )
 
         all_predictions.extend(predictions)
@@ -311,6 +343,7 @@ def predict_all_queries(
 def predict_single_query(
     query_ops: pd.DataFrame,
     operator_models: dict,
+    operator_features: dict,
     pattern_models: dict,
     pattern_info: dict,
     pattern_order: list
@@ -346,9 +379,9 @@ def predict_single_query(
 
             predictions.append(create_prediction_result(row, result['start'], result['exec'], 'pattern', pattern_hash))
         else:
-            result = predict_operator(node, query_ops, operator_models, prediction_cache)
+            result = predict_operator(node, query_ops, operator_models, operator_features, prediction_cache)
             prediction_cache[node.node_id] = result
-            predictions.append(create_prediction_result(row, result['start'], result['exec'], 'operator'))
+            predictions.append(create_prediction_result(row, result['start'], result['exec'], result['type']))
 
     return predictions
 
@@ -381,40 +414,60 @@ def predict_pattern(
     X_exec = pd.DataFrame([[aggregated.get(f, 0) for f in features_exec]], columns=features_exec)
     X_start = pd.DataFrame([[aggregated.get(f, 0) for f in features_start]], columns=features_start)
 
-    pred_exec = exec_model_data['model'].predict(X_exec)[0]
-    pred_start = start_model_data['model'].predict(X_start)[0]
+    pred_exec = max(0.0, exec_model_data['model'].predict(X_exec)[0])
+    pred_start = max(0.0, start_model_data['model'].predict(X_start)[0])
 
     return {'start': pred_start, 'exec': pred_exec}
 
 
-# Predict using operator model
+# Predict using operator model with fallback logic
 def predict_operator(
     node: QueryNode,
     query_ops: pd.DataFrame,
     operator_models: dict,
+    operator_features: dict,
     prediction_cache: dict
 ) -> dict:
     op_name = csv_name_to_folder_name(node.node_type)
     row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
+    is_leaf = node.node_type in LEAF_OPERATORS
 
-    exec_model_data = operator_models['execution_time'].get(op_name)
-    start_model_data = operator_models['start_time'].get(op_name)
+    exec_model = operator_models['execution_time'].get(op_name)
+    start_model = operator_models['start_time'].get(op_name)
+    features_exec = operator_features['execution_time'].get(op_name, [])
+    features_start = operator_features['start_time'].get(op_name, [])
 
-    if not exec_model_data or not start_model_data:
-        return {'start': 0.0, 'exec': 0.0}
+    if not exec_model or not start_model or not features_exec or not features_start:
+        pred_start, pred_exec = predict_passthrough(node, prediction_cache, is_leaf)
+        return {'start': pred_start, 'exec': pred_exec, 'type': 'passthrough'}
 
     features = build_operator_features(row, node, prediction_cache)
-
-    features_exec = exec_model_data['features']
-    features_start = start_model_data['features']
 
     X_exec = pd.DataFrame([[features.get(f, 0) for f in features_exec]], columns=features_exec)
     X_start = pd.DataFrame([[features.get(f, 0) for f in features_start]], columns=features_start)
 
-    pred_exec = exec_model_data['model'].predict(X_exec)[0]
-    pred_start = start_model_data['model'].predict(X_start)[0]
+    pred_exec = max(0.0, exec_model.predict(X_exec)[0])
+    pred_start = max(0.0, start_model.predict(X_start)[0])
 
-    return {'start': pred_start, 'exec': pred_exec}
+    return {'start': pred_start, 'exec': pred_exec, 'type': 'operator'}
+
+
+# Passthrough prediction: copy max child prediction or 0.0 for leaf
+def predict_passthrough(node: QueryNode, prediction_cache: dict, is_leaf: bool) -> tuple:
+    if is_leaf:
+        return 0.0, 0.0
+
+    max_exec = 0.0
+    max_start = 0.0
+
+    for child in node.children:
+        if child.node_id in prediction_cache:
+            pred = prediction_cache[child.node_id]
+            if pred['exec'] > max_exec:
+                max_exec = pred['exec']
+                max_start = pred['start']
+
+    return max_start, max_exec
 
 
 # Build operator features with child predictions from cache
