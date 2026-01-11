@@ -55,7 +55,7 @@ def run_pattern_selection(
         consumed_hashes.add(pattern_hash)
         current_ranking = [r for r in current_ranking if r['pattern_hash'] != pattern_hash]
 
-        if candidate['avg_mre'] < min_error_threshold:
+        if strategy != 'error' and candidate['avg_mre'] < min_error_threshold:
             selection_log.append(_create_selection_log_entry(
                 iteration, pattern_hash, candidate, None, None, 'SKIPPED_LOW_ERROR', baseline_mre
             ))
@@ -92,9 +92,10 @@ def run_pattern_selection(
             baseline_mre = new_mre
             current_predictions = new_predictions
 
-            current_ranking = calculate_ranking(
-                current_predictions, pattern_occurrences, patterns, consumed_hashes, strategy
-            )
+            if strategy == 'error':
+                current_ranking = calculate_ranking(
+                    current_predictions, pattern_occurrences, patterns, consumed_hashes, strategy
+                )
         else:
             status = 'REJECTED'
 
