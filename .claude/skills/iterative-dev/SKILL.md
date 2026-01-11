@@ -427,7 +427,12 @@ Prioritization (by OUTCOME):
 #### 7. Open Items
 
 List any tasks from the original plan that were NOT executed.
-- These will be handled in CLOSING phase (create Bead or discard)
+
+**CRITICAL - EMPTY PLATE RULE:**
+- Every Open Item MUST become a Bead before CLOSING
+- NO exceptions - even "small" items get Beads
+- Rationale: New session = zero context. Beads preserve continuity.
+- Test: After CLOSING, could someone pick up this work with ONLY the Bead info?
 
 ### Collecting Improvements
 
@@ -484,7 +489,11 @@ Location: [Stellschraube + file path from CLAUDE.md]
    - Create: `bd create --title "..." --type=...`
    - Update: `bd comment <id> "..."`
    - Close: `bd close <id> --reason="..."`
-5. Ask: "Proceed to CLOSING?"
+5. **Handle Open Items (MANDATORY - EMPTY PLATE RULE):**
+   - For EACH Open Item from RECAP Section 7:
+   - `bd create --title "..." --description="..." --type=task`
+   - NO exceptions - session ends with ZERO open items
+6. Ask: "Proceed to CLOSING?"
 
 User confirms → next response starts with ✅ CLOSING
 
@@ -493,6 +502,11 @@ User confirms → next response starts with ✅ CLOSING
 ## Closing Phase (CLOSING)
 
 Only enter when user confirms (e.g., "proceed", "close", "done").
+
+**PRE-CLOSE CHECK (MANDATORY):**
+- Verify ALL Open Items from RECAP have Beads
+- If ANY Open Item has no Bead → CREATE IT NOW before proceeding
+- This check is NON-NEGOTIABLE
 
 1. `bd sync`
 2. `git add . && git commit`
