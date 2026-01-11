@@ -42,6 +42,12 @@ PATTERN_FEATURES = [
 # Target columns
 OPERATOR_TARGETS = ['actual_startup_time', 'actual_total_time']
 
+# Non-feature suffixes (for pattern datasets - columns to exclude from features)
+NON_FEATURE_SUFFIXES = [
+    '_node_id', '_node_type', '_depth', '_parent_relationship',
+    '_subplan_name', '_template', 'actual_startup_time', 'actual_total_time'
+]
+
 # Target columns
 TARGET_NAME_MAP = {
     'execution_time': 'actual_total_time',

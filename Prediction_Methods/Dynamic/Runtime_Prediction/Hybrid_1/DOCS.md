@@ -29,12 +29,13 @@ Runtime_Prediction/Hybrid_1/
 ├── 03_Predict.py
 ├── report.py
 ├── A_01a_Query_Evaluation.py
-├── A_02_Compare_Methods.py
+├── A_01b_Static_Dynamic_Comparison.py
 ├── Evaluation/
 │   └── {approach}/
 │       ├── overall_mre.csv
 │       ├── loto_mre.csv
-│       └── loto_mre_plot.png
+│       ├── loto_mre_plot.png
+│       └── A_01b_static_dynamic_comparison.csv/.png
 └── Q*/
     └── {approach}/
         ├── SVM/
@@ -194,4 +195,23 @@ python3 03_Predict.py --templates Q1 --report
 **Usage:**
 ```bash
 python3 A_01a_Query_Evaluation.py approach_3 --output-dir Evaluation/approach_3
+```
+
+## A_01b - Static_Dynamic_Comparison.py
+
+**Purpose:** Compare Static (Baseline_SVM) vs Dynamic (LOTO) MRE per template.
+
+**Inputs:**
+- `--static-csv` - Path to Static template MRE CSV (from Hybrid_1/Runtime_Prediction/Baseline_SVM)
+- `Evaluation/{approach}/loto_mre.csv` - Dynamic MRE from A_01a
+
+**Outputs:**
+- `{output-dir}/A_01b_static_dynamic_comparison.csv` - Combined MRE data
+- `{output-dir}/A_01b_static_dynamic_comparison.png` - Grouped bar plot
+
+**Usage:**
+```bash
+python3 A_01b_Static_Dynamic_Comparison.py \
+  --static-csv /path/to/Hybrid_1/Runtime_Prediction/Baseline_SVM/Evaluation/approach_3/A_01a_template_mre.csv \
+  --output-dir Evaluation/approach_3
 ```
