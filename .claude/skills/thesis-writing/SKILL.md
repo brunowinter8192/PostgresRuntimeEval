@@ -171,9 +171,10 @@ b) **Englische Komposita:** Getrennt, NIEMALS Bindestrich
    - WRONG: "Pattern-Selection", "Length-First", "Hash-Join"
    - RIGHT: "Pattern Selection", "Length First", "Hash Join"
 
-c) **Englisch-Deutsch:** NIEMALS Bindestrich-Mischung
-   - WRONG: "Prediction-Methode", "Pattern-Auswahl", "Query-Struktur"
+c) **Englisch-Deutsch:** NIEMALS mischen (weder Bindestrich noch zusammengeschrieben)
+   - WRONG: "Prediction-Methode", "Workloadwechsel", "Querystruktur"
    - RIGHT: Komplett Englisch ODER komplett Deutsch umformulieren
+   - RIGHT: "den veränderten Workload", "die Struktur der Query"
 
 d) **Deutsche Komposita:** Bindestrich nur wenn es sonst schlecht klingt
    - Normal: "Datensatzstruktur", "Vorhersagemethode" (zusammen)
