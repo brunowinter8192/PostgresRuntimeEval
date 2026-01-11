@@ -99,8 +99,6 @@ def create_mre_plot(loto_stats: pd.DataFrame) -> plt.Figure:
 
     ax.set_xlabel('LOTO Template (Test Set)', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
-    ax.set_title('Plan-Level Prediction Error by LOTO Template',
-                 fontsize=15, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')

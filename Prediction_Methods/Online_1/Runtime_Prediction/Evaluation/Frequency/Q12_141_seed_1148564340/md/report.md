@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q12_141_seed_1148564340
-**Timestamp:** 2026-01-01 18:57:47
+**Timestamp:** 2026-01-11 17:58:04
 
 ## Data Summary
 
@@ -24,8 +24,8 @@
 |------|----------------|--------|-----|---------|-------------|
 | 2724c080 | Aggregate -> Gather Merge (Outer) | 2 | 168 | 11.7% | 19.6008 |
 | c53c4396 | Nested Loop -> [Seq Scan (Outer), Index ... | 2 | 96 | 147.6% | 141.6847 |
-| 46f37744 | Gather Merge -> Aggregate (Outer) | 2 | 48 | 5.9% | 2.8144 |
 | 3754655c | Aggregate -> Sort (Outer) | 2 | 48 | 4.4% | 2.1302 |
+| 46f37744 | Gather Merge -> Aggregate (Outer) | 2 | 48 | 5.9% | 2.8144 |
 | 8a8c43c6 | Aggregate -> Gather Merge -> Aggregate (... | 3 | 48 | 3.2% | 1.5375 |
 | e6c1e0d8 | Gather Merge -> Aggregate -> Sort (Outer... | 3 | 48 | 5.9% | 2.8144 |
 | 460af52c | Aggregate -> Gather Merge -> Aggregate -... | 4 | 48 | 3.2% | 1.5375 |
@@ -49,15 +49,19 @@
 |------|---------|-------------|-------|--------|-----------|
 | 0 | 2724c080 | 19.6008 | 0.0222% | ACCEPTED | 17.90% |
 | 1 | c53c4396 | 141.6847 | 0.0000% | ACCEPTED | 17.90% |
-| 2 | 3754655c | 2.1523 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 3 | 8a8c43c6 | 1.5019 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 4 | 460af52c | 1.5019 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 5 | 263b40d6 | 2.0534 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 6 | fbf3ebe8 | 0.9935 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 7 | 5b623fa1 | 2.0534 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 8 | a0631e25 | 0.9935 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 9 | b692b3d9 | 0.9589 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 10 | f9c97829 | 0.9589 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 2 | 3754655c | 2.1302 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 3 | 46f37744 | 2.8144 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 4 | 8a8c43c6 | 1.5375 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 5 | e6c1e0d8 | 2.8144 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 6 | 460af52c | 1.5375 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 7 | 263b40d6 | 2.1961 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 8 | fbf3ebe8 | 0.9714 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 9 | 5b623fa1 | 2.1961 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 10 | 898abd49 | 1.6208 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 11 | a0631e25 | 0.9714 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 12 | b692b3d9 | 1.0973 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 13 | 3a2624e2 | 1.6208 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 14 | f9c97829 | 1.0973 | N/A | SKIPPED_LOW_ERROR | 17.90% |
 ## Query Tree
 
 ```

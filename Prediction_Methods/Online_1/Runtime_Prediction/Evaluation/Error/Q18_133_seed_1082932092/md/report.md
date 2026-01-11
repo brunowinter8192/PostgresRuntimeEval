@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q18_133_seed_1082932092
-**Timestamp:** 2026-01-01 20:09:12
+**Timestamp:** 2026-01-11 19:52:40
 
 ## Data Summary
 
@@ -125,17 +125,17 @@
 | 23 | d3e76c7b | 12.8846 | N/A | REJECTED | 17.77% |
 | 24 | f97027ec | 12.8846 | N/A | REJECTED | 17.77% |
 | 25 | a02337a9 | 12.5548 | N/A | REJECTED | 17.77% |
-| 26 | 2724c080 | 7.7817 | N/A | SKIPPED_LOW_ERROR | 17.77% |
-| 27 | 0aa5463f | 6.6700 | 1.9511% | ACCEPTED | 15.82% |
-| 28 | ddb1e0ca | 0.8507 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 29 | 267d3d4e | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 30 | 3f0eb924 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 31 | 3f59a731 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 32 | 530c0110 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 33 | 6ce7e974 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 34 | f27bf3b8 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 35 | f62c331d | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
-| 36 | fd858367 | 0.1143 | N/A | SKIPPED_LOW_ERROR | 15.82% |
+| 26 | 2724c080 | 7.7817 | 0.0338% | ACCEPTED | 17.73% |
+| 27 | 0aa5463f | 6.6700 | 1.9511% | ACCEPTED | 15.78% |
+| 28 | ddb1e0ca | 0.8507 | -5.5461% | REJECTED | 15.78% |
+| 29 | 267d3d4e | 0.1143 | N/A | REJECTED | 15.78% |
+| 30 | 3f0eb924 | 0.1143 | N/A | REJECTED | 15.78% |
+| 31 | 3f59a731 | 0.1143 | N/A | REJECTED | 15.78% |
+| 32 | 530c0110 | 0.1143 | N/A | REJECTED | 15.78% |
+| 33 | 6ce7e974 | 0.1143 | N/A | REJECTED | 15.78% |
+| 34 | f27bf3b8 | 0.1143 | N/A | REJECTED | 15.78% |
+| 35 | f62c331d | 0.1143 | N/A | REJECTED | 15.78% |
+| 36 | fd858367 | 0.1143 | N/A | REJECTED | 15.78% |
 ## Query Tree
 
 ```

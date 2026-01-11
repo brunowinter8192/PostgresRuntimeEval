@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q13_150_seed_1231235959
-**Timestamp:** 2026-01-01 20:03:10
+**Timestamp:** 2026-01-11 19:42:38
 
 ## Data Summary
 
@@ -49,31 +49,30 @@
 |------|---------|-------------|-------|--------|-----------|
 | 0 | 895c6e8c | 75736.1626 | 0.0004% | ACCEPTED | 17.92% |
 | 1 | 1d35fb97 | 26.4006 | 0.1163% | ACCEPTED | 17.81% |
-| 2 | 422ae017 | 5.0128 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 3 | 7524c54c | 5.0128 | N/A | SKIPPED_LOW_ERROR | 17.81% |
-| 4 | 24e458a8 | 4.7518 | N/A | REJECTED | 17.81% |
-| 5 | 35ffb644 | 3.6169 | 0.9450% | ACCEPTED | 16.86% |
-| 6 | 46baed7f | 0.4416 | N/A | SKIPPED_LOW_ERROR | 16.86% |
-| 7 | a396b865 | 0.4416 | N/A | SKIPPED_LOW_ERROR | 16.86% |
-| 8 | f592ee11 | 0.4416 | N/A | SKIPPED_LOW_ERROR | 16.86% |
+| 2 | 422ae017 | 5.0128 | 0.0030% | ACCEPTED | 17.80% |
+| 3 | 35ffb644 | 3.6169 | N/A | REJECTED | 17.80% |
+| 4 | 46baed7f | 3.6169 | 0.9450% | ACCEPTED | 16.86% |
+| 5 | deb558a9 | 30.2295 | N/A | REJECTED | 16.86% |
+| 6 | 7524c54c | 3.2968 | N/A | REJECTED | 16.86% |
+| 7 | a396b865 | 0.4416 | 0.0000% | ACCEPTED | 16.86% |
+| 8 | f592ee11 | 0.4416 | 0.0000% | ACCEPTED | 16.86% |
 ## Query Tree
 
 ```
-Node 25755 (Sort) [PATTERN: 35ffb644] - ROOT
+Node 25755 (Sort) [PATTERN: f592ee11] - ROOT
   Node 25756 (Aggregate) [consumed]
     Node 25757 (Aggregate) [consumed]
-      Node 25758 (Hash Join) [PATTERN: 895c6e8c]
+      Node 25758 (Hash Join) [consumed]
         Node 25759 (Seq Scan) [consumed] - LEAF
         Node 25760 (Hash) [consumed]
-          Node 25761 (Index Only Scan) - LEAF
+          Node 25761 (Index Only Scan) [consumed] - LEAF
 ```
 
 ## Pattern Assignments
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Sort -> Aggregate -> Aggregate | 35ffb644 | 25755 | 25756, 25757, 25758, 25759, 25760 |
-| Hash Join -> [Seq Scan (Outer) | 895c6e8c | 25758 | 25755, 25756, 25757, 25759, 25760 |
+| Sort -> Aggregate -> Aggregate | f592ee11 | 25755 | 25756, 25757, 25758, 25759, 25760, 25761 |
 
 
 **Legend:**
@@ -89,74 +88,14 @@ Node 25755 (Sort) [PATTERN: 35ffb644] - ROOT
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
 | 25755 | Sort | 917.24 | 915.33 | 0.2% | pattern |
-| 25758 | Hash Join | 698.38 | 599.79 | 14.1% | pattern |
-| 25761 | Index Only Scan | 9.75 | 10.09 | 3.4% | operator |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 25761 (Index Only Scan) - LEAF
-
-- **Source:** operator
-- **Input Features:**
-  - np=3600
-  - nt=150000
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=4
-  - reltuples=150000.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=1.0000
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.4200
-  - total_cost=2712.9200
-- **Output:** st=0.01, rt=10.09
-
-### Step 2: Node 25758 (Hash Join) - PATTERN ROOT
+### Step 1: Node 25755 (Sort) - PATTERN ROOT
 
 - **Source:** pattern
-- **Pattern:** 895c6e8c (Hash Join -> [Seq Scan (Outer), Hash (Inner)])
-- **Consumes:** Nodes 25755, 25756, 25757, 25759, 25760
-- **Input Features:**
-  - HashJoin_np=0
-  - HashJoin_nt=1478958
-  - HashJoin_nt1=1478958
-  - HashJoin_nt2=150000
-  - HashJoin_parallel_workers=0
-  - HashJoin_plan_width=8
-  - HashJoin_reltuples=0.0000
-  - HashJoin_sel=0.0000
-  - HashJoin_startup_cost=4587.9200
-  - HashJoin_total_cost=53356.3000
-  - Hash_Inner_np=0
-  - Hash_Inner_nt=150000
-  - Hash_Inner_nt1=150000
-  - Hash_Inner_nt2=0
-  - Hash_Inner_parallel_workers=0
-  - Hash_Inner_plan_width=4
-  - Hash_Inner_reltuples=0.0000
-  - Hash_Inner_sel=1.0000
-  - Hash_Inner_startup_cost=2712.9200
-  - Hash_Inner_total_cost=2712.9200
-  - SeqScan_Outer_np=26136
-  - SeqScan_Outer_nt=1478958
-  - SeqScan_Outer_nt1=0
-  - SeqScan_Outer_nt2=0
-  - SeqScan_Outer_parallel_workers=0
-  - SeqScan_Outer_plan_width=8
-  - SeqScan_Outer_reltuples=1500000.0000
-  - SeqScan_Outer_sel=0.9860
-  - SeqScan_Outer_startup_cost=0.0000
-  - SeqScan_Outer_total_cost=44886.0000
-- **Output:** st=17.09, rt=599.79
-
-### Step 3: Node 25755 (Sort) - PATTERN ROOT
-
-- **Source:** pattern
-- **Pattern:** 35ffb644 (Sort -> Aggregate -> Aggregate (Outer) (Outer))
-- **Consumes:** Nodes 25756, 25757, 25758, 25759, 25760
+- **Pattern:** f592ee11 (Sort -> Aggregate -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Index Only Scan (Outer) (Inner)] (Outer) (Outer) (Outer))
+- **Consumes:** Nodes 25756, 25757, 25758, 25759, 25760, 25761
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=150000
@@ -168,6 +107,46 @@ Node 25755 (Sort) [PATTERN: 35ffb644] - ROOT
   - Aggregate_Outer_sel=0.1014
   - Aggregate_Outer_startup_cost=60751.0900
   - Aggregate_Outer_total_cost=62251.0900
+  - HashJoin_Outer_np=0
+  - HashJoin_Outer_nt=1478958
+  - HashJoin_Outer_nt1=1478958
+  - HashJoin_Outer_nt2=150000
+  - HashJoin_Outer_parallel_workers=0
+  - HashJoin_Outer_plan_width=8
+  - HashJoin_Outer_reltuples=0.0000
+  - HashJoin_Outer_sel=0.0000
+  - HashJoin_Outer_startup_cost=4587.9200
+  - HashJoin_Outer_total_cost=53356.3000
+  - Hash_Inner_np=0
+  - Hash_Inner_nt=150000
+  - Hash_Inner_nt1=150000
+  - Hash_Inner_nt2=0
+  - Hash_Inner_parallel_workers=0
+  - Hash_Inner_plan_width=4
+  - Hash_Inner_reltuples=0.0000
+  - Hash_Inner_sel=1.0000
+  - Hash_Inner_startup_cost=2712.9200
+  - Hash_Inner_total_cost=2712.9200
+  - IndexOnlyScan_Outer_np=3600
+  - IndexOnlyScan_Outer_nt=150000
+  - IndexOnlyScan_Outer_nt1=0
+  - IndexOnlyScan_Outer_nt2=0
+  - IndexOnlyScan_Outer_parallel_workers=0
+  - IndexOnlyScan_Outer_plan_width=4
+  - IndexOnlyScan_Outer_reltuples=150000.0000
+  - IndexOnlyScan_Outer_sel=1.0000
+  - IndexOnlyScan_Outer_startup_cost=0.4200
+  - IndexOnlyScan_Outer_total_cost=2712.9200
+  - SeqScan_Outer_np=26136
+  - SeqScan_Outer_nt=1478958
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=8
+  - SeqScan_Outer_reltuples=1500000.0000
+  - SeqScan_Outer_sel=0.9860
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=44886.0000
   - Sort_np=0
   - Sort_nt=200
   - Sort_nt1=200

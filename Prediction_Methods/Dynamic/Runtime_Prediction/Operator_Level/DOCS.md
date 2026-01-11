@@ -23,6 +23,8 @@ Operator_Level/
 └── Q1/, Q3/, ... Q19/
     ├── SVM/
     ├── Model/
+    ├── md/
+    │   └── 03_Qx_{hash}.md
     └── predictions.csv
 ```
 
@@ -130,6 +132,35 @@ def predict_passthrough(node_id, children, predictions):
 ```
 
 **Output Column:** `prediction_type` = `model` or `passthrough`
+
+**Inputs:**
+- `test_file` (positional): Path to test dataset CSV
+- `overview_file` (positional): Path to two_step_evaluation_overview.csv
+- `models_dir` (positional): Directory with trained models
+- `--output-file`: Output CSV for predictions (batch mode)
+
+**Variables:**
+- `--md-query`: Generate MD report for single query
+- `--report`: Generate MD report for first query of each unique plan
+- `--report-dir`: Output directory for MD reports (default: md/ in template dir)
+
+**Usage:**
+```bash
+# Batch prediction
+python3 03_Query_Prediction.py test.csv overview.csv Model/ --output-file predictions.csv
+
+# Single query report
+python3 03_Query_Prediction.py test.csv overview.csv Model/ --md-query Q1_100_seed_12345
+
+# Reports for all unique plans
+python3 03_Query_Prediction.py test.csv overview.csv Model/ --report --report-dir md/
+```
+
+**MD Report Contents:**
+- Query Tree with ROOT/LEAF markers
+- Prediction Chain (Bottom-Up) with model paths and features
+- Passthrough steps marked with [PASSTHROUGH]
+- Results table with Pred Type column (model/passthrough)
 
 ---
 

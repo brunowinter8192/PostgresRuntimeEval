@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q6_94_seed_762974883
-**Timestamp:** 2026-01-01 19:26:10
+**Timestamp:** 2026-01-11 18:49:58
 
 ## Data Summary
 
@@ -41,22 +41,23 @@
 | 0 | 4fc84c77 | 13.3894 | N/A | SKIPPED_LOW_ERROR | 17.92% |
 | 1 | 634cdbe2 | 7.7175 | N/A | SKIPPED_LOW_ERROR | 17.92% |
 | 2 | a5f39f08 | 12.4695 | 1.7095% | ACCEPTED | 16.21% |
-| 3 | 184f44de | 2.3138 | N/A | SKIPPED_LOW_ERROR | 16.21% |
-| 4 | dd3706ac | 1.2748 | N/A | SKIPPED_LOW_ERROR | 16.21% |
+| 3 | 184f44de | 4.0548 | N/A | SKIPPED_LOW_ERROR | 16.21% |
+| 4 | 10e10cd4 | 2.5305 | N/A | REJECTED | 16.21% |
+| 5 | dd3706ac | 3.4697 | 0.2258% | ACCEPTED | 15.99% |
 ## Query Tree
 
 ```
-Node 10473 (Aggregate) [PATTERN: a5f39f08] - ROOT
+Node 10473 (Aggregate) [PATTERN: dd3706ac] - ROOT
   Node 10474 (Gather) [consumed]
     Node 10475 (Aggregate) [consumed]
-      Node 10476 (Seq Scan) - LEAF
+      Node 10476 (Seq Scan) [consumed] - LEAF
 ```
 
 ## Pattern Assignments
 
 | Pattern | Hash | Root Node | Consumed Nodes |
 |---------|------|-----------|----------------|
-| Aggregate -> Gather -> Aggrega | a5f39f08 | 10473 | 10474, 10475 |
+| Aggregate -> Gather -> Aggrega | dd3706ac | 10473 | 10474, 10475, 10476 |
 
 
 **Legend:**
@@ -66,41 +67,20 @@ Node 10473 (Aggregate) [PATTERN: a5f39f08] - ROOT
 
 ## Phase E: Final Prediction
 
-- Final MRE: 5.84%
-- Improvement: 9.51%
+- Final MRE: 0.88%
+- Improvement: 14.46%
 
 | Node | Type | Actual | Predicted | MRE | Source |
 |------|------|--------|-----------|-----|--------|
-| 10473 | Aggregate | 784.34 | 830.13 | 5.8% | pattern |
-| 10476 | Seq Scan | 764.50 | 750.63 | 1.8% | operator |
+| 10473 | Aggregate | 784.34 | 791.27 | 0.9% | pattern |
 
 ## Prediction Chain (Bottom-Up)
 
-### Step 1: Node 10476 (Seq Scan) - LEAF
-
-- **Source:** operator
-- **Input Features:**
-  - np=112600
-  - nt=23762
-  - nt1=0
-  - nt2=0
-  - parallel_workers=0
-  - plan_width=12
-  - reltuples=6001215.0000
-  - rt1=0.0000
-  - rt2=0.0000
-  - sel=0.0040
-  - st1=0.0000
-  - st2=0.0000
-  - startup_cost=0.0000
-  - total_cost=139605.4700
-- **Output:** st=4.75, rt=750.63
-
-### Step 2: Node 10473 (Aggregate) - PATTERN ROOT
+### Step 1: Node 10473 (Aggregate) - PATTERN ROOT
 
 - **Source:** pattern
-- **Pattern:** a5f39f08 (Aggregate -> Gather -> Aggregate (Outer) (Outer))
-- **Consumes:** Nodes 10474, 10475
+- **Pattern:** dd3706ac (Aggregate -> Gather -> Aggregate -> Seq Scan (Outer) (Outer) (Outer))
+- **Consumes:** Nodes 10474, 10475, 10476
 - **Input Features:**
   - Aggregate_Outer_np=0
   - Aggregate_Outer_nt=1
@@ -132,4 +112,14 @@ Node 10473 (Aggregate) [PATTERN: a5f39f08] - ROOT
   - Gather_Outer_sel=5.0000
   - Gather_Outer_startup_cost=140724.2800
   - Gather_Outer_total_cost=140724.7900
-- **Output:** st=824.71, rt=830.13
+  - SeqScan_Outer_np=112600
+  - SeqScan_Outer_nt=23762
+  - SeqScan_Outer_nt1=0
+  - SeqScan_Outer_nt2=0
+  - SeqScan_Outer_parallel_workers=0
+  - SeqScan_Outer_plan_width=12
+  - SeqScan_Outer_reltuples=6001215.0000
+  - SeqScan_Outer_sel=0.0040
+  - SeqScan_Outer_startup_cost=0.0000
+  - SeqScan_Outer_total_cost=139605.4700
+- **Output:** st=785.07, rt=791.27

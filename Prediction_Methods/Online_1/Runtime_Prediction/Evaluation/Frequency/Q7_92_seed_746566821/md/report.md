@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q7_92_seed_746566821
-**Timestamp:** 2026-01-01 19:31:00
+**Timestamp:** 2026-01-11 18:55:00
 
 ## Data Summary
 
@@ -39,32 +39,32 @@
 | a54055ce | Hash -> Hash Join -> [Seq Scan (Outer), ... | 4 | 96 | 6342.9% | 6089.1983 |
 | bd9dfa7b | Nested Loop -> [Hash Join -> [Seq Scan (... | 4 | 92 | 3.7% | 3.3601 |
 | 91d6e559 | Sort -> Hash Join -> [Nested Loop (Outer... | 3 | 72 | 5.4% | 3.8546 |
-| 9d0e407c | Nested Loop -> [Hash Join -> [Seq Scan (... | 5 | 72 | 4.1% | 2.9587 |
 | 545b5e57 | Hash Join -> [Seq Scan (Outer), Hash -> ... | 5 | 72 | 212.7% | 153.1732 |
+| 9d0e407c | Nested Loop -> [Hash Join -> [Seq Scan (... | 5 | 72 | 4.1% | 2.9587 |
 | 98d4ff98 | Gather Merge -> Sort -> Hash Join (Outer... | 3 | 48 | 6.2% | 2.9727 |
 | b149ff28 | Aggregate -> Gather Merge -> Sort -> Has... | 4 | 48 | 2.2% | 1.0579 |
 | 3c6d8006 | Gather Merge -> Sort -> Hash Join -> [Ne... | 4 | 48 | 6.2% | 2.9727 |
 | 53f9aa07 | Aggregate -> Gather Merge -> Sort -> Has... | 5 | 48 | 2.2% | 1.0579 |
 | 1e7829bf | Hash Join -> [Nested Loop -> [Hash Join ... | 3 | 24 | 10.7% | 2.5679 |
 | 94a6aee0 | Sort -> Hash Join -> [Nested Loop -> [Ha... | 4 | 24 | 4.0% | 0.9537 |
-| 88cd04f5 | Hash Join -> [Nested Loop -> [Hash Join ... | 4 | 24 | 10.7% | 2.5679 |
 | 814388b1 | Gather Merge -> Sort -> Hash Join -> [Ne... | 5 | 24 | 4.5% | 1.0842 |
+| 27c3eea9 | Aggregate -> Gather Merge -> Sort -> Has... | 6 | 24 | 1.2% | 0.2928 |
+| 68382c9c | Nested Loop -> [Hash Join -> [Seq Scan (... | 6 | 24 | 3.4% | 0.8246 |
+| 88cd04f5 | Hash Join -> [Nested Loop -> [Hash Join ... | 4 | 24 | 10.7% | 2.5679 |
 | 6b43f5a7 | Sort -> Hash Join -> [Nested Loop -> [Ha... | 5 | 24 | 4.0% | 0.9537 |
 | 2dab5c22 | Hash Join -> [Nested Loop -> [Hash Join ... | 5 | 24 | 10.7% | 2.5679 |
-| 27c3eea9 | Aggregate -> Gather Merge -> Sort -> Has... | 6 | 24 | 1.2% | 0.2928 |
 | 34811571 | Gather Merge -> Sort -> Hash Join -> [Ne... | 6 | 24 | 4.5% | 1.0842 |
 | cfb66570 | Sort -> Hash Join -> [Nested Loop -> [Ha... | 6 | 24 | 4.0% | 0.9537 |
-| 66a98304 | Hash Join -> [Nested Loop -> [Hash Join ... | 6 | 24 | 10.7% | 2.5679 |
-| 68382c9c | Nested Loop -> [Hash Join -> [Seq Scan (... | 6 | 24 | 3.4% | 0.8246 |
 | e8907654 | Aggregate -> Gather Merge -> Sort -> Has... | 7 | 24 | 1.2% | 0.2928 |
 | 3d2df434 | Gather Merge -> Sort -> Hash Join -> [Ne... | 7 | 24 | 4.5% | 1.0842 |
-| f5c4d937 | Sort -> Hash Join -> [Nested Loop -> [Ha... | 7 | 24 | 4.0% | 0.9537 |
+| 66a98304 | Hash Join -> [Nested Loop -> [Hash Join ... | 6 | 24 | 10.7% | 2.5679 |
 | 759d57a4 | Hash Join -> [Nested Loop -> [Hash Join ... | 7 | 24 | 10.7% | 2.5679 |
 | c83209ef | Aggregate -> Gather Merge -> Sort -> Has... | 8 | 24 | 1.2% | 0.2928 |
+| f5c4d937 | Sort -> Hash Join -> [Nested Loop -> [Ha... | 7 | 24 | 4.0% | 0.9537 |
 | 991242c7 | Gather Merge -> Sort -> Hash Join -> [Ne... | 8 | 24 | 4.5% | 1.0842 |
 | bdf0194d | Sort -> Hash Join -> [Nested Loop -> [Ha... | 8 | 24 | 4.0% | 0.9537 |
-| 9d0b7ec3 | Aggregate -> Gather Merge -> Sort -> Has... | 9 | 24 | 1.2% | 0.2928 |
 | 1ec32e3e | Gather Merge -> Sort -> Hash Join -> [Ne... | 9 | 24 | 4.5% | 1.0842 |
+| 9d0b7ec3 | Aggregate -> Gather Merge -> Sort -> Has... | 9 | 24 | 1.2% | 0.2928 |
 | e7dc2e6a | Aggregate -> Gather Merge -> Sort -> Has... | 10 | 24 | 1.2% | 0.2928 |
 
 **Legend:**
@@ -77,41 +77,49 @@
 | Iter | Pattern | Error Score | Delta | Status | Global MRE |
 |------|---------|-------------|-------|--------|-----------|
 | 0 | 895c6e8c | 75736.1626 | 0.0004% | ACCEPTED | 17.92% |
-| 1 | 3aab37be | 94712.4752 | -0.0000% | REJECTED | 17.92% |
-| 2 | 7df893ad | 678.6757 | N/A | REJECTED | 17.92% |
+| 1 | 3aab37be | 113504.2307 | -0.0000% | REJECTED | 17.92% |
+| 2 | 7df893ad | 6131.8766 | N/A | REJECTED | 17.92% |
 | 3 | 2724c080 | 19.6008 | 0.0222% | ACCEPTED | 17.90% |
-| 4 | f4cb205a | 41652.9228 | 0.0005% | ACCEPTED | 17.90% |
-| 5 | bb930825 | 188.3060 | -0.0000% | REJECTED | 17.90% |
-| 6 | c0a8d3de | 540.8859 | 0.0000% | ACCEPTED | 17.90% |
-| 7 | 2e0f44ef | 108.1678 | -0.0000% | REJECTED | 17.90% |
-| 8 | 3cfa90d7 | 6.2490 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 9 | 37515ad8 | 38.5998 | -0.0000% | REJECTED | 17.90% |
-| 10 | e0e3c3e1 | 4.0887 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 11 | 3e2d5a00 | 18.5788 | N/A | REJECTED | 17.90% |
-| 12 | 29ee00db | 4.4857 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 13 | a54055ce | 350.8449 | N/A | REJECTED | 17.90% |
-| 14 | bd9dfa7b | 3.3586 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 15 | 91d6e559 | 3.8554 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 16 | 9d0e407c | 2.9678 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 17 | 545b5e57 | 25.3429 | N/A | REJECTED | 17.90% |
-| 18 | b149ff28 | 1.5277 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 19 | 53f9aa07 | 1.5277 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 20 | 1e7829bf | 2.5921 | N/A | REJECTED | 17.90% |
-| 21 | 94a6aee0 | 0.9545 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 22 | 88cd04f5 | 2.5921 | N/A | REJECTED | 17.90% |
-| 23 | 6b43f5a7 | 0.9545 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 24 | 2dab5c22 | 2.5921 | N/A | REJECTED | 17.90% |
-| 25 | 27c3eea9 | 0.4758 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 26 | cfb66570 | 0.9545 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 27 | 66a98304 | 2.5921 | N/A | REJECTED | 17.90% |
-| 28 | 68382c9c | 0.8338 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 29 | e8907654 | 0.4758 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 30 | f5c4d937 | 0.9545 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 31 | 759d57a4 | 2.5921 | N/A | REJECTED | 17.90% |
-| 32 | c83209ef | 0.4758 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 33 | bdf0194d | 0.9545 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 34 | 9d0b7ec3 | 0.4758 | N/A | SKIPPED_LOW_ERROR | 17.90% |
-| 35 | e7dc2e6a | 0.4758 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 4 | f4cb205a | 75544.5822 | 0.0005% | ACCEPTED | 17.90% |
+| 5 | bb930825 | 172.9284 | -0.0000% | REJECTED | 17.90% |
+| 6 | c0a8d3de | 6113.5159 | 0.0000% | ACCEPTED | 17.90% |
+| 7 | 2e0f44ef | 108.1438 | -0.0000% | REJECTED | 17.90% |
+| 8 | 3cfa90d7 | 6.2375 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 9 | 37515ad8 | 168.3286 | -0.0000% | REJECTED | 17.90% |
+| 10 | e0e3c3e1 | 4.0772 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 11 | 1691f6f0 | 7.3257 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 12 | 3e2d5a00 | 18.5586 | N/A | REJECTED | 17.90% |
+| 13 | 29ee00db | 4.4662 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 14 | a54055ce | 6089.1983 | N/A | REJECTED | 17.90% |
+| 15 | bd9dfa7b | 3.3601 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 16 | 91d6e559 | 3.8546 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 17 | 545b5e57 | 153.1732 | N/A | REJECTED | 17.90% |
+| 18 | 9d0e407c | 2.9587 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 19 | 98d4ff98 | 2.9727 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 20 | b149ff28 | 1.0579 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 21 | 3c6d8006 | 2.9727 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 22 | 53f9aa07 | 1.0579 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 23 | 1e7829bf | 2.5679 | N/A | REJECTED | 17.90% |
+| 24 | 94a6aee0 | 0.9537 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 25 | 814388b1 | 1.0842 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 26 | 27c3eea9 | 0.2928 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 27 | 68382c9c | 0.8246 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 28 | 88cd04f5 | 2.5679 | N/A | REJECTED | 17.90% |
+| 29 | 6b43f5a7 | 0.9537 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 30 | 2dab5c22 | 2.5679 | N/A | REJECTED | 17.90% |
+| 31 | 34811571 | 1.0842 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 32 | cfb66570 | 0.9537 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 33 | e8907654 | 0.2928 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 34 | 3d2df434 | 1.0842 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 35 | 66a98304 | 2.5679 | N/A | REJECTED | 17.90% |
+| 36 | 759d57a4 | 2.5679 | N/A | REJECTED | 17.90% |
+| 37 | c83209ef | 0.2928 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 38 | f5c4d937 | 0.9537 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 39 | 991242c7 | 1.0842 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 40 | bdf0194d | 0.9537 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 41 | 1ec32e3e | 1.0842 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 42 | 9d0b7ec3 | 0.2928 | N/A | SKIPPED_LOW_ERROR | 17.90% |
+| 43 | e7dc2e6a | 0.2928 | N/A | SKIPPED_LOW_ERROR | 17.90% |
 ## Query Tree
 
 ```

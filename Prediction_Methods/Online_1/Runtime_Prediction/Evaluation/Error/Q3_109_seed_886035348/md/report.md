@@ -1,7 +1,7 @@
 # Online Prediction Report
 
 **Test Query:** Q3_109_seed_886035348
-**Timestamp:** 2026-01-01 20:18:47
+**Timestamp:** 2026-01-11 20:06:54
 
 ## Data Summary
 
@@ -68,14 +68,14 @@
 | 5 | 25df29b5 | 33.5860 | 9.8522% | ACCEPTED | 8.04% |
 | 6 | 1d35fb97 | 19.4657 | 0.1202% | ACCEPTED | 7.92% |
 | 7 | 4fc84c77 | 15.8293 | 0.6905% | ACCEPTED | 7.22% |
-| 8 | 3cfa90d7 | 6.2450 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 9 | b3a45093 | 5.7725 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 10 | e0e3c3e1 | 4.0850 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 11 | 9d8bc76c | 0.7302 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 12 | 5eedbd1b | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 13 | b68c8b96 | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 14 | d64c42c6 | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
-| 15 | ea3737ca | 0.2810 | N/A | SKIPPED_LOW_ERROR | 7.22% |
+| 8 | 3cfa90d7 | 6.2450 | 0.0000% | ACCEPTED | 7.22% |
+| 9 | b3a45093 | 5.7725 | 0.4105% | ACCEPTED | 6.81% |
+| 10 | e0e3c3e1 | 4.0850 | 0.0000% | ACCEPTED | 6.81% |
+| 11 | 9d8bc76c | 0.7302 | N/A | REJECTED | 6.81% |
+| 12 | 5eedbd1b | 0.2810 | -0.0154% | REJECTED | 6.81% |
+| 13 | b68c8b96 | 0.2810 | -0.0154% | REJECTED | 6.81% |
+| 14 | d64c42c6 | 0.2810 | -0.0154% | REJECTED | 6.81% |
+| 15 | ea3737ca | 0.2810 | -0.0154% | REJECTED | 6.81% |
 ## Query Tree
 
 ```
