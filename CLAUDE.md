@@ -1,7 +1,5 @@
 # CLAUDE.MD - Thesis1 Project Engineering Reference
 
-## 1. PROJECT CONTEXT
-
 **Research Domain:** ML-based runtime prediction for SQL queries
 **Benchmark:** TPC-H queries on PostgreSQL
 
@@ -10,35 +8,7 @@
 
 ---
 
-## 2. THESIS-SPECIFIC RULES
-
-### Formatting: Bullet Lists over Tables
-
-**CRITICAL:** User-facing outputs MUST use bullet lists, never tables.
-
-**Applies to:**
-- Thesis text (anything the user reads/submits)
-- Script outputs (.md exports, evaluation reports)
-
-**Does NOT apply to:**
-- README.md, DOCS.md (Claude-facing, tables allowed)
-- CLAUDE.md itself (Claude-facing)
-
-**Rationale:** Tables have formatting issues in Word/PDF export. Internal docs stay in markdown viewers where tables render correctly.
-
-**Example:**
-```markdown
-WRONG (in thesis/outputs):
-| Strategy | MRE |
-|----------|-----|
-| Size | 3.15% |
-
-RIGHT (in thesis/outputs):
-- **Size:** 3.15%
-- **Frequency:** 3.15%
-```
-
----
+## PROJECT
 
 ### CSV Files
 
@@ -62,7 +32,7 @@ RIGHT (in thesis/outputs):
 
 ---
 
-## 3. CODE ORGANIZATION
+## CODE ORGANIZATION
 
 **CRITICAL:** Every script follows this structure:
 
@@ -144,7 +114,7 @@ if __name__ == "__main__":
 
 ---
 
-## 4. COMMENT RULES
+## COMMENT RULES
 
 **CRITICAL:** Three types of allowed comments only
 
@@ -170,7 +140,7 @@ from data_loader import load_validated_data
 
 ---
 
-## 5. ARCHITECTURE STANDARDS
+## ARCHITECTURE STANDARDS
 
 ### Naming Conventions
 
@@ -258,7 +228,7 @@ When a module is a directory (e.g., `10_Pattern_Selection/`):
 
 ---
 
-## 6. DOCUMENTATION STRUCTURE
+## DOCUMENTATION STRUCTURE
 
 ### Terminology
 

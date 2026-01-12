@@ -31,7 +31,7 @@ Data_Generation/
 - `CONTAINER_NAME`: Docker container name for TPC-H database
 - `OPERATOR_TYPES`: List of plan operator types for feature extraction
 
-## Workflow Execution Order
+## Workflow Dependency Graph
 
 ```
 01a_Runtime_Data.py ─┐
@@ -42,8 +42,6 @@ Data_Generation/
 **Dependencies:**
 - 01a, 01b, 01c can run independently (parallel)
 - 02 requires outputs from all 01x scripts
-
-## Script Documentation
 
 ### 01a - Runtime_Data.py
 

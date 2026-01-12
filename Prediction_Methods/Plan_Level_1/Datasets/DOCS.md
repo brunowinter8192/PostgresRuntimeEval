@@ -25,7 +25,7 @@ Datasets/
 - `FEATURES_TO_REMOVE_FOR_STATE_1`: Columns to drop for State_1 transformation
 - `get_state_1_columns()`: Returns ordered column list for State_1 dataset
 
-## Workflow Execution Order
+## Workflow Dependency Graph
 
 ```
 01_Split_Train_Test.py -> 02_Create_State_1.py
@@ -34,8 +34,6 @@ Datasets/
 **Dependencies:**
 - 01 creates Baseline train/test split
 - 02 transforms complete dataset to State_1 format
-
-## Script Documentation
 
 ### 01 - Split_Train_Test.py
 

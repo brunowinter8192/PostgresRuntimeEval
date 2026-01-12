@@ -1,22 +1,48 @@
 pattern_hash;pattern_string;selected_count;template_count;templates;query_count
 895c6e8c1a30a094329d71cef3111fbd;Hash Join -> [Seq Scan (Outer), Hash (Inner)];270;9;Q3,Q5,Q7,Q8,Q9,Q13,Q14,Q18,Q19;270
 1d35fb978b379d4a820897907e56ab7b;Sort -> Aggregate (Outer);240;8;Q1,Q3,Q4,Q5,Q9,Q10,Q13,Q18;240
+2724c08067c017e6455632f46231780c;Aggregate -> Gather Merge (Outer);210;7;Q1,Q4,Q5,Q7,Q8,Q12,Q18;210
+4fc84c77ced18a46514c982f23f12deb;Aggregate -> Gather (Outer);180;6;Q3,Q6,Q9,Q10,Q14,Q19;180
 f4cb205adfd108034c883c87871a6da8;Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)];180;6;Q3,Q5,Q7,Q8,Q14,Q19;180
 2e0f44eff91c745724a56159cf7e0d6f;Hash Join -> [Nested Loop (Outer), Hash (Inner)];150;5;Q5,Q7,Q8,Q9,Q10;150
+a5f39f08c510532e02e96e109e48c0cd;Aggregate -> Gather -> Aggregate (Outer) (Outer);120;4;Q6,Q9,Q14,Q19;120
+29ee00dbeea63ba27a7d0fe66bc67b49;Aggregate -> Gather Merge -> Sort (Outer) (Outer);120;4;Q1,Q4,Q7,Q8;120
 c0a8d3deb0fdb169e0a08bb071cd8160;Hash -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer);98;4;Q5,Q7,Q8,Q9;98
 7bcfec2259bf8f077d86cc017740ebd6;Limit -> Sort -> Aggregate (Outer) (Outer);90;3;Q3,Q10,Q18;90
-4fc84c77ced18a46514c982f23f12deb;Aggregate -> Gather (Outer);90;3;Q3,Q9,Q10;90
-a5f39f08c510532e02e96e109e48c0cd;Aggregate -> Gather -> Aggregate (Outer) (Outer);90;3;Q6,Q14,Q19;90
-2724c08067c017e6455632f46231780c;Aggregate -> Gather Merge (Outer);90;3;Q7,Q8,Q12;90
+422ae017fa27104671904e4f61703f9d;Aggregate -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer);90;3;Q13,Q14,Q19;90
 a54055cece1adb617abae41ca3244142;Hash -> Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer);90;3;Q5,Q7,Q8;90
+e0e3c3e1b229568ff01695a42f46d8ea;Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer), Index Scan (Inner)];90;3;Q3,Q7,Q8;90
+310134da512a875c467ef0794352611a;Aggregate -> Gather -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer) (Outer) (Outer);68;3;Q9,Q14,Q19;68
+460af52cdecd0ba229546017c25fee3b;Aggregate -> Gather Merge -> Aggregate -> Sort (Outer) (Outer) (Outer);60;2;Q5,Q12;60
+bd9dfa7bb8f3b0473cdfb5cd4277dc3a;Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Hash Join (Outer) (Inner)] (Outer), Index Scan (Inner)];60;2;Q7,Q8;60
+53f9aa07d73657d04951f9bbdd83fef8;Aggregate -> Gather Merge -> Sort -> Hash Join -> [Nested Loop (Outer), Hash (Inner)] (Outer) (Outer) (Outer);60;2;Q7,Q8;60
+b3a4509347209a6fe95e44fff8ff3908;Sort -> Aggregate -> Gather (Outer) (Outer);60;2;Q3,Q10;60
+7a51ce50a8f4529f944f9df797fa04b8;Hash Join -> [Hash Join -> [Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)];60;2;Q9,Q10;60
+2873b8c3a1759afe345ffbdfc9bdcba7;Hash Join -> [Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)];60;2;Q9,Q10;60
+25df29b5b69835d07c0d8b72b0e46a3b;Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer);60;2;Q3,Q10;60
+f8295d8b477b477dfdc9391679ee0626;Aggregate -> Gather -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer) (Outer) (Outer);60;2;Q14,Q19;60
+f8231c4dd4c57d8a84a6ba0a53bdb42d;Aggregate -> Gather Merge -> Sort -> Aggregate (Outer) (Outer) (Outer);60;2;Q1,Q4;60
+184f44dea835017982d512c08043f20c;Aggregate -> Seq Scan (Outer);60;2;Q1,Q6;60
 3e2d5a00246ff56483c16003698d4917;Sort -> Hash Join (Outer);60;2;Q5,Q18;60
 444761fbda0298231751710dd8593e72;Hash -> Hash Join -> [Seq Scan (Outer), Hash -> Hash Join (Outer) (Inner)] (Outer);60;2;Q5,Q8;60
-2873b8c3a1759afe345ffbdfc9bdcba7;Hash Join -> [Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)];60;2;Q9,Q10;60
-7a51ce50a8f4529f944f9df797fa04b8;Hash Join -> [Hash Join -> [Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)];60;2;Q9,Q10;60
-25df29b5b69835d07c0d8b72b0e46a3b;Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer);60;2;Q3,Q10;60
-184f44dea835017982d512c08043f20c;Aggregate -> Seq Scan (Outer);30;1;Q1;30
-dc1b1da732e3005de54ec0fba564f776;Sort -> Aggregate -> Seq Scan (Outer) (Outer);30;1;Q1;30
-52c5ec816a9d28d4af954e0780cc226d;Gather Merge -> Sort -> Aggregate -> Seq Scan (Outer) (Outer) (Outer);30;1;Q1;30
-35ffb64405c972adec2b1bd3878a66ec;Sort -> Aggregate -> Aggregate (Outer) (Outer);30;1;Q13;30
+27c3eea91d52d70900e2c535de7eb7c4;Aggregate -> Gather Merge -> Sort -> Hash Join -> [Nested Loop -> [Hash Join (Outer), Index Scan (Inner)] (Outer), Hash -> Hash Join (Outer) (Inner)] (Outer) (Outer) (Outer);30;1;Q7;30
+04a01b61f2bc9f0cca9afefd3d7b99e4;Limit -> Sort -> Aggregate -> Gather -> Hash Join (Outer) (Outer) (Outer) (Outer);30;1;Q10;30
+3dfa602528bcdf6904bb91f04862476c;Aggregate -> Gather Merge -> Sort -> Aggregate -> Seq Scan (Outer) (Outer) (Outer) (Outer);30;1;Q1;30
+3cfa90d7df3cd40936e985146fc5ec76;Nested Loop -> [Hash Join (Outer), Index Scan (Inner)];30;1;Q3;30
+80bd802da2c75d5ea9acf8b5e473ecb8;Aggregate -> Gather Merge -> Sort -> Aggregate -> Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);30;1;Q4;30
 0aa5463f1b91f165f60e8a19a4979344;Limit -> Sort -> Aggregate -> Gather Merge -> Incremental Sort -> Nested Loop -> [Merge Join (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer) (Outer);30;1;Q18;30
+6e659102488f10c9b275396b3849e356;Sort -> Aggregate -> Gather -> Aggregate (Outer) (Outer) (Outer);30;1;Q9;30
+260efc4fe3d51bc38230b7beb41a47d6;Aggregate -> Gather Merge -> Sort -> Aggregate -> Nested Loop (Outer) (Outer) (Outer) (Outer);30;1;Q4;30
+f592ee114bc0abd20d7c5f6902392be9;Sort -> Aggregate -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Index Only Scan (Outer) (Inner)] (Outer) (Outer) (Outer);30;1;Q13;30
+a396b865f3fb2653793f9d7d2013ff7b;Sort -> Aggregate -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer) (Outer) (Outer);30;1;Q13;30
+46baed7f06163b3af82c476d6c604bd1;Sort -> Aggregate -> Aggregate -> Hash Join (Outer) (Outer) (Outer);30;1;Q13;30
+f9c97829f40559d1d3b74395155f8a0d;Aggregate -> Gather Merge -> Aggregate -> Sort -> Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);30;1;Q12;30
+b692b3d907b99b4308d97ca9cc758157;Aggregate -> Gather Merge -> Aggregate -> Sort -> Nested Loop (Outer) (Outer) (Outer) (Outer);30;1;Q12;30
+dd3706ac3890589c2926a68628da4037;Aggregate -> Gather -> Aggregate -> Seq Scan (Outer) (Outer) (Outer);30;1;Q6;30
+255215ee36474e409278f2565d53dc3c;Sort -> Aggregate -> Gather Merge -> Aggregate -> Sort -> Hash Join -> [Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Seq Scan (Outer), Hash -> Hash Join (Outer) (Inner)] (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer) (Outer) (Outer) (Outer) (Outer);30;1;Q5;30
+0405d50f69713e0bbda5bc720b56a392;Aggregate -> Gather -> Aggregate -> Nested Loop (Outer) (Outer) (Outer);22;1;Q9;22
+76ab422a31691c6b6ed0e04d2c6583ca;Sort -> Aggregate -> Gather -> Aggregate -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Hash Join -> [Nested Loop (Outer), Hash (Inner)] (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);22;1;Q9;22
+4d81a89df5e923042f3e4d0868013223;Sort -> Aggregate -> Gather -> Aggregate -> Nested Loop -> [Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Hash Join (Outer), Hash (Inner)] (Outer) (Inner)] (Outer), Index Scan (Inner)] (Outer) (Outer) (Outer) (Outer);22;1;Q9;22
+2bac8e6eb00c8f1156a647c319ab9bcb;Aggregate -> Gather -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer) (Inner)] (Outer) (Outer) (Outer);8;1;Q9;8
 57d290cd84c98181d5978073f0cb5e88;Sort -> Aggregate -> Gather -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer) (Inner)] (Outer) (Outer) (Outer) (Outer);8;1;Q9;8
+5968661edffd04a53fe6674f373c467a;Sort -> Aggregate -> Gather -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Hash Join (Outer), Hash (Inner)] (Outer) (Inner)] (Outer) (Inner)] (Outer) (Outer) (Outer) (Outer);8;1;Q9;8
