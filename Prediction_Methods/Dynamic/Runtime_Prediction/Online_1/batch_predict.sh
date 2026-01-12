@@ -1,5 +1,5 @@
 #!/bin/bash
-HYBRID2_DIR="../../Dataset/Dataset_Hybrid_2"
+ONLINE1_DIR="../../Dataset/Dataset_Online_1"
 OPERATOR_DIR="../../Dataset/Dataset_Operator"
 OUTPUT_DIR="./Evaluation"
 LOG_FILE="$OUTPUT_DIR/progress.log"
@@ -16,8 +16,8 @@ for strategy in $STRATEGIES; do
     for template in $TEMPLATES; do
         echo "Starting template: $template - $(date)" >> "$LOG_FILE"
 
-        TT_CSV="$HYBRID2_DIR/$template/Training_Training.csv"
-        TV_CSV="$HYBRID2_DIR/$template/Training_Test.csv"
+        TT_CSV="$ONLINE1_DIR/$template/Training_Training.csv"
+        TV_CSV="$ONLINE1_DIR/$template/Training_Test.csv"
         TRAIN_CSV="$OPERATOR_DIR/$template/training.csv"
         TEST_CSV="$OPERATOR_DIR/$template/test.csv"
 
