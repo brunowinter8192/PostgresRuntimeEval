@@ -22,6 +22,7 @@ Runtime_Prediction/
     A_03_Method_Comparison.py
     A_04_Strategy_Comparison.py
     A_05_Pattern_Count.py
+    A_06_Strategy_MRE_Comparison.py
     Evaluation/
         Error/
         Size/
@@ -272,4 +273,23 @@ python3 A_04_Strategy_Comparison.py Evaluation --output-dir Evaluation/Analysis/
 **Usage:**
 ```bash
 python3 A_05_Pattern_Count.py Evaluation --strategy Error --output-dir Evaluation/Analysis/Overall
+```
+
+---
+
+## A_06 - Strategy_MRE_Comparison.py
+
+**Purpose:** Create grouped bar chart comparing MRE across Error/Size/Frequency strategies
+
+**Inputs:**
+- Reads `Evaluation/Analysis/{Error,Size,Frequency}/template_mre.csv` automatically
+
+**Outputs:**
+- `{output-dir}/A_06_strategy_comparison.csv` - Combined MRE per template
+- `{output-dir}/A_06_strategy_comparison.png` - Grouped bar plot (3 bars per template)
+
+**Usage:**
+```bash
+python3 A_06_Strategy_MRE_Comparison.py
+python3 A_06_Strategy_MRE_Comparison.py --output-dir Evaluation/Analysis/Overall
 ```

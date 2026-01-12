@@ -27,15 +27,16 @@ Runtime_Prediction/Hybrid_1/
 ├── 01_Feature_Selection.py
 ├── 02_Pretrain_Models.py
 ├── 03_Predict.py
-├── report.py
 ├── A_01a_Query_Evaluation.py
 ├── A_01b_Static_Dynamic_Comparison.py
+├── A_01c_Pattern_Comparison.py
 ├── Evaluation/
 │   └── {approach}/
 │       ├── overall_mre.csv
 │       ├── loto_mre.csv
 │       ├── loto_mre_plot.png
-│       └── A_01b_static_dynamic_comparison.csv/.png
+│       ├── A_01b_static_dynamic_comparison.csv/.png
+│       └── A_01c_pattern_comparison.csv
 └── Q*/
     └── {approach}/
         ├── SVM/
@@ -214,4 +215,23 @@ python3 A_01a_Query_Evaluation.py approach_3 --output-dir Evaluation/approach_3
 python3 A_01b_Static_Dynamic_Comparison.py \
   --static-csv /path/to/Hybrid_1/Runtime_Prediction/Baseline_SVM/Evaluation/approach_3/A_01a_template_mre.csv \
   --output-dir Evaluation/approach_3
+```
+
+## A_01c - Pattern_Comparison.py
+
+**Purpose:** Compare pattern usage between Static and Dynamic per template.
+
+**Inputs:**
+- `--static-predictions` - Path to Static predictions.csv
+- `--static-patterns` - Path to Static patterns.csv
+- Dynamic data loaded from local `{Q*}/{approach}/predictions.csv` and `Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv`
+
+**Outputs:**
+- `{output-dir}/A_01c_pattern_comparison.csv` - Pattern details (hash, string, length, source)
+
+**Usage:**
+```bash
+python3 A_01c_Pattern_Comparison.py \
+  --static-predictions /path/to/Hybrid_1/.../predictions.csv \
+  --static-patterns /path/to/Hybrid_1/.../patterns.csv
 ```
