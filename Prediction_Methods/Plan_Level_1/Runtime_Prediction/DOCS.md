@@ -22,7 +22,10 @@ Runtime_Prediction/
 ├── A_01e_Template_Feature_Values.py     # Analysis: Constant feature values per template
 ├── A_01g_Evaluation_Plot.py             # Analysis: MRE bar plots
 ├── A_01h_Runtime_Plot.py                # Analysis: Mean runtime bar plots
+├── A_01i_Optimizer_Baseline.py          # Analysis: ML vs optimizer cost comparison
 ├── A_01j_Summarize_Results.py           # Analysis: Template and overall summaries
+├── A_01k_Runtime_Histograms.py          # Analysis: Runtime distribution histograms
+├── D_Alternative_Modelle.md             # Thesis appendix: RF/XGBoost results
 ├── Baseline_SVM/                        # NuSVR outputs
 │   ├── SVM/                             # [FFS outputs]
 │   ├── Model/                           # [training outputs]
@@ -68,7 +71,7 @@ Uses configuration files from parent directory:
 
 **All models use CSV-based feature loading:** Features are dynamically loaded from FFS output (01_ffs_summary.csv)
 
-## Workflow Execution Order
+## Workflow Dependency Graph
 
 ### Per Baseline Model:
 
@@ -210,7 +213,7 @@ python 02_Train_Model.py train.csv test.csv --model svm --output-dir /custom/out
 
 ---
 
-## Analysis Scripts (A_01a-j)
+## Analysis Scripts (A_01a-k)
 
 Analysis scripts are standalone tools, NOT part of the main workflow. They can be run in parallel as needed.
 
@@ -373,6 +376,28 @@ python A_01h_Runtime_Plot.py ../Datasets/Baseline/complete_dataset.csv --output-
 
 ---
 
+### A_01i - Optimizer_Baseline.py
+
+**Purpose**: Compare ML predictions with simple optimizer cost baseline (LinReg on p_tot_cost)
+
+**Inputs**:
+- `train_csv` (positional): Training dataset CSV
+- `test_csv` (positional): Test dataset CSV
+- `predictions_csv` (positional): ML predictions CSV
+- `--output-dir` (required): Output directory
+
+**Outputs**:
+- `A_01i_optimizer_baseline_overall.csv`: Overall MRE comparison (ML vs LinReg)
+- `A_01i_optimizer_baseline_template.csv`: Per-template MRE comparison
+- `A_01i_optimizer_baseline_plot.png`: Bar chart comparing both methods
+
+**Usage**:
+```bash
+python A_01i_Optimizer_Baseline.py ../Datasets/Baseline/training_data.csv ../Datasets/Baseline/test_data.csv Baseline_SVM/SVM/02_predictions.csv --output-dir Baseline_SVM/Evaluation
+```
+
+---
+
 ### A_01j - Summarize_Results.py
 
 **Purpose**: Aggregate prediction results by template and compute overall metrics
@@ -391,3 +416,36 @@ python A_01j_Summarize_Results.py Baseline_SVM/Evaluation/02_predictions_2025121
 
 **Variables**:
 - `--output-dir`: Output directory (default: same directory as input predictions CSV)
+
+---
+
+### A_01k - Runtime_Histograms.py
+
+**Purpose**: Visualize runtime distribution per template with histograms
+
+**Inputs**:
+- `dataset_csv` (positional): Complete dataset CSV file
+
+**Outputs**:
+- `A_01k_runtime_histograms.png`: Grid of histograms (5 columns) showing runtime distribution per template with mean and CV
+
+**Usage**:
+```bash
+python A_01k_Runtime_Histograms.py ../Datasets/Baseline/complete_dataset.csv --output-dir Baseline_SVM/Evaluation
+```
+
+**Variables**:
+- `--output-dir`: Output directory (default: Baseline_SVM/Evaluation/)
+
+---
+
+## Additional Documentation
+
+### D_Alternative_Modelle.md
+
+**Purpose**: Thesis appendix documenting alternative models (Random Forest, XGBoost)
+
+**Content**:
+- MRE comparison: SVM (8.28%), Random Forest (2.66%), XGBoost (2.68%)
+- Explains why SVM is used as baseline despite higher MRE (paper comparability)
+- References to model output directories

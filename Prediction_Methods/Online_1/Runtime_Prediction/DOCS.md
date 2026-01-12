@@ -23,6 +23,10 @@ Runtime_Prediction/
     A_04_Strategy_Comparison.py
     A_05_Pattern_Count.py
     A_06_Strategy_MRE_Comparison.py
+    A_07_Strategy_Pattern_Comparison.py
+    A_08_Optimizer_Baseline.py
+    A_09_Combined_Strategy_Plot.py
+    A_10_Q4_MRE_Plot.py
     Evaluation/
         Error/
         Size/
@@ -292,4 +296,24 @@ python3 A_05_Pattern_Count.py Evaluation --strategy Error --output-dir Evaluatio
 ```bash
 python3 A_06_Strategy_MRE_Comparison.py
 python3 A_06_Strategy_MRE_Comparison.py --output-dir Evaluation/Analysis/Overall
+```
+
+---
+
+## A_10 - Q4_MRE_Plot.py
+
+**Purpose:** Generate bar plot showing MRE for all 30 Q4 queries with overall MRE annotation
+
+**Inputs:**
+- `predictions_dir` - Directory containing Q4_* query folders with predictions.csv (positional)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `{output-dir}/q4_mre_barplot.png` - Bar plot with 30 bars (one per Q4 query), overall MRE in top-right corner
+
+**Usage:**
+```bash
+python3 A_10_Q4_MRE_Plot.py Evaluation/Error --output-dir Evaluation/Analysis/Error
+python3 A_10_Q4_MRE_Plot.py Evaluation/Size --output-dir Evaluation/Analysis/Size
+python3 A_10_Q4_MRE_Plot.py Evaluation/Frequency --output-dir Evaluation/Analysis/Frequency
 ```

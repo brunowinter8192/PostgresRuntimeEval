@@ -9,103 +9,36 @@ description: Thesis prose style guide and rules. (project)
 
 Style guide for academic prose. Contains rules, prohibitions, and terminology standards.
 
-**language is German** - examples remain in German as they demonstrate correct German academic writing.
+**Language is German** - examples remain in German as they demonstrate correct German academic writing.
+
+**On skill activation:**
+1. Ask user for the Write File path (e.g., `/Users/.../Text/writing.md`)
+2. ALL writing happens ONLY in this file
+3. Never write thesis prose anywhere else
 
 ---
 
-## Core Principles
+## Workflow (Loop-Based)
 
-### Precision Transformation
+**Skill activation → always in one of 3 phases:**
 
-User input is colloquial, imprecise, shorthand. Claude transforms into precise technical academic German.
+📋 **PLAN (iterative)**
+- Ask for Write File path on first activation
+- Clarify context
+- Write bullet points in Plan File (what to discuss)
+- Always ask for Remarks
+- Iterate until content is clear
 
-**Examples:**
-- "helfen" → "den MRE reduzieren" / "die Vorhersagegenauigkeit verbessern"
-- "besser" → "niedrigere Fehlerrate" / "geringerer MRE"
-- "funktioniert" → "erzielt signifikant bessere Ergebnisse"
-- "das Pattern matched" → "das Pattern wird dem Subtree zugewiesen"
+✍️ **IMPLEMENT**
+- Write prose in Write File
+- Ask for Remarks at the end
+- Ad-hoc changes directly in file
 
-### Stay in User Scope
+🧹 **CLEANUP**
+- Clean up Plan File (remove completed items)
+- Ask "New cycle?" → back to PLAN for next topic
 
-**Rule:**
-- Execute ONLY what user explicitly requested
-- If scope unclear → ASK before acting
-- One step at a time
-- Wait for user confirmation before proceeding
-
-### ASK THE FUCKING USER
-
-- User fragen für Referenz-Dateien (macht das Leben leichter)
-- User fragen für kritische Infos zum Verständnis
-- User hat breites Wissen - nutze es
-
-### One Question at a Time
-
-- Eine Frage auf einmal
-- Fragen bauen aufeinander auf
-- Multiple Choice bevorzugen (AskUserQuestion tool)
-- Nur acten wenn alles klar ist
-
-### Any Remarks vor Exit
-
-- IMMER "Any remarks?" fragen bevor ExitPlanMode
-- User kontrolliert den Übergang
-
-### Parallel Editing Awareness
-
-**CRITICAL:** User edits the SAME .md file in PARALLEL!
-
-**Before EVERY Edit - ALWAYS:**
-1. RE-READ affected lines (even if recently read)
-2. ONLY edit what is explicitly in the plan
-3. DO NOT touch surrounding text
-4. NEVER revert user changes
-
-**On Edit error "File has been modified":**
-- File was changed in parallel
-- Re-read and adjust edit
-- DO NOT restore old version
-
-**Rationale:** User edits simultaneously. Every edit without prior reading risks overwriting user changes.
-
-### Edit Workflow
-
-**Phase 1: PLAN**
-- User activates Plan Mode
-- User makes changes or describes what needs to be written
-- Claude updates plan iteratively
-- All findings and remarks collected in plan
-- When enough material: ONE edit instead of many small ones
-
-**Phase 2: IMPLEMENT**
-- Plan is executed
-- Edits are done together
-
-**Phase 3: CLEANUP**
-- After each complete execution: overwrite plan file completely
-- Only open actions remain in plan
-- Completed tasks are removed
-- No baggage from previous iterations
-
-**Rule:** In EVERY response clearly state: "Phase: PLAN" or "Phase: IMPLEMENT"
-
-### Technical Verification
-
-**Rule:** Before EVERY edit - think first:
-- Are the statements technically correct?
-- Are file paths correct, if referenced as source? (check with `ls` or `find`)
-- Are citations and years correct?
-- Is terminology consistent?
-
-**When in doubt:** Confront user IMMEDIATELY, don't guess.
-
-**Prohibited:**
-- Running additional analyses "while we're at it"
-- Checking related things "just in case"
-- Suggesting next steps without being asked
-- Assuming what user wants next
-
-**Rationale:** User has full context and knows exactly what they need. Jumping ahead wastes time and pollutes context.
+**Rule:** In EVERY response show current phase with emoji: 📋 PLAN, ✍️ IMPLEMENT, or 🧹 CLEANUP
 
 ---
 
@@ -118,6 +51,12 @@ User input is colloquial, imprecise, shorthand. Claude transforms into precise t
 - English technical terms standalone (Feature Pool, Feature Set, Operators)
 - Formal register, no colloquialisms
 - Technical details embedded in flowing prose (not bullet lists)
+
+**No colloquialisms - transform to academic:**
+- "helfen" → "den MRE reduzieren" / "die Vorhersagegenauigkeit verbessern"
+- "besser" → "niedrigere Fehlerrate" / "geringerer MRE"
+- "funktioniert" → "erzielt signifikant bessere Ergebnisse"
+- "das Pattern matched" → "das Pattern wird dem Subtree zugewiesen"
 
 ### Tense Rules
 
@@ -161,22 +100,21 @@ Check EVERY sentence against these rules.
 
 ### Language
 
-**5. Englische Wörter in deutschem Text**
+**5. English words in German text**
 
-a) **Großschreibung:** Englische Substantive werden großgeschrieben (deutsche Grammatik gilt)
+a) **Capitalization:** English nouns are capitalized (German grammar applies)
    - RIGHT: "die Prediction", "das Pattern", "die Query"
-   - Rule: Englisch im deutschen Text = Substantiv = groß
 
-b) **Englische Komposita:** Getrennt, NIEMALS Bindestrich
+b) **English compounds:** Separated, NEVER hyphenated
    - WRONG: "Pattern-Selection", "Length-First", "Hash-Join"
    - RIGHT: "Pattern Selection", "Length First", "Hash Join"
 
-c) **Englisch-Deutsch:** NIEMALS mischen (weder Bindestrich noch zusammengeschrieben)
+c) **English-German:** NEVER mix (neither hyphen nor compound)
    - WRONG: "Prediction-Methode", "Workloadwechsel", "Querystruktur"
    - RIGHT: Komplett Englisch ODER komplett Deutsch umformulieren
    - RIGHT: "den veränderten Workload", "die Struktur der Query"
 
-d) **Deutsche Komposita:** Bindestrich nur wenn es sonst schlecht klingt
+d) **German compounds:** Hyphen only when it sounds bad otherwise
    - Normal: "Datensatzstruktur", "Vorhersagemethode" (zusammen)
    - Selten: Bindestrich nur bei Lesbarkeit
 
@@ -234,25 +172,6 @@ Rule: If a table cell contains prose/categories instead of numbers, convert to s
 
 ---
 
-# Thesis-Specific Content
-
-Swap this section for different projects.
-
----
-
-## RAG-First for Thesis Questions
-
-**Rule:** When user talks about "the thesis":
-1. ALWAYS search RAG first (Collection: `Thesis`)
-2. EXCEPTION: User explicitly refers to the current .md being edited
-
-**Examples:**
-- "How did we do this in Plan-Level?" → RAG search
-- "Check line 75" → Read current .md (no RAG)
-- "Is this consistent with chapter 3?" → RAG search
-
----
-
 ## Citations
 
 ### Two Systems
@@ -264,24 +183,35 @@ Swap this section for different projects.
 
 ### Literature Citations
 
-**3 Varianten:**
+**3 Variants:**
 
-1. **Allgemeine Referenz (ganzes Werk, kein Abschnitt):**
+1. **General reference (whole work, no section):**
    `Akdere und Çetintemel (2011) begegnen diesen Fragen...`
 
-2. **Integriert mit Abschnitt (Autor = Subjekt):**
+2. **Integrated with section (author = subject):**
    `Akdere und Çetintemel (2011, Abschnitt 3.4) schlagen drei Strategien vor.`
 
-3. **Separater Hinweis (nach Aussage, KEIN Komma nach Autor!):**
+3. **Separate note (after statement, NO comma after author!):**
    `Diese Definition folgt dem Paper (Akdere und Çetintemel 2011, Abschnitt 3.2).`
 
-**Komma-Regel:**
-- Integriert (Variante 1+2): `Autor (Jahr, Abschnitt)` ← Komma vor Abschnitt
-- Separat (Variante 3): `(Autor Jahr, Abschnitt)` ← KEIN Komma nach Autor!
+**Comma rule:**
+- Integrated (Variant 1+2): `Author (Year, Section)` ← comma before section
+- Separate (Variant 3): `(Author Year, Section)` ← NO comma after author!
 
-**"Das Paper" im Text:**
-- OK wenn Zitation am Satzende folgt
-- Sonst Inline-Zitation verwenden
+**"Das Paper" in text:**
+- OK when citation follows at sentence end
+- Otherwise use inline citation
+
+**Short citations:**
+
+| Source | Integrated | Separate (no comma after author!) |
+|--------|------------|----------------------------------|
+| Paper | Akdere und Çetintemel (2011) | (Akdere und Çetintemel 2011, Abschnitt X.X) |
+| TPC-H Spec | TPC (2022) | (TPC 2022, S. X) |
+| PostgreSQL Docs | PostgreSQL (2025) | (PostgreSQL 2025, S. X) |
+| GitHub Repo | — | Footnotes only |
+
+**Note:** Paper PDF has no page numbers → use section references ("Abschnitt X.X")
 
 ### Repository References (Footnotes)
 
@@ -324,25 +254,6 @@ Appendix files live in repo as `.md` files and get copy-pasted into Word.
 ```
 
 **MD preparation:** Convert `**text**` → `*text*` before Word import (Richtlinien 3.8.2: no bold in Fließtext).
-
----
-
-## Terminology
-
-Consistent terms throughout the thesis. List is iteratively extended.
-
-| Correct | Meaning | Source | Forbidden |
-|---------|---------|--------|-----------|
-| Modellierungsansatz | Modeling approach (Plan-Level, Operator-Level, Hybrid) | Paper: "modeling approach" | Vorhersagemethode, Methode, Ansatz |
-| Methoden | Overarching procedures | Paper | Methodiken, Vorgehensweisen |
-| MRE | Mean Relative Error | Paper | |
-| Prediction | Forecast/prediction | User | Vorhersage |
-| Query | Database query | User | Abfrage, Datenbankabfrage |
-| Optimizer Cost Model | Cost-based prediction model of the optimizer | (Akdere und Çetintemel, 2011) | |
-| Tech-Stack | Technology stack (hardware, software, config) | User | |
-| Pattern Selection | Selection of patterns for model training | User | Greedy Pattern Selection |
-| Plan | Tree structure of Nodes/Operators | Thesis 3.1 | Planbaum |
-| Frequency | Anzahl Vorkommen eines Patterns in Trainingsdaten | User | Occurrence |
 
 ---
 
@@ -421,29 +332,28 @@ Consistent terms throughout the thesis. List is iteratively extended.
 
 ## Sources
 
-PDF sources used throughout thesis. Internet sources managed in Word bibliography.
-
-### PDF Sources (in RAG)
-
-```
-Akdere, M. und Çetintemel, U. (2011). Learning-based Query Performance
-    Modeling and Prediction. CS-11-01. Brown University.
-The PostgreSQL Global Development Group. (2025). PostgreSQL 17 Documentation.
-TPC. (2022). TPC Benchmark H (TPC-H) Standard Specification. Revision 3.0.1.
-```
-
-### Short Citations
-
-| Source | Integriert | Separat (kein Komma nach Autor!) |
-|--------|------------|----------------------------------|
-| Paper | Akdere und Çetintemel (2011) | (Akdere und Çetintemel 2011, Abschnitt X.X) |
-| TPC-H Spec | TPC (2022) | (TPC 2022, S. X) |
-| PostgreSQL Docs | PostgreSQL (2025) | (PostgreSQL 2025, S. X) |
-| GitHub Repo | — | Footnotes only |
-
-**Note:** Paper PDF has no page numbers → use section references ("Abschnitt X.X")
+Internet sources managed in Word bibliography.
 
 ### Word Formatting
 
 - Alphabetical by surname
 - Hanging indent: Paragraph → Special indent → Hanging, 1.25 cm
+
+---
+
+## Terminology
+
+Consistent terms throughout the thesis. List is iteratively extended.
+
+| Correct | Meaning | Source | Forbidden |
+|---------|---------|--------|-----------|
+| Modellierungsansatz | Modeling approach (Plan-Level, Operator-Level, Hybrid) | Paper: "modeling approach" | Vorhersagemethode, Methode, Ansatz |
+| Methoden | Overarching procedures | Paper | Methodiken, Vorgehensweisen |
+| MRE | Mean Relative Error | Paper | |
+| Prediction | Forecast/prediction | User | Vorhersage |
+| Query | Database query | User | Abfrage, Datenbankabfrage |
+| Optimizer Cost Model | Cost-based prediction model of the optimizer | (Akdere und Çetintemel, 2011) | |
+| Tech-Stack | Technology stack (hardware, software, config) | User | |
+| Pattern Selection | Selection of patterns for model training | User | Greedy Pattern Selection |
+| Plan | Tree structure of Nodes/Operators | Thesis 3.1 | Planbaum |
+| Frequency | Anzahl Vorkommen eines Patterns in Trainingsdaten | User | Occurrence |

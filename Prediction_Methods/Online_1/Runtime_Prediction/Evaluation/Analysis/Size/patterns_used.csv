@@ -1,14 +1,18 @@
 pattern_hash;pattern_string;used_count;template_count;templates;query_count
-895c6e8c;Hash Join -> [Seq Scan (Outer);210;6;Q3,Q5,Q7,Q9,Q13,Q18;180
-f4cb205a;Hash Join -> [Seq Scan (Outer);150;4;Q5,Q7,Q14,Q19;120
-a5f39f08;Aggregate -> Gather -> Aggrega;90;3;Q6,Q14,Q19;90
-2724c080;Aggregate -> Gather Merge (Out;90;3;Q7,Q8,Q12;90
-2e0f44ef;Hash Join -> [Nested Loop (Out;90;3;Q5,Q9,Q10;90
-1d35fb97;Sort -> Aggregate (Outer);82;3;Q4,Q5,Q9;82
-25df29b5;Limit -> Sort -> Aggregate ->;60;2;Q3,Q10;60
-c53c4396;Nested Loop -> [Seq Scan (Oute;30;1;Q12;30
-35ffb644;Sort -> Aggregate -> Aggregate;30;1;Q13;30
+2724c080;Aggregate -> Gather Merge (Out;120;4;Q4,Q7,Q8,Q12;120
+f4cb205a;Hash Join -> [Seq Scan (Outer);120;3;Q3,Q5,Q7;90
+1d35fb97;Sort -> Aggregate (Outer);60;2;Q4,Q5;60
+895c6e8c;Hash Join -> [Seq Scan (Outer);60;2;Q7,Q18;60
+310134da;Aggregate -> Gather -> Aggrega;60;2;Q14,Q19;60
+2e0f44ef;Hash Join -> [Nested Loop (Out;52;2;Q9,Q10;52
+7df893ad;Hash -> Hash Join (Outer);52;2;Q5,Q9;52
 52c5ec81;Gather Merge -> Sort -> Aggreg;30;1;Q1;30
+6ce7e974;Limit -> Sort -> Aggregate ->;30;1;Q18;30
 444761fb;Hash -> Hash Join -> [Seq Scan;30;1;Q8;30
-fd858367;Limit -> Sort -> Aggregate ->;30;1;Q18;30
-8951754f;Sort -> Aggregate -> Gather ->;8;1;Q9;8
+04a01b61;Limit -> Sort -> Aggregate ->;30;1;Q10;30
+25df29b5;Limit -> Sort -> Aggregate ->;30;1;Q3;30
+f592ee11;Sort -> Aggregate -> Aggregate;30;1;Q13;30
+c53c4396;Nested Loop -> [Seq Scan (Oute;30;1;Q12;30
+dd3706ac;Aggregate -> Gather -> Aggrega;30;1;Q6;30
+0405d50f;Aggregate -> Gather -> Aggrega;22;1;Q9;22
+5968661e;Sort -> Aggregate -> Gather ->;8;1;Q9;8
