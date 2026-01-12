@@ -29,7 +29,7 @@ def collect_selected_patterns(run_dir):
     results = []
     for csv_file in csv_files:
         df = pd.read_csv(csv_file, delimiter=';')
-        accepted = df[df['decision'] == 'SELECTED']
+        accepted = df[df['status'] == 'ACCEPTED']
 
         query_folder = csv_file.parent.parent.name
         template = query_folder.split('_')[0]
