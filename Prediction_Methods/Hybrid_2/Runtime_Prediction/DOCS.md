@@ -14,7 +14,9 @@ cd /path/to/Hybrid_2/Runtime_Prediction
 
 | Resource | Path (relative to CWD) |
 |----------|------------------------|
+| Operator Models | `../../Hybrid_1/Runtime_Prediction/Baseline_SVM/Model/Operators` |
 | Operator FFS | `../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Operators/operator_overview.csv` |
+| Pattern Models | `../../Hybrid_1/Runtime_Prediction/Baseline_SVM/Model/Patterns` |
 | Pattern FFS | `../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv` |
 
 ---
@@ -406,31 +408,57 @@ python3 A_02d_Convergence_Combined.py --base-dir Pattern_Selection --variant Bas
 
 ---
 
+### A_02e - Epsilon_Comparison.py
+
+**Purpose:** Vergleiche selektierte Patterns zwischen Baseline und Epsilon Varianten.
+
+**Inputs:**
+- `--base-dir`: Pattern_Selection Verzeichnis
+- `--output-dir`: Output Verzeichnis
+
+**Outputs:**
+- `A_02e_epsilon_comparison.csv` - Alle Patterns mit Status (both, baseline_only, epsilon_only) und Delta-Werten
+- `A_02e_epsilon_summary.csv` - Zusammenfassung pro Strategie (Anzahl both/baseline_only/epsilon_only)
+
+**Usage:**
+```bash
+python3 A_02e_Epsilon_Comparison.py --base-dir Pattern_Selection --output-dir Evaluation/PatternUsage
+```
+
+---
+
 ### A_02c - Pattern_Usage.py
 
-**Purpose:** Cross-strategy comparison of pattern usage and Beifang-Analyse.
+**Purpose:** Analyze pattern usage per strategy: selektiert vs. genutzt (Beifang-Analyse) mit Template-Zuordnung.
 
 **Workflow:**
-1. Scan Evaluation directory for all `{Strategy}/{Config}/predictions.csv`
-2. Filter rows where prediction_type == 'pattern'
-3. Group by pattern_hash per strategy, count occurrences
-4. Build cross-strategy table with count column (1-6)
-5. Load selected pattern counts from Pattern_Selection
-6. Compare selected vs. used patterns (Beifang = selected - used)
+1. Scan Dataset für Pattern-Occurrences (welche Templates enthalten welche Patterns)
+2. Für jede Strategy/Config Kombination:
+   - Lade selektierte Patterns aus Pattern_Selection
+   - Lade genutzte Pattern-Hashes aus Predictions
+   - Status = "genutzt" wenn Pattern in Predictions, sonst "beifang"
+3. Exportiere pro Strategy/Config eine CSV mit Pattern, Status, Templates
 
 **Inputs:**
 - `evaluation_dir`: Path to Evaluation directory (positional)
 - `--selection-dir`: Path to Pattern_Selection directory (required)
+- `--dataset`: Dataset CSV für Template-Zuordnung (required, z.B. Training_Training.csv)
+- `--patterns`: Patterns CSV mit bekannten Pattern-Hashes (required, z.B. 01_patterns.csv)
+- `--output-dir`: Output directory (required)
 
 **Outputs:**
-- `{output-dir}/A_02c_patterns.csv` - Cross-strategy usage table
-  - Columns: pattern_hash;Frequency_Baseline;...;Error_Epsilon;count
-- `{output-dir}/A_02c_summary.csv` - Beifang summary
-  - Columns: strategy;selected;used;beifang
+- `{output-dir}/A_02c_{Strategy}_{Config}.csv`
+  - Columns: pattern_hash;pattern_string;status;templates
+  - status: "genutzt" oder "beifang"
+  - templates: Komma-separierte Liste (z.B. "Q3,Q5,Q7")
 
 **Usage:**
-```
-python3 A_02c_Pattern_Usage.py Evaluation/ --selection-dir Pattern_Selection --output-dir Evaluation/PatternUsage
+```bash
+python3 A_02c_Pattern_Usage.py Evaluation \
+  --selection-dir Pattern_Selection \
+  --dataset ../Dataset/Baseline/Training_Training.csv \
+  --patterns ../Data_Generation/Training_Training/csv/01_patterns.csv \
+  --output-dir Evaluation/PatternUsage
 ```
 
 ---
@@ -528,12 +556,15 @@ python3 A_01b_Optimizer_Baseline.py ../Dataset/Baseline/Training.csv ../Dataset/
 3. Export combined CSV and PNG
 
 **Inputs:**
-- `--size-mre`: Path to Size template_mre.csv
-- `--frequency-mre`: Path to Frequency template_mre.csv
-- `--error-mre`: Path to Error template_mre.csv
-- `--optimizer-mre`: Path to Optimizer template_mre.csv
-- `--output-dir`: Output directory
+- `--size-mre`: Path to Size template_mre.csv (optional wenn --size-predictions)
+- `--frequency-mre`: Path to Frequency template_mre.csv (optional wenn --frequency-predictions)
+- `--error-mre`: Path to Error template_mre.csv (optional wenn --error-predictions)
+- `--optimizer-mre`: Path to Optimizer template_mre.csv (required)
+- `--output-dir`: Output directory (required)
 - `--variant`: Variant name for title (Baseline/Epsilon)
+- `--size-predictions`: Path to Size 12_predictions.csv (für ungerundete Werte)
+- `--frequency-predictions`: Path to Frequency 12_predictions.csv (für ungerundete Werte)
+- `--error-predictions`: Path to Error 12_predictions.csv (für ungerundete Werte)
 
 **Outputs:**
 - `A_01c_combined_strategy_mre.csv`
@@ -542,10 +573,20 @@ python3 A_01b_Optimizer_Baseline.py ../Dataset/Baseline/Training.csv ../Dataset/
 
 **Usage:**
 ```bash
+# Mit MRE-Dateien (gerundete Tabellenwerte)
 python3 A_01c_Combined_Strategy_Plot.py \
   --size-mre Evaluation/Size/Baseline/A_01a_template_mre.csv \
   --frequency-mre Evaluation/Frequency/Baseline/A_01a_template_mre.csv \
   --error-mre Evaluation/Error/Baseline/A_01a_template_mre.csv \
+  --optimizer-mre Evaluation/Overall/Baseline/A_01b_optimizer_template_mre.csv \
+  --output-dir Evaluation/Overall/Baseline \
+  --variant Baseline
+
+# Mit Predictions (ungerundete CSV-Werte)
+python3 A_01c_Combined_Strategy_Plot.py \
+  --size-predictions Evaluation/Size/Baseline/12_predictions.csv \
+  --frequency-predictions Evaluation/Frequency/Baseline/12_predictions.csv \
+  --error-predictions Evaluation/Error/Baseline/12_predictions.csv \
   --optimizer-mre Evaluation/Overall/Baseline/A_01b_optimizer_template_mre.csv \
   --output-dir Evaluation/Overall/Baseline \
   --variant Baseline

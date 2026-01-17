@@ -21,6 +21,17 @@ cd Prediction_Methods/Hybrid_2/Runtime_Prediction
 
 ---
 
+## External Dependencies (Hybrid_1)
+
+| Resource | Path (relative to CWD) |
+|----------|------------------------|
+| Operator Models | `../../Hybrid_1/Runtime_Prediction/Baseline_SVM/Model/Operators` |
+| Operator Features | `../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Operators/operator_overview.csv` |
+| Pattern Models | `../../Hybrid_1/Runtime_Prediction/Baseline_SVM/Model/Patterns` |
+| Pattern Features | `../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv` |
+
+---
+
 ## 12 - Query_Prediction.py
 
 **Purpose:** Execute bottom-up query prediction with optional pattern models
@@ -38,6 +49,7 @@ cd Prediction_Methods/Hybrid_2/Runtime_Prediction
 **Variables:**
 - `--strategy` - Selection strategy for pattern priority: frequency, size, error (default: None)
 - `--pattern-model-dir` - Path to pattern models (default: None)
+- `--pattern-features` - Path to pattern features CSV for Hybrid_1 models (default: None)
 - `--selected-patterns` - Path to selected_patterns.csv (default: None)
 - `--pattern-metadata` - Path to pattern metadata CSV (default: None)
 
@@ -53,14 +65,15 @@ python3 12_Query_Prediction/12_Query_Prediction.py \
 **Usage (Pattern-Enhanced):**
 ```bash
 python3 12_Query_Prediction/12_Query_Prediction.py \
-    ../Dataset/Test.csv \
-    Model/Operators_Training \
-    SVM/Operator/operator_overview.csv \
-    --strategy frequency \
-    --pattern-model-dir Model/Selected_Pattern/Frequency \
-    --selected-patterns Pattern_Selection/Frequency/selected_patterns.csv \
-    --pattern-metadata Pattern_Selection/07_patterns_by_frequency.csv \
-    --output-dir Evaluation/Pattern_Frequency
+    ../Dataset/Baseline/Test.csv \
+    ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/Model/Operators \
+    ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Operators/operator_overview.csv \
+    --strategy size \
+    --pattern-model-dir ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/Model/Patterns \
+    --pattern-features ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv \
+    --selected-patterns Pattern_Selection/Size/Baseline/selected_patterns.csv \
+    --pattern-metadata Pattern_Selection/07_patterns_by_size.csv \
+    --output-dir Evaluation/Size/Baseline
 ```
 
 ---
