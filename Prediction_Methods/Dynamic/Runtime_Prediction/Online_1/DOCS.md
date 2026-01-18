@@ -12,10 +12,10 @@ cd Prediction_Methods/Dynamic/Runtime_Prediction/Online_1
 
 ## Prerequisites
 
-Dataset_Hybrid_2 must exist with LOTO splits per template:
+Dataset_Online_1 must exist with LOTO splits per template:
 
 ```bash
-ls ../../Dataset/Dataset_Hybrid_2/Q1/
+ls ../../Dataset/Dataset_Online_1/Q1/
 # Expected: Training_Training.csv, Training_Test.csv
 ```
 
@@ -148,8 +148,8 @@ Evaluation/
 **Usage:**
 ```bash
 python3 workflow.py Q1_100_seed_812199069 \
-    ../../Dataset/Dataset_Hybrid_2/Q1/Training_Training.csv \
-    ../../Dataset/Dataset_Hybrid_2/Q1/Training_Test.csv \
+    ../../Dataset/Dataset_Online_1/Q1/Training_Training.csv \
+    ../../Dataset/Dataset_Online_1/Q1/Training_Test.csv \
     ../../Dataset/Dataset_Operator/Q1/training.csv \
     ../../Dataset/Dataset_Operator/Q1/test.csv \
     --output-dir Evaluation

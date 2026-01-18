@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-8a8c43c6e5296c8252f967d740368fb6;Aggregate -> Gather Merge -> Aggregate (Outer) (Outer);0.031224569173660493;3.1224569173660495;REJECTED
+8a8c43c6e5296c8252f967d740368fb6;Aggregate -> Gather Merge -> Aggregate (Outer) (Outer);0.031474521523687;3.1474521523687002;REJECTED

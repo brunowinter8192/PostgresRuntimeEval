@@ -2,7 +2,6 @@
 
 # INFRASTRUCTURE
 import argparse
-from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -65,8 +64,7 @@ def build_value_matrix(df: pd.DataFrame, templates: list, feature_cols: list) ->
 # Export value matrix to CSV with semicolon delimiter
 def export_matrix(result_df: pd.DataFrame, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_file = output_dir / f'A_01e_template_feature_values_{timestamp}.csv'
+    output_file = output_dir / 'A_01e_template_feature_values.csv'
     result_df.to_csv(output_file, sep=';')
 
 

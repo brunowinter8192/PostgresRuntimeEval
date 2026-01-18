@@ -104,3 +104,14 @@ Combines frequency and current prediction error. After each SELECTED/REJECTED de
 
 **Min Error Threshold:**
 Patterns with avg_mre < threshold are skipped for size/frequency strategies. avg_mre is calculated dynamically based on current predictions (updated after each SELECTED pattern). Error strategy does not use this filter.
+
+---
+
+## Pattern Application Order
+
+**Sortierreihenfolge:** `(-length, selection_order)`
+
+| Priority | Kriterium | Richtung | Begründung |
+|----------|-----------|----------|------------|
+| 1 | Pattern Length | DESC | Längere Patterns zuerst (höhere Abstraktion) |
+| 2 | Selection Order | ASC | Früher selektierte Patterns bevorzugt (Tiebreaker) |

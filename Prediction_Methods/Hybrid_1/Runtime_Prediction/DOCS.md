@@ -30,11 +30,23 @@ Runtime_Prediction/
     │   │   ├── {pattern_hash}/model.pkl       # Pattern models
     │   │   └── operators/{type}/model.pkl     # Operator models
     │   └── start_time/...
+    ├── Predictions/
+    │   ├── approach_1/
+    │   │   ├── predictions.csv
+    │   │   ├── patterns.csv
+    │   │   └── md/                            # Query reports
+    │   ├── approach_2/
+    │   ├── approach_3/
+    │   └── approach_4/
     └── Evaluation/
-        ├── predictions.csv
-        ├── overall_mre.csv
-        ├── template_mre.csv
-        └── csv/...
+        ├── approach_1/
+        │   ├── A_01a_overall_mre.csv
+        │   ├── A_01a_template_mre.csv
+        │   ├── A_01a_template_mre_plot.png
+        │   └── propagation/
+        ├── approach_2/
+        ├── approach_3/
+        └── approach_4/
 ```
 
 ## Shared Infrastructure
@@ -262,10 +274,12 @@ python A_01a_Evaluate_Predictions.py Baseline_SVM/Evaluation/predictions.csv --o
 - `predictions_file` - Path to predictions.csv (positional)
 
 **Outputs:**
-- `{output-dir}/csv/pattern_mean_mre_total_pct_{timestamp}.csv`
-- `{output-dir}/csv/pattern_mean_mre_startup_pct_{timestamp}.csv`
-- `{output-dir}/csv/operator_mean_mre_total_pct_{timestamp}.csv`
-- `{output-dir}/csv/operator_mean_mre_startup_pct_{timestamp}.csv`
+- `{output-dir}/csv/A_01b_pattern_mean_mre_total_pct.csv`
+- `{output-dir}/csv/A_01b_pattern_mean_mre_startup_pct.csv`
+- `{output-dir}/csv/A_01b_operator_mean_mre_total_pct.csv`
+- `{output-dir}/csv/A_01b_operator_mean_mre_startup_pct.csv`
+- `{output-dir}/csv/A_01b_node_type_mean_mre_total_pct.csv`
+- `{output-dir}/csv/A_01b_node_type_mean_mre_startup_pct.csv`
 
 **Usage:**
 ```bash
@@ -292,7 +306,7 @@ python A_01b_Node_Evaluation.py Baseline_SVM/Evaluation/predictions.csv --output
 - `input_file` - Path to baseline training CSV (positional)
 
 **Outputs:**
-- `{output-dir}/csv/operator_range_analysis_{timestamp}.csv`
+- `{output-dir}/A_01c_operator_range_analysis.csv`
   - Columns: node_type, mean_startup_ms, min_startup_ms, max_startup_ms, count, mean_total_ms, min_total_ms, max_total_ms, template extremes, range metrics
 
 **Usage:**

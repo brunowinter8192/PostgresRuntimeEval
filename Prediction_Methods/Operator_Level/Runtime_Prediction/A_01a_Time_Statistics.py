@@ -6,7 +6,6 @@ import argparse
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from datetime import datetime
 
 
 # ORCHESTRATOR
@@ -96,8 +95,7 @@ def export_results(stats, output_dir):
     output_path = Path(output_dir) / 'Evaluation'
     output_path.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = output_path / f'A_01a_time_statistics_{timestamp}.csv'
+    output_file = output_path / 'A_01a_time_statistics.csv'
     stats.to_csv(output_file, index=False, sep=';')
 
 

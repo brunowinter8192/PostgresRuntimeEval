@@ -6,7 +6,6 @@ import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
-from datetime import datetime
 
 OPERATOR_ORDER = [
     'Seq Scan', 'Index Scan', 'Index Only Scan',
@@ -18,17 +17,17 @@ OPERATOR_ORDER = [
 
 # ORCHESTRATOR
 
-def operator_distribution_workflow(predictions_csv, output_dir):
-    df = load_predictions(predictions_csv)
+def operator_distribution_workflow(dataset_csv, output_dir):
+    df = load_dataset(dataset_csv)
     create_histogram_plot(df, 'actual_startup_time', 'startup_time', output_dir)
     create_histogram_plot(df, 'actual_total_time', 'total_time', output_dir)
 
 
 # FUNCTIONS
 
-# Load predictions from CSV file
-def load_predictions(predictions_csv):
-    return pd.read_csv(predictions_csv, delimiter=';')
+# Load operator dataset from CSV file
+def load_dataset(dataset_csv):
+    return pd.read_csv(dataset_csv, delimiter=';')
 
 
 # Create histogram plot with 13 subplots for all operators
@@ -55,21 +54,19 @@ def create_histogram_plot(df, column, name, output_dir):
     for idx in range(len(OPERATOR_ORDER), len(axes)):
         axes[idx].set_visible(False)
 
-    fig.suptitle(f'Operator {name.replace("_", " ").title()} Distribution (Histogram)', fontsize=12)
     plt.tight_layout()
 
     output_path = Path(output_dir) / 'Evaluation'
     output_path.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_file = output_path / f'A_01c_histogram_{name}_{timestamp}.png'
+    output_file = output_path / f'A_01c_histogram_{name}.png'
     plt.savefig(output_file, dpi=150)
     plt.close()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("predictions_csv", help="Path to predictions CSV file")
+    parser.add_argument("dataset_csv", help="Path to operator dataset CSV file")
     parser.add_argument("--output-dir", required=True, help="Output directory")
     args = parser.parse_args()
 
-    operator_distribution_workflow(args.predictions_csv, args.output_dir)
+    operator_distribution_workflow(args.dataset_csv, args.output_dir)

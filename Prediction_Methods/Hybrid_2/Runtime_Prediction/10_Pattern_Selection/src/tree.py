@@ -131,10 +131,13 @@ def extract_pattern_node_ids(node: QueryNode, remaining_length: int) -> list:
     return node_ids
 
 
-# Match node against available patterns (larger patterns first)
-def match_pattern(node: QueryNode, pattern_info: dict) -> str:
+# Build pattern assignments for all nodes (larger patterns first, then selection order)
+def build_pattern_assignments(all_nodes: list, pattern_info: dict, pattern_order: list) -> tuple:
+    consumed_nodes = set()
+    pattern_assignments = {}
+
     sorted_patterns = sorted(
-        pattern_info.items(),
+        [(h, pattern_info[h]) for h in pattern_order if h in pattern_info],
         key=lambda x: x[1]['length'],
         reverse=True
     )
@@ -142,12 +145,19 @@ def match_pattern(node: QueryNode, pattern_info: dict) -> str:
     for pattern_hash, info in sorted_patterns:
         pattern_length = info['length']
 
-        if not has_children_at_length(node, pattern_length):
-            continue
+        for node in all_nodes:
+            if node.node_id in consumed_nodes:
+                continue
+            if not has_children_at_length(node, pattern_length):
+                continue
 
-        computed_hash = compute_pattern_hash(node, pattern_length)
+            pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
+            if any(nid in consumed_nodes for nid in pattern_node_ids):
+                continue
 
-        if computed_hash == pattern_hash:
-            return pattern_hash
+            computed_hash = compute_pattern_hash(node, pattern_length)
+            if computed_hash == pattern_hash:
+                consumed_nodes.update(pattern_node_ids)
+                pattern_assignments[node.node_id] = pattern_hash
 
-    return None
+    return consumed_nodes, pattern_assignments

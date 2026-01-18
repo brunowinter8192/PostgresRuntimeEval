@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-284f5967b2d4d51ba3d92991ca15cc08;Aggregate -> Gather -> Hash Join (Outer) (Outer);0.0747145194249889;7.47145194249889;REJECTED
+284f5967b2d4d51ba3d92991ca15cc08;Aggregate -> Gather -> Hash Join (Outer) (Outer);0.07421294949072255;7.421294949072255;REJECTED

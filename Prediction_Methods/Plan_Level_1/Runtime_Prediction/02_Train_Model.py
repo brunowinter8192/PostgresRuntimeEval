@@ -3,7 +3,6 @@
 # INFRASTRUCTURE
 import argparse
 import importlib
-from datetime import datetime
 from pathlib import Path
 
 import joblib
@@ -88,15 +87,13 @@ def train_model(X_train: pd.DataFrame, y_train: pd.Series, model_config: dict):
 # Save trained model to pickle file
 def save_model(model, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    model_file = output_dir / f'02_model_{timestamp}.pkl'
+    model_file = output_dir / '02_model.pkl'
     joblib.dump(model, model_file)
 
 
 # Export predictions to CSV with semicolon delimiter
 def export_predictions(df_test: pd.DataFrame, y_test: pd.Series, y_pred: np.ndarray, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
     results_df = pd.DataFrame({
         PLAN_METADATA[0]: df_test[PLAN_METADATA[0]],
@@ -107,7 +104,7 @@ def export_predictions(df_test: pd.DataFrame, y_test: pd.Series, y_pred: np.ndar
         'relative_error': np.abs((y_test - y_pred) / y_test)
     })
 
-    predictions_file = output_dir / f'02_predictions_{timestamp}.csv'
+    predictions_file = output_dir / '02_predictions.csv'
     results_df.to_csv(predictions_file, sep=';', index=False)
 
 

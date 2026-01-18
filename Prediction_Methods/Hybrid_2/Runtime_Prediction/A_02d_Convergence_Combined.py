@@ -51,11 +51,10 @@ def export_combined_plot(curves: dict, variant: str, output_dir: str) -> None:
         plt.plot(range(max_iterations), extended_curve, label=strategy, color=COLORS[strategy], linewidth=1.5)
     plt.xlabel('Iteration')
     plt.ylabel('MRE (%)')
-    plt.title(f'Pattern Selection Convergence ({variant})')
     plt.legend()
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig(out_path / f'A_02d_convergence_{variant.lower()}.png', dpi=150)
+    plt.savefig(out_path / f'A_02d_convergence_{variant.lower()}.png', dpi=300)
     plt.close()
 
 

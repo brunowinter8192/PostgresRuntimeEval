@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-7014b260905cd26b296cae611a1bff04;Sort -> Aggregate -> Gather Merge -> Aggregate -> Sort (Outer) (Outer) (Outer) (Outer);0.01586925119064914;1.586925119064914;REJECTED
+7014b260905cd26b296cae611a1bff04;Sort -> Aggregate -> Gather Merge -> Aggregate -> Sort (Outer) (Outer) (Outer) (Outer);0.015770648803984925;1.5770648803984926;REJECTED

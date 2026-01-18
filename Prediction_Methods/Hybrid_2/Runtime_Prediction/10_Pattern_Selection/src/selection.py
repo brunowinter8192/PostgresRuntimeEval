@@ -229,7 +229,7 @@ def run_error_selection(
         if error_ranking.empty:
             break
 
-        candidate = select_next_candidate(error_ranking, pattern_ffs, consumed_hashes)
+        candidate = select_next_candidate(error_ranking, consumed_hashes)
 
         if candidate is None:
             break
@@ -393,10 +393,9 @@ def calculate_error_ranking(
     ).reset_index(drop=True)
 
 
-# Select next candidate pattern with highest error_score that has FFS
+# Select next candidate pattern with highest error_score
 def select_next_candidate(
     error_ranking: pd.DataFrame,
-    pattern_ffs: dict,
     consumed_hashes: set
 ) -> dict:
     for _, row in error_ranking.iterrows():
@@ -405,8 +404,7 @@ def select_next_candidate(
         if pattern_hash in consumed_hashes:
             continue
 
-        if pattern_hash in pattern_ffs:
-            return row.to_dict()
+        return row.to_dict()
 
     return None
 

@@ -96,10 +96,10 @@ python 01_Forward_Selection.py ../Datasets/Baseline/training_data.csv --model sv
 
 # 2. Train model with selected features
 python 02_Train_Model.py ../Datasets/Baseline/training_data.csv ../Datasets/Baseline/test_data.csv --model svm
-# Output: Baseline_SVM/SVM/02_model_<timestamp>.pkl, 02_predictions_<timestamp>.csv
+# Output: Baseline_SVM/SVM/02_model.pkl, 02_predictions.csv
 
 # 3. Optional: Analysis (e.g., summarize results)
-python A_01j_Summarize_Results.py Baseline_SVM/Evaluation/02_predictions_<timestamp>.csv --output-dir Baseline_SVM/Evaluation
+python A_01j_Summarize_Results.py Baseline_SVM/Evaluation/02_predictions.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 ## Script Documentation
@@ -170,7 +170,7 @@ python 01_Forward_Selection.py dataset.csv --model svm --output-dir /custom/outp
 3. Load train and test datasets with semicolon delimiter
 4. Prepare feature matrices using PLAN_TARGET for target column
 5. Train model (with optional Pipeline + scaler for SVM)
-6. Save trained model to pickle file with timestamp
+6. Save trained model to pickle file
 7. Generate predictions on test set
 8. Export predictions with error metrics using PLAN_METADATA[0] for query column
 
@@ -182,8 +182,8 @@ python 01_Forward_Selection.py dataset.csv --model svm --output-dir /custom/outp
 - `--model` (required): Model to use (choices: svm, random_forest, xgboost)
 
 **Outputs**:
-- `Baseline_<Model>/<output_folder>/02_model_{timestamp}.pkl`: Trained model (or Pipeline for SVM)
-- `Baseline_<Model>/<output_folder>/02_predictions_{timestamp}.csv`: Columns: query_file, actual_ms, predicted_ms, error_ms, abs_error_ms, relative_error
+- `Baseline_<Model>/<output_folder>/02_model.pkl`: Trained model (or Pipeline for SVM)
+- `Baseline_<Model>/<output_folder>/02_predictions.csv`: Columns: query_file, actual_ms, predicted_ms, error_ms, abs_error_ms, relative_error
 
 **Usage**:
 ```bash
@@ -227,8 +227,8 @@ Analysis scripts are standalone tools, NOT part of the main workflow. They can b
 - `dataset_csv` (positional): Dataset CSV with features
 
 **Outputs**:
-- `A_01a_feature_correlations_{timestamp}.csv`: feature_1, feature_2, correlation
-- `A_01a_ffs_correlation_matrix_{timestamp}.csv`: Full correlation matrix (only when --ffs-csv provided)
+- `A_01a_feature_correlations.csv`: feature_1, feature_2, correlation
+- `A_01a_ffs_correlation_matrix.csv`: Full correlation matrix (only when --ffs-csv provided)
 
 **Usage**:
 ```bash
@@ -258,7 +258,7 @@ python A_01a_Correlation_Analysis.py ../Datasets/Baseline/complete_dataset.csv \
 - `--ffs-csv` (required): FFS summary CSV with selected_features column
 
 **Outputs**:
-- `A_01b_scatter_plots_{timestamp}.png`: Grid of scatter plots with correlation coefficients
+- `A_01b_scatter_plots.png`: Grid of scatter plots with correlation coefficients
 
 **Usage**:
 ```bash
@@ -278,7 +278,7 @@ python A_01b_Scatter_Plots.py ../Datasets/Baseline/training_data.csv --ffs-csv B
 - `dataset_csv` (positional): Dataset CSV with features
 
 **Outputs**:
-- `A_01c_feature_sparsity_{timestamp}.csv`: Zero count and percentage per feature
+- `A_01c_feature_sparsity.csv`: Zero count and percentage per feature
 
 **Usage**:
 ```bash
@@ -298,7 +298,7 @@ python A_01c_Sparsity.py ../Datasets/Baseline/training_data.csv
 - `dataset_csv` (positional): Dataset CSV with features and template column
 
 **Outputs**:
-- `A_01d_template_feature_constancy_{timestamp}.csv`: Matrix (templates x features) with constancy percentages
+- `A_01d_template_feature_constancy.csv`: Matrix (templates x features) with constancy percentages
 
 **Usage**:
 ```bash
@@ -323,7 +323,7 @@ python A_01d_Template_Constancy.py ../Datasets/Baseline/training_data.csv --feat
 - `dataset_csv` (positional): Dataset CSV with features and template column
 
 **Outputs**:
-- `A_01e_template_feature_values_{timestamp}.csv`: Matrix (templates x features) with actual values
+- `A_01e_template_feature_values.csv`: Matrix (templates x features) with actual values
 
 **Usage**:
 ```bash
@@ -393,7 +393,7 @@ python A_01h_Runtime_Plot.py ../Datasets/Baseline/complete_dataset.csv --output-
 
 **Usage**:
 ```bash
-python A_01i_Optimizer_Baseline.py ../Datasets/Baseline/training_data.csv ../Datasets/Baseline/test_data.csv Baseline_SVM/SVM/02_predictions.csv --output-dir Baseline_SVM/Evaluation
+python A_01i_Optimizer_Baseline.py ../Datasets/Baseline/training_data.csv ../Datasets/Baseline/test_data.csv Baseline_SVM/Evaluation/02_predictions.csv --output-dir Baseline_SVM/Evaluation/Optimizer
 ```
 
 ---
@@ -411,7 +411,7 @@ python A_01i_Optimizer_Baseline.py ../Datasets/Baseline/training_data.csv ../Dat
 
 **Usage**:
 ```bash
-python A_01j_Summarize_Results.py Baseline_SVM/Evaluation/02_predictions_20251215.csv --output-dir Baseline_SVM/Evaluation
+python A_01j_Summarize_Results.py Baseline_SVM/Evaluation/02_predictions.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables**:

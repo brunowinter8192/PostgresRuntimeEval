@@ -187,9 +187,13 @@ python 02_Merge_Data.py csv/
 - `--output-dir` (required): Output directory for markdown file
 
 **Outputs**:
-- `md/A_01a_explain_json_export_{timestamp}.md`: Raw EXPLAIN JSON for each template
+- `md/A_01a_explain_json_export.md`: Raw EXPLAIN JSON for each template
+
+**Prerequisites**:
+- Docker container `tpch-postgres` must be running
+- Stop brew postgres if running: `brew services stop postgresql@17` (port 5432 conflict)
 
 **Usage**:
 ```bash
-python A_01a_Explain_JSON.py /path/to/queries --output-dir md/
+python A_01a_Explain_JSON.py ../../Misc/Generated_Queries --output-dir md/
 ```

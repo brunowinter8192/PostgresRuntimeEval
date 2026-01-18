@@ -2,7 +2,6 @@
 
 # INFRASTRUCTURE
 import argparse
-from datetime import datetime
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -59,7 +58,6 @@ def create_scatter_plot_grid(df: pd.DataFrame, feature_cols: list, output_dir: P
         ax.scatter(x, y, alpha=0.5, s=10)
         ax.set_xlabel(feature)
         ax.set_ylabel('Runtime (ms)')
-        ax.set_title(f'{feature}\nr = {corr:.3f}')
         ax.grid(True, alpha=0.3)
 
     for idx in range(n_features, len(axes)):
@@ -68,9 +66,8 @@ def create_scatter_plot_grid(df: pd.DataFrame, feature_cols: list, output_dir: P
     plt.tight_layout()
 
     output_dir.mkdir(exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_path = output_dir / f'A_01b_scatter_plots_{timestamp}.png'
-    plt.savefig(output_path, dpi=150, bbox_inches='tight')
+    output_path = output_dir / 'A_01b_scatter_plots.png'
+    plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
 
 

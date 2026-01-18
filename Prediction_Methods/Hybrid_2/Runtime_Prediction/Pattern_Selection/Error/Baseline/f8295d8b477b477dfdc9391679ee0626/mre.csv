@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-f8295d8b477b477dfdc9391679ee0626;Aggregate -> Gather -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer) (Outer) (Outer);0.02013245129161333;2.013245129161333;SELECTED
+f8295d8b477b477dfdc9391679ee0626;Aggregate -> Gather -> Aggregate -> Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)] (Outer) (Outer) (Outer);0.020042941898578553;2.0042941898578555;SELECTED

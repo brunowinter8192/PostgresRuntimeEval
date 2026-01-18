@@ -6,7 +6,6 @@ import argparse
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from datetime import datetime
 
 
 # ORCHESTRATOR
@@ -70,14 +69,12 @@ def export_results(cross_total, cross_startup, output_dir):
     output_path = Path(output_dir) / 'Evaluation'
     output_path.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-
     cross_total.index.name = 'node_type (Mean MRE Total Time %)'
-    output_file_total = output_path / f'A_01g_mre_total_pct_{timestamp}.csv'
+    output_file_total = output_path / 'A_01g_mre_total_pct.csv'
     cross_total.to_csv(output_file_total, sep=';')
 
     cross_startup.index.name = 'node_type (Mean MRE Startup Time %)'
-    output_file_startup = output_path / f'A_01g_mre_startup_pct_{timestamp}.csv'
+    output_file_startup = output_path / 'A_01g_mre_startup_pct.csv'
     cross_startup.to_csv(output_file_startup, sep=';')
 
 

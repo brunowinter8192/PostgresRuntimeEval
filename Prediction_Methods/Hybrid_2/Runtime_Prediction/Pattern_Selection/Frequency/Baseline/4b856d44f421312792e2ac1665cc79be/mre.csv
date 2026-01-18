@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-4b856d44f421312792e2ac1665cc79be;Nested Loop -> [Merge Join (Outer), Index Scan (Inner)];0.066749310313136;6.6749310313136;REJECTED
+4b856d44f421312792e2ac1665cc79be;Nested Loop -> [Merge Join (Outer), Index Scan (Inner)];0.06609148111250691;6.609148111250692;REJECTED

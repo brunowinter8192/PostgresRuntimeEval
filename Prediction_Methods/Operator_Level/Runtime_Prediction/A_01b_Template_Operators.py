@@ -5,7 +5,6 @@
 import argparse
 import pandas as pd
 from pathlib import Path
-from datetime import datetime
 
 
 # ORCHESTRATOR
@@ -46,9 +45,8 @@ def export_results(counts, templates, output_dir):
     output_path = Path(output_dir) / 'Evaluation'
     output_path.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     templates_str = '_'.join(sorted(templates))
-    output_file = output_path / f'A_01b_template_operators_{templates_str}_{timestamp}.csv'
+    output_file = output_path / f'A_01b_template_operators_{templates_str}.csv'
     counts.to_csv(output_file, index=False, sep=';')
 
 

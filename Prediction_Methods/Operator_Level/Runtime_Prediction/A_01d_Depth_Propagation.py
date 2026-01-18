@@ -102,7 +102,6 @@ def create_depth_plots(df, plan_hashes, output_dir):
         ax.set_xticklabels(labels, rotation=45, ha='right', fontsize=8)
         ax.set_xlabel('Operator (Leaf -> Root)')
         ax.set_ylabel('Total Time (ms)')
-        ax.set_title(f'{template} - Prediction Chain (plan: {plan_hash[:8]})')
         ax.legend()
         ax.grid(True, alpha=0.3)
 

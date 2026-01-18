@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-c53c43965386239f53c764b9a60720dd;Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)];0.17270869579670906;17.270869579670904;REJECTED
+c53c43965386239f53c764b9a60720dd;Nested Loop -> [Seq Scan (Outer), Index Scan (Inner)];0.173647386152337;17.364738615233698;REJECTED

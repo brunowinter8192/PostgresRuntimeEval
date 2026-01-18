@@ -17,10 +17,8 @@ from src.tree import (
     build_tree_from_dataframe,
     extract_all_nodes,
     get_children_from_full_query,
-    has_children_at_length,
-    compute_pattern_hash,
     extract_pattern_node_ids,
-    match_pattern
+    build_pattern_assignments
 )
 
 # From io.py: Load pretrained model and create prediction result
@@ -150,58 +148,43 @@ def predict_single_query(
 ) -> list:
     root = build_tree_from_dataframe(query_ops)
     all_nodes = extract_all_nodes(root)
-
-    pattern_matches = []
-    for node in all_nodes:
-        matched = match_pattern(node, pattern_info)
-        if matched:
-            info = pattern_info[matched]
-            pattern_matches.append((node, matched, info['length'], info['operator_count']))
-
-    def get_pattern_order_index(pattern_hash):
-        try:
-            return pattern_order.index(pattern_hash)
-        except ValueError:
-            return len(pattern_order)
-
-    pattern_matches.sort(key=lambda x: (-x[2], get_pattern_order_index(x[1])))
-
-    prediction_cache = {}
-    consumed_nodes = set()
-    predictions = []
-
-    for node, pattern_hash, pattern_length, _ in pattern_matches:
-        pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
-
-        if any(nid in consumed_nodes for nid in pattern_node_ids):
-            continue
-
-        consumed_nodes.update(pattern_node_ids)
-
-        pred_start, pred_exec = predict_pattern(
-            node, query_ops, pattern_models[pattern_hash], prediction_cache, pattern_length
-        )
-
-        for nid in pattern_node_ids:
-            prediction_cache[nid] = {'start': pred_start, 'exec': pred_exec}
-
-        row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
-        predictions.append(create_prediction_result(row, pred_start, pred_exec, 'pattern'))
-
     nodes_by_depth = sorted(all_nodes, key=lambda n: n.depth, reverse=True)
 
+    consumed_nodes, pattern_assignments = build_pattern_assignments(
+        all_nodes, pattern_info, pattern_order
+    )
+
+    prediction_cache = {}
+    predictions = []
+
     for node in nodes_by_depth:
-        if node.node_id in consumed_nodes:
+        if node.node_id in consumed_nodes and node.node_id not in pattern_assignments:
             continue
 
-        pred_start, pred_exec = predict_operator(
-            node, query_ops, operator_models, operator_ffs, prediction_cache
-        )
+        if node.node_id in pattern_assignments:
+            pattern_hash = pattern_assignments[node.node_id]
+            info = pattern_info[pattern_hash]
+            pattern_length = info['length']
 
-        prediction_cache[node.node_id] = {'start': pred_start, 'exec': pred_exec}
+            pattern_node_ids = extract_pattern_node_ids(node, pattern_length)
 
-        row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
-        predictions.append(create_prediction_result(row, pred_start, pred_exec, 'operator'))
+            pred_start, pred_exec = predict_pattern(
+                node, query_ops, pattern_models[pattern_hash], prediction_cache, pattern_length
+            )
+
+            for nid in pattern_node_ids:
+                prediction_cache[nid] = {'start': pred_start, 'exec': pred_exec}
+
+            row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
+            predictions.append(create_prediction_result(row, pred_start, pred_exec, 'pattern'))
+        else:
+            pred_start, pred_exec = predict_operator(
+                node, query_ops, operator_models, operator_ffs, prediction_cache
+            )
+            prediction_cache[node.node_id] = {'start': pred_start, 'exec': pred_exec}
+
+            row = query_ops[query_ops['node_id'] == node.node_id].iloc[0]
+            predictions.append(create_prediction_result(row, pred_start, pred_exec, 'operator'))
 
     return predictions
 

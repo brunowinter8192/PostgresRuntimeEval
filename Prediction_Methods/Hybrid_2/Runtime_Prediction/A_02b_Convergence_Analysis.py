@@ -71,10 +71,9 @@ def export_plot(mre_curve: list, output_dir: str, prefix: str = '') -> None:
     plt.plot(range(len(mre_curve)), mre_curve, linewidth=1.5)
     plt.xlabel('Iteration')
     plt.ylabel('MRE')
-    plt.title('MRE Progression over Pattern Selection')
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig(out_path / filename, dpi=150)
+    plt.savefig(out_path / filename, dpi=300)
     plt.close()
 
 if __name__ == "__main__":

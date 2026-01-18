@@ -28,6 +28,10 @@ def load_operator_models(model_dir: str) -> dict:
     for target in ['execution_time', 'start_time']:
         target_dir = model_path / target
 
+        # Support Hybrid_1 structure with extra 'operators' subdirectory
+        if (target_dir / 'operators').exists():
+            target_dir = target_dir / 'operators'
+
         if not target_dir.exists():
             continue
 
@@ -59,8 +63,9 @@ def load_operator_features(overview_file: str) -> dict:
     return features
 
 
-# Load pattern models for selected hashes only
-def load_pattern_models(model_dir: str, selected_hashes: list = None) -> dict:
+# Load pattern models for selected hashes (supports Hybrid_1 and Hybrid_2 structure)
+def load_pattern_models(model_dir: str, selected_hashes: list = None,
+                        features_file: str = None) -> dict:
     models = {}
     model_path = Path(model_dir)
 
@@ -69,25 +74,50 @@ def load_pattern_models(model_dir: str, selected_hashes: list = None) -> dict:
 
     hashes_to_load = selected_hashes if selected_hashes else []
 
-    for pattern_hash in hashes_to_load:
-        pattern_dir = model_path / pattern_hash
+    pattern_features = {}
+    if features_file:
+        df = pd.read_csv(features_file, delimiter=';')
+        for _, row in df.iterrows():
+            ph = row['pattern_hash']
+            target = row['target']
+            if ph not in pattern_features:
+                pattern_features[ph] = {}
+            fs = row['final_features']
+            if pd.isna(fs) or fs.strip() == '':
+                pattern_features[ph][target] = []
+            else:
+                pattern_features[ph][target] = [f.strip() for f in fs.split(',')]
 
+    for pattern_hash in hashes_to_load:
+        exec_file_h1 = model_path / 'execution_time' / pattern_hash / 'model.pkl'
+        start_file_h1 = model_path / 'start_time' / pattern_hash / 'model.pkl'
+
+        if exec_file_h1.exists() and start_file_h1.exists():
+            models[pattern_hash] = {
+                'execution_time': joblib.load(exec_file_h1),
+                'start_time': joblib.load(start_file_h1),
+                'features_exec': pattern_features.get(pattern_hash, {}).get('execution_time', []),
+                'features_start': pattern_features.get(pattern_hash, {}).get('start_time', [])
+            }
+            continue
+
+        pattern_dir = model_path / pattern_hash
         if not pattern_dir.is_dir():
             continue
 
-        exec_file = pattern_dir / 'model_execution_time.pkl'
-        start_file = pattern_dir / 'model_start_time.pkl'
-        features_file = pattern_dir / 'features.json'
+        exec_file_h2 = pattern_dir / 'model_execution_time.pkl'
+        start_file_h2 = pattern_dir / 'model_start_time.pkl'
+        features_json = pattern_dir / 'features.json'
 
-        if not all(f.exists() for f in [exec_file, start_file, features_file]):
+        if not all(f.exists() for f in [exec_file_h2, start_file_h2, features_json]):
             continue
 
-        with open(features_file, 'r') as f:
+        with open(features_json, 'r') as f:
             features = json.load(f)
 
         models[pattern_hash] = {
-            'execution_time': joblib.load(exec_file),
-            'start_time': joblib.load(start_file),
+            'execution_time': joblib.load(exec_file_h2),
+            'start_time': joblib.load(start_file_h2),
             'features_exec': features['features_exec'],
             'features_start': features['features_start']
         }

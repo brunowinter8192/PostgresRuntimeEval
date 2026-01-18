@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-27c3eea91d52d70900e2c535de7eb7c4;Aggregate -> Gather Merge -> Sort -> Hash Join -> [Nested Loop -> [Hash Join (Outer), Index Scan (Inner)] (Outer), Hash -> Hash Join (Outer) (Inner)] (Outer) (Outer) (Outer);0.01530252509083471;1.530252509083471;REJECTED
+27c3eea91d52d70900e2c535de7eb7c4;Aggregate -> Gather Merge -> Sort -> Hash Join -> [Nested Loop -> [Hash Join (Outer), Index Scan (Inner)] (Outer), Hash -> Hash Join (Outer) (Inner)] (Outer) (Outer) (Outer);0.017278920670256142;1.7278920670256142;REJECTED
