@@ -30,13 +30,15 @@ Runtime_Prediction/Hybrid_1/
 ├── A_01a_Query_Evaluation.py
 ├── A_01b_Static_Dynamic_Comparison.py
 ├── A_01c_Pattern_Comparison.py
+├── A_01d_Pattern_Statistics.py
 ├── Evaluation/
 │   └── {approach}/
 │       ├── overall_mre.csv
 │       ├── loto_mre.csv
 │       ├── loto_mre_plot.png
 │       ├── A_01b_static_dynamic_comparison.csv/.png
-│       └── A_01c_pattern_comparison.csv
+│       ├── A_01c_pattern_comparison.csv
+│       └── A_01d_pattern_statistics.csv
 └── Q*/
     └── {approach}/
         ├── SVM/
@@ -235,3 +237,23 @@ python3 A_01c_Pattern_Comparison.py \
   --static-predictions /path/to/Hybrid_1/.../predictions.csv \
   --static-patterns /path/to/Hybrid_1/.../patterns.csv
 ```
+
+## A_01d - Pattern_Statistics.py
+
+**Purpose:** Export pattern reduction statistics (available vs used patterns per template).
+
+**Inputs:**
+- `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/patterns_filtered.csv` - Available patterns
+- `../../Dataset/Dataset_Hybrid_1/{Q*}/{approach}/used_patterns.csv` - Used patterns (from Dry-Run)
+
+**Outputs:**
+- `{output-dir}/A_01d_pattern_statistics.csv` - Statistics with columns: template, available_patterns, used_patterns, reduction_pct
+
+**Usage:**
+```bash
+python3 A_01d_Pattern_Statistics.py --output-dir Evaluation/approach_3
+```
+
+**Variables:**
+- `--approach` - Approach to analyze (default: approach_3)
+- `--output-dir` - Output directory for CSV (required)

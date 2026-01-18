@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-b68c8b9694ca5d771418ab335df27acf;Limit -> Sort -> Aggregate -> Gather -> Nested Loop (Outer) (Outer) (Outer) (Outer);0.015472275079692576;1.5472275079692577;REJECTED
+b68c8b9694ca5d771418ab335df27acf;Limit -> Sort -> Aggregate -> Gather -> Nested Loop (Outer) (Outer) (Outer) (Outer);0.017479096608889376;1.7479096608889375;REJECTED

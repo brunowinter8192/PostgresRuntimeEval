@@ -117,22 +117,21 @@ def create_comparison_plot(results: dict, output_dir: Path) -> None:
                       label=f"Optimizer LinReg (Overall: {results['overall_optimizer']*100:.1f}%)",
                       color='coral', alpha=0.8)
 
-    ax.bar_label(bars_ml, fmt='%.1f%%', padding=3, fontsize=8, rotation=0)
-    ax.bar_label(bars_opt, fmt='%.1f%%', padding=3, fontsize=8, rotation=0)
+    ax.bar_label(bars_ml, fmt='%.1f%%', padding=5, fontsize=7, rotation=0)
+    ax.bar_label(bars_opt, fmt='%.1f%%', padding=5, fontsize=7, rotation=0)
 
     ax.set_xlabel('Template', fontsize=12)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
-    ax.set_title('ML Prediction vs. Optimizer Cost Baseline (Plan-Level)', fontsize=14, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=10)
     ax.legend(fontsize=11)
     ax.grid(axis='y', alpha=0.3)
 
     y_max = max(template_df['mre_ml_pct'].max(), template_df['mre_optimizer_pct'].max())
-    ax.set_ylim(0, y_max * 1.35)
+    ax.set_ylim(0, y_max * 1.5)
 
     plt.tight_layout()
-    plt.savefig(output_dir / 'A_01i_optimizer_baseline_plot.png', dpi=150)
+    plt.savefig(output_dir / 'A_01i_optimizer_baseline_plot.png', dpi=300)
     plt.close()
 
 

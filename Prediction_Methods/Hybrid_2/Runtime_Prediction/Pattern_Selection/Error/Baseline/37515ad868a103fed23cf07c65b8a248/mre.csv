@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-37515ad868a103fed23cf07c65b8a248;Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer) (Inner)];0.11092796619906024;11.092796619906025;REJECTED
+37515ad868a103fed23cf07c65b8a248;Hash Join -> [Seq Scan (Outer), Hash -> Hash Join -> [Seq Scan (Outer), Hash (Inner)] (Outer) (Inner)];0.06322677905919614;6.3226779059196145;SELECTED

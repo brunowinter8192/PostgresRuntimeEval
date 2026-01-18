@@ -20,6 +20,7 @@ Misc/
 ├── Cache_Validation/                                        [documented below]
 ├── FFS_Comparison/                                          [documented below]
 ├── Pass_Through/                                            [documented below]
+├── Q17_Q20/                                                 [documented below]
 └── specification/
     └── auto/
         ├── specification.md                                 (TPC-H Specification)
@@ -130,6 +131,39 @@ cd Generated_Queries
 | Q15 | Uses `CREATE VIEW` - multi-statement, not compatible with `EXPLAIN ANALYZE` |
 | Q17 | Execution time > 1 hour at SF1 |
 | Q20 | Execution time > 1 hour at SF1 |
+
+---
+
+## Q17_Q20
+
+Runtime demonstration for excluded templates Q17 and Q20.
+
+### Directory Structure
+
+```
+Q17_Q20/
+├── 01_Runtime_Demo.py
+└── md/
+    └── 01_runtime_demo.md
+```
+
+### 01 - Runtime_Demo.py
+
+**Purpose:** Demonstrate that Q17 and Q20 have exceptionally long runtimes compared to other templates.
+
+**Inputs:**
+- `queries_dir` (positional): Directory containing Q17/ and Q20/ folders with SQL files
+- `--output-dir` (required): Output directory for MD export
+- `--runs` (optional): Number of query executions per type (default: 5)
+
+**Outputs:**
+- `01_runtime_demo.md`: Runtime listing with averages for Q17 and Q20
+
+**Usage:**
+```bash
+cd /Users/brunowinter2000/Documents/Thesis/Thesis_Final
+python3 Misc/Q17_Q20/01_Runtime_Demo.py Misc/Generated_Queries --output-dir Misc/Q17_Q20/md
+```
 
 ---
 
@@ -254,23 +288,30 @@ Comparison tools for evaluating SVM nu parameter impact on Forward Feature Selec
 
 ```
 FFS_Comparison/
+├── C_SVM_Parameter.md                    (Thesis appendix: SVM parameter documentation)
 ├── Plan_Level/
 │   ├── 01_Compare_Nu.py
-│   ├── nu_0.5_summary.csv
-│   └── nu_0.65_summary.csv
+│   └── Nu_0.5/                           (FFS results with nu=0.5)
+│       ├── 01_ffs_progress.csv
+│       ├── 01_ffs_summary.csv
+│       └── 01_ffs_stability.csv
 └── Operator_Level/
     ├── 01_Compare_Nu.py
-    ├── nu_0.5_overview.csv
-    └── nu_0.65_overview.csv
+    └── Nu_0.5/                           (FFS results with nu=0.5)
+        └── SVM/{target}/{Operator}_csv/
 ```
+
+### C_SVM_Parameter.md
+
+Thesis appendix documenting SVM configuration and nu parameter exploration. Source for Anhang C.
 
 ### Plan_Level/01 - Compare_Nu.py
 
 **Purpose:** Compare FFS results between nu=0.5 and nu=0.65 at plan level.
 
 **Inputs:**
-- `--baseline`: Baseline summary CSV (default: `nu_0.5_summary.csv`)
-- `--alternative`: Alternative summary CSV (default: `nu_0.65_summary.csv`)
+- `--baseline`: Baseline summary CSV (default: `Nu_0.5/01_ffs_summary.csv`)
+- `--alternative`: Alternative summary CSV path
 - `--output-dir`: Output directory (default: `.`)
 
 **Outputs:**
@@ -287,8 +328,8 @@ python3 01_Compare_Nu.py
 **Purpose:** Compare FFS results between nu=0.65 and nu=0.5 at operator level.
 
 **Inputs:**
-- `--baseline`: Baseline overview CSV (default: `nu_0.65_overview.csv`)
-- `--alternative`: Alternative overview CSV (default: `nu_0.5_overview.csv`)
+- `--baseline`: Baseline overview CSV
+- `--alternative`: Alternative overview CSV
 - `--output-dir`: Output directory (default: `.`)
 
 **Outputs:**
@@ -339,7 +380,7 @@ Pass_Through/
 ```bash
 cd Misc/Pass_Through
 python3 02_Passthrough_Analysis.py \
-  ../../Prediction_Methods/Operator_Level/Datasets/Baseline/03_training.csv \
+  ../../Prediction_Methods/Hybrid_1/Datasets/Baseline_SVM/training.csv \
   --output-dir .
 ```
 

@@ -27,6 +27,7 @@ Runtime_Prediction/
     A_08_Optimizer_Baseline.py
     A_09_Combined_Strategy_Plot.py
     A_10_Q4_MRE_Plot.py
+    A_11_Method_Size_Comparison.py
     Evaluation/
         Error/
         Size/
@@ -316,4 +317,26 @@ python3 A_06_Strategy_MRE_Comparison.py --output-dir Evaluation/Analysis/Overall
 python3 A_10_Q4_MRE_Plot.py Evaluation/Error --output-dir Evaluation/Analysis/Error
 python3 A_10_Q4_MRE_Plot.py Evaluation/Size --output-dir Evaluation/Analysis/Size
 python3 A_10_Q4_MRE_Plot.py Evaluation/Frequency --output-dir Evaluation/Analysis/Frequency
+```
+
+---
+
+## A_11 - Method_Size_Comparison.py
+
+**Purpose:** Compare Online_1 Size vs Hybrid_2 Size (Baseline) per template
+
+**Inputs:**
+- `online1_mre` - Path to Online_1 Size template_mre.csv (positional)
+- `hybrid2_mre` - Path to Hybrid_2 Size template_mre.csv (positional)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `A_11_size_comparison.png` - Bar plot with 2 bars per template (Online_1 vs Hybrid_2)
+
+**Usage:**
+```bash
+python3 A_11_Method_Size_Comparison.py \
+  Evaluation/Analysis/Size/template_mre.csv \
+  ../../Hybrid_2/Runtime_Prediction/Evaluation/Size/Baseline/A_01a_template_mre.csv \
+  --output-dir Evaluation/Analysis/Overall
 ```

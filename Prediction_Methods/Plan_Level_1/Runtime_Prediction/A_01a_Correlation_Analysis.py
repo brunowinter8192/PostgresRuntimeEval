@@ -2,7 +2,6 @@
 
 # INFRASTRUCTURE
 import argparse
-from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -70,15 +69,13 @@ def load_ffs_features(ffs_csv: Path, seed: int = 42) -> list:
 # Export high correlations to CSV with semicolon delimiter
 def export_correlations(high_corr_pairs: list, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    high_corr_file = output_dir / f'A_01a_feature_correlations_{timestamp}.csv'
+    high_corr_file = output_dir / 'A_01a_feature_correlations.csv'
     pd.DataFrame(high_corr_pairs).to_csv(high_corr_file, sep=';', index=False)
 
 
 # Export full correlation matrix for FFS features
 def export_correlation_matrix(corr_matrix: pd.DataFrame, output_dir: Path) -> None:
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    matrix_file = output_dir / f'A_01a_ffs_correlation_matrix_{timestamp}.csv'
+    matrix_file = output_dir / 'A_01a_ffs_correlation_matrix.csv'
     corr_matrix.to_csv(matrix_file, sep=';')
 
 

@@ -280,7 +280,7 @@ python3 03_Query_Prediction.py \
 - `--output-dir` - Output directory for analysis results
 
 **Outputs**:
-- `Evaluation/A_01a_time_statistics_{timestamp}.csv` - Operator statistics with ranges
+- `Evaluation/A_01a_time_statistics.csv` - Operator statistics with ranges
 
 **Usage**:
 ```bash
@@ -306,7 +306,7 @@ python3 A_01a_Time_Statistics.py \
 - `--output-dir` - Output directory
 
 **Outputs**:
-- `Evaluation/A_01b_template_operators_{templates}_{timestamp}.csv` - Operator counts sorted by occurrence
+- `Evaluation/A_01b_template_operators_{templates}.csv` - Operator counts sorted by occurrence
 
 **Usage**:
 ```bash
@@ -328,22 +328,22 @@ python3 A_01b_Template_Operators.py \
 **Purpose**: Create histograms showing time distribution per operator.
 
 **Inputs**:
-- `predictions_csv` - Path to predictions CSV
+- `dataset_csv` - Path to operator dataset CSV (full dataset for complete distribution)
 - `--output-dir` - Output directory
 
 **Outputs**:
-- `Evaluation/A_01c_histogram_startup_time_{timestamp}.png` - 13 subplots for startup time
-- `Evaluation/A_01c_histogram_total_time_{timestamp}.png` - 13 subplots for total time
+- `Evaluation/A_01c_histogram_startup_time.png` - 13 subplots for startup time
+- `Evaluation/A_01c_histogram_total_time.png` - 13 subplots for total time
 
 **Usage**:
 ```bash
-python3 A_01c_Operator_Distribution.py <predictions_csv> --output-dir <output_dir>
+python3 A_01c_Operator_Distribution.py <dataset_csv> --output-dir <output_dir>
 ```
 
 **Example**:
 ```bash
 python3 A_01c_Operator_Distribution.py \
-    ./Baseline_SVM/predictions.csv \
+    ../Datasets/Baseline/01_operator_dataset_cleaned.csv \
     --output-dir ./Baseline_SVM
 ```
 
@@ -385,8 +385,8 @@ python3 A_01d_Depth_Propagation.py \
 - `--output-dir` - Output directory
 
 **Outputs**:
-- `Evaluation/A_01e_plan_variability_summary_{timestamp}.csv` - Summary per template
-- `Evaluation/A_01e_plan_variability_detail_{timestamp}.csv` - Detail per query with plan signature
+- `Evaluation/A_01e_plan_variability_summary.csv` - Summary per template
+- `Evaluation/A_01e_plan_variability_detail.csv` - Detail per query with plan signature
 
 **Usage**:
 ```bash
@@ -449,8 +449,8 @@ python3 A_01f_Query_Evaluation.py \
 - `--output-dir` - Output directory for evaluation results
 
 **Outputs**:
-- `Evaluation/A_01g_mre_total_pct_{timestamp}.csv` - Total time MRE %
-- `Evaluation/A_01g_mre_startup_pct_{timestamp}.csv` - Startup time MRE %
+- `Evaluation/A_01g_mre_total_pct.csv` - Total time MRE %
+- `Evaluation/A_01g_mre_startup_pct.csv` - Startup time MRE %
 
 **Usage**:
 ```bash

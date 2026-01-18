@@ -85,7 +85,6 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
-    ax.set_title('Online_1: Strategy Comparison with Optimizer Baseline', fontsize=14, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=11)
     ax.legend(fontsize=11, loc='upper right')

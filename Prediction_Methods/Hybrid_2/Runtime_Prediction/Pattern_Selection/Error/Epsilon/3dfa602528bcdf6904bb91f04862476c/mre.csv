@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-3dfa602528bcdf6904bb91f04862476c;Aggregate -> Gather Merge -> Sort -> Aggregate -> Seq Scan (Outer) (Outer) (Outer) (Outer);0.024446324895144884;2.4446324895144884;SELECTED
+3dfa602528bcdf6904bb91f04862476c;Aggregate -> Gather Merge -> Sort -> Aggregate -> Seq Scan (Outer) (Outer) (Outer) (Outer);0.02657351323730084;2.657351323730084;SELECTED

@@ -46,8 +46,6 @@ def create_runtime_plot(df: pd.DataFrame):
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Runtime (ms)', fontsize=13, fontweight='bold')
-    ax.set_title('Mean Query Runtime by Template',
-                 fontsize=15, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')

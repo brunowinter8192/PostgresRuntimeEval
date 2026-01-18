@@ -2,7 +2,6 @@
 
 # INFRASTRUCTURE
 import argparse
-from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -95,8 +94,7 @@ def calculate_constancy_percentage(series: pd.Series) -> float:
 # Export constancy matrix to CSV with semicolon delimiter
 def export_matrix(result_df: pd.DataFrame, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_file = output_dir / f'A_01d_template_feature_constancy_{timestamp}.csv'
+    output_file = output_dir / 'A_01d_template_feature_constancy.csv'
     result_df.to_csv(output_file, sep=';')
 
 

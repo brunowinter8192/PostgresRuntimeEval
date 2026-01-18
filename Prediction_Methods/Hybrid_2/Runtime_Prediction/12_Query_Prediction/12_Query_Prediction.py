@@ -35,7 +35,8 @@ def run_prediction(
     strategy: str = None,
     pattern_model_dir: str = None,
     selected_patterns_file: str = None,
-    pattern_metadata_file: str = None
+    pattern_metadata_file: str = None,
+    pattern_features_file: str = None
 ) -> None:
     df_test = load_test_data(test_file)
     operator_models = load_operator_models(operator_model_dir)
@@ -47,7 +48,7 @@ def run_prediction(
 
     if pattern_model_dir and selected_patterns_file and pattern_metadata_file:
         pattern_info, pattern_order = load_pattern_info(selected_patterns_file, pattern_metadata_file)
-        pattern_models = load_pattern_models(pattern_model_dir, pattern_order)
+        pattern_models = load_pattern_models(pattern_model_dir, pattern_order, pattern_features_file)
 
     all_predictions = predict_all_queries(
         df_test, operator_models, operator_features,
@@ -67,6 +68,7 @@ if __name__ == '__main__':
     parser.add_argument('--pattern-model-dir', default=None, help='Path to pattern models')
     parser.add_argument('--selected-patterns', default=None, help='Path to selected_patterns.csv')
     parser.add_argument('--pattern-metadata', default=None, help='Path to pattern_metadata.csv')
+    parser.add_argument('--pattern-features', default=None, help='Path to pattern features CSV (Hybrid_1)')
     parser.add_argument('--output-dir', required=True, help='Output directory for predictions')
     args = parser.parse_args()
 
@@ -78,5 +80,6 @@ if __name__ == '__main__':
         args.strategy,
         args.pattern_model_dir,
         args.selected_patterns,
-        args.pattern_metadata
+        args.pattern_metadata,
+        args.pattern_features
     )

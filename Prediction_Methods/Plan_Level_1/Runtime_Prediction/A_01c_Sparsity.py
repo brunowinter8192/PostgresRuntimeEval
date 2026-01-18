@@ -2,7 +2,6 @@
 
 # INFRASTRUCTURE
 import argparse
-from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -55,8 +54,7 @@ def analyze_zeros(X: pd.DataFrame) -> pd.DataFrame:
 # Export sparsity analysis to CSV with semicolon delimiter
 def export_analysis(zero_df: pd.DataFrame, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    zero_file = output_dir / f'A_01c_feature_sparsity_{timestamp}.csv'
+    zero_file = output_dir / 'A_01c_feature_sparsity.csv'
     zero_df.to_csv(zero_file, sep=';', index=False)
 
 

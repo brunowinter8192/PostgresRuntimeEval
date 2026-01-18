@@ -1,2 +1,2 @@
 pattern_hash;pattern_string;mre;mre_pct;status
-898abd491a1ae406c1e4084944df775d;Gather Merge -> Aggregate -> Sort -> Nested Loop (Outer) (Outer) (Outer);0.06108717832176867;6.108717832176867;SELECTED
+898abd491a1ae406c1e4084944df775d;Gather Merge -> Aggregate -> Sort -> Nested Loop (Outer) (Outer) (Outer);0.06102778164720418;6.1027781647204185;SELECTED

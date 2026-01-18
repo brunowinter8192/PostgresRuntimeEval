@@ -112,7 +112,6 @@ def create_comparison_plot(results, output_dir):
 
     ax.set_xlabel('Template', fontsize=12)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
-    ax.set_title('ML Prediction vs. Optimizer Cost Baseline (Query-Level, Root Operator)', fontsize=14, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=10)
     ax.legend(fontsize=11)

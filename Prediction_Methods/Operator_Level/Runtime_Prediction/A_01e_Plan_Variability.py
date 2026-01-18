@@ -5,7 +5,6 @@
 import argparse
 import pandas as pd
 from pathlib import Path
-from datetime import datetime
 
 
 # ORCHESTRATOR
@@ -65,9 +64,7 @@ def analyze_variability(signatures):
 def export_results(summary, signatures, output_dir):
     output_path = Path(output_dir) / 'Evaluation'
     output_path.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-
-    summary_file = output_path / f'A_01e_plan_variability_summary_{timestamp}.csv'
+    summary_file = output_path / 'A_01e_plan_variability_summary.csv'
     summary.to_csv(summary_file, index=False, sep=';')
 
     detail_rows = []
@@ -81,7 +78,7 @@ def export_results(summary, signatures, output_dir):
                     'plan_signature': str(sig)
                 })
     detail_df = pd.DataFrame(detail_rows)
-    detail_file = output_path / f'A_01e_plan_variability_detail_{timestamp}.csv'
+    detail_file = output_path / 'A_01e_plan_variability_detail.csv'
     detail_df.to_csv(detail_file, index=False, sep=';')
 
 

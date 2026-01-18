@@ -98,8 +98,6 @@ def create_mre_plot(template_stats):
     
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
-    ax.set_title('Query-Level Prediction Error by Template (Root Operators, depth=0)', 
-                 fontsize=15, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')

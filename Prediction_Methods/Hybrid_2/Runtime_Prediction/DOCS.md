@@ -427,6 +427,37 @@ python3 A_02e_Epsilon_Comparison.py --base-dir Pattern_Selection --output-dir Ev
 
 ---
 
+### A_02f - Interference_Analysis.py
+
+**Purpose:** Analysiert Pattern-Interferenz: welche Patterns blockieren welche anderen bei Length-First Selektion.
+
+**Workflow:**
+1. Lade Pattern-Metadata für angegebene Hashes
+2. Sortiere nach: pattern_length DESC, dann Input-Reihenfolge (Tiebreaker)
+3. Für jedes Template: Pattern mit höchster Priorität gewinnt, andere werden blockiert
+
+**Inputs:**
+- `pattern_hashes`: Beliebig viele Pattern-Hashes (positional, Reihenfolge = Tiebreaker)
+- `--dataset`: Dataset CSV für Template-Scanning (required)
+- `--patterns`: Patterns CSV mit Metadata (required)
+- `--output-dir`: Output directory (required)
+
+**Outputs:**
+- `A_02f_interference_{hash1}_{hash2}_...csv`
+  - Columns: pattern_hash;pattern_string;pattern_length;priority;occurrences;wins;blocked;templates;templates_wins;blocked_by
+
+**Usage:**
+```bash
+python3 A_02f_Interference_Analysis.py \
+  895c6e8c1a30a094329d71cef3111fbd \
+  3aab37bea1a884da206eb32f2c1ae5ba \
+  --dataset ../Dataset/Baseline/Training_Training.csv \
+  --patterns ../Data_Generation/Training_Training/csv/01_patterns.csv \
+  --output-dir Evaluation/PatternUsage
+```
+
+---
+
 ### A_02c - Pattern_Usage.py
 
 **Purpose:** Analyze pattern usage per strategy: selektiert vs. genutzt (Beifang-Analyse) mit Template-Zuordnung.
@@ -448,9 +479,10 @@ python3 A_02e_Epsilon_Comparison.py --base-dir Pattern_Selection --output-dir Ev
 
 **Outputs:**
 - `{output-dir}/A_02c_{Strategy}_{Config}.csv`
-  - Columns: pattern_hash;pattern_string;status;templates
+  - Columns: pattern_hash;pattern_string;status;templates;templates_used
   - status: "genutzt" oder "beifang"
-  - templates: Komma-separierte Liste (z.B. "Q3,Q5,Q7")
+  - templates: Komma-separierte Liste wo Pattern vorkommt (z.B. "Q3,Q5,Q7")
+  - templates_used: Komma-separierte Liste wo Pattern tatsächlich für Prediction genutzt wurde
 
 **Usage:**
 ```bash
@@ -520,6 +552,85 @@ python3 A_03b_Pattern_Lookup.py 634cdbe24fda21720ccd3dc746d5c979 \
 
 ---
 
+### A_03c - Pattern_Templates.py
+
+**Purpose:** Find templates where patterns occur in a dataset.
+
+**Workflow:**
+1. Load patterns (from CSV file or single pattern via arguments)
+2. Load pattern lengths from 01_patterns.csv
+3. Scan dataset and find templates where each pattern matches
+
+**Inputs:**
+- `selected_patterns`: Path to selected_patterns.csv (positional, optional if --pattern-hash used)
+- `--patterns`: Path to 01_patterns.csv (for pattern_length)
+- `--dataset`: Path to dataset CSV (e.g., Training_Test.csv)
+- `--output-dir`: Output directory
+
+**Variables:**
+- `--output-name`: Output filename without .csv (default: A_03c_pattern_templates)
+- `--pattern-hash`: Single pattern hash (alternative to selected_patterns file)
+- `--pattern-string`: Pattern string for single pattern mode
+
+**Outputs:**
+- `{output-name}.csv`
+  - Columns: pattern_hash;pattern_string;templates
+
+**Usage:**
+```bash
+# Mit selected_patterns.csv
+python3 A_03c_Pattern_Templates.py \
+    Pattern_Selection/Size/Baseline/selected_patterns.csv \
+    --patterns ../Data_Generation/Training_Training/csv/01_patterns.csv \
+    --dataset ../Dataset/Baseline/Training_Test.csv \
+    --output-dir Evaluation/Interference
+
+# Mit einzelnem Pattern
+python3 A_03c_Pattern_Templates.py \
+    --pattern-hash 895c6e8c1a30a094329d71cef3111fbd \
+    --pattern-string "Seq Scan" \
+    --patterns ../Data_Generation/Training_Training/csv/01_patterns.csv \
+    --dataset ../Dataset/Baseline/Training_Test.csv \
+    --output-dir Evaluation/Interference \
+    --output-name A_03c_single_pattern
+```
+
+---
+
+### A_03d - Pattern_Avg_MRE.py
+
+**Purpose:** Calculate avg_mre for a pattern based on predictions (exakt wie `calculate_pattern_avg_mre()` in 10_Pattern_Selection).
+
+**Workflow:**
+1. Load pattern occurrences from 06_test_pattern_occurrences.csv
+2. Build MRE lookup from predictions.csv
+3. Calculate avg_mre at root_node_ids where pattern occurs
+4. Determine status based on threshold
+
+**Inputs:**
+- `--pattern-hash`: Pattern hash to analyze (required)
+- `--predictions`: Path to predictions.csv (required)
+- `--occurrences`: Path to 06_test_pattern_occurrences.csv (required)
+- `--output-dir`: Output directory (required)
+
+**Variables:**
+- `--threshold`: Min error threshold (default: 0.1)
+
+**Outputs:**
+- `A_03d_{short_hash}_summary.csv`: avg_mre, occurrence_count, threshold, status
+- `A_03d_{short_hash}_by_template.csv`: avg_mre per template
+
+**Usage:**
+```bash
+python3 A_03d_Pattern_Avg_MRE.py \
+    --pattern-hash 7524c54c59c38d4c931870520c264f63 \
+    --predictions Pattern_Selection/Frequency/Baseline/a5f39f08c510532e02e96e109e48c0cd/predictions.csv \
+    --occurrences Pattern_Selection/06_test_pattern_occurrences.csv \
+    --output-dir Evaluation/Interference
+```
+
+---
+
 ### A_01b - Optimizer_Baseline.py
 
 **Purpose:** Calculate Optimizer cost model baseline using linear regression on total_cost.
@@ -548,47 +659,49 @@ python3 A_01b_Optimizer_Baseline.py ../Dataset/Baseline/Training.csv ../Dataset/
 
 ### A_01c - Combined_Strategy_Plot.py
 
-**Purpose:** Create combined bar chart comparing all strategies (Size, Frequency, Error, Optimizer).
+**Purpose:** Create combined bar chart comparing Hybrid_2 strategies with optional reference methods.
 
 **Workflow:**
 1. Load template MRE CSVs from all strategies
-2. Create grouped bar chart (4 bars per template)
+2. Create grouped bar chart (3-5 bars per template)
 3. Export combined CSV and PNG
 
 **Inputs:**
 - `--size-mre`: Path to Size template_mre.csv (optional wenn --size-predictions)
 - `--frequency-mre`: Path to Frequency template_mre.csv (optional wenn --frequency-predictions)
 - `--error-mre`: Path to Error template_mre.csv (optional wenn --error-predictions)
-- `--optimizer-mre`: Path to Optimizer template_mre.csv (required)
+- `--optimizer-mre`: Path to Optimizer template_mre.csv (optional)
+- `--hybrid1-mre`: Path to Hybrid_1 template_mre.csv (optional)
 - `--output-dir`: Output directory (required)
 - `--variant`: Variant name for title (Baseline/Epsilon)
+- `--suffix`: Suffix for output filenames (optional, e.g. 'optimizer' or 'hybrid1')
 - `--size-predictions`: Path to Size 12_predictions.csv (für ungerundete Werte)
 - `--frequency-predictions`: Path to Frequency 12_predictions.csv (für ungerundete Werte)
 - `--error-predictions`: Path to Error 12_predictions.csv (für ungerundete Werte)
 
 **Outputs:**
-- `A_01c_combined_strategy_mre.csv`
-- `A_01c_combined_strategy_plot.png` (4 Strategien: Size, Frequency, Error, Optimizer)
-- `A_01c_hybrid_strategy_plot.png` (3 Strategien: Size, Frequency, Error - ohne Optimizer)
+- `A_01c_combined_strategy_mre[_suffix].csv`
+- `A_01c_combined_strategy_plot[_suffix].png` (alle übergebenen Strategien)
+- `A_01c_hybrid_strategy_plot[_suffix].png` (nur Size, Frequency, Error)
 
 **Usage:**
 ```bash
-# Mit MRE-Dateien (gerundete Tabellenwerte)
+# Mit Optimizer Vergleich (4 Balken)
 python3 A_01c_Combined_Strategy_Plot.py \
   --size-mre Evaluation/Size/Baseline/A_01a_template_mre.csv \
   --frequency-mre Evaluation/Frequency/Baseline/A_01a_template_mre.csv \
   --error-mre Evaluation/Error/Baseline/A_01a_template_mre.csv \
   --optimizer-mre Evaluation/Overall/Baseline/A_01b_optimizer_template_mre.csv \
   --output-dir Evaluation/Overall/Baseline \
-  --variant Baseline
+  --suffix optimizer
 
-# Mit Predictions (ungerundete CSV-Werte)
+# Mit Hybrid_1 Vergleich (4 Balken)
 python3 A_01c_Combined_Strategy_Plot.py \
-  --size-predictions Evaluation/Size/Baseline/12_predictions.csv \
-  --frequency-predictions Evaluation/Frequency/Baseline/12_predictions.csv \
-  --error-predictions Evaluation/Error/Baseline/12_predictions.csv \
-  --optimizer-mre Evaluation/Overall/Baseline/A_01b_optimizer_template_mre.csv \
+  --size-mre Evaluation/Size/Baseline/A_01a_template_mre.csv \
+  --frequency-mre Evaluation/Frequency/Baseline/A_01a_template_mre.csv \
+  --error-mre Evaluation/Error/Baseline/A_01a_template_mre.csv \
+  --hybrid1-mre ../../Hybrid_1/Runtime_Prediction/Baseline_SVM/Evaluation/approach_3/A_01a_template_mre.csv \
   --output-dir Evaluation/Overall/Baseline \
-  --variant Baseline
+  --suffix hybrid1
 ```
 

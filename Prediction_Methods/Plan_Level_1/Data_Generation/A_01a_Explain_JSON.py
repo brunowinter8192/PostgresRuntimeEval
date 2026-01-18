@@ -19,8 +19,7 @@ from mapping_config import DB_CONFIG
 # Export EXPLAIN JSON output for one query per template
 def export_explain_json(query_dir: Path, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_file = output_dir / f"A_01a_explain_json_export_{timestamp}.md"
+    output_file = output_dir / "A_01a_explain_json_export.md"
 
     sql_files = get_first_seed_per_template(query_dir)
     conn = psycopg2.connect(**DB_CONFIG)

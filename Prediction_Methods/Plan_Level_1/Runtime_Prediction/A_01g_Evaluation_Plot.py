@@ -45,8 +45,6 @@ def create_mre_plot(df: pd.DataFrame):
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
-    ax.set_title('Plan-Level Runtime Prediction Error by Template',
-                 fontsize=15, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels([f'Q{t}' for t in templates], rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')
