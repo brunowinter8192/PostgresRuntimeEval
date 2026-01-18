@@ -121,7 +121,7 @@ def create_comparison_plot(results, output_dir):
     ax.set_ylim(0, y_max * 1.35)
 
     plt.tight_layout()
-    plt.savefig(output_path / 'A_01h_optimizer_baseline_plot.png', dpi=150)
+    plt.savefig(output_path / 'A_01h_optimizer_baseline_plot.png', dpi=300)
     plt.close()
 
 

@@ -59,7 +59,7 @@ def create_histogram_plot(df, column, name, output_dir):
     output_path = Path(output_dir) / 'Evaluation'
     output_path.mkdir(parents=True, exist_ok=True)
     output_file = output_path / f'A_01c_histogram_{name}.png'
-    plt.savefig(output_file, dpi=150)
+    plt.savefig(output_file, dpi=300)
     plt.close()
 
 

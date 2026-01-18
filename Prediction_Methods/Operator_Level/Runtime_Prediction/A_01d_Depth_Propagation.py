@@ -108,7 +108,7 @@ def create_depth_plots(df, plan_hashes, output_dir):
         plt.tight_layout()
 
         output_file = output_path / f'A_01d_depth_{template}_{plan_hash[:8]}.png'
-        plt.savefig(output_file, dpi=150)
+        plt.savefig(output_file, dpi=300)
         plt.close()
 
 
