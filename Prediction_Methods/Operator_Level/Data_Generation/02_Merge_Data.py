@@ -4,7 +4,6 @@
 import pandas as pd
 import argparse
 from pathlib import Path
-from datetime import datetime
 
 # ORCHESTRATOR
 def merge_features_and_targets(features_csv, targets_csv, output_dir):
@@ -53,8 +52,7 @@ def export_merged_dataset(df_merged, output_dir):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    csv_path = output_path / f'operator_dataset_{timestamp}.csv'
+    csv_path = output_path / '02_operator_dataset.csv'
 
     df_merged.to_csv(csv_path, index=False, sep=';')
 

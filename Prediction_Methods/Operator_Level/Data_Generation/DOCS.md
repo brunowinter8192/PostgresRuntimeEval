@@ -98,7 +98,7 @@ All A_ scripts are **independent** and can run in any order.
 - Database configuration flags (see config.py)
 
 **Output:**
-- `features_{timestamp}.csv` (semicolon-delimited): 16 columns
+- `01a_features.csv` (semicolon-delimited): 16 columns
   - Metadata: query_file, node_id, node_type, depth, parent_relationship, subplan_name
   - Features: np, nt, nt1, nt2, sel, startup_cost, total_cost, plan_width, reltuples, parallel_workers
 
@@ -127,7 +127,7 @@ python3 01a_Extract_Features.py ../../../Misc/Generated_Queries --output-dir csv
 - Database configuration flags (see config.py)
 
 **Output:**
-- `targets_{timestamp}.csv` (semicolon-delimited): 8 columns
+- `01b_targets.csv` (semicolon-delimited): 8 columns
   - Metadata: query_file, node_id, node_type, depth, parent_relationship, subplan_name
   - Targets: actual_startup_time, actual_total_time
 
@@ -155,7 +155,7 @@ python3 01b_Extract_Targets.py ../../../Misc/Generated_Queries --output-dir csv
 - `--output-dir`: Output directory for merged CSV (required)
 
 **Output:**
-- `operator_dataset_{timestamp}.csv` (semicolon-delimited): 18 columns
+- `02_operator_dataset.csv` (semicolon-delimited): 18 columns
   - Metadata (6): query_file, node_id, node_type, depth, parent_relationship, subplan_name
   - Features (10): np, nt, nt1, nt2, sel, startup_cost, total_cost, plan_width, reltuples, parallel_workers
   - Targets (2): actual_startup_time, actual_total_time
@@ -167,8 +167,8 @@ python3 01b_Extract_Targets.py ../../../Misc/Generated_Queries --output-dir csv
 **Usage:**
 ```bash
 python3 02_Merge_Data.py \
-    --features-csv csv/features_20251102_135531.csv \
-    --targets-csv csv/targets_20251102_113110.csv \
+    --features-csv csv/01a_features.csv \
+    --targets-csv csv/01b_targets.csv \
     --output-dir csv
 ```
 
@@ -186,7 +186,7 @@ python3 02_Merge_Data.py \
 - Database configuration flags (see config.py)
 
 **Output:**
-- `pg_class_per_operator_{timestamp}.md`: pg_class statistics per operator
+- `A_01b_pg_class_per_operator.md`: pg_class statistics per operator
 
 **Notes:**
 - Processes only first seed of each template (Q1-Q22, excluding Q15)
@@ -210,7 +210,7 @@ python3 A_01b_PG_Class.py ../../../Misc/Generated_Queries --output-dir Basic_Exp
 - Database configuration flags (see config.py)
 
 **Output:**
-- `explain_json_export_{timestamp}.md`: Full EXPLAIN JSON plans
+- `A_01c_explain_json_export.md`: Full EXPLAIN JSON plans
 
 **Notes:**
 - Processes only first seed of each template (Q1-Q22, excluding Q15)
@@ -235,7 +235,7 @@ python3 A_01c_Explain_JSON.py ../../../Misc/Generated_Queries --output-dir Basic
 - Database configuration flags (see config.py)
 
 **Output:**
-- `explain_analyse_cold_cache_{timestamp}.md`: EXPLAIN ANALYSE JSON
+- `A_01d_explain_analyse_cold_cache.md`: EXPLAIN ANALYSE JSON
 
 **Notes:**
 - Requires sudo privileges
