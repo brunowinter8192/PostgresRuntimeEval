@@ -27,7 +27,7 @@ cd Prediction_Methods/Dynamic/Dataset/Dataset_Hybrid_1
 
 Pattern-Filterung erfolgt in zwei Stufen:
 
-1. **Lokaler Threshold-Filter (150)** → Nur Patterns mit genug Trainingsdaten im Fold
+1. **Lokaler Threshold-Filter (>150)** → Nur Patterns mit genug Trainingsdaten im Fold
 2. **Dry Prediction** → Welche Patterns werden auf Test-Queries tatsächlich zugewiesen
 
 Nur Patterns die BEIDE Kriterien erfüllen werden trainiert:
@@ -45,7 +45,7 @@ Dataset_Hybrid_1/
 └── Q*/
     └── approach_3/
         ├── patterns.csv              # Alle extrahierten Patterns (aus Fold's training.csv)
-        ├── patterns_filtered.csv     # Nach lokalem Threshold 150 gefiltert
+        ├── patterns_filtered.csv     # Nach lokalem Threshold >150 gefiltert
         ├── used_patterns.csv         # Von Dry Prediction tatsächlich zugewiesen
         ├── patterns/                 # Pattern-spezifische Trainingsdaten
         │   └── {hash}/
@@ -84,7 +84,7 @@ Dataset_Hybrid_1/
 **Configuration (APPROACHES dict):**
 - `length: 0` - All pattern lengths (not restricted)
 - `no_passthrough: False` - Include all operators as pattern roots
-- `threshold: 150` - Minimum occurrence count in Fold's eigener training data
+- `threshold: 150` - Patterns mit `occurrence_count > 150` (strikt größer)
 
 **Usage:**
 ```bash

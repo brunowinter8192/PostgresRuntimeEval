@@ -82,7 +82,7 @@ def run_clean(approach_dir: Path) -> None:
 def filter_by_threshold(approach_dir: Path, threshold: int) -> None:
     patterns_file = approach_dir / 'patterns.csv'
     df = pd.read_csv(patterns_file, delimiter=';')
-    df_filtered = df[df['occurrence_count'] >= threshold]
+    df_filtered = df[df['occurrence_count'] > threshold]
     df_filtered.to_csv(approach_dir / 'patterns_filtered.csv', index=False, sep=';')
 
 
