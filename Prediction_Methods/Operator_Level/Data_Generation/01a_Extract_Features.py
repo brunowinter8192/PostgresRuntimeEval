@@ -7,7 +7,6 @@ import psycopg2
 import csv
 import argparse
 from pathlib import Path
-from datetime import datetime
 
 sys.path.append(str(Path(__file__).parent))
 
@@ -155,8 +154,7 @@ def export_features_csv(all_features_data, output_dir):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    csv_path = output_path / f'features_{timestamp}.csv'
+    csv_path = output_path / '01a_features.csv'
 
     fieldnames = [
         'query_file', 'node_id', 'node_type', 'depth',

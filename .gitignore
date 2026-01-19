@@ -13,28 +13,10 @@ CLAUDE.md
 .mcp.json
 
 # === Generated outputs ===
-# Models
-*.pkl
 
 # Evaluation outputs
 **/Evaluation/
 
-# Generated reports in md/ folders
-**/md/*.md
-
-# === Misc: Only specific folders ===
-Misc/*
-!Misc/DOCS.md
-!Misc/Generated_Queries/
-!Misc/Q17_Q20/
-!Misc/FFS_Comparison/
-!Misc/Pass_Through/
-!Misc/Setup/
-Misc/Setup/*
-!Misc/Setup/A_Setup.md
-!Misc/Cache_Validation/
-Misc/Cache_Validation/*
-!Misc/Cache_Validation/B_Cold_Cache.md
 
 # === TPC-H ===
 # Official files (download from tpc.org)

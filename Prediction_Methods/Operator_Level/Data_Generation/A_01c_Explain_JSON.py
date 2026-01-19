@@ -6,7 +6,6 @@ import psycopg2
 import json
 import argparse
 from pathlib import Path
-from datetime import datetime
 
 sys.path.append(str(Path(__file__).parent))
 
@@ -21,8 +20,7 @@ def export_explain_json(query_dir, output_dir, db_config):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_file = output_path / f'explain_json_export_{timestamp}.md'
+    output_file = output_path / 'A_01c_explain_json_export.md'
 
     sql_files = get_first_seed_per_template(query_dir)
     conn = psycopg2.connect(**db_config)
@@ -57,7 +55,6 @@ def get_explain_json(conn, query):
 # Write markdown header with metadata
 def write_header(f, total_queries):
     f.write("# EXPLAIN JSON Export - All Queries\n\n")
-    f.write(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
     f.write(f"**Total Queries:** {total_queries}\n\n")
     f.write("---\n\n")
 
@@ -65,7 +62,7 @@ def write_header(f, total_queries):
 def write_query_section(f, idx, sql_file, explain_json):
     f.write(f"## {idx}. {sql_file.name}\n\n")
     f.write(f"**Template:** Q{sql_file.name.split('_')[0][1:]}\n\n")
-    f.write(f"**File Path:** `{sql_file}`\n\n")
+    f.write(f"**File:** `{sql_file.name}`\n\n")
     f.write("### EXPLAIN JSON\n\n")
     f.write("```json\n")
     f.write(json.dumps(explain_json, indent=2))

@@ -8,7 +8,6 @@ import subprocess
 import csv
 import argparse
 from pathlib import Path
-from datetime import datetime
 
 sys.path.append(str(Path(__file__).parent))
 
@@ -120,8 +119,7 @@ def export_targets_csv(all_targets_data, output_dir):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    csv_path = output_path / f'targets_{timestamp}.csv'
+    csv_path = output_path / '01b_targets.csv'
 
     fieldnames = [
         'query_file', 'node_id', 'node_type', 'depth',
