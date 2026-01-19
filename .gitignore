@@ -10,6 +10,7 @@ __pycache__/
 .beads/
 CLAUDE.md
 .gitattributes
+.mcp.json
 
 # === Generated outputs ===
 # Models

@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "rag": {
-      "command": "${CLAUDE_CODE_PATH}/ClaudeCode/MCP/RAG/venv/bin/fastmcp",
-      "args": ["run", "${CLAUDE_CODE_PATH}/ClaudeCode/MCP/RAG/server.py"]
-    }
-  }
-}
