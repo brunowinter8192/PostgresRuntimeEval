@@ -7,5 +7,5 @@ a5f39f08c510532e02e96e109e48c0cd;execution_time;1;8;9;0.0033;0.0202;0.0169;Aggre
 a5f39f08c510532e02e96e109e48c0cd;start_time;10;8;18;0.0034;0.0228;0.0194;Aggregate_Outer_nt, Aggregate_Outer_rt1, Aggregate_Outer_rt2, Aggregate_Outer_st1, Aggregate_Outer_st2, Aggregate_nt, Aggregate_nt1, Aggregate_plan_width, Aggregate_sel, Aggregate_st1, Gather_Outer_nt, Gather_Outer_nt1, Gather_Outer_parallel_workers, Gather_Outer_rt1, Gather_Outer_rt2, Gather_Outer_sel, Gather_Outer_st1, Gather_Outer_st2
 3aab37bea1a884da206eb32f2c1ae5ba;execution_time;2;0;2;0.0667;0.0667;0.0000;Hash_rt1, Hash_sel
 3aab37bea1a884da206eb32f2c1ae5ba;start_time;2;0;2;0.0711;0.0711;0.0000;Hash_rt1, Hash_sel
-2873b8c3a1759afe345ffbdfc9bdcba7;execution_time;1;8;9;0.0039;0.0110;0.0071;HashJoin_rt1, Hash_Inner_rt1, Hash_Inner_rt2, Hash_Inner_st1, Hash_Inner_st2, NestedLoop_Outer_rt1, NestedLoop_Outer_rt2, NestedLoop_Outer_st1, NestedLoop_Outer_st2
-2873b8c3a1759afe345ffbdfc9bdcba7;start_time;4;7;11;0.0111;0.0355;0.0244;HashJoin_rt2, HashJoin_st1, HashJoin_st2, Hash_Inner_rt1, Hash_Inner_rt2, Hash_Inner_st1, Hash_Inner_st2, NestedLoop_Outer_rt1, NestedLoop_Outer_rt2, NestedLoop_Outer_st1, NestedLoop_Outer_st2
+c53c43965386239f53c764b9a60720dd;execution_time;1;0;1;0.0108;0.0108;0.0000;NestedLoop_rt2
+c53c43965386239f53c764b9a60720dd;start_time;1;0;1;0.2675;0.2675;0.0000;NestedLoop_st1

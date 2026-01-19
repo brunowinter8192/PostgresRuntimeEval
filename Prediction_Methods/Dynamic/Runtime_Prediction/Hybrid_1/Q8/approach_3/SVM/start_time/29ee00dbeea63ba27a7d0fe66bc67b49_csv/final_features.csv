@@ -1,0 +1,10 @@
+feature;order
+Aggregate_rt1;1
+GatherMerge_Outer_rt1;2
+GatherMerge_Outer_rt2;3
+GatherMerge_Outer_st1;4
+GatherMerge_Outer_st2;5
+Sort_Outer_rt1;6
+Sort_Outer_rt2;7
+Sort_Outer_st1;8
+Sort_Outer_st2;9

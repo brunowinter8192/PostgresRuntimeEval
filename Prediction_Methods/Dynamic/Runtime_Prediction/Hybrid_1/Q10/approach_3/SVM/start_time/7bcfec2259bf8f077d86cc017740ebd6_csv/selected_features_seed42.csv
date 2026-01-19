@@ -1,0 +1,6 @@
+feature;order
+Limit_nt1;1
+Sort_Outer_nt;2
+Sort_Outer_nt1;3
+Aggregate_Outer_nt;4
+Aggregate_Outer_nt1;5

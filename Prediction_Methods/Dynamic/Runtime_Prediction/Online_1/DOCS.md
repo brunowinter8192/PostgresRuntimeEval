@@ -28,6 +28,7 @@ Online_1/
     batch_predict.sh
     A_01a_Query_Evaluation.py
     A_02_Pattern_Analysis.py
+    A_03_Compare_Online_Static.py
     Evaluation/
         Size/
         Error/
@@ -225,3 +226,27 @@ python3 A_01a_Query_Evaluation.py Evaluation --output-dir Evaluation/Analysis/Si
 ```bash
 python3 A_02_Pattern_Analysis.py Evaluation/Size --output-dir Evaluation/Analysis/Size
 ```
+
+---
+
+## A_03 - Compare_Online_Static.py
+
+**Purpose:** Create grouped bar plot comparing Online vs Static pattern selection MRE per template
+
+**Inputs:**
+- `online_csv` - Path to Online_1 MRE CSV (positional)
+- `static_csv` - Path to Static (Hybrid_2) MRE CSV (positional)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `{output-dir}/compare_online_static.png` - Grouped bar plot
+
+**Usage:**
+```bash
+python3 A_03_Compare_Online_Static.py \
+    Evaluation/Analysis/Size/loto_mre.csv \
+    ../../../Hybrid_2/Runtime_Prediction/Evaluation/Size/Baseline/A_01a_template_mre.csv \
+    --output-dir Evaluation/Analysis/Size
+```
+
+**Note:** Both CSVs must have `template` and `mean_mre_pct` columns (standard format from A_01a).
