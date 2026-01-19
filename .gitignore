@@ -24,6 +24,7 @@ CLAUDE.md
 
 # === Misc: Only specific folders ===
 Misc/*
+!Misc/DOCS.md
 !Misc/Generated_Queries/
 !Misc/Q17_Q20/
 !Misc/FFS_Comparison/
