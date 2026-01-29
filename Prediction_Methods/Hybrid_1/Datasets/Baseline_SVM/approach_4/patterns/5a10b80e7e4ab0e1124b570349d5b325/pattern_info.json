@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "5a10b80e7e4ab0e1124b570349d5b325",
-  "pattern_string": "Aggregate -> Gather Merge -> Incremental Sort -> Nested Loop (Outer) (Outer) (Outer)",
-  "folder_name": "Aggregate_->_Gather_Merge_->_Incremental_Sort_->_Nested_Loop_Outer_Outer_Outer",
-  "pattern_length": 4,
-  "occurrence_count": 120
-}

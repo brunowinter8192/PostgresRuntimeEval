@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "24e458a8da0138e3e2fecf79158569f3",
-  "pattern_string": "Hash Join -> [Seq Scan (Outer), Hash -> Index Only Scan (Outer) (Inner)]",
-  "folder_name": "Hash_Join_->_Seq_Scan_Outer_Hash_->_Index_Only_Scan_Outer_Inner",
-  "pattern_length": 3,
-  "occurrence_count": 120
-}

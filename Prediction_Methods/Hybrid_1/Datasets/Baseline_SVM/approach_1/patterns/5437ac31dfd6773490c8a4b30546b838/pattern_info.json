@@ -1,7 +1,0 @@
-{
-  "pattern_hash": "5437ac31dfd6773490c8a4b30546b838",
-  "pattern_string": "Gather -> Hash Join (Outer)",
-  "folder_name": "Gather_->_Hash_Join_Outer",
-  "pattern_length": 2,
-  "occurrence_count": 120
-}
