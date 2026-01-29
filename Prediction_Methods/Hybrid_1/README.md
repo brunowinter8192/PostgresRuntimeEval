@@ -110,10 +110,10 @@ FFS and model training is performed ONCE for all 372 mined patterns:
 - `02_Train_Models.py` - Train models for all 372 patterns
 
 Each approach then selects a SUBSET at prediction time via `patterns_filtered.csv`:
-- approach_1: 21 patterns (length=2, required_operators)
-- approach_2: 18 patterns (length=2, no_passthrough)
+- approach_1: 14 patterns (length=2, required_operators)
+- approach_2: 10 patterns (length=2, no_passthrough)
 - approach_3: 72 patterns (all lengths, threshold>150)
-- approach_4: X patterns (all lengths, no_passthrough, threshold>150)
+- approach_4: 53 patterns (all lengths, no_passthrough, threshold>150)
 
 This avoids redundant training and allows flexible experimentation with different pattern subsets.
 
@@ -158,12 +158,12 @@ This avoids redundant training and allows flexible experimentation with differen
 
 **Pattern Filtering Approaches:**
 
-| Approach | Filter | Length | Patterns |
-|----------|--------|--------|----------|
-| 1 | `required_operators` | 2 | 21 |
-| 2 | `no_passthrough` | 2 | 18 |
-| 3 | `none` | all | 372 |
-| 4 | `no_passthrough` | all | 191 |
+| Approach | Filter | Length | Patterns (selected) |
+|----------|--------|--------|---------------------|
+| 1 | `required_operators` | 2 | 14 |
+| 2 | `no_passthrough` | 2 | 10 |
+| 3 | `none` | all | 72 |
+| 4 | `no_passthrough` | all | 53 |
 
 **See Datasets/DOCS.md for detailed script documentation**
 

@@ -49,6 +49,14 @@ Runtime_Prediction/
         └── approach_4/
 ```
 
+## Working Directory
+
+**CRITICAL:** All commands assume CWD = `Runtime_Prediction/`
+
+```bash
+cd /path/to/Hybrid_1/Runtime_Prediction
+```
+
 ## Shared Infrastructure
 
 **ffs_config.py:**
@@ -119,7 +127,8 @@ A_01c - Time_Analysis         [operator_dataset.csv → Operator range statistic
 
 **Usage:**
 ```bash
-python 01_Feature_Selection.py Baseline_SVM --output-dir Baseline_SVM
+# FFS for all 372 patterns (approach_3 contains all pattern datasets)
+python 01_Feature_Selection.py ../Datasets/Baseline_SVM/approach_3 --output-dir Baseline_SVM
 ```
 
 **Variables:**
@@ -180,7 +189,8 @@ python 01b_Feature_Selection_Operators.py ../Datasets/Baseline_SVM --output-dir 
 
 **Usage:**
 ```bash
-python 02_Train_Models.py Baseline_SVM SVM/Patterns/two_step_evaluation_overview.csv --output-dir Baseline_SVM
+# Train models for all 372 patterns (approach_3 contains all pattern datasets)
+python 02_Train_Models.py ../Datasets/Baseline_SVM/approach_3 Baseline_SVM/SVM/Patterns/two_step_evaluation_overview.csv --output-dir Baseline_SVM
 ```
 
 **Variables:**

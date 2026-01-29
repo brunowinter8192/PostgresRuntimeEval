@@ -52,7 +52,7 @@ cd /path/to/Hybrid_1/Datasets
 - `CHILD_TIMING_SUFFIXES` - Child st/rt columns for leaf operators
 - `PARENT_CHILD_FEATURES` - Parent timing feature column names (st1, rt1, st2, rt2)
 
-**Input data (external):** `Operator_Level/Datasets/Baseline/04_training.csv`
+**Input data (external):** `Operator_Level/Datasets/Baseline/01_operator_dataset_cleaned.csv`
 
 ## Workflow Execution Order
 
@@ -170,18 +170,20 @@ python 02_Extract_Operators.py Baseline_SVM/training.csv --output-dir Baseline_S
 
 **Usage:**
 ```bash
-# Approach 1: Length 2, required operators only
-python 03_Extract_Patterns.py training.csv --output-dir approach_1 --length 2 --required-operators
-
-# Approach 2: Length 2, required operators, no passthrough parents
-python 03_Extract_Patterns.py training.csv --output-dir approach_2 --length 2 --required-operators --no-passthrough
-
-# Approach 3: All patterns, all lengths (use threshold filter in 06)
+# Approach 3: All patterns, all lengths - MASTER for FFS/Training (372 patterns)
 python 03_Extract_Patterns.py training.csv --output-dir approach_3
 
-# Approach 4: All lengths, no passthrough parents (use threshold filter in 06)
+# Approach 1: Length 2, required operators only (14 patterns)
+python 03_Extract_Patterns.py training.csv --output-dir approach_1 --length 2 --required-operators
+
+# Approach 2: Length 2, required operators, no passthrough parents (10 patterns)
+python 03_Extract_Patterns.py training.csv --output-dir approach_2 --length 2 --required-operators --no-passthrough
+
+# Approach 4: All lengths, no passthrough parents (53 patterns)
 python 03_Extract_Patterns.py training.csv --output-dir approach_4 --no-passthrough
 ```
+
+**Note:** approach_3 contains all 372 pattern datasets and serves as the source for FFS and model training in Runtime_Prediction. Approaches 1, 2, 4 contain only their selected subsets.
 
 **Variables:**
 - `--output-dir` - Base directory for pattern folders (required)
