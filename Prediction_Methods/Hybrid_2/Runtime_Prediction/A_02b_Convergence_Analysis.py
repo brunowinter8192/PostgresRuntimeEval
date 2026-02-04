@@ -1,9 +1,13 @@
+# INFRASTRUCTURE
 import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
+import sys
 
-# INFRASTRUCTURE
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import DPI
 
 CONVERGENCE_POINTS = [50, 90, 95]
 
@@ -73,7 +77,7 @@ def export_plot(mre_curve: list, output_dir: str, prefix: str = '') -> None:
     plt.ylabel('MRE')
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig(out_path / filename, dpi=300)
+    plt.savefig(out_path / filename, dpi=DPI)
     plt.close()
 
 if __name__ == "__main__":

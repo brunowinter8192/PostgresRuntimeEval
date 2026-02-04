@@ -2,10 +2,14 @@
 
 # INFRASTRUCTURE
 import argparse
+import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from plot_config import PRIMARY_COLOR, DPI
 
 # ORCHESTRATOR
 
@@ -104,26 +108,27 @@ def create_mre_plot(template_stats):
     mean_mre_values = template_stats['mean_mre_pct'].values
     x = np.arange(len(templates))
     width = 0.5
-    bars = ax.bar(x, mean_mre_values, width, label='Mean MRE', 
-                   color='steelblue', alpha=0.8, edgecolor='black', linewidth=0.8)
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
+    bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
+                   color=PRIMARY_COLOR, alpha=0.8, edgecolor='black', linewidth=0.8)
+    ax.set_xlabel('Template', fontsize=13)
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=13)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.set_ylim(0, max(mean_mre_values) * 1.1)
     for i, bar in enumerate(bars):
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height,
                 f'{height:.1f}%',
-                ha='center', va='bottom', fontsize=9, fontweight='bold')
+                ha='center', va='bottom', fontsize=9)
     plt.tight_layout()
     return fig
 
 # Save plot to file
 def save_plot(fig, output_dir):
     plot_file = Path(output_dir) / 'A_01a_template_mre_plot.png'
-    fig.savefig(plot_file, dpi=300, bbox_inches='tight')
+    fig.savefig(plot_file, dpi=DPI, bbox_inches='tight')
     plt.close(fig)
 
 if __name__ == "__main__":

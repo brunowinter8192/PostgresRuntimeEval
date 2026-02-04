@@ -1,12 +1,16 @@
 # INFRASTRUCTURE
-
 import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE
 
 STRATEGIES = ['Size', 'Frequency', 'Error']
-COLORS = {'Size': '#1f77b4', 'Frequency': '#ff7f0e', 'Error': '#2ca02c'}
+COLORS = {'Size': DEEP_BLUE, 'Frequency': DEEP_ORANGE, 'Error': DEEP_GREEN}
 
 
 # ORCHESTRATOR
@@ -54,7 +58,7 @@ def export_combined_plot(curves: dict, variant: str, output_dir: str) -> None:
     plt.legend()
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig(out_path / f'A_02d_convergence_{variant.lower()}.png', dpi=300)
+    plt.savefig(out_path / f'A_02d_convergence_{variant.lower()}.png', dpi=DPI)
     plt.close()
 
 

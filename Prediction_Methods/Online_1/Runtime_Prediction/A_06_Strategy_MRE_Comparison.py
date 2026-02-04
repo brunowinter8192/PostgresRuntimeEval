@@ -6,6 +6,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ANALYSIS_DIR = SCRIPT_DIR / 'Evaluation' / 'Analysis'
@@ -74,7 +79,7 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     fig, ax = plt.subplots(figsize=(18, 8))
 
     strategies = ['Size', 'Frequency', 'Error']
-    colors = ['steelblue', 'forestgreen', 'darkorange']
+    colors = [DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE]
     offsets = [-1.0, 0.0, 1.0]
     width = 0.25
 
@@ -96,7 +101,7 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     ax.set_ylim(0, max_val * 1.35)
 
     plt.tight_layout()
-    plt.savefig(output_path / 'A_06_strategy_comparison.png', dpi=300, bbox_inches='tight')
+    plt.savefig(output_path / 'A_06_strategy_comparison.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 
 

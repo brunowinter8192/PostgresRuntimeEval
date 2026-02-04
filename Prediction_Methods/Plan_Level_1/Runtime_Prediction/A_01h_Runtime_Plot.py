@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+import sys
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import PRIMARY_COLOR, DPI
+
 
 # ORCHESTRATOR
 
@@ -42,10 +47,10 @@ def create_runtime_plot(df: pd.DataFrame):
     width = 0.5
 
     bars = ax.bar(x, mean_runtime_ms, width, label='Mean Runtime',
-                   color='steelblue', alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=PRIMARY_COLOR, alpha=0.8, edgecolor='black', linewidth=0.8)
 
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Runtime (ms)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('Template', fontsize=13)
+    ax.set_ylabel('Mean Runtime (ms)', fontsize=13)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')
@@ -55,7 +60,7 @@ def create_runtime_plot(df: pd.DataFrame):
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height,
                 f'{height:.0f} ms',
-                ha='center', va='bottom', fontsize=9, fontweight='bold')
+                ha='center', va='bottom', fontsize=9)
 
     plt.tight_layout()
 
@@ -66,7 +71,7 @@ def create_runtime_plot(df: pd.DataFrame):
 def save_plot(fig, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     plot_file = output_dir / 'A_01h_template_runtime_plot.png'
-    fig.savefig(plot_file, dpi=300, bbox_inches='tight')
+    fig.savefig(plot_file, dpi=DPI, bbox_inches='tight')
     plt.close(fig)
 
 

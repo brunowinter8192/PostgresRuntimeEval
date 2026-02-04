@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 
 # INFRASTRUCTURE
-
 import argparse
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE, DEEP_RED, DEEP_PURPLE
 
 
 # ORCHESTRATOR
@@ -107,11 +111,11 @@ def export_combined_csv(combined_df, output_dir, suffix=None):
 
 # Color mapping for strategies
 STRATEGY_COLORS = {
-    'Size': 'steelblue',
-    'Frequency': 'forestgreen',
-    'Error': 'darkorange',
-    'Optimizer': 'coral',
-    'Hybrid_1': 'purple'
+    'Size': DEEP_BLUE,
+    'Frequency': DEEP_GREEN,
+    'Error': DEEP_ORANGE,
+    'Optimizer': DEEP_RED,
+    'Hybrid_1': DEEP_PURPLE
 }
 
 
@@ -187,7 +191,7 @@ def create_plot_with_strategies(data, templates, x, strategies, colors, offsets,
     ax.set_ylim(0, max_val * 1.35)
 
     plt.tight_layout()
-    plt.savefig(output_file, dpi=300, bbox_inches='tight')
+    plt.savefig(output_file, dpi=DPI, bbox_inches='tight')
     plt.close()
 
 

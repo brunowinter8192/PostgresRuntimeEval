@@ -6,6 +6,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE, DEEP_RED
 
 
 # ORCHESTRATOR
@@ -72,7 +77,7 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     fig, ax = plt.subplots(figsize=(18, 8))
 
     strategies = ['Size', 'Frequency', 'Error', 'Optimizer']
-    colors = ['steelblue', 'forestgreen', 'darkorange', 'coral']
+    colors = [DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE, DEEP_RED]
     offsets = [-1.5, -0.5, 0.5, 1.5]
     width = 0.2
 
@@ -94,7 +99,7 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     ax.set_ylim(0, max_val * 1.35)
 
     plt.tight_layout()
-    plt.savefig(output_path / 'A_09_combined_strategy_plot.png', dpi=300, bbox_inches='tight')
+    plt.savefig(output_path / 'A_09_combined_strategy_plot.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 
 

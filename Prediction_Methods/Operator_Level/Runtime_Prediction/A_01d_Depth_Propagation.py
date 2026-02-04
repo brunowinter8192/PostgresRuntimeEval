@@ -4,10 +4,14 @@
 
 import argparse
 import hashlib
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 from adjustText import adjust_text
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from plot_config import DEEP_BLUE, DEEP_ORANGE, DPI
 
 
 # ORCHESTRATOR
@@ -81,11 +85,11 @@ def create_depth_plots(df, plan_hashes, output_dir):
         predicted_values = query_ops['predicted_total_time'].values
 
         ax.plot(x_positions, actual_values,
-                color='tab:orange', marker='o', markersize=8, linewidth=2,
+                color=DEEP_ORANGE, marker='o', markersize=8, linewidth=2,
                 alpha=0.7, label='Actual', zorder=3)
 
         ax.plot(x_positions, predicted_values,
-                color='tab:blue', marker='s', markersize=8, linewidth=2,
+                color=DEEP_BLUE, marker='s', markersize=8, linewidth=2,
                 alpha=0.7, label='Predicted', zorder=3)
 
         texts = []
@@ -108,7 +112,7 @@ def create_depth_plots(df, plan_hashes, output_dir):
         plt.tight_layout()
 
         output_file = output_path / f'A_01d_depth_{template}_{plan_hash[:8]}.png'
-        plt.savefig(output_file, dpi=300)
+        plt.savefig(output_file, dpi=DPI)
         plt.close()
 
 

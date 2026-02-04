@@ -6,6 +6,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import DPI, DEEP_BLUE, DEEP_GREEN
 
 # ORCHESTRATOR
 def compare_workflow(online_csv: str, static_csv: str, output_dir: str) -> None:
@@ -46,10 +51,10 @@ def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
 
     bars_static = ax.bar(x - width/2, static_values, width,
                          label=f'Static (Overall: {static_overall:.2f}%)',
-                         color='steelblue', alpha=0.85)
+                         color=DEEP_BLUE, alpha=0.85)
     bars_online = ax.bar(x + width/2, online_values, width,
                          label=f'Dynamic (Overall: {online_overall:.2f}%)',
-                         color='forestgreen', alpha=0.85)
+                         color=DEEP_GREEN, alpha=0.85)
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
@@ -67,7 +72,7 @@ def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
     plt.tight_layout()
 
     Path(output_dir).mkdir(parents=True, exist_ok=True)
-    plt.savefig(f'{output_dir}/compare_online_static.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{output_dir}/compare_online_static.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 
 if __name__ == "__main__":

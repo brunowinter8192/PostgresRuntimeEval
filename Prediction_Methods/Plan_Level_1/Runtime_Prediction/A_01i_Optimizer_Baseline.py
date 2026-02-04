@@ -14,6 +14,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 # From mapping_config.py: Target and metadata columns
 from mapping_config import PLAN_TARGET, PLAN_METADATA
 
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import METHOD_COLORS, DPI, DEEP_RED
+
 
 # ORCHESTRATOR
 
@@ -110,15 +114,30 @@ def create_comparison_plot(results: dict, output_dir: Path) -> None:
 
     fig, ax = plt.subplots(figsize=(14, 7))
 
-    bars_ml = ax.bar(x - width/2, template_df['mre_ml_pct'], width,
-                     label=f"ML (Overall: {results['overall_ml']*100:.1f}%)",
-                     color='steelblue', alpha=0.8)
-    bars_opt = ax.bar(x + width/2, template_df['mre_optimizer_pct'], width,
-                      label=f"Optimizer LinReg (Overall: {results['overall_optimizer']*100:.1f}%)",
-                      color='coral', alpha=0.8)
+    y_limit = 100
+    ml_values = template_df['mre_ml_pct'].values
+    opt_values = template_df['mre_optimizer_pct'].values
+    ml_display = np.minimum(ml_values, y_limit)
+    opt_display = np.minimum(opt_values, y_limit)
 
-    ax.bar_label(bars_ml, fmt='%.1f%%', padding=5, fontsize=7, rotation=0)
-    ax.bar_label(bars_opt, fmt='%.1f%%', padding=5, fontsize=7, rotation=0)
+    bars_ml = ax.bar(x - width/2, ml_display, width,
+                     label=f"ML (Overall: {results['overall_ml']*100:.1f}%)",
+                     color=METHOD_COLORS['Plan_Level_SVM'], alpha=0.8)
+    bars_opt = ax.bar(x + width/2, opt_display, width,
+                      label=f"Optimizer LinReg (Overall: {results['overall_optimizer']*100:.1f}%)",
+                      color=METHOD_COLORS['Optimizer'], alpha=0.8)
+
+    for i, bar in enumerate(bars_ml):
+        actual = ml_values[i]
+        color = DEEP_RED if actual > y_limit else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
+
+    for i, bar in enumerate(bars_opt):
+        actual = opt_values[i]
+        color = DEEP_RED if actual > y_limit else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
 
     ax.set_xlabel('Template', fontsize=12)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
@@ -126,12 +145,10 @@ def create_comparison_plot(results: dict, output_dir: Path) -> None:
     ax.set_xticklabels(templates, fontsize=10)
     ax.legend(fontsize=11)
     ax.grid(axis='y', alpha=0.3)
-
-    y_max = max(template_df['mre_ml_pct'].max(), template_df['mre_optimizer_pct'].max())
-    ax.set_ylim(0, y_max * 1.5)
+    ax.set_ylim(0, y_limit * 1.1)
 
     plt.tight_layout()
-    plt.savefig(output_dir / 'A_01i_optimizer_baseline_plot.png', dpi=300)
+    plt.savefig(output_dir / 'A_01i_optimizer_baseline_plot.png', dpi=DPI)
     plt.close()
 
 

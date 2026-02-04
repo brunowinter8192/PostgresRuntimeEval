@@ -6,6 +6,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import DPI, DEEP_BLUE, DEEP_GREEN
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -71,10 +76,10 @@ def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
 
     bars_static = ax.bar(x - width/2, static_values, width,
                          label=f'Static (Overall: {static_overall:.2f}%)',
-                         color='steelblue', alpha=0.85)
+                         color=DEEP_BLUE, alpha=0.85)
     bars_dynamic = ax.bar(x + width/2, dynamic_values, width,
                           label=f'Dynamic (Overall: {dynamic_overall:.2f}%)',
-                          color='forestgreen', alpha=0.85)
+                          color=DEEP_GREEN, alpha=0.85)
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
@@ -93,7 +98,7 @@ def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
 
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
-    plt.savefig(output_path / 'A_01b_static_dynamic_comparison.png', dpi=300, bbox_inches='tight')
+    plt.savefig(output_path / 'A_01b_static_dynamic_comparison.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 
 

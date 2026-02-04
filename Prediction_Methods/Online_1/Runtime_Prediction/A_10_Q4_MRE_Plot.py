@@ -6,6 +6,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import DPI, DEEP_BLUE
 
 # ORCHESTRATOR
 def q4_mre_plot_workflow(predictions_dir, output_dir):
@@ -65,7 +70,7 @@ def create_q4_barplot(query_mre, overall_mre):
     x = np.arange(len(queries))
     width = 0.7
 
-    bars = ax.bar(x, mre_values, width, color='steelblue', alpha=0.8,
+    bars = ax.bar(x, mre_values, width, color=DEEP_BLUE, alpha=0.8,
                   edgecolor='black', linewidth=0.8)
 
     ax.set_xlabel('Query', fontsize=13, fontweight='bold')
@@ -98,7 +103,7 @@ def save_plot(fig, output_dir):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
     plot_file = output_path / 'q4_mre_barplot.png'
-    fig.savefig(plot_file, dpi=300, bbox_inches='tight')
+    fig.savefig(plot_file, dpi=DPI, bbox_inches='tight')
     plt.close(fig)
 
 

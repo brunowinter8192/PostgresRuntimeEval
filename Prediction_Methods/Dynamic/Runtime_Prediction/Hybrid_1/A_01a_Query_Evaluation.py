@@ -6,6 +6,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import DPI, DEEP_BLUE
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -101,7 +106,7 @@ def create_mre_plot(loto_stats: pd.DataFrame, approach: str) -> plt.Figure:
     width = 0.5
 
     bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
-                   color='steelblue', alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=DEEP_BLUE, alpha=0.8, edgecolor='black', linewidth=0.8)
 
     ax.set_xlabel('LOTO Template (Test Set)', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
@@ -128,7 +133,7 @@ def create_mre_plot(loto_stats: pd.DataFrame, approach: str) -> plt.Figure:
 def save_plot(fig: plt.Figure, output_dir: str) -> None:
     plot_file = Path(output_dir) / 'loto_mre_plot.png'
     plot_file.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(plot_file, dpi=300, bbox_inches='tight')
+    fig.savefig(plot_file, dpi=DPI, bbox_inches='tight')
     plt.close(fig)
 
 

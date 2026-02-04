@@ -7,15 +7,20 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 
+import sys
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import PRIMARY_COLOR, ACCENT_COLOR, DPI, PLOTS_PER_PAGE, SUBPLOT_ROWS, SUBPLOT_COLS
+
 
 # ORCHESTRATOR
 
 # Create and save runtime histograms for each template
 def create_histograms_workflow(dataset_csv: Path, predictions_csv: Path, output_dir: Path) -> None:
     df = load_dataset(dataset_csv)
-    pred_df = load_predictions(predictions_csv)
-    fig = create_histogram_grid(df, pred_df)
-    save_plot(fig, output_dir)
+    predictions = load_predictions(predictions_csv)
+    figures = create_histogram_pages(df, predictions)
+    save_plots(figures, output_dir)
 
 
 # FUNCTIONS
@@ -32,24 +37,30 @@ def load_predictions(csv_path: Path) -> pd.DataFrame:
     return df.groupby('template')['predicted_ms'].mean().to_dict()
 
 
-# Create grid of histograms showing runtime distribution per template
-def create_histogram_grid(df: pd.DataFrame, predictions: dict):
+# Create multiple pages of histograms (2x2 grid per page)
+def create_histogram_pages(df: pd.DataFrame, predictions: dict) -> list:
     templates = sorted(df['template'].unique())
-    n_templates = len(templates)
+    figures = []
 
-    n_cols = 5
-    n_rows = (n_templates + n_cols - 1) // n_cols
+    for page_idx in range(0, len(templates), PLOTS_PER_PAGE):
+        page_templates = templates[page_idx:page_idx + PLOTS_PER_PAGE]
+        fig = create_single_page(df, predictions, page_templates)
+        figures.append(fig)
 
-    fig, axes = plt.subplots(n_rows, n_cols, figsize=(20, 4 * n_rows))
+    return figures
+
+
+# Create single page with up to 4 histograms
+def create_single_page(df: pd.DataFrame, predictions: dict, templates: list):
+    fig, axes = plt.subplots(SUBPLOT_ROWS, SUBPLOT_COLS, figsize=(12, 10))
     axes = axes.flatten()
 
     for i, template in enumerate(templates):
         ax = axes[i]
         template_data = df[df['template'] == template]['runtime']
 
-        ax.hist(template_data, bins=15, color='steelblue', alpha=0.8, edgecolor='black')
-        ax.text(0.05, 0.95, f'{template}', transform=ax.transAxes,
-                ha='left', va='top', fontsize=11, fontweight='bold')
+        ax.hist(template_data, bins=15, color=PRIMARY_COLOR, alpha=0.8, edgecolor='black')
+        ax.set_title(f'{template}', fontsize=11, loc='left')
         ax.set_xlabel('Runtime (ms)', fontsize=10)
         ax.set_ylabel('Count', fontsize=10)
 
@@ -58,16 +69,16 @@ def create_histogram_grid(df: pd.DataFrame, predictions: dict):
         cv = (std_val / mean_val) * 100
 
         ax.text(0.95, 0.95, f'CV: {cv:.1f}%', transform=ax.transAxes,
-                ha='right', va='top', fontsize=9, fontweight='bold',
+                ha='right', va='top', fontsize=9,
                 bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
         template_key = f'Q{template}' if not str(template).startswith('Q') else str(template)
         if template_key in predictions:
-            ax.axvline(predictions[template_key], color='red', linestyle='--', linewidth=2)
+            ax.axvline(predictions[template_key], color=ACCENT_COLOR, linestyle='--', linewidth=2)
 
         ax.grid(axis='y', alpha=0.3, linestyle='--')
 
-    for j in range(i + 1, len(axes)):
+    for j in range(len(templates), len(axes)):
         axes[j].set_visible(False)
 
     plt.tight_layout()
@@ -75,12 +86,13 @@ def create_histogram_grid(df: pd.DataFrame, predictions: dict):
     return fig
 
 
-# Save plot to file
-def save_plot(fig, output_dir: Path) -> None:
+# Save multiple plots to files
+def save_plots(figures: list, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
-    plot_file = output_dir / 'A_01k_runtime_histograms.png'
-    fig.savefig(plot_file, dpi=300, bbox_inches='tight')
-    plt.close(fig)
+    for i, fig in enumerate(figures, start=1):
+        plot_file = output_dir / f'A_01k_runtime_histograms_{i}.png'
+        fig.savefig(plot_file, dpi=DPI, bbox_inches='tight')
+        plt.close(fig)
 
 
 if __name__ == "__main__":
