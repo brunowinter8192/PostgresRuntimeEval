@@ -13,6 +13,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 # From mapping_config.py: Metadata column names
 from mapping_config import PLAN_METADATA
 
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import PRIMARY_COLOR, DPI
+
 
 # ORCHESTRATOR
 
@@ -36,25 +40,26 @@ def create_mre_plot(df: pd.DataFrame):
 
     templates = df[PLAN_METADATA[1]].tolist()
     mean_mre_pct = df['mre'].values * 100
-
     x = np.arange(len(templates))
     width = 0.5
 
     bars = ax.bar(x, mean_mre_pct, width, label='Mean MRE',
-                   color='steelblue', alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=PRIMARY_COLOR, alpha=0.8, edgecolor='black', linewidth=0.8)
 
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('Template', fontsize=13)
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=13)
     ax.set_xticks(x)
     ax.set_xticklabels([f'Q{t}' for t in templates], rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.set_ylim(0, max(mean_mre_pct) * 1.1)
 
     for i, bar in enumerate(bars):
-        height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height,
-                f'{height:.1f}%',
-                ha='center', va='bottom', fontsize=9, fontweight='bold')
+        actual_value = mean_mre_pct[i]
+        display_height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., display_height,
+                f'{actual_value:.1f}%',
+                ha='center', va='bottom', fontsize=9)
 
     plt.tight_layout()
 
@@ -65,7 +70,7 @@ def create_mre_plot(df: pd.DataFrame):
 def save_plot(fig, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     plot_file = output_dir / 'A_01g_template_mre_plot.png'
-    fig.savefig(plot_file, dpi=300, bbox_inches='tight')
+    fig.savefig(plot_file, dpi=DPI, bbox_inches='tight')
     plt.close(fig)
 
 

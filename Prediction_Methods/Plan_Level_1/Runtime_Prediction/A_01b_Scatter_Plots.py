@@ -13,6 +13,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent))  # Plan_Level_1
 # From mapping_config.py: Target column name
 from mapping_config import PLAN_TARGET
 
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# From plot_config.py: Central plot configuration
+from plot_config import PRIMARY_COLOR, DPI, PLOTS_PER_PAGE, SUBPLOT_ROWS, SUBPLOT_COLS
+
 
 # ORCHESTRATOR
 
@@ -20,7 +24,8 @@ from mapping_config import PLAN_TARGET
 def scatter_plots_workflow(input_csv: Path, ffs_csv: Path, output_dir: Path) -> None:
     df = load_dataset(input_csv)
     feature_cols = load_ffs_features(ffs_csv)
-    create_scatter_plot_grid(df, feature_cols, output_dir)
+    figures = create_scatter_pages(df, feature_cols)
+    save_plots(figures, output_dir)
 
 
 # FUNCTIONS
@@ -38,37 +43,50 @@ def load_ffs_features(ffs_csv: Path, seed: int = 42) -> list:
     return [f.strip() for f in features_str.split(',')]
 
 
-# Create grid of scatter plots for all features
-def create_scatter_plot_grid(df: pd.DataFrame, feature_cols: list, output_dir: Path) -> None:
-    n_features = len(feature_cols)
-    n_cols = 5
-    n_rows = int(np.ceil(n_features / n_cols))
+# Create multiple pages of scatter plots (2x2 grid per page)
+def create_scatter_pages(df: pd.DataFrame, feature_cols: list) -> list:
+    figures = []
 
-    fig, axes = plt.subplots(n_rows, n_cols, figsize=(25, n_rows * 4))
+    for page_idx in range(0, len(feature_cols), PLOTS_PER_PAGE):
+        page_features = feature_cols[page_idx:page_idx + PLOTS_PER_PAGE]
+        fig = create_single_scatter_page(df, page_features)
+        figures.append(fig)
+
+    return figures
+
+
+# Create single page with up to 4 scatter plots
+def create_single_scatter_page(df: pd.DataFrame, features: list):
+    fig, axes = plt.subplots(SUBPLOT_ROWS, SUBPLOT_COLS, figsize=(12, 10))
     axes = axes.flatten()
 
-    for idx, feature in enumerate(feature_cols):
+    for idx, feature in enumerate(features):
         ax = axes[idx]
 
         x = df[feature]
         y = df[PLAN_TARGET]
 
-        corr = x.corr(y)
-
-        ax.scatter(x, y, alpha=0.5, s=10)
+        ax.scatter(x, y, alpha=0.5, s=10, color=PRIMARY_COLOR)
         ax.set_xlabel(feature)
         ax.set_ylabel('Runtime (ms)')
+        ax.ticklabel_format(style='plain', axis='x')
         ax.grid(True, alpha=0.3)
 
-    for idx in range(n_features, len(axes)):
+    for idx in range(len(features), len(axes)):
         axes[idx].set_visible(False)
 
     plt.tight_layout()
 
+    return fig
+
+
+# Save multiple plots to files
+def save_plots(figures: list, output_dir: Path) -> None:
     output_dir.mkdir(exist_ok=True)
-    output_path = output_dir / 'A_01b_scatter_plots.png'
-    plt.savefig(output_path, dpi=300, bbox_inches='tight')
-    plt.close()
+    for i, fig in enumerate(figures, start=1):
+        output_path = output_dir / f'A_01b_scatter_plots_{i}.png'
+        fig.savefig(output_path, dpi=DPI, bbox_inches='tight')
+        plt.close(fig)
 
 
 if __name__ == "__main__":

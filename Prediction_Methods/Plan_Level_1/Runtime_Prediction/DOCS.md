@@ -254,15 +254,15 @@ python A_01a_Correlation_Analysis.py ../Datasets/Baseline/complete_dataset.csv \
 **Purpose**: Create scatter plots of FFS-selected features versus runtime
 
 **Inputs**:
-- `dataset_csv` (positional): Dataset CSV with features and runtime
+- `dataset_csv` (positional): Training dataset CSV (training_data.csv, NOT complete_dataset)
 - `--ffs-csv` (required): FFS summary CSV with selected_features column
 
 **Outputs**:
-- `A_01b_scatter_plots.png`: Grid of scatter plots with correlation coefficients
+- `A_01b_scatter_plots_*.png`: Grid of scatter plots (2x2 per page)
 
 **Usage**:
 ```bash
-python A_01b_Scatter_Plots.py ../Datasets/Baseline/training_data.csv --ffs-csv Baseline_SVM/SVM/01_ffs_summary.csv
+python A_01b_Scatter_Plots.py ../Datasets/Baseline/training_data.csv --ffs-csv Baseline_SVM/SVM/01_ffs_summary.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables**:
@@ -421,17 +421,18 @@ python A_01j_Summarize_Results.py Baseline_SVM/Evaluation/02_predictions.csv --o
 
 ### A_01k - Runtime_Histograms.py
 
-**Purpose**: Visualize runtime distribution per template with histograms
+**Purpose**: Visualize runtime distribution per template with histograms and predicted mean overlay
 
 **Inputs**:
-- `dataset_csv` (positional): Complete dataset CSV file
+- `dataset_csv` (positional): Complete dataset CSV (complete_dataset.csv for full runtime distribution)
+- `--predictions-csv` (required): Predictions CSV with query_file and predicted_ms columns
 
 **Outputs**:
-- `A_01k_runtime_histograms.png`: Grid of histograms (5 columns) showing runtime distribution per template with mean and CV
+- `A_01k_runtime_histograms_*.png`: Grid of histograms (2x2 per page) with predicted mean line overlay
 
 **Usage**:
 ```bash
-python A_01k_Runtime_Histograms.py ../Datasets/Baseline/complete_dataset.csv --output-dir Baseline_SVM/Evaluation
+python A_01k_Runtime_Histograms.py ../Datasets/Baseline/complete_dataset.csv --predictions-csv Baseline_SVM/Evaluation/02_predictions.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables**:

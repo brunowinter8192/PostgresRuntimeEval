@@ -3,9 +3,13 @@
 # INFRASTRUCTURE
 
 import argparse
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from plot_config import PRIMARY_COLOR, DPI
 
 OPERATOR_ORDER = [
     'Seq Scan', 'Index Scan', 'Index Only Scan',
@@ -45,7 +49,7 @@ def create_histogram_plot(df, column, name, output_dir):
             ax.set_yticks([])
             continue
 
-        ax.hist(op_data, bins=50, edgecolor='black', alpha=0.7)
+        ax.hist(op_data, bins=50, color=PRIMARY_COLOR, edgecolor='black', alpha=0.7)
         ax.set_title(f'{operator} (n={len(op_data)})', fontsize=9)
         ax.set_xlabel('ms', fontsize=8)
         ax.set_ylabel('count', fontsize=8)
@@ -59,7 +63,7 @@ def create_histogram_plot(df, column, name, output_dir):
     output_path = Path(output_dir) / 'Evaluation'
     output_path.mkdir(parents=True, exist_ok=True)
     output_file = output_path / f'A_01c_histogram_{name}.png'
-    plt.savefig(output_file, dpi=300)
+    plt.savefig(output_file, dpi=DPI)
     plt.close()
 
 
