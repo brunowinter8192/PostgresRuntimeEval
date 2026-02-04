@@ -13,9 +13,10 @@ Misc/
 ├── DOCS.md
 ├── Learning-based_Query_Performance_Modeling_and_Pred.md   (Base paper)
 ├── Setup/                                                   [documented below]
-│   ├── Setup.md                                            (Environment setup)
+│   ├── A_Setup.md                                          (Anhang A Quelldatei)
 │   ├── Postgres_Docker/                                    [documented below]
-│   └── Diff_TPCH/                                          [documented below]
+│   ├── Diff_TPCH/                                          [documented below]
+│   └── TPC-H V3.0.1/                                       (TPC-H dbgen, nicht dokumentiert)
 ├── Generated_Queries/                                       [documented below]
 ├── Cache_Validation/                                        [documented below]
 ├── FFS_Comparison/                                          [documented below]
@@ -175,6 +176,7 @@ Runtime variance analysis across different cache states and prediction levels.
 
 ```
 Cache_Validation/
+├── B_Cold_Cache.md                              (Anhang B Quelldatei)
 ├── Plan_Level_CC/
 │   ├── A_01_Runtime_Variance.py
 │   └── csv/
@@ -185,9 +187,12 @@ Cache_Validation/
 ├── warm_cache/
 │   ├── warm_cache.py
 │   └── csv/
-└── Comparison_Cold_Warm/
-    ├── compare_cold_warm.py
-    └── csv/
+├── Comparison_Cold_Warm/
+│   ├── compare_cold_warm.py
+│   └── csv/
+└── Q13_Analyse/
+    ├── A_01_Q13_Variance.py
+    └── A_01_q13_variance.csv
 ```
 
 ### Plan_Level_CC/A_01 - Runtime_Variance.py
@@ -277,6 +282,37 @@ python3 warm_cache.py ../Generated_Queries
 cd Cache_Validation/Comparison_Cold_Warm
 python3 compare_cold_warm.py ../cold_cache_validation/restart_docker/csv/runtime_*.csv ../warm_cache/csv/warm_cache_*.csv
 ```
+
+### Q13_Analyse/A_01 - Q13_Variance.py
+
+**Purpose:** Analyze Q13 variance anomaly by testing two hypotheses: row count variance and Seq Scan runtime variance.
+
+**Inputs:**
+- `plan_level_csv` (positional): Path to Plan-Level complete_dataset.csv
+- `operator_csv` (positional): Path to Operator-Level operator_dataset_cleaned.csv
+- `--output-dir` (required): Output directory
+
+**Outputs:**
+- `A_01_q13_variance.csv`: CV analysis for row_count and seq_scan_runtime
+
+**Usage:**
+```bash
+cd Cache_Validation/Q13_Analyse
+python3 A_01_Q13_Variance.py \
+  ../../Prediction_Methods/Plan_Level_1/Datasets/Baseline/complete_dataset.csv \
+  ../../Prediction_Methods/Operator_Level/Datasets/Baseline/operator_dataset_cleaned.csv \
+  --output-dir .
+```
+
+**Metrics:**
+| Column | Description |
+|--------|-------------|
+| metric | row_count or seq_scan_runtime |
+| n | Sample count |
+| mean | Mean value |
+| std | Standard deviation |
+| cv_percent | Coefficient of variation |
+| min/max | Value range |
 
 ---
 

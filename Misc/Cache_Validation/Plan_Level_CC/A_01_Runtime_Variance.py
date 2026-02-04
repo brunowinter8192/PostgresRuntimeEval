@@ -130,7 +130,6 @@ def plot_cv_comparison(stats_baseline: pd.DataFrame, stats_state1: pd.DataFrame,
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('CV (%)', fontsize=13, fontweight='bold')
-    ax.set_title('Coefficient of Variation - Comparison', fontsize=15, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels(templates_sorted, rotation=0, fontsize=11)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f'{y:.0f}%'))

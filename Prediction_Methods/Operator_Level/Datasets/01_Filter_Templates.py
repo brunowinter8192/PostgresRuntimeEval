@@ -8,7 +8,7 @@ from pathlib import Path
 # ORCHESTRATOR
 def cleanup_workflow(input_file, output_dir):
     df = load_data(input_file)
-    templates_to_remove = ['Q2', 'Q11', 'Q16', 'Q22']
+    templates_to_remove = ['Q2', 'Q11', 'Q16', 'Q21', 'Q22']
     df_filtered = filter_templates(df, templates_to_remove)
     export_data(df_filtered, output_dir)
 
