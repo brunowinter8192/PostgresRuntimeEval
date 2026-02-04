@@ -292,7 +292,7 @@ python A_01c_Sparsity.py ../Datasets/Baseline/training_data.csv
 
 ### A_01d - Template_Constancy.py
 
-**Purpose**: Create matrix showing feature value constancy percentage per template
+**Purpose**: Create matrix showing feature value constancy percentage per template. Q9 is split into Q9_A and Q9_B based on op_count (two plan variants).
 
 **Inputs**:
 - `dataset_csv` (positional): Dataset CSV with features and template column
@@ -303,10 +303,10 @@ python A_01c_Sparsity.py ../Datasets/Baseline/training_data.csv
 **Usage**:
 ```bash
 # All features
-python A_01d_Template_Constancy.py ../Datasets/Baseline/training_data.csv
+python A_01d_Template_Constancy.py ../Datasets/Baseline/training_data.csv --output-dir Baseline_SVM/Evaluation
 
 # Only FFS-selected features
-python A_01d_Template_Constancy.py ../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv
+python A_01d_Template_Constancy.py ../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables**:
@@ -317,7 +317,7 @@ python A_01d_Template_Constancy.py ../Datasets/Baseline/training_data.csv --feat
 
 ### A_01e - Template_Feature_Values.py
 
-**Purpose**: Create matrix showing constant feature values per template (excludes Q9 due to plan variability)
+**Purpose**: Create matrix showing constant feature values per template. Q9 is split into Q9_A and Q9_B based on op_count (two plan variants).
 
 **Inputs**:
 - `dataset_csv` (positional): Dataset CSV with features and template column
@@ -327,7 +327,7 @@ python A_01d_Template_Constancy.py ../Datasets/Baseline/training_data.csv --feat
 
 **Usage**:
 ```bash
-python A_01e_Template_Feature_Values.py ../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv
+python A_01e_Template_Feature_Values.py ../Datasets/Baseline/training_data.csv --features-file Baseline_SVM/SVM/01_ffs_summary.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables**:

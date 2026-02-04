@@ -16,21 +16,18 @@ from mapping_config import DB_CONFIG
 
 # ORCHESTRATOR
 
-# Export EXPLAIN JSON output for one query per template
+# Export EXPLAIN JSON output for one query per template, two for Q9
 def export_explain_json(query_dir: Path, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / "A_01a_explain_json_export.md"
 
-    sql_files = get_first_seed_per_template(query_dir)
+    seed_files = get_first_seed_per_template(query_dir)
     conn = psycopg2.connect(**DB_CONFIG)
-
-    with open(output_file, 'w') as f:
-        write_header(f, len(sql_files))
-        for idx, sql_file in enumerate(sql_files, 1):
-            query = load_query(sql_file)
-            explain_json = get_explain_json(conn, query)
-            write_query_section(f, idx, sql_file, explain_json)
-
+    sections = run_explain_all(seed_files, conn)
+    q9_variant = find_q9_plan_variant(query_dir, conn, sections)
+    if q9_variant:
+        sections = insert_after_q9(sections, q9_variant)
+    write_markdown(output_file, sections)
     conn.close()
 
 
@@ -50,6 +47,54 @@ def get_first_seed_per_template(query_dir: Path) -> list:
     return first_seeds
 
 
+# Run EXPLAIN for all seed files
+def run_explain_all(seed_files: list, conn) -> list:
+    sections = []
+    for sql_file in seed_files:
+        query = load_query(sql_file)
+        explain_json = get_explain_json(conn, query)
+        sections.append((sql_file, explain_json))
+    return sections
+
+
+# Find a Q9 seed with a different plan structure than the first Q9 entry
+def find_q9_plan_variant(query_dir: Path, conn, sections: list):
+    q9_section = next((s for s in sections if s[0].parent.name == 'Q9'), None)
+    if not q9_section:
+        return None
+    reference = extract_plan_structure(q9_section[1])
+    q9_dir = query_dir / "Q9"
+    for sql_file in sorted(q9_dir.glob("*.sql")):
+        if sql_file == q9_section[0]:
+            continue
+        query = load_query(sql_file)
+        explain_json = get_explain_json(conn, query)
+        if extract_plan_structure(explain_json) != reference:
+            return (sql_file, explain_json)
+    return None
+
+
+# Extract ordered node types from plan JSON for structure comparison
+def extract_plan_structure(plan_json) -> tuple:
+    nodes = []
+    def walk(node):
+        nodes.append(node.get('Node Type', ''))
+        for child in node.get('Plans', []):
+            walk(child)
+    walk(plan_json[0]['Plan'])
+    return tuple(nodes)
+
+
+# Insert Q9 variant section right after the first Q9 entry
+def insert_after_q9(sections: list, variant: tuple) -> list:
+    result = []
+    for section in sections:
+        result.append(section)
+        if section[0].parent.name == 'Q9':
+            result.append(variant)
+    return result
+
+
 # Load SQL query from file
 def load_query(sql_file: Path) -> str:
     with open(sql_file, 'r') as f:
@@ -66,6 +111,14 @@ def get_explain_json(conn, query: str):
     cursor.close()
     conn.commit()
     return result[0][0]
+
+
+# Write complete markdown file from sections
+def write_markdown(output_file: Path, sections: list) -> None:
+    with open(output_file, 'w') as f:
+        write_header(f, len(sections))
+        for idx, (sql_file, explain_json) in enumerate(sections, 1):
+            write_query_section(f, idx, sql_file, explain_json)
 
 
 # Write markdown header with metadata

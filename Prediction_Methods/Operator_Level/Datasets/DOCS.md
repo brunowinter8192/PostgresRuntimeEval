@@ -49,7 +49,7 @@ Main Workflow:
                                          04a_Split_Types.py  04b_Clean_Test.py
 ```
 
-**Script Dependency Note**: Script 01_Filter_Templates removes templates (Q2, Q11, Q16, Q22) that were identified by A_01a_InitSub_Analysis as containing InitPlan/SubPlan operators. While the template list is hardcoded in script 01, it was originally determined by analyzing the output of script A_01a.
+**Script Dependency Note**: Script 01_Filter_Templates removes templates (Q2, Q11, Q16, Q21, Q22) that were identified by A_01a_InitSub_Analysis as containing InitPlan/SubPlan operators. While the template list is hardcoded in script 01, it was originally determined by analyzing the output of script A_01a.
 
 Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 are required for dataset preparation. Scripts 04a and 04b can run in parallel after 03 completes.
 
@@ -96,7 +96,7 @@ Scripts A_01a and A_01b are optional analysis/validation scripts. Scripts 01-03 
 **Important Notes**:
 - This is an optional analysis script
 - Results inform which templates should be removed in script 01
-- Templates Q2, Q11, Q16, Q22 were identified as containing InitPlan/SubPlan operators
+- Templates Q2, Q11, Q16, Q21, Q22 were identified as containing InitPlan/SubPlan operators
 
 **Usage:**
 ```bash
@@ -133,7 +133,7 @@ python3 A_01b_Leaf_Validation.py Raw/operator_dataset_20251102_140747.csv --outp
 
 ### 01_Filter_Templates.py
 
-**Purpose**: Remove operators from templates that contain InitPlan or SubPlan operators (Q2, Q11, Q16, Q22)
+**Purpose**: Remove operators from templates that contain InitPlan or SubPlan operators (Q2, Q11, Q16, Q21, Q22)
 
 **Input**:
 - `input_file` (positional): Path to raw operator dataset CSV
@@ -146,7 +146,7 @@ python3 A_01b_Leaf_Validation.py Raw/operator_dataset_20251102_140747.csv --outp
   - Same schema as input dataset
 
 **Important Notes**:
-- Templates Q2, Q11, Q16, Q22 are removed based on findings from A_01a_InitSub_Analysis
+- Templates Q2, Q11, Q16, Q21, Q22 are removed based on findings from A_01a_InitSub_Analysis
 - These templates contain InitPlan/SubPlan operators which complicate prediction modeling
 - This is the first required step in the dataset preparation pipeline
 
@@ -209,7 +209,7 @@ python3 02_Child_Features.py Baseline/01_operator_dataset_cleaned.csv --output-d
 - All operators from a query stay together in either training or test set
 - Template-stratified: Each template contributes equal number of queries to both sets
 - Prevents data leakage where operators from same query appear in both sets
-- With 14 templates: 1680 training queries, 420 test queries
+- With 13 templates: 1560 training queries, 390 test queries
 
 **Usage:**
 ```bash

@@ -19,6 +19,7 @@ from mapping_config import METADATA_COLUMNS, PLAN_METADATA
 def template_constancy_workflow(input_csv: Path, output_dir: Path, features_file: Path = None) -> None:
     df = load_dataset(input_csv)
     df = validate_templates(df)
+    df = split_q9_variants(df)
     feature_cols = get_feature_columns(df, features_file)
     templates = sorted(df[PLAN_METADATA[1]].unique())
     result_df = build_constancy_matrix(df, templates, feature_cols)
@@ -36,6 +37,16 @@ def load_dataset(input_csv: Path) -> pd.DataFrame:
 def validate_templates(df: pd.DataFrame) -> pd.DataFrame:
     if df[PLAN_METADATA[1]].isna().any():
         df = df.dropna(subset=[PLAN_METADATA[1]])
+    return df
+
+
+# Split Q9 into plan variants Q9_A and Q9_B based on op_count
+def split_q9_variants(df: pd.DataFrame) -> pd.DataFrame:
+    q9_mask = df[PLAN_METADATA[1]] == 'Q9'
+    q9 = df[q9_mask]
+    op_counts = sorted(q9['op_count'].unique())
+    df.loc[q9_mask & (df['op_count'] == op_counts[0]), PLAN_METADATA[1]] = 'Q9_A'
+    df.loc[q9_mask & (df['op_count'] == op_counts[1]), PLAN_METADATA[1]] = 'Q9_B'
     return df
 
 

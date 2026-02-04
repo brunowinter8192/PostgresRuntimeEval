@@ -180,7 +180,8 @@ python 02_Merge_Data.py csv/
    - Load first seed query file
    - Run EXPLAIN (ANALYZE false, VERBOSE true, COSTS true, SUMMARY true, FORMAT JSON)
    - Write complete JSON to markdown
-3. Export all results to single markdown file
+3. For Q9: find a second seed with a different plan structure and add it as additional entry
+4. Export all results to single markdown file
 
 **Inputs**:
 - `query_dir` (positional): Directory containing Q* template folders with SQL files
@@ -195,5 +196,5 @@ python 02_Merge_Data.py csv/
 
 **Usage**:
 ```bash
-python A_01a_Explain_JSON.py ../../Misc/Generated_Queries --output-dir md/
+python A_01a_Explain_JSON.py ../../../Misc/Generated_Queries --output-dir md/
 ```

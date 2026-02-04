@@ -14,33 +14,35 @@ Hybrid_2/
     Runtime_Prediction/                  [See DOCS.md](Runtime_Prediction/DOCS.md)
 ```
 
-## Workflow
+## Directories
 
-### Phase 1: Data_Generation
+Die drei Unterordner sind konzeptionelle Abgrenzungen, keine lineare Pipeline.
 
-**Purpose:** Mine structural patterns from query execution plans.
+### Dataset
 
-**Input:** Operator dataset (from Operator_Level)
+**Purpose:** Split data, extract pattern occurrences, and prepare training sets.
 
-**Output:** Pattern definitions with occurrence counts
+**Input:** Hybrid_1 baseline data + Pattern definitions from Data_Generation
 
-**Details:** [Data_Generation/DOCS.md](Data_Generation/DOCS.md)
-
----
-
-### Phase 2: Dataset
-
-**Purpose:** Split data and extract pattern-specific training sets.
-
-**Input:** Operator dataset + Pattern definitions
-
-**Output:** Train/Test splits + per-pattern training CSVs
+**Output:** Train/Test splits, Operator splits, Pattern datasets
 
 **Details:** [Dataset/DOCS.md](Dataset/DOCS.md)
 
 ---
 
-### Phase 3: Runtime_Prediction
+### Data_Generation
+
+**Purpose:** Mine structural patterns from query execution plans.
+
+**Input:** Operator dataset (from Dataset/Baseline/)
+
+**Output:** Pattern definitions (`01_patterns.csv`)
+
+**Details:** [Data_Generation/DOCS.md](Data_Generation/DOCS.md)
+
+---
+
+### Runtime_Prediction
 
 **Purpose:** Model training, pattern selection, and prediction.
 
@@ -49,3 +51,43 @@ Hybrid_2/
 **Output:** Predictions with evaluation metrics
 
 **Details:** [Runtime_Prediction/DOCS.md](Runtime_Prediction/DOCS.md)
+
+---
+
+## Workflow
+
+Die Ausführungsreihenfolge ist nicht identisch mit der Ordnerstruktur.
+
+```
+Dataset/01_Split_Data.py
+         |
+         v
+    +----+----+
+    |         |
+    v         v
+Dataset/    Data_Generation/
+02a         01_Find_Patterns.py
+    |         |
+    v         v
+Operators/  01_patterns.csv
+              |
+              v
+         Dataset/02b,03,04
+              |
+              v
+         Patterns/{hash}/
+              |
+              v
+         Runtime_Prediction/*
+```
+
+**Schritt-für-Schritt:**
+
+1. `Dataset/01_Split_Data.py` - Daten von Hybrid_1 kopieren und splitten
+2. Parallel:
+   - `Dataset/02a_Split_Operators.py` - Operator-Splits erstellen
+   - `Data_Generation/01_Find_Patterns.py` - Patterns aus Plänen extrahieren
+3. `Dataset/02b_Extract_Patterns.py` - Pattern-Vorkommen finden (braucht 01_patterns.csv)
+4. `Dataset/03_Aggregate_Patterns.py` - Zu Feature-Vektoren aggregieren
+5. `Dataset/04_Clean_Patterns.py` - Nicht-vorhersagbare Features entfernen
+6. `Runtime_Prediction/*` - Modelltraining und Evaluation

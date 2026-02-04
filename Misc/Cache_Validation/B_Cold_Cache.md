@@ -1,79 +1,76 @@
 # Anhang B: Cold Cache Validierung
 
-Dieser Anhang dokumentiert das Cold Cache Protokoll und dessen Validierung für reproduzierbare Runtime-Messungen.
+Dieser Anhang dokumentiert das Cold Cache Protokoll und dessen Validierung für reproduzierbare Runtime Messungen.
 
 ## B.1 Motivation
 
-Ohne Cold Cache würden gecachte Daten die Messungen verfälschen. PostgreSQL nutzt Shared Buffers als RAM Cache für häufig gescannte Tables und Indexes. Zusätzlich cached das Betriebssystem Disk Reads im OS Page Cache.
+Ohne Cold Cache würden gecachte Daten die Messungen verfälschen. PostgreSQL nutzt Shared Buffers als RAM Cache für zuletzt gelesene Tables und Indexes. Zusätzlich speichert das Betriebssystem Disk Reads im OS Page Cache.
 
-Erste Ausführung einer Query wäre langsam (Daten von Disk), folgende Ausführungen schnell (Daten aus Cache). Für reproduzierbare, vergleichbare Messungen muss jede Query unter identischen Bedingungen starten.
+Die erste Ausführung einer Query ist langsam (Daten von Disk), folgende Ausführungen sind schnell (Daten aus Cache). Für reproduzierbare, vergleichbare Messungen muss jede Query unter identischen Bedingungen starten.
 
 ## B.2 Cold Cache Protokoll
 
-*Bezug:* `Misc/Cache_Validation/cold_cache_validation/restart_docker/execute_queries.py`
+*Bezug: cold_cache_validation/restart_docker/execute_queries.py*
 
-Für jede Query-Ausführung wird folgendes Protokoll durchlaufen:
+Für jede Ausführung einer Query wird folgendes Protokoll durchlaufen:
 
 1. OrbStack (Docker VM) vollständig beenden
-2. System Memory Cache leeren: `sudo purge`
+2. System Memory Cache leeren: sudo purge
 3. OrbStack neu starten
 4. Docker Container starten
 5. Warten bis PostgreSQL Verbindungen akzeptiert
-6. Query ausführen und Zeit messen mit `time.perf_counter()`
+6. Query ausführen und Zeit messen mit time.perf_counter()
 
-Es werden keine Warm-up Queries ausgeführt. Jede Query wird isoliert ausgeführt. Die Messung erfolgt als Wall-Clock Zeit.
+Es werden keine Warm-up Queries ausgeführt. Jede Query wird isoliert ausgeführt. Die Messung erfolgt als Wall Clock Zeit.
 
 ## B.3 Validierung
 
 ### B.3.1 Vergleich zweier Cold Cache Läufe
 
-*Bezug:* `Misc/Cache_Validation/Plan_Level_CC/A_01_Runtime_Variance.py`
+*Bezug: Plan_Level_CC/A_01_Runtime_Variance.py*
+*Daten: Plan_Level_CC/csv/A_01_comparison.csv*
 
-*Daten:* `Misc/Cache_Validation/Plan_Level_CC/csv/A_01_comparison.csv`
+Um die Konsistenz des Protokolls zu validieren, wurden zwei unabhängige Läufe mit Cold Cache über die gesamten Datasets durchgeführt (Baseline und State_1, jeweils 150 Seeds pro Template).
 
-Um die Konsistenz des Cold Cache Protokolls zu validieren, wurden zwei unabhängige Messungen der Runtime, Extraktion der Targets über gesamte Datasets durchgeführt (Baseline und State_1, jeweils 150 Seeds pro Template).
+Als Metrik dient der Coefficient of Variation (CV) = Standardabweichung / Mittelwert × 100.
 
-*Metrik:* Coefficient of Variation (CV) = Standardabweichung / Mittelwert × 100
+Die meisten Templates zeigen einen CV von 1.5-5%, was auf konsistente Messungen hindeutet. Wie Abbildung B.1 zeigt, liegt Q13 mit circa 10% CV deutlich über dem Durchschnitt und wird in B.4 untersucht.
 
-Die meisten Templates zeigen einen CV von 1.5-5%, was auf konsistente Messungen hindeutet. Q13 bildet mit ~10% CV einen Ausreißer, der in B.4 untersucht wird. Die Abweichungen zwischen den beiden Läufen sind minimal.
-
-![CV Comparison](Plan_Level_CC/csv/A_01_cv_comparison.png)
+*Abbildung B.1: Vergleich CV innerhalb Template*
+*Quelle: Eigene Darstellung (Plan_Level_CC/csv/A_01_cv_comparison.png)*
 
 ### B.3.2 Vergleich Cold vs Warm Cache
 
-*Bezug:* `Misc/Cache_Validation/Comparison_Cold_Warm/compare_cold_warm.py`
+*Bezug: Comparison_Cold_Warm/compare_cold_warm.py*
+*Daten: Comparison_Cold_Warm/csv/cold_vs_warm_20251006_184219.csv*
 
-*Daten:* `Misc/Cache_Validation/Comparison_Cold_Warm/cold_vs_warm_20251006_184219.csv`
+Um den Einfluss des Cachings zu quantifizieren, wurden Messungen mit Cold Cache und Warm Cache verglichen. Der Speedup liegt zwischen 1.89x und 21.24x. Q1 weist das Minimum auf mit 1.89x (1120ms → 591ms), Q4 das Maximum mit 21.24x (1066ms → 50ms). Diese Ergebnisse bestätigen, dass Caching einen deutlichen Einfluss auf die Laufzeiten von Queries hat, was die Notwendigkeit des Protokolls für Cold Cache unterstreicht.
 
-Um den Impact des Cachings zu quantifizieren, wurden Cold Cache und Warm Cache Messungen verglichen. Der Speedup-Faktor liegt zwischen 1.89x und 21.24x. Das Minimum zeigt Q1 mit 1.89x (1120ms → 591ms), das Maximum Q4 mit 21.24x (1066ms → 50ms). Diese Ergebnisse bestätigen, dass Caching einen signifikanten und variablen Impact auf Query-Laufzeiten hat, was die Notwendigkeit des Cold Cache Protokolls unterstreicht.
-
-## B.4 Q13 Varianz-Anomalie
+## B.4 Auffällige Schwankungen bei Q13
 
 ### B.4.1 Beobachtung
 
-Q13 zeigt in beiden Validierungsläufen eine deutlich höhere Runtime-Varianz als andere Templates:
+Q13 zeigt in beiden Validierungsläufen deutlich höhere Schwankungen in der Runtime als andere Templates:
 
-- *Q13 CV:* ~10% (Baseline: 9.79%, State_1: 11.22%)
-- *Andere Templates CV:* ~2-5%
+- CV von Q13: circa 10% (Baseline: 9.79%, State_1: 11.22%)
+- CV anderer Templates: circa 2-5%
 
 Diese Anomalie ist konsistent über beide unabhängigen Läufe.
 
-### B.4.2 Hypothese 1: Row-Count-Varianz
+### B.4.2 Erklärungsansatz 1: Row-Count Schwankung
 
-*Bezug:* `Misc/Cache_Validation/Q13_Analyse/A_01_Q13_Variance.py`
+*Bezug: Q13_Analyse/A_01_Q13_Variance.py*
+*Daten: Q13_Analyse/A_01_q13_variance.csv*
 
-*Daten:* `Misc/Cache_Validation/Q13_Analyse/A_01_q13_variance.csv`
+Q13 enthält eine LIKE Bedingung (o_comment not like '%special%packages%'), deren Substitution Parameter pro Seed variieren (siehe Misc/Generated_Queries/Q13/Q13_1_seed_0101000000.sql). Dies könnte zu unterschiedlichen Ergebnismengen führen und somit die erhöhten Schwankungen verursachen. Die Analyse zeigt jedoch einen CV des Row Count von nur 0.33%. Bei nahezu konstanter Ergebnismenge (6.78M - 6.86M Rows) können variable Row Counts die 10% Schwankung in der Runtime nicht erklären. Dieser Erklärungsansatz scheidet damit aus.
 
-Q13 enthält eine LIKE-Bedingung (`o_comment not like '%special%packages%'`), deren Substitution Parameter pro Seed variieren. Dies könnte zu unterschiedlichen Ergebnismengen führen. Die Analyse zeigt jedoch einen row_count CV von nur 0.33%. Die Ergebnismenge ist nahezu konstant (6.78M - 6.86M Rows). Die Hypothese ist damit widerlegt.
+### B.4.3 Erklärungsansatz 2: Seq-Scan Dauer
 
-### B.4.3 Hypothese 2: Seq-Scan-Dauer
+*Bezug: Q13_Analyse/A_01_Q13_Variance.py*
+*Daten: Q13_Analyse/A_01_q13_variance.csv*
 
-*Bezug:* `Misc/Cache_Validation/Q13_Analyse/A_01_Q13_Variance.py`
-
-*Daten:* `Misc/Cache_Validation/Q13_Analyse/A_01_q13_variance.csv`
-
-Der initiale Seq Scan könnte basierend auf dem LIKE Matching Kriterium unterschiedlich lange dauern. Die Analyse der Operator-Level Daten zeigt einen Seq Scan Mean von 485ms mit einem CV von 3.3%. Dies erklärt nicht die 10% Varianz im Template. Der Seq Scan selbst ist relativ stabil.
+Der initiale Seq Scan könnte basierend auf dem LIKE Matching Kriterium unterschiedlich lange dauern. Die Analyse der Daten auf Operator Level zeigt einen CV des Seq Scan von 3.31%. Auch dieser Wert liegt deutlich unter dem CV der Runtime des Templates von circa 10% und erklärt die beobachteten Schwankungen nicht. Der Seq Scan selbst weist geringe Schwankungen auf.
 
 ### B.4.4 Fazit
 
-Die Ursache für die erhöhte Varianz von Q13 konnte nicht abschließend geklärt werden. Für das eigentliche Ziel dieser Arbeit, die evaluation verschiedener Modelle zur Runtime prediction, hat der Fall von Q13 jedoch auch keine Auswirkungen.
+Die Ursache für die erhöhten Schwankungen in der Runtime von Q13 konnte nicht abschließend geklärt werden. Für die Evaluation der ML-Modelle zur Runtime Prediction ist dies jedoch nicht hinderlich. Erhöhte Schwankungen in einzelnen Templates spiegeln vielmehr reale Szenarien wider, mit denen ein Modell umgehen können muss.
