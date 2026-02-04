@@ -16,7 +16,7 @@ from mapping_config import PLAN_TARGET, PLAN_METADATA
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import METHOD_COLORS, DPI, DEEP_RED
+from plot_config import METHOD_COLORS, DPI, TAB20_RED
 
 
 # ORCHESTRATOR
@@ -129,14 +129,14 @@ def create_comparison_plot(results: dict, output_dir: Path) -> None:
 
     for i, bar in enumerate(bars_ml):
         actual = ml_values[i]
-        color = DEEP_RED if actual > y_limit else 'black'
+        color = TAB20_RED if actual > y_limit else 'black'
         ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
                 f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
 
     for i, bar in enumerate(bars_opt):
         actual = opt_values[i]
         template = templates[i]
-        color = DEEP_RED if actual > y_limit else 'black'
+        color = TAB20_RED if actual > y_limit else 'black'
         if template in ['Q16', 'Q22'] and bar.get_height() > 90:
             ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() - 5,
                     f'{actual:.1f}%', ha='center', va='top', fontsize=7, color=color)

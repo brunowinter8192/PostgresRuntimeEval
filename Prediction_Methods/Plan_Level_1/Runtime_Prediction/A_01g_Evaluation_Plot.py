@@ -15,7 +15,7 @@ from mapping_config import PLAN_METADATA
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import PRIMARY_COLOR, DPI
+from plot_config import METHOD_COLORS, DPI
 
 
 # ORCHESTRATOR
@@ -44,7 +44,7 @@ def create_mre_plot(df: pd.DataFrame):
     width = 0.5
 
     bars = ax.bar(x, mean_mre_pct, width, label='Mean MRE',
-                   color=PRIMARY_COLOR, alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=METHOD_COLORS["Plan_Level"], alpha=0.8, edgecolor='black', linewidth=0.8)
 
     ax.set_xlabel('Template', fontsize=13)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13)

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from plot_config import PRIMARY_COLOR, DPI
+from plot_config import METHOD_COLORS, DPI
 
 # ORCHESTRATOR
 def evaluate_predictions_workflow(predictions_file, output_dir):
@@ -96,7 +96,7 @@ def create_mre_plot(template_stats):
     width = 0.5
     
     bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
-                   color=PRIMARY_COLOR, alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=METHOD_COLORS['Operator_Level'], alpha=0.8, edgecolor='black', linewidth=0.8)
 
     ax.set_xlabel('Template', fontsize=13)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13)

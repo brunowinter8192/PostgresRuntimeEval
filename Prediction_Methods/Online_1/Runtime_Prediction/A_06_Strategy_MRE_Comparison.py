@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE
+from plot_config import DPI, TAB20_BLUE, TAB20_GREEN, TAB20_ORANGE
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ANALYSIS_DIR = SCRIPT_DIR / 'Evaluation' / 'Analysis'
@@ -79,7 +79,7 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     fig, ax = plt.subplots(figsize=(18, 8))
 
     strategies = ['Size', 'Frequency', 'Error']
-    colors = [DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE]
+    colors = [TAB20_BLUE, TAB20_GREEN, TAB20_ORANGE]
     offsets = [-1.0, 0.0, 1.0]
     width = 0.25
 

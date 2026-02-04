@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE
+from plot_config import DPI, TAB20_BLUE
 
 # ORCHESTRATOR
 def q4_mre_plot_workflow(predictions_dir, output_dir):
@@ -70,7 +70,7 @@ def create_q4_barplot(query_mre, overall_mre):
     x = np.arange(len(queries))
     width = 0.7
 
-    bars = ax.bar(x, mre_values, width, color=DEEP_BLUE, alpha=0.8,
+    bars = ax.bar(x, mre_values, width, color=TAB20_BLUE, alpha=0.8,
                   edgecolor='black', linewidth=0.8)
 
     ax.set_xlabel('Query', fontsize=13, fontweight='bold')

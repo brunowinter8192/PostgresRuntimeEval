@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE, DEEP_RED, DEEP_PURPLE
+from plot_config import DPI, STRATEGY_COLORS
 
 
 # ORCHESTRATOR
@@ -109,14 +109,6 @@ def export_combined_csv(combined_df, output_dir, suffix=None):
     combined_df.to_csv(output_path / filename, sep=';')
 
 
-# Color mapping for strategies
-STRATEGY_COLORS = {
-    'Size': DEEP_BLUE,
-    'Frequency': DEEP_GREEN,
-    'Error': DEEP_ORANGE,
-    'Optimizer': DEEP_RED,
-    'Hybrid_1': DEEP_PURPLE
-}
 
 
 # Create combined bar plot

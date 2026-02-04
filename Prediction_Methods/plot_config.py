@@ -9,64 +9,74 @@ LABEL_FONTSIZE = 12
 TICK_FONTSIZE = 10
 
 # === MRE BAR PLOT SETTINGS ===
-MRE_Y_LIMIT = 1.0  # Y-Achse bei 100% begrenzen
-MRE_ANNOTATION_OFFSET = 0.05  # Offset für Annotation über dem Bar (in Y-Einheiten)
+MRE_Y_LIMIT = 1.0
+MRE_ANNOTATION_OFFSET = 0.05
 
 # === MULTI-SUBPLOT SETTINGS ===
-PLOTS_PER_PAGE = 4  # 2x2 Grid
+PLOTS_PER_PAGE = 4
 SUBPLOT_ROWS = 2
 SUBPLOT_COLS = 2
 
-# === SEABORN DEEP PALETTE ===
-# Kräftige, professionelle Farben
-DEEP_BLUE = "#4C72B0"
-DEEP_ORANGE = "#DD8452"
-DEEP_GREEN = "#55A868"
-DEEP_RED = "#C44E52"
-DEEP_PURPLE = "#8172B3"
-DEEP_BROWN = "#937860"
-DEEP_PINK = "#DA8BC3"
-DEEP_GRAY = "#8C8C8C"
-DEEP_OLIVE = "#CCB974"
-DEEP_CYAN = "#64B5CD"
+# === TAB20 PALETTE ===
+TAB20_BLUE = "#1f77b4"
+TAB20_BLUE_LIGHT = "#aec7e8"
+TAB20_ORANGE = "#ff7f0e"
+TAB20_ORANGE_LIGHT = "#ffbb78"
+TAB20_GREEN = "#2ca02c"
+TAB20_GREEN_LIGHT = "#98df8a"
+TAB20_RED = "#d62728"
+TAB20_RED_LIGHT = "#ff9896"
+TAB20_PURPLE = "#9467bd"
+TAB20_PURPLE_LIGHT = "#c5b0d5"
+TAB20_BROWN = "#8c564b"
+TAB20_BROWN_LIGHT = "#c49c94"
+TAB20_PINK = "#e377c2"
+TAB20_PINK_LIGHT = "#f7b6d2"
+TAB20_GRAY = "#7f7f7f"
+TAB20_GRAY_LIGHT = "#c7c7c7"
+TAB20_OLIVE = "#bcbd22"
+TAB20_OLIVE_LIGHT = "#dbdb8d"
+TAB20_CYAN = "#17becf"
+TAB20_CYAN_LIGHT = "#9edae5"
 
-# === STANDARD-FARBEN (für Nicht-MRE-Plots) ===
-PRIMARY_COLOR = DEEP_BLUE
-SECONDARY_COLOR = DEEP_ORANGE
-ACCENT_COLOR = DEEP_RED
-NEUTRAL_COLOR = DEEP_BROWN
+# === TAB20B PALETTE (für Hybrid_2 Strategien) ===
+TAB20B_BLUE = "#393b79"
+TAB20B_BLUE_LIGHT = "#6b6ecf"
+TAB20B_OLIVE = "#637939"
+TAB20B_OLIVE_LIGHT = "#b5cf6b"
+TAB20B_RED = "#843c39"
+TAB20B_RED_LIGHT = "#d6616b"
 
-# === MRE-METHODEN-FARBEN ===
-# Kontrast-Paare: Blau+Orange, Grün+Rot, Lila+Olive
+# === BASE-FARBEN ===
+# Allgemeine Plots (Histogramme, Scatter, Runtime-Bars)
+PRIMARY_COLOR = TAB20_BLUE
+SECONDARY_COLOR = TAB20_ORANGE
+ACCENT_COLOR = TAB20_RED
+NEUTRAL_COLOR = TAB20_GRAY
+
+# Depth Propagation
+DEPTH_PREDICTED = TAB20_BLUE
+DEPTH_ACTUAL = TAB20_ORANGE
+
+# === METHODEN-FARBEN ===
 METHOD_COLORS = {
-    # Baselines (Blau + Orange für Vergleiche)
-    "Operator_Level": DEEP_BLUE,
-    "Plan_Level_SVM": DEEP_BLUE,       # ML = Blau
-    "Plan_Level_RF": DEEP_GREEN,
-    "Plan_Level_XGBoost": DEEP_RED,
-    "Optimizer": DEEP_ORANGE,           # Optimizer = Orange (Kontrast zu Blau)
+    "Plan_Level": TAB20_GREEN,
+    "Plan_Level_SVM": TAB20_GREEN,
+    "Optimizer": TAB20_GRAY,
+    "Operator_Level": TAB20_PURPLE,
+    "Operator_Level_Optimizer": TAB20_BROWN,
+    "Hybrid_1_Approach_1": TAB20_RED,
+    "Hybrid_1_Approach_2": TAB20_PINK,
+    "Hybrid_1_Approach_3": TAB20_CYAN,
+}
 
-    # Hybrid_1 Approaches (Grün, Lila, Cyan, Pink)
-    "Hybrid_1_Approach_1": DEEP_GREEN,
-    "Hybrid_1_Approach_2": DEEP_PURPLE,
-    "Hybrid_1_Approach_3": DEEP_CYAN,
-    "Hybrid_1_Approach_4": DEEP_PINK,
-
-    # Hybrid_2 Strategies (Lila + Cyan Familie)
-    "Hybrid_2_Size_Baseline": DEEP_PURPLE,
-    "Hybrid_2_Size_Epsilon": DEEP_CYAN,
-    "Hybrid_2_Frequency_Baseline": DEEP_GREEN,
-    "Hybrid_2_Frequency_Epsilon": DEEP_PINK,
-    "Hybrid_2_Error_Baseline": DEEP_BLUE,
-    "Hybrid_2_Error_Epsilon": DEEP_ORANGE,
-
-    # Online_1 Strategies (Grün, Lila, Cyan)
-    "Online_1_Error": DEEP_RED,
-    "Online_1_Size": DEEP_GREEN,
-    "Online_1_Frequency": DEEP_PURPLE,
-
-    # Dynamic (LOTO)
-    "Dynamic_Operator": DEEP_BLUE,
-    "Dynamic_Plan": DEEP_GREEN,
-    "Dynamic_Hybrid_1": DEEP_PURPLE,
+# === STRATEGIE-FARBEN (Hybrid_2) ===
+STRATEGY_COLORS = {
+    "Size": TAB20B_BLUE,
+    "Size_Epsilon": TAB20B_BLUE_LIGHT,
+    "Frequency": TAB20B_OLIVE,
+    "Frequency_Epsilon": TAB20B_OLIVE_LIGHT,
+    "Error": TAB20B_RED,
+    "Error_Epsilon": TAB20B_RED_LIGHT,
+    "Optimizer": TAB20_BROWN,
 }

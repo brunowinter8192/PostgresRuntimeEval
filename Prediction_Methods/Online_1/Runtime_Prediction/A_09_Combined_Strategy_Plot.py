@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE, DEEP_RED
+from plot_config import DPI, TAB20_BLUE, TAB20_GREEN, TAB20_ORANGE, TAB20_RED
 
 
 # ORCHESTRATOR
@@ -77,7 +77,7 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     fig, ax = plt.subplots(figsize=(18, 8))
 
     strategies = ['Size', 'Frequency', 'Error', 'Optimizer']
-    colors = [DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE, DEEP_RED]
+    colors = [TAB20_BLUE, TAB20_GREEN, TAB20_ORANGE, TAB20_RED]
     offsets = [-1.5, -0.5, 0.5, 1.5]
     width = 0.2
 

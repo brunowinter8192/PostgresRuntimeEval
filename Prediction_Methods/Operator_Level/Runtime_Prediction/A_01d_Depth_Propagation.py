@@ -11,7 +11,7 @@ from pathlib import Path
 from adjustText import adjust_text
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from plot_config import DEEP_BLUE, DEEP_ORANGE, DPI
+from plot_config import TAB20_BLUE, TAB20_ORANGE, DPI
 
 
 # ORCHESTRATOR
@@ -85,11 +85,11 @@ def create_depth_plots(df, plan_hashes, output_dir):
         predicted_values = query_ops['predicted_total_time'].values
 
         ax.plot(x_positions, actual_values,
-                color=DEEP_ORANGE, marker='o', markersize=8, linewidth=2,
+                color=TAB20_ORANGE, marker='o', markersize=8, linewidth=2,
                 alpha=0.7, label='Actual', zorder=3)
 
         ax.plot(x_positions, predicted_values,
-                color=DEEP_BLUE, marker='s', markersize=8, linewidth=2,
+                color=TAB20_BLUE, marker='s', markersize=8, linewidth=2,
                 alpha=0.7, label='Predicted', zorder=3)
 
         texts = []
