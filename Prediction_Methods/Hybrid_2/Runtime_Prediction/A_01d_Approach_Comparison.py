@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_RED
+from plot_config import DPI, TAB20_BLUE, TAB20_GREEN, TAB20_RED
 
 
 # ORCHESTRATOR
@@ -76,7 +76,7 @@ def create_comparison_plot(data, output_dir):
     x = np.arange(len(templates))
 
     approaches = ['Operator', 'Hybrid 1', 'Hybrid 2']
-    colors = [DEEP_RED, DEEP_BLUE, DEEP_GREEN]
+    colors = [TAB20_RED, TAB20_BLUE, TAB20_GREEN]
     offsets = [-1.0, 0.0, 1.0]
     width = 0.25
 

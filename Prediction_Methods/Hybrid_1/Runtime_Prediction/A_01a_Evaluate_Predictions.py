@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from plot_config import PRIMARY_COLOR, DPI
+from plot_config import METHOD_COLORS, DPI, PRIMARY_COLOR
 
 # ORCHESTRATOR
 
@@ -96,20 +96,30 @@ def export_metrics(overall_mre, template_stats, output_dir):
     template_file = output_path / 'A_01a_template_mre.csv'
     template_stats.to_csv(template_file, sep=';')
 
+# Extract approach number from output path
+def get_approach_color(output_dir):
+    import re
+    match = re.search(r'approach_(\d+)', str(output_dir))
+    if match:
+        approach_key = f"Hybrid_1_Approach_{match.group(1)}"
+        return METHOD_COLORS.get(approach_key, PRIMARY_COLOR)
+    return PRIMARY_COLOR
+
 # Create and save MRE bar plot by template
 def create_and_save_plot(template_stats, output_dir):
-    fig = create_mre_plot(template_stats)
+    color = get_approach_color(output_dir)
+    fig = create_mre_plot(template_stats, color)
     save_plot(fig, output_dir)
 
 # Create MRE bar plot by template
-def create_mre_plot(template_stats):
+def create_mre_plot(template_stats, color):
     fig, ax = plt.subplots(figsize=(16, 8))
     templates = template_stats.index.tolist()
     mean_mre_values = template_stats['mean_mre_pct'].values
     x = np.arange(len(templates))
     width = 0.5
     bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
-                   color=PRIMARY_COLOR, alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=color, alpha=0.8, edgecolor='black', linewidth=0.8)
     ax.set_xlabel('Template', fontsize=13)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13)
     ax.set_xticks(x)

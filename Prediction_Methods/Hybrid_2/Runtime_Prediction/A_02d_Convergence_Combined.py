@@ -7,10 +7,14 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE
+from plot_config import DPI, STRATEGY_COLORS
 
 STRATEGIES = ['Size', 'Frequency', 'Error']
-COLORS = {'Size': DEEP_BLUE, 'Frequency': DEEP_ORANGE, 'Error': DEEP_GREEN}
+
+# Get color based on strategy and variant
+def get_color(strategy: str, variant: str) -> str:
+    key = f"{strategy}_Epsilon" if variant == 'Epsilon' else strategy
+    return STRATEGY_COLORS[key]
 
 
 # ORCHESTRATOR
@@ -52,7 +56,7 @@ def export_combined_plot(curves: dict, variant: str, output_dir: str) -> None:
     plt.figure(figsize=(10, 6))
     for strategy, mre_curve in curves.items():
         extended_curve = mre_curve + [mre_curve[-1]] * (max_iterations - len(mre_curve))
-        plt.plot(range(max_iterations), extended_curve, label=strategy, color=COLORS[strategy], linewidth=1.5)
+        plt.plot(range(max_iterations), extended_curve, label=strategy, color=get_color(strategy, variant), linewidth=1.5)
     plt.xlabel('Iteration')
     plt.ylabel('MRE (%)')
     plt.legend()

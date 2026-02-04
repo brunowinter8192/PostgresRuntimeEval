@@ -11,7 +11,7 @@ from pathlib import Path
 from sklearn.linear_model import LinearRegression
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from plot_config import METHOD_COLORS, DPI, DEEP_RED
+from plot_config import METHOD_COLORS, DPI, TAB20_RED
 
 
 # ORCHESTRATOR
@@ -101,38 +101,27 @@ def create_comparison_plot(results, output_dir):
     templates = template_df.index.tolist()
     x = np.arange(len(templates))
     width = 0.35
-    y_limit = 100
 
     fig, ax = plt.subplots(figsize=(14, 7))
 
     ml_values = template_df['mre_ml_pct'].values
     opt_values = template_df['mre_optimizer_pct'].values
-    ml_display = np.minimum(ml_values, y_limit)
-    opt_display = np.minimum(opt_values, y_limit)
+    max_value = max(ml_values.max(), opt_values.max())
 
-    bars_ml = ax.bar(x - width/2, ml_display, width,
+    bars_ml = ax.bar(x - width/2, ml_values, width,
                      label=f"Operator-Level Methode (Overall: {results['overall_ml']*100:.1f}%)",
                      color=METHOD_COLORS['Operator_Level'], alpha=0.8)
-    bars_opt = ax.bar(x + width/2, opt_display, width,
+    bars_opt = ax.bar(x + width/2, opt_values, width,
                       label=f"Optimizer Cost Model (Overall: {results['overall_optimizer']*100:.1f}%)",
-                      color=METHOD_COLORS['Optimizer'], alpha=0.8)
+                      color=METHOD_COLORS['Operator_Level_Optimizer'], alpha=0.8)
 
     for i, bar in enumerate(bars_ml):
-        actual = ml_values[i]
-        color = DEEP_RED if actual > y_limit else 'black'
-        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
-                f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + max_value * 0.01,
+                f'{ml_values[i]:.1f}%', ha='center', va='bottom', fontsize=7)
 
     for i, bar in enumerate(bars_opt):
-        actual = opt_values[i]
-        template = templates[i]
-        color = DEEP_RED if actual > y_limit else 'black'
-        if template in ['Q16', 'Q22'] and bar.get_height() > 90:
-            ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() - 5,
-                    f'{actual:.1f}%', ha='center', va='top', fontsize=7, color=color)
-        else:
-            ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
-                    f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + max_value * 0.01,
+                f'{opt_values[i]:.1f}%', ha='center', va='bottom', fontsize=7)
 
     ax.set_xlabel('Template', fontsize=12)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
@@ -140,7 +129,7 @@ def create_comparison_plot(results, output_dir):
     ax.set_xticklabels(templates, fontsize=10)
     ax.legend(fontsize=11, loc='upper right')
     ax.grid(axis='y', alpha=0.3)
-    ax.set_ylim(0, y_limit * 1.1)
+    ax.set_ylim(0, max_value * 1.15)
 
     plt.tight_layout()
     plt.savefig(output_path / 'A_01h_optimizer_baseline_plot.png', dpi=DPI)

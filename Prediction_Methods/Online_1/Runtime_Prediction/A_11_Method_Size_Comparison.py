@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_ORANGE
+from plot_config import DPI, TAB20_BLUE, TAB20_ORANGE
 
 
 # ORCHESTRATOR
@@ -58,10 +58,10 @@ def create_comparison_plot(data: dict, output_dir: str) -> None:
 
     bars1 = ax.bar(x - width/2, online1_values, width,
                    label=f'Online_1 Size (Overall: {online1_overall:.2f}%)',
-                   color=DEEP_BLUE, alpha=0.85)
+                   color=TAB20_BLUE, alpha=0.85)
     bars2 = ax.bar(x + width/2, hybrid2_values, width,
                    label=f'Hybrid_2 Size (Overall: {hybrid2_overall:.2f}%)',
-                   color=DEEP_ORANGE, alpha=0.85)
+                   color=TAB20_ORANGE, alpha=0.85)
 
     ax.bar_label(bars1, fmt='%.1f%%', padding=2, fontsize=8)
     ax.bar_label(bars2, fmt='%.1f%%', padding=2, fontsize=8)

@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_GREEN
+from plot_config import DPI, TAB20_BLUE, TAB20_GREEN
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -55,10 +55,10 @@ def create_comparison_plot(static_df: pd.DataFrame, dynamic_df: pd.DataFrame, ou
 
     bars_static = ax.bar(x - width/2, static_values, width,
                          label=f'Static (Overall: {static_overall:.2f}%)',
-                         color=DEEP_BLUE, alpha=0.85)
+                         color=TAB20_BLUE, alpha=0.85)
     bars_dynamic = ax.bar(x + width/2, dynamic_values, width,
                           label=f'Dynamic (Overall: {dynamic_overall:.2f}%)',
-                          color=DEEP_GREEN, alpha=0.85)
+                          color=TAB20_GREEN, alpha=0.85)
 
     ax.bar_label(bars_static, fmt='%.1f%%', padding=2, fontsize=7, rotation=0)
     ax.bar_label(bars_dynamic, fmt='%.1f%%', padding=2, fontsize=7, rotation=0)

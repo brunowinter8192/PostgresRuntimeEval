@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE
+from plot_config import DPI, TAB20_BLUE
 
 # ORCHESTRATOR
 def evaluate_predictions_workflow(predictions_dir, output_dir):
@@ -105,7 +105,7 @@ def create_mre_plot(template_stats):
     width = 0.5
 
     bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
-                   color=DEEP_BLUE, alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=TAB20_BLUE, alpha=0.8, edgecolor='black', linewidth=0.8)
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')

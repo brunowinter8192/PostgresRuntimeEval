@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_GREEN, DEEP_ORANGE, DEEP_PURPLE
+from plot_config import DPI, TAB20_BLUE, TAB20_GREEN, TAB20_ORANGE, TAB20_PURPLE
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -70,16 +70,16 @@ def create_comparison_plot(optimizer_df: pd.DataFrame, operator_df: pd.DataFrame
 
     bars_optimizer = ax.bar(x - 1.5*width, optimizer_values, width,
                             label=f'Optimizer (Overall: {optimizer_overall:.2f}%)',
-                            color=DEEP_ORANGE, alpha=0.85)
+                            color=TAB20_ORANGE, alpha=0.85)
     bars_operator = ax.bar(x - 0.5*width, operator_values, width,
                            label=f'Operator Level (Overall: {operator_overall:.2f}%)',
-                           color=DEEP_BLUE, alpha=0.85)
+                           color=TAB20_BLUE, alpha=0.85)
     bars_hybrid = ax.bar(x + 0.5*width, hybrid_values, width,
                          label=f'Hybrid_1 (Overall: {hybrid_overall:.2f}%)',
-                         color=DEEP_GREEN, alpha=0.85)
+                         color=TAB20_GREEN, alpha=0.85)
     bars_online = ax.bar(x + 1.5*width, online_values, width,
                          label=f'Online_1 (Overall: {online_overall:.2f}%)',
-                         color=DEEP_PURPLE, alpha=0.85)
+                         color=TAB20_PURPLE, alpha=0.85)
 
     ylim_max = 90
     add_bar_labels(ax, bars_optimizer, optimizer_values, ylim_max)

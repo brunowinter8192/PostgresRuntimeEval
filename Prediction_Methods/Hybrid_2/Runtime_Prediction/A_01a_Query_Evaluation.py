@@ -9,16 +9,18 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from plot_config import PRIMARY_COLOR, DPI
+from plot_config import STRATEGY_COLORS, DPI
 
 # ORCHESTRATOR
-def evaluate_predictions_workflow(predictions_file, output_dir):
+def evaluate_predictions_workflow(predictions_file, output_dir, strategy, variant):
     df = load_predictions(predictions_file)
     root_ops = extract_root_operators(df)
     overall_mre = calculate_overall_mre(root_ops)
     template_stats = calculate_template_stats(root_ops)
     export_metrics(overall_mre, template_stats, output_dir)
-    create_and_save_plot(template_stats, output_dir)
+    color_key = f"{strategy}_Epsilon" if variant == 'Epsilon' else strategy
+    color = STRATEGY_COLORS[color_key]
+    create_and_save_plot(template_stats, output_dir, color)
 
 # FUNCTIONS
 
@@ -82,23 +84,23 @@ def export_metrics(overall_mre, template_stats, output_dir):
 
 
 # Create and save MRE bar plot by template
-def create_and_save_plot(template_stats, output_dir):
-    fig = create_mre_plot(template_stats)
+def create_and_save_plot(template_stats, output_dir, color):
+    fig = create_mre_plot(template_stats, color)
     save_plot(fig, output_dir)
 
 
 # Create MRE bar plot by template
-def create_mre_plot(template_stats):
+def create_mre_plot(template_stats, color):
     fig, ax = plt.subplots(figsize=(16, 8))
-    
+
     templates = template_stats.index.tolist()
     mean_mre_values = template_stats['mean_mre_pct'].values
-    
+
     x = np.arange(len(templates))
     width = 0.5
-    
+
     bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
-                   color=PRIMARY_COLOR, alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=color, alpha=0.8, edgecolor='black', linewidth=0.8)
 
     ax.set_xlabel('Template', fontsize=13)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13)
@@ -131,7 +133,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("predictions_file", help="Path to predictions CSV file")
     parser.add_argument("--output-dir", required=True, help="Output directory for evaluation results")
+    parser.add_argument("--strategy", required=True, choices=['Size', 'Frequency', 'Error'], help="Strategy name for color")
+    parser.add_argument("--variant", default='Baseline', choices=['Baseline', 'Epsilon'], help="Variant (Baseline or Epsilon)")
 
     args = parser.parse_args()
 
-    evaluate_predictions_workflow(args.predictions_file, args.output_dir)
+    evaluate_predictions_workflow(args.predictions_file, args.output_dir, args.strategy, args.variant)
