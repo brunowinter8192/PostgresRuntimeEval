@@ -94,7 +94,7 @@ def export_results(results: dict, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     overall_df = pd.DataFrame({
-        'method': ['ML (SVM)', 'Optimizer Cost (LinReg)'],
+        'method': ['Plan-Level Methode', 'Optimizer Cost Model'],
         'mre': [results['overall_ml'], results['overall_optimizer']],
         'mre_pct': [results['overall_ml'] * 100, results['overall_optimizer'] * 100]
     })
@@ -121,29 +121,34 @@ def create_comparison_plot(results: dict, output_dir: Path) -> None:
     opt_display = np.minimum(opt_values, y_limit)
 
     bars_ml = ax.bar(x - width/2, ml_display, width,
-                     label=f"ML (Overall: {results['overall_ml']*100:.1f}%)",
+                     label=f"Plan-Level Methode (Overall: {results['overall_ml']*100:.1f}%)",
                      color=METHOD_COLORS['Plan_Level_SVM'], alpha=0.8)
     bars_opt = ax.bar(x + width/2, opt_display, width,
-                      label=f"Optimizer LinReg (Overall: {results['overall_optimizer']*100:.1f}%)",
+                      label=f"Optimizer Cost Model (Overall: {results['overall_optimizer']*100:.1f}%)",
                       color=METHOD_COLORS['Optimizer'], alpha=0.8)
 
     for i, bar in enumerate(bars_ml):
         actual = ml_values[i]
         color = DEEP_RED if actual > y_limit else 'black'
-        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
                 f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
 
     for i, bar in enumerate(bars_opt):
         actual = opt_values[i]
+        template = templates[i]
         color = DEEP_RED if actual > y_limit else 'black'
-        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
-                f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
+        if template in ['Q16', 'Q22'] and bar.get_height() > 90:
+            ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() - 5,
+                    f'{actual:.1f}%', ha='center', va='top', fontsize=7, color=color)
+        else:
+            ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
+                    f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
 
     ax.set_xlabel('Template', fontsize=12)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=10)
-    ax.legend(fontsize=11)
+    ax.legend(fontsize=11, loc='upper right')
     ax.grid(axis='y', alpha=0.3)
     ax.set_ylim(0, y_limit * 1.1)
 
