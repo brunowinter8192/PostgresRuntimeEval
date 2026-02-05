@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from sklearn.linear_model import LinearRegression
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from plot_config import METHOD_COLORS, DPI, TAB20_RED
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+from plot_config import METHOD_COLORS, DPI
 
 
 # ORCHESTRATOR
@@ -113,7 +113,7 @@ def create_comparison_plot(results, output_dir):
                      color=METHOD_COLORS['Operator_Level'], alpha=0.8)
     bars_opt = ax.bar(x + width/2, opt_values, width,
                       label=f"Optimizer Cost Model (Overall: {results['overall_optimizer']*100:.1f}%)",
-                      color=METHOD_COLORS['Operator_Level_Optimizer'], alpha=0.8)
+                      color=METHOD_COLORS['Optimizer'], alpha=0.8)
 
     for i, bar in enumerate(bars_ml):
         ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + max_value * 0.01,

@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
 from plot_config import PRIMARY_COLOR, ACCENT_COLOR, DPI, PLOTS_PER_PAGE, SUBPLOT_ROWS, SUBPLOT_COLS
 
@@ -40,7 +40,7 @@ def load_predictions(csv_path: Path) -> pd.DataFrame:
 # Create multiple pages of histograms (2x2 grid per page)
 def create_histogram_pages(df: pd.DataFrame, predictions: dict, selected_templates: list = None) -> list:
     if selected_templates:
-        templates = sorted(selected_templates, key=lambda x: int(x.replace('Q', '')))
+        templates = selected_templates
     else:
         templates = sorted(df['template'].unique(), key=lambda x: int(x.replace('Q', '')))
     figures = []

@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
 from plot_config import DPI, TAB20_BLUE, TAB20_GREEN, TAB20_ORANGE, TAB20_PURPLE
 

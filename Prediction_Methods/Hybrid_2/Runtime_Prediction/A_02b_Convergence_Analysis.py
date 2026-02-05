@@ -5,24 +5,31 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI
+from plot_config import DPI, STRATEGY_COLORS, STRATEGY_COLORS_EPSILON
 
 CONVERGENCE_POINTS = [50, 90, 95]
 
 # ORCHESTRATOR
 
-def analyze_convergence(selection_log: str, output_dir: str, prefix: str = '') -> None:
+def analyze_convergence(selection_log: str, output_dir: str, prefix: str = '', strategy: str = None, variant: str = 'Baseline') -> None:
     df = load_selection_log(selection_log)
     mre_curve = extract_mre_curve(df)
     baseline_mre, final_mre = mre_curve[0], mre_curve[-1]
     total_improvement = baseline_mre - final_mre
     convergence = compute_convergence_points(mre_curve, baseline_mre, total_improvement)
     export_results(convergence, baseline_mre, final_mre, total_improvement, len(mre_curve), output_dir, prefix)
-    export_plot(mre_curve, output_dir, prefix)
+    color = get_plot_color(strategy, variant)
+    export_plot(mre_curve, output_dir, prefix, color)
 
 # FUNCTIONS
+
+# Get plot color based on strategy and variant
+def get_plot_color(strategy: str, variant: str) -> str:
+    if strategy is None:
+        return None
+    return STRATEGY_COLORS_EPSILON[strategy] if variant == 'Epsilon' else STRATEGY_COLORS[strategy]
 
 # Load selection log CSV
 def load_selection_log(path: str) -> pd.DataFrame:
@@ -68,11 +75,11 @@ def export_results(convergence: dict, baseline_mre: float, final_mre: float, tot
     df_summary.to_csv(out_path / filename, sep=';', index=False)
 
 # Export MRE progression plot
-def export_plot(mre_curve: list, output_dir: str, prefix: str = '') -> None:
+def export_plot(mre_curve: list, output_dir: str, prefix: str = '', color: str = None) -> None:
     out_path = Path(output_dir)
     filename = f'{prefix}_A_02b_mre_progression.png' if prefix else 'A_02b_mre_progression.png'
     plt.figure(figsize=(10, 6))
-    plt.plot(range(len(mre_curve)), mre_curve, linewidth=1.5)
+    plt.plot(range(len(mre_curve)), mre_curve, linewidth=1.5, color=color)
     plt.xlabel('Iteration')
     plt.ylabel('MRE')
     plt.grid(True, alpha=0.3)
@@ -85,5 +92,7 @@ if __name__ == "__main__":
     parser.add_argument("selection_log", help="Path to selection_log.csv")
     parser.add_argument("--output-dir", required=True, help="Output directory")
     parser.add_argument("--prefix", default='', help="Prefix for output filenames")
+    parser.add_argument("--strategy", choices=['Size', 'Frequency', 'Error'], help="Strategy for plot color")
+    parser.add_argument("--variant", default='Baseline', choices=['Baseline', 'Epsilon'], help="Variant for plot color")
     args = parser.parse_args()
-    analyze_convergence(args.selection_log, args.output_dir, args.prefix)
+    analyze_convergence(args.selection_log, args.output_dir, args.prefix, args.strategy, args.variant)

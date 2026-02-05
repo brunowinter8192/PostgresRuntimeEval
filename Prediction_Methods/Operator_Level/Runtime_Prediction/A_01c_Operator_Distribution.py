@@ -8,7 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 from plot_config import PRIMARY_COLOR, DPI
 
 OPERATOR_ORDER = [

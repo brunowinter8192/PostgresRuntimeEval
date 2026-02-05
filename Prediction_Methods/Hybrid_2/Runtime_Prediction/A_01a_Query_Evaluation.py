@@ -8,8 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from plot_config import STRATEGY_COLORS, DPI
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+from plot_config import STRATEGY_COLORS, STRATEGY_COLORS_EPSILON, DPI
 
 # ORCHESTRATOR
 def evaluate_predictions_workflow(predictions_file, output_dir, strategy, variant):
@@ -18,8 +18,7 @@ def evaluate_predictions_workflow(predictions_file, output_dir, strategy, varian
     overall_mre = calculate_overall_mre(root_ops)
     template_stats = calculate_template_stats(root_ops)
     export_metrics(overall_mre, template_stats, output_dir)
-    color_key = f"{strategy}_Epsilon" if variant == 'Epsilon' else strategy
-    color = STRATEGY_COLORS[color_key]
+    color = STRATEGY_COLORS_EPSILON[strategy] if variant == 'Epsilon' else STRATEGY_COLORS[strategy]
     create_and_save_plot(template_stats, output_dir, color)
 
 # FUNCTIONS

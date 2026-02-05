@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 # From mapping_config.py: Metadata column names
 from mapping_config import PLAN_METADATA
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
 from plot_config import METHOD_COLORS, DPI
 

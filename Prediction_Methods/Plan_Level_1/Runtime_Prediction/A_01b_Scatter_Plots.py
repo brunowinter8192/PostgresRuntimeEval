@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))  # Plan_Level_1
 # From mapping_config.py: Target column name
 from mapping_config import PLAN_TARGET
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
 from plot_config import PRIMARY_COLOR, DPI, PLOTS_PER_PAGE, SUBPLOT_ROWS, SUBPLOT_COLS
 

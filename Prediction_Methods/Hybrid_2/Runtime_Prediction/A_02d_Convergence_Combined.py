@@ -5,16 +5,15 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, STRATEGY_COLORS
+from plot_config import DPI, STRATEGY_COLORS, STRATEGY_COLORS_EPSILON
 
 STRATEGIES = ['Size', 'Frequency', 'Error']
 
 # Get color based on strategy and variant
 def get_color(strategy: str, variant: str) -> str:
-    key = f"{strategy}_Epsilon" if variant == 'Epsilon' else strategy
-    return STRATEGY_COLORS[key]
+    return STRATEGY_COLORS_EPSILON[strategy] if variant == 'Epsilon' else STRATEGY_COLORS[strategy]
 
 
 # ORCHESTRATOR
