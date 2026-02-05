@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, TAB20_BLUE, TAB20_GREEN, TAB20_ORANGE
+from plot_config import DPI, STRATEGY_COLORS, DEEP_RED
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ANALYSIS_DIR = SCRIPT_DIR / 'Evaluation' / 'Analysis'
@@ -79,16 +79,28 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     fig, ax = plt.subplots(figsize=(18, 8))
 
     strategies = ['Size', 'Frequency', 'Error']
-    colors = [TAB20_BLUE, TAB20_GREEN, TAB20_ORANGE]
+    colors = [STRATEGY_COLORS['Size'], STRATEGY_COLORS['Frequency'], STRATEGY_COLORS['Error']]
     offsets = [-1.0, 0.0, 1.0]
     width = 0.25
 
+    y_limit = 10
+
     for strategy, color, offset in zip(strategies, colors, offsets):
-        values = [data[strategy]['template_mre'].get(t, 0) for t in templates]
+        actual_values = [data[strategy]['template_mre'].get(t, 0) for t in templates]
+        display_values = [min(v, y_limit) for v in actual_values]
         overall = data[strategy]['overall_mre']
         label = f"{strategy} (Overall: {overall:.2f}%)"
-        bars = ax.bar(x + offset * width, values, width, label=label, color=color, alpha=0.85)
-        ax.bar_label(bars, fmt='%.1f%%', padding=2, fontsize=6, rotation=0)
+        bars = ax.bar(x + offset * width, display_values, width, label=label, color=color, alpha=0.85)
+
+        for i, bar in enumerate(bars):
+            actual = actual_values[i]
+            label_color = DEEP_RED if actual > y_limit else 'black'
+            if actual > y_limit:
+                ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() - 0.2,
+                        f'{actual:.1f}%', ha='center', va='top', fontsize=6, color=label_color)
+            else:
+                ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.1,
+                        f'{actual:.1f}%', ha='center', va='bottom', fontsize=6, color=label_color)
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
@@ -97,8 +109,7 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     ax.legend(fontsize=11, loc='upper right')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 
-    max_val = max(max(data[s]['template_mre'].values()) for s in strategies)
-    ax.set_ylim(0, max_val * 1.35)
+    ax.set_ylim(0, y_limit * 1.1)
 
     plt.tight_layout()
     plt.savefig(output_path / 'A_06_strategy_comparison.png', dpi=DPI, bbox_inches='tight')

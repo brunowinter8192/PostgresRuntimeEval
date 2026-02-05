@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, STRATEGY_COLORS
+from plot_config import DPI, STRATEGY_COLORS, STRATEGY_COLORS_EPSILON
 
 
 # ORCHESTRATOR
@@ -120,22 +120,22 @@ def create_combined_plot(data, output_dir, variant, suffix=None):
     x = np.arange(len(templates))
 
     all_strategies = list(data.keys())
-    all_colors = [STRATEGY_COLORS[s] for s in all_strategies]
+    all_colors = [STRATEGY_COLORS_EPSILON.get(s, STRATEGY_COLORS[s]) if variant == 'Epsilon' else STRATEGY_COLORS[s] for s in all_strategies]
     all_offsets, all_width = compute_bar_offsets(len(all_strategies))
 
-    combined_filename = f'A_01c_combined_strategy_plot_{suffix}.png' if suffix else 'A_01c_combined_strategy_plot.png'
-    create_plot_with_strategies(
-        data, templates, x,
-        strategies=all_strategies,
-        colors=all_colors,
-        offsets=all_offsets,
-        width=all_width,
-        output_file=output_path / combined_filename
-    )
-
-    if not suffix:
+    if suffix:
+        combined_filename = f'A_01c_combined_strategy_plot_{suffix}.png'
+        create_plot_with_strategies(
+            data, templates, x,
+            strategies=all_strategies,
+            colors=all_colors,
+            offsets=all_offsets,
+            width=all_width,
+            output_file=output_path / combined_filename
+        )
+    else:
         hybrid_strategies = ['Size', 'Frequency', 'Error']
-        hybrid_colors = [STRATEGY_COLORS[s] for s in hybrid_strategies]
+        hybrid_colors = [STRATEGY_COLORS_EPSILON[s] if variant == 'Epsilon' else STRATEGY_COLORS[s] for s in hybrid_strategies]
         hybrid_offsets, hybrid_width = compute_bar_offsets(3)
 
         create_plot_with_strategies(
@@ -165,12 +165,25 @@ def compute_bar_offsets(n):
 def create_plot_with_strategies(data, templates, x, strategies, colors, offsets, width, output_file):
     fig, ax = plt.subplots(figsize=(18, 8))
 
+    y_limit = 10
     for strategy, color, offset in zip(strategies, colors, offsets):
         values = [data[strategy]['template_mre'].get(t, 0) for t in templates]
+        display_values = [min(v, y_limit) for v in values]
         overall = data[strategy]['overall_mre']
-        label = f"{strategy} (Overall: {overall:.2f}%)"
-        bars = ax.bar(x + offset * width, values, width, label=label, color=color, alpha=0.85)
-        ax.bar_label(bars, fmt='%.1f%%', padding=2, fontsize=6, rotation=0)
+        display_name = "Optimizer Cost Model" if strategy == "Optimizer" else strategy
+        label = f"{display_name} (Overall: {overall:.2f}%)"
+        bars = ax.bar(x + offset * width, display_values, width, label=label, color=color, alpha=0.85)
+
+        for i, (bar, val) in enumerate(zip(bars, values)):
+            template = templates[i]
+            text_color = '#C44E52' if val > y_limit else 'black'
+            if (strategy == 'Optimizer' and template in ['Q14', 'Q19'] and bar.get_height() >= y_limit * 0.9) or \
+               (strategy == 'Hybrid_1' and template == 'Q18' and bar.get_height() >= y_limit * 0.9):
+                ax.text(bar.get_x() + bar.get_width()/2., 9.0,
+                        f'{val:.1f}%', ha='center', va='top', fontsize=6, color=text_color)
+            else:
+                ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.2,
+                        f'{val:.1f}%', ha='center', va='bottom', fontsize=6, color=text_color)
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
@@ -179,8 +192,7 @@ def create_plot_with_strategies(data, templates, x, strategies, colors, offsets,
     ax.legend(fontsize=11, loc='upper right')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 
-    max_val = max(max(data[s]['template_mre'].values()) for s in strategies)
-    ax.set_ylim(0, max_val * 1.35)
+    ax.set_ylim(0, y_limit * 1.1)
 
     plt.tight_layout()
     plt.savefig(output_file, dpi=DPI, bbox_inches='tight')

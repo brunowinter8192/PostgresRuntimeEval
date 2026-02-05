@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, TAB20_BLUE
+from plot_config import DPI, STRATEGY_COLORS, DEEP_GREEN
 
 # ORCHESTRATOR
 def evaluate_predictions_workflow(predictions_dir, output_dir):
@@ -88,14 +88,24 @@ def export_metrics(overall_mre, template_stats, output_dir):
     template_stats.to_csv(template_file, sep=';')
 
 
+# Get color based on strategy in path
+def get_strategy_color(output_dir):
+    path_str = str(output_dir)
+    for strategy in ['Error', 'Size', 'Frequency']:
+        if strategy in path_str:
+            return STRATEGY_COLORS.get(strategy, DEEP_GREEN)
+    return DEEP_GREEN
+
+
 # Create and save MRE bar plot by template
 def create_and_save_plot(template_stats, output_dir):
-    fig = create_mre_plot(template_stats)
+    color = get_strategy_color(output_dir)
+    fig = create_mre_plot(template_stats, color)
     save_plot(fig, output_dir)
 
 
 # Create MRE bar plot by template
-def create_mre_plot(template_stats):
+def create_mre_plot(template_stats, color):
     fig, ax = plt.subplots(figsize=(16, 8))
 
     templates = template_stats.index.tolist()
@@ -105,7 +115,7 @@ def create_mre_plot(template_stats):
     width = 0.5
 
     bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
-                   color=TAB20_BLUE, alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=color, alpha=0.8, edgecolor='black', linewidth=0.8)
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
