@@ -1,0 +1,14 @@
+pattern_hash;pattern_string;status;templates;templates_used
+3aab37bea1a884da206eb32f2c1ae5ba;Hash -> Seq Scan (Outer);genutzt;Q3,Q5,Q7,Q8,Q9,Q10,Q14,Q19;Q3,Q5,Q7,Q8,Q9,Q10,Q14,Q19
+1d35fb978b379d4a820897907e56ab7b;Sort -> Aggregate (Outer);genutzt;Q1,Q3,Q4,Q5,Q9,Q10,Q13,Q18;Q5
+4fc84c77ced18a46514c982f23f12deb;Aggregate -> Gather (Outer);beifang;Q3,Q6,Q9,Q10,Q14,Q19;
+7524c54c59c38d4c931870520c264f63;Aggregate -> Hash Join (Outer);beifang;Q9,Q13,Q14,Q19;
+a5f39f08c510532e02e96e109e48c0cd;Aggregate -> Gather -> Aggregate (Outer) (Outer);genutzt;Q6,Q9,Q14,Q19;Q6,Q14,Q19
+715d5c92d04e9fdd3e607001ad32ee57;Gather Merge -> Sort -> Aggregate (Outer) (Outer);genutzt;Q1,Q4;Q1,Q4
+35ffb64405c972adec2b1bd3878a66ec;Sort -> Aggregate -> Aggregate (Outer) (Outer);genutzt;Q13;Q13
+25df29b5b69835d07c0d8b72b0e46a3b;Limit -> Sort -> Aggregate -> Gather (Outer) (Outer) (Outer);genutzt;Q3,Q10;Q3,Q10
+898abd491a1ae406c1e4084944df775d;Gather Merge -> Aggregate -> Sort -> Nested Loop (Outer) (Outer) (Outer);genutzt;Q12;Q12
+9609a2d38f71aa9fed029d3760850027;Sort -> Aggregate -> Gather Merge -> Incremental Sort (Outer) (Outer) (Outer);beifang;Q18;
+0405d50f69713e0bbda5bc720b56a392;Aggregate -> Gather -> Aggregate -> Nested Loop (Outer) (Outer) (Outer);genutzt;Q9;Q9
+6ce7e974aa30f1caf54ace9e0ea18109;Limit -> Sort -> Aggregate -> Gather Merge -> Incremental Sort (Outer) (Outer) (Outer) (Outer);genutzt;Q18;Q18
+8951754fdbae5e0bc5fb971b6c48337d;Sort -> Aggregate -> Gather -> Aggregate -> Hash Join (Outer) (Outer) (Outer) (Outer);genutzt;Q9;Q9

@@ -1,0 +1,9 @@
+pattern_hash;pattern_string;pattern_length;priority;occurrences;wins;blocked;templates;templates_wins;blocked_by
+f4cb205adfd108034c883c87871a6da8;Hash Join -> [Seq Scan (Outer), Hash -> Seq Scan (Outer) (Inner)];3;1;168;168;0;Q3,Q5,Q7,Q8,Q14,Q19;Q3,Q5,Q7,Q8,Q14,Q19;
+a5f39f08c510532e02e96e109e48c0cd;Aggregate -> Gather -> Aggregate (Outer) (Outer);3;2;96;96;0;Q6,Q9,Q14,Q19;Q6,Q9,Q14,Q19;
+895c6e8c1a30a094329d71cef3111fbd;Hash Join -> [Seq Scan (Outer), Hash (Inner)];2;3;364;196;168;Q3,Q5,Q7,Q8,Q9,Q13,Q14,Q18,Q19;Q5,Q7,Q8,Q9,Q13,Q18;f4cb205a:168
+1d35fb978b379d4a820897907e56ab7b;Sort -> Aggregate (Outer);2;4;192;168;24;Q1,Q3,Q4,Q5,Q9,Q10,Q13,Q18;Q1,Q3,Q4,Q5,Q10,Q13,Q18;a5f39f08:24
+4fc84c77ced18a46514c982f23f12deb;Aggregate -> Gather (Outer);2;5;144;0;144;Q3,Q6,Q9,Q10,Q14,Q19;;"a5f39f08:96; 1d35fb97:48"
+2e0f44eff91c745724a56159cf7e0d6f;Hash Join -> [Nested Loop (Outer), Hash (Inner)];2;6;144;144;0;Q5,Q7,Q8,Q9,Q10;Q5,Q7,Q8,Q9,Q10;
+634cdbe24fda21720ccd3dc746d5c979;Gather -> Aggregate (Outer);2;7;96;0;96;Q6,Q9,Q14,Q19;;a5f39f08:96
+7524c54c59c38d4c931870520c264f63;Aggregate -> Hash Join (Outer);2;8;76;0;76;Q9,Q13,Q14,Q19;;"f4cb205a:48; 895c6e8c:24; a5f39f08:4"

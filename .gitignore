@@ -12,11 +12,6 @@ CLAUDE.md
 .gitattributes
 .mcp.json
 
-# === Generated outputs ===
-
-# Evaluation outputs
-**/Evaluation/
-
 
 # === TPC-H ===
 # Official files (download from tpc.org)

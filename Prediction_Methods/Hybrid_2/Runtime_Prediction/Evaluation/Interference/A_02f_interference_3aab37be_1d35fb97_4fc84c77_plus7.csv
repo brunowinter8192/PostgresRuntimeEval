@@ -1,0 +1,11 @@
+pattern_hash;pattern_string;pattern_length;priority;occurrences;wins;blocked;templates;templates_wins;blocked_by
+3aab37bea1a884da206eb32f2c1ae5ba;Hash -> Seq Scan (Outer);2;1;336;336;0;Q3,Q5,Q7,Q8,Q9,Q10,Q14,Q19;Q3,Q5,Q7,Q8,Q9,Q10,Q14,Q19;
+1d35fb978b379d4a820897907e56ab7b;Sort -> Aggregate (Outer);2;2;192;192;0;Q1,Q3,Q4,Q5,Q9,Q10,Q13,Q18;Q1,Q3,Q4,Q5,Q9,Q10,Q13,Q18;
+4fc84c77ced18a46514c982f23f12deb;Aggregate -> Gather (Outer);2;3;144;72;72;Q3,Q6,Q9,Q10,Q14,Q19;Q6,Q14,Q19;1d35fb97:72
+3e2d5a00246ff56483c16003698d4917;Sort -> Hash Join (Outer);2;4;96;96;0;Q5,Q7,Q8,Q18;Q5,Q7,Q8,Q18;
+634cdbe24fda21720ccd3dc746d5c979;Gather -> Aggregate (Outer);2;5;96;24;72;Q6,Q9,Q14,Q19;Q9;4fc84c77:72
+7524c54c59c38d4c931870520c264f63;Aggregate -> Hash Join (Outer);2;6;76;72;4;Q9,Q13,Q14,Q19;Q13,Q14,Q19;634cdbe2:4
+184f44dea835017982d512c08043f20c;Aggregate -> Seq Scan (Outer);2;7;48;24;24;Q1,Q6;Q6;1d35fb97:24
+44ca42dfd8348e604ffe229fb16f8b3d;Gather Merge -> Incremental Sort (Outer);2;8;24;24;0;Q18;Q18;
+deb558a9002117c419af6559ba19ef08;Hash -> Index Only Scan (Outer);2;9;24;24;0;Q13;Q13;
+895c6e8c1a30a094329d71cef3111fbd;Hash Join -> [Seq Scan (Outer), Hash (Inner)];2;10;364;148;216;Q3,Q5,Q7,Q8,Q9,Q13,Q14,Q18,Q19;Q5,Q7,Q8,Q9;"3aab37be:168; 7524c54c:24; 3e2d5a00:24"
