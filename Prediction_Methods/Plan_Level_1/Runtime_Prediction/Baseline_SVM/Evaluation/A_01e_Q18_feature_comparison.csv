@@ -1,0 +1,8 @@
+feature;value;shared_by
+initplan_count;0;17
+subplan_count;0;17
+Index_Scan_cnt;2;2
+op_count;16;0
+Seq_Scan_rows;633871;0
+Index_Only_Scan_cnt;0;17
+jit_functions;32;0
