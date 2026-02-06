@@ -1,0 +1,5 @@
+strategy;node_type;count;templates
+Error;Index Scan;30;Q3
+Error;Seq Scan;30;Q5
+Frequency;Index Scan;112;Q10,Q3,Q5,Q9
+Size;Index Scan;112;Q10,Q3,Q5,Q9
