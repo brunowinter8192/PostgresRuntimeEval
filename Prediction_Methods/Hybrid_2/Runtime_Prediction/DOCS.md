@@ -705,3 +705,25 @@ python3 A_01c_Combined_Strategy_Plot.py \
   --suffix hybrid1
 ```
 
+---
+
+### A_13 - Size_Freq_Comparison.py
+
+**Purpose:** Compare assigned patterns between Size and Frequency strategies per template
+
+**Inputs:**
+- `evaluation_dir` - Path to Evaluation directory containing Size/, Frequency/ (positional)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `{output-dir}/A_13_template_comparison.csv` - Per-template pattern comparison (IDENTICAL/DIFFERS)
+
+**Usage:**
+```bash
+python3 A_13_Size_Freq_Comparison.py Evaluation --output-dir Evaluation/Overall/Baseline
+```
+
+**Implementation Details:**
+
+Extracts unique pattern hashes per template from `12_predictions.csv` (column `pattern_hash`, truncated to 12 chars). Compares Size vs Frequency sets per template.
+

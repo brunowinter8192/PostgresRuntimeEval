@@ -30,6 +30,8 @@ Runtime_Prediction/
     A_11_Method_Size_Comparison.py
     A_12_Unrounded_Template_MRE.py
     A_13_Size_Freq_Comparison.py
+    A_14_Size_Freq_Propagation.py
+    A_15_Negative_Predictions.py
     Evaluation/
         Error/
         Size/
@@ -383,3 +385,41 @@ python3 A_13_Size_Freq_Comparison.py Evaluation --output-dir Evaluation/Analysis
 **Implementation Details:**
 
 Compares patterns from `[PATTERN: hash]` tags in report.md Query Tree section (actually assigned patterns), not from `models/patterns/` (all selected patterns). Selected patterns include models trained but never assigned to any node; assigned patterns are only those placed in the query tree.
+
+---
+
+## A_14 - Size_Freq_Propagation.py
+
+**Purpose:** Visualize Mean Predicted Total Time per operator (Leaf to Root) for Size vs Frequency in a given template
+
+**Inputs:**
+- `evaluation_dir` - Path to Evaluation directory containing Size/, Frequency/ (positional)
+- `--template` - Template to analyze (required)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `{output-dir}/A_14_propagation_{template}.png` - Line plot showing prediction values per operator for both strategies
+
+**Usage:**
+```bash
+python3 A_14_Size_Freq_Propagation.py Evaluation --template Q5 --output-dir Evaluation/Analysis/Overall
+```
+
+---
+
+## A_15 - Negative_Predictions.py
+
+**Purpose:** Count and detail negative predicted values across all strategies
+
+**Inputs:**
+- `evaluation_dir` - Path to Evaluation directory (positional)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `{output-dir}/A_15_negative_predictions.csv` - All negative predictions with query, node, strategy detail
+- `{output-dir}/A_15_negative_summary.csv` - Count per strategy and node_type with affected templates
+
+**Usage:**
+```bash
+python3 A_15_Negative_Predictions.py Evaluation --output-dir Evaluation/Analysis/Overall
+```
