@@ -28,6 +28,8 @@ Runtime_Prediction/
     A_09_Combined_Strategy_Plot.py
     A_10_Q4_MRE_Plot.py
     A_11_Method_Size_Comparison.py
+    A_12_Unrounded_Template_MRE.py
+    A_13_Size_Freq_Comparison.py
     Evaluation/
         Error/
         Size/
@@ -340,3 +342,44 @@ python3 A_11_Method_Size_Comparison.py \
   ../../Hybrid_2/Runtime_Prediction/Evaluation/Size/Baseline/A_01a_template_mre.csv \
   --output-dir Evaluation/Analysis/Overall
 ```
+
+---
+
+## A_12 - Unrounded_Template_MRE.py
+
+**Purpose:** Compute unrounded MRE per template for all three strategies from raw predictions
+
+**Inputs:**
+- Reads `Evaluation/{Size,Frequency,Error}/*/csv/predictions.csv` automatically
+
+**Outputs:**
+- `{output-dir}/A_12_unrounded_template_mre.csv` - MRE per template with full floating-point precision
+
+**Usage:**
+```bash
+python3 A_12_Unrounded_Template_MRE.py
+python3 A_12_Unrounded_Template_MRE.py --output-dir Evaluation/Analysis/Overall
+```
+
+---
+
+## A_13 - Size_Freq_Comparison.py
+
+**Purpose:** Compare actually assigned patterns between Size and Frequency strategies per query, aggregated to template level
+
+**Inputs:**
+- `evaluation_dir` - Path to Evaluation directory containing Size/, Frequency/ (positional)
+- `--output-dir` - Output directory (required)
+
+**Outputs:**
+- `{output-dir}/A_13_template_comparison.csv` - Per-template match rate (IDENTICAL/DIFFERS)
+- `{output-dir}/A_13_query_differences.csv` - Detail for queries where assignments differ
+
+**Usage:**
+```bash
+python3 A_13_Size_Freq_Comparison.py Evaluation --output-dir Evaluation/Analysis/Overall
+```
+
+**Implementation Details:**
+
+Compares patterns from `[PATTERN: hash]` tags in report.md Query Tree section (actually assigned patterns), not from `models/patterns/` (all selected patterns). Selected patterns include models trained but never assigned to any node; assigned patterns are only those placed in the query tree.
