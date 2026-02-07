@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, TAB20_BLUE, TAB20_GREEN
+from plot_config import DPI, DEEP_GREEN, LIGHT_GREEN, DEEP_RED
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -70,15 +70,19 @@ def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
     x = np.arange(len(templates))
     width = 0.35
 
+    y_cap = 70
     static_overall = static_values.mean()
     dynamic_overall = dynamic_values.mean()
 
-    bars_static = ax.bar(x - width/2, static_values, width,
+    static_capped = np.minimum(static_values, y_cap)
+    dynamic_capped = np.minimum(dynamic_values, y_cap)
+
+    bars_static = ax.bar(x - width/2, static_capped, width,
                          label=f'Static (Overall: {static_overall:.2f}%)',
-                         color=TAB20_BLUE, alpha=0.85)
-    bars_dynamic = ax.bar(x + width/2, dynamic_values, width,
+                         color=LIGHT_GREEN, alpha=0.85)
+    bars_dynamic = ax.bar(x + width/2, dynamic_capped, width,
                           label=f'Dynamic (Overall: {dynamic_overall:.2f}%)',
-                          color=TAB20_GREEN, alpha=0.85)
+                          color=DEEP_GREEN, alpha=0.85)
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
@@ -87,11 +91,17 @@ def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
     ax.legend(fontsize=11, loc='upper right')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 
-    max_val = max(static_values.max(), dynamic_values.max())
-    ax.set_ylim(0, max_val * 1.15)
+    ax.set_ylim(0, y_cap * 1.1)
+    ax.set_yticks(np.arange(0, y_cap + 1, 10))
 
-    ax.bar_label(bars_static, fmt='%.1f%%', padding=2, fontsize=7, rotation=0)
-    ax.bar_label(bars_dynamic, fmt='%.1f%%', padding=2, fontsize=7, rotation=0)
+    for bar, val in zip(bars_static, static_values):
+        color = DEEP_RED if val > y_cap else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                f'{val:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
+    for bar, val in zip(bars_dynamic, dynamic_values):
+        color = DEEP_RED if val > y_cap else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                f'{val:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
 
     plt.tight_layout()
 

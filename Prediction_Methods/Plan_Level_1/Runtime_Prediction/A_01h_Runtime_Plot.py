@@ -11,7 +11,7 @@ import pandas as pd
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import PRIMARY_COLOR, DPI
+from plot_config import PRIMARY_COLOR, DPI, BAR_FIGSIZE, BAR_WIDTH, BAR_ALPHA, BAR_EDGECOLOR, BAR_LINEWIDTH, BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE
 
 
 # ORCHESTRATOR
@@ -38,29 +38,28 @@ def calculate_template_runtimes(df: pd.DataFrame) -> pd.DataFrame:
 
 # Create mean runtime bar plot by template
 def create_runtime_plot(df: pd.DataFrame):
-    fig, ax = plt.subplots(figsize=(16, 8))
+    fig, ax = plt.subplots(figsize=BAR_FIGSIZE)
 
     templates = df['template'].tolist()
     mean_runtime_ms = df['runtime'].values
 
     x = np.arange(len(templates))
-    width = 0.5
 
-    bars = ax.bar(x, mean_runtime_ms, width, label='Mean Runtime',
-                   color=PRIMARY_COLOR, alpha=0.8, edgecolor='black', linewidth=0.8)
+    bars = ax.bar(x, mean_runtime_ms, BAR_WIDTH, label='Mean Runtime',
+                   color=PRIMARY_COLOR, alpha=BAR_ALPHA, edgecolor=BAR_EDGECOLOR, linewidth=BAR_LINEWIDTH)
 
     ax.set_xlabel('Template', fontsize=13)
     ax.set_ylabel('Mean Runtime (ms)', fontsize=13)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     for i, bar in enumerate(bars):
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height,
                 f'{height:.0f} ms',
-                ha='center', va='bottom', fontsize=9)
+                ha='center', va='bottom', fontsize=BAR_LABEL_FONTSIZE)
 
     plt.tight_layout()
 

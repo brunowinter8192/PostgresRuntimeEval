@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, TAB20_BLUE
+from plot_config import DPI, DEEP_BLUE
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -67,7 +67,7 @@ def create_plot(stats: pd.DataFrame, output_dir: Path) -> None:
     overall = stats['overall_mre'].iloc[0] * 100
 
     x = np.arange(len(templates))
-    bars = ax.bar(x, values, color=TAB20_BLUE, alpha=0.85,
+    bars = ax.bar(x, values, color=DEEP_BLUE, alpha=0.85,
                   label=f'Plan-Level Optimizer (Overall: {overall:.2f}%)')
 
     ax.bar_label(bars, fmt='%.1f%%', padding=3, fontsize=8)

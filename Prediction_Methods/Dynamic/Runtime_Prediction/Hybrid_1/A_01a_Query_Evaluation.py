@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, TAB20_BLUE
+from plot_config import DPI, DEEP_GREEN
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -106,7 +106,7 @@ def create_mre_plot(loto_stats: pd.DataFrame, approach: str) -> plt.Figure:
     width = 0.5
 
     bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
-                   color=TAB20_BLUE, alpha=0.8, edgecolor='black', linewidth=0.8)
+                   color=DEEP_GREEN, alpha=0.8, edgecolor='black', linewidth=0.8)
 
     ax.set_xlabel('LOTO Template (Test Set)', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')

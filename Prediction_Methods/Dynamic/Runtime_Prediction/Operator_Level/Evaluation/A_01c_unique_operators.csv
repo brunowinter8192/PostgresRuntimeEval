@@ -1,0 +1,4 @@
+template;operator
+Q13;Index Only Scan
+Q18;Incremental Sort
+Q18;Merge Join
