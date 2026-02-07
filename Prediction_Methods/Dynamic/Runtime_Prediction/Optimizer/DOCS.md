@@ -18,6 +18,8 @@ Optimizer/
 ├── A_02_Overall_Comparison.py
 ├── A_03a_Plan_Static_Dynamic.py
 ├── A_03b_Operator_Static_Dynamic.py
+├── A_04a_Plan_ML_Optimizer.py
+├── A_04b_Operator_ML_Optimizer.py
 ├── Plan_Level/
 │   ├── {Template}/predictions.csv
 │   └── loto_mre.csv
@@ -35,6 +37,9 @@ Optimizer/
 
 A_01a_Plan_Evaluation + External Static CSV ──────> A_03a_Plan_Static_Dynamic
 A_01b_Operator_Evaluation + External Static CSV ──> A_03b_Operator_Static_Dynamic
+
+A_01a_Plan_Evaluation + External ML Plan CSV ─────────────────> A_04a_Plan_ML_Optimizer
+A_01b_Operator_Evaluation + External ML Operator/Hybrid/Online CSVs ──> A_04b_Operator_ML_Optimizer
 ```
 
 ## Module Documentation
@@ -131,7 +136,8 @@ python3 A_01b_Operator_Evaluation.py --predictions-dir Operator_Level --output-d
 
 **Usage:**
 ```bash
-python3 A_02_Overall_Comparison.py --plan-csv Plan_Level/loto_mre.csv --operator-csv Operator_Level/loto_mre.csv --output-dir .
+python3 A_02_Overall_Comparison.py --plan-csv Plan_Level/loto_mre.csv --operator-csv Operator_Level/loto_mre.csv --output-dir Plan_Level
+python3 A_02_Overall_Comparison.py --plan-csv Plan_Level/loto_mre.csv --operator-csv Operator_Level/loto_mre.csv --output-dir Operator_Level
 ```
 
 ---
@@ -153,7 +159,7 @@ python3 A_02_Overall_Comparison.py --plan-csv Plan_Level/loto_mre.csv --operator
 python3 A_03a_Plan_Static_Dynamic.py \
   --static-csv ../../../Plan_Level_1/Runtime_Prediction/Baseline_SVM/Evaluation/A_01i_optimizer_baseline_template.csv \
   --dynamic-csv Plan_Level/loto_mre.csv \
-  --output-dir .
+  --output-dir Plan_Level
 ```
 
 **Implementation Details:**
@@ -178,7 +184,55 @@ python3 A_03a_Plan_Static_Dynamic.py \
 python3 A_03b_Operator_Static_Dynamic.py \
   --static-csv ../../../Operator_Level/Runtime_Prediction/Baseline_SVM/Evaluation/A_01h_optimizer_baseline_template.csv \
   --dynamic-csv Operator_Level/loto_mre.csv \
-  --output-dir .
+  --output-dir Operator_Level
+```
+
+---
+
+### A_04a - Plan_ML_Optimizer.py
+
+**Purpose:** Compare Plan-Level ML vs Optimizer on dynamic workloads
+
+**Inputs:**
+- `--optimizer-csv`: Path to `Plan_Level/loto_mre.csv`
+- `--ml-csv`: Path to Plan-Level ML loto_mre CSV
+- `--output-dir`: Output directory
+
+**Outputs:**
+- `{output-dir}/A_04a_plan_ml_optimizer.png`
+
+**Usage:**
+```bash
+python3 A_04a_Plan_ML_Optimizer.py \
+  --optimizer-csv Plan_Level/loto_mre.csv \
+  --ml-csv ../../Plan_Level/Evaluation/loto_mre.csv \
+  --output-dir Plan_Level
+```
+
+---
+
+### A_04b - Operator_ML_Optimizer.py
+
+**Purpose:** Compare Operator-Level ML methods (Operator, Hybrid_1, Online_1) vs Optimizer on dynamic workloads
+
+**Inputs:**
+- `--optimizer-csv`: Path to `Operator_Level/loto_mre.csv`
+- `--operator-csv`: Path to Operator-Level ML loto_mre CSV
+- `--hybrid-csv`: Path to Hybrid_1 loto_mre CSV
+- `--online-csv`: Path to Online_1 loto_mre CSV
+- `--output-dir`: Output directory
+
+**Outputs:**
+- `{output-dir}/A_04b_operator_ml_optimizer.png`
+
+**Usage:**
+```bash
+python3 A_04b_Operator_ML_Optimizer.py \
+  --optimizer-csv Operator_Level/loto_mre.csv \
+  --operator-csv ../../Operator_Level/Evaluation/loto_mre.csv \
+  --hybrid-csv ../../Hybrid_1/Evaluation/approach_3/loto_mre.csv \
+  --online-csv ../../Online_1/Evaluation/Analysis/Size/loto_mre.csv \
+  --output-dir Operator_Level
 ```
 
 ## External Dependencies
@@ -186,6 +240,12 @@ python3 A_03b_Operator_Static_Dynamic.py \
 **Static Optimizer Baselines (from other workflows):**
 - Plan_Level_1: `Prediction_Methods/Plan_Level_1/Runtime_Prediction/Baseline_SVM/Evaluation/A_01i_optimizer_baseline_template.csv`
 - Operator_Level: `Prediction_Methods/Operator_Level/Runtime_Prediction/Baseline_SVM/Evaluation/A_01h_optimizer_baseline_template.csv`
+
+**ML loto_mre CSVs (from Dynamic workflows):**
+- Plan_Level ML: `Dynamic/Runtime_Prediction/Plan_Level/Evaluation/loto_mre.csv`
+- Operator_Level ML: `Dynamic/Runtime_Prediction/Operator_Level/Evaluation/loto_mre.csv`
+- Hybrid_1 ML: `Dynamic/Runtime_Prediction/Hybrid_1/Evaluation/approach_3/loto_mre.csv`
+- Online_1 ML: `Dynamic/Runtime_Prediction/Online_1/Evaluation/Analysis/Size/loto_mre.csv`
 
 ## Templates
 

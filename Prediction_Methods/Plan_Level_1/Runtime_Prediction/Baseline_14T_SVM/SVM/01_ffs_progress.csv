@@ -1,0 +1,15 @@
+iteration;feature_added;mre;n_features;features;seed
+1;Nested_Loop_rows;0.09178862903926649;1;Nested_Loop_rows;42
+2;Gather_rows;0.07239269434547965;2;Nested_Loop_rows, Gather_rows;42
+3;p_width;0.0670640181009449;3;Nested_Loop_rows, Gather_rows, p_width;42
+4;strategy_sorted;0.06099110290883806;4;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted;42
+5;Seq_Scan_cnt;0.057601138609745375;5;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt;42
+6;jit_functions;0.05578725216659989;6;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt, jit_functions;42
+7;Sort_rows;0.05464794889862277;7;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt, jit_functions, Sort_rows;42
+8;Index_Scan_cnt;0.054136367949533935;8;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt, jit_functions, Sort_rows, Index_Scan_cnt;42
+9;Gather_Merge_rows;0.053745347063654504;9;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt, jit_functions, Sort_rows, Index_Scan_cnt, Gather_Merge_rows;42
+10;p_tot_cost;0.05356948915453612;10;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt, jit_functions, Sort_rows, Index_Scan_cnt, Gather_Merge_rows, p_tot_cost;42
+11;p_rows;0.053423343966728966;11;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt, jit_functions, Sort_rows, Index_Scan_cnt, Gather_Merge_rows, p_tot_cost, p_rows;42
+12;Incremental_Sort_cnt;0.053301752865646215;12;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt, jit_functions, Sort_rows, Index_Scan_cnt, Gather_Merge_rows, p_tot_cost, p_rows, Incremental_Sort_cnt;42
+13;p_st_cost;0.05326462619565516;13;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt, jit_functions, Sort_rows, Index_Scan_cnt, Gather_Merge_rows, p_tot_cost, p_rows, Incremental_Sort_cnt, p_st_cost;42
+14;Index_Scan_rows;0.05323655412060328;14;Nested_Loop_rows, Gather_rows, p_width, strategy_sorted, Seq_Scan_cnt, jit_functions, Sort_rows, Index_Scan_cnt, Gather_Merge_rows, p_tot_cost, p_rows, Incremental_Sort_cnt, p_st_cost, Index_Scan_rows;42

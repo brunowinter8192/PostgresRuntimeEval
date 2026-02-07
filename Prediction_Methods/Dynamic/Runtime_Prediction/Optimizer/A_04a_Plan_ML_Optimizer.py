@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, TAB20_BLUE, TAB20_ORANGE
+from plot_config import DPI, DEEP_BLUE, DEEP_ORANGE
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -56,10 +56,10 @@ def create_comparison_plot(optimizer_df: pd.DataFrame, ml_df: pd.DataFrame, outp
 
     bars_optimizer = ax.bar(x - width/2, optimizer_values, width,
                             label=f'Optimizer (Overall: {optimizer_overall:.2f}%)',
-                            color=TAB20_ORANGE, alpha=0.85)
+                            color=DEEP_ORANGE, alpha=0.85)
     bars_ml = ax.bar(x + width/2, ml_values, width,
                      label=f'Plan Level (Overall: {ml_overall:.2f}%)',
-                     color=TAB20_BLUE, alpha=0.85)
+                     color=DEEP_BLUE, alpha=0.85)
 
     ax.bar_label(bars_optimizer, fmt='%.1f%%', padding=2, fontsize=5, rotation=0)
     ax.bar_label(bars_ml, fmt='%.1f%%', padding=2, fontsize=5, rotation=0)

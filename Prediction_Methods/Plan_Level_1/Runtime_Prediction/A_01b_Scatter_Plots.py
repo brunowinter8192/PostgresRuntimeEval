@@ -15,7 +15,7 @@ from mapping_config import PLAN_TARGET
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import PRIMARY_COLOR, DPI, PLOTS_PER_PAGE, SUBPLOT_ROWS, SUBPLOT_COLS
+from plot_config import PRIMARY_COLOR, DPI, PLOTS_PER_PAGE, SUBPLOT_ROWS, SUBPLOT_COLS, SCATTER_FIGSIZE, SCATTER_MARKER_SIZE, SCATTER_ALPHA, GRID_ALPHA
 
 
 # ORCHESTRATOR
@@ -57,7 +57,7 @@ def create_scatter_pages(df: pd.DataFrame, feature_cols: list) -> list:
 
 # Create single page with up to 4 scatter plots
 def create_single_scatter_page(df: pd.DataFrame, features: list):
-    fig, axes = plt.subplots(SUBPLOT_ROWS, SUBPLOT_COLS, figsize=(12, 10))
+    fig, axes = plt.subplots(SUBPLOT_ROWS, SUBPLOT_COLS, figsize=SCATTER_FIGSIZE)
     axes = axes.flatten()
 
     for idx, feature in enumerate(features):
@@ -66,11 +66,11 @@ def create_single_scatter_page(df: pd.DataFrame, features: list):
         x = df[feature]
         y = df[PLAN_TARGET]
 
-        ax.scatter(x, y, alpha=0.5, s=10, color=PRIMARY_COLOR)
+        ax.scatter(x, y, alpha=SCATTER_ALPHA, s=SCATTER_MARKER_SIZE, color=PRIMARY_COLOR)
         ax.set_xlabel(feature)
         ax.set_ylabel('Runtime (ms)')
         ax.ticklabel_format(style='plain', axis='x')
-        ax.grid(True, alpha=0.3)
+        ax.grid(True, alpha=GRID_ALPHA)
 
     for idx in range(len(features), len(axes)):
         axes[idx].set_visible(False)

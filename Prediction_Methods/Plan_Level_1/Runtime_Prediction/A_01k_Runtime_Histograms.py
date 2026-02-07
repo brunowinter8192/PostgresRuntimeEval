@@ -10,7 +10,7 @@ import pandas as pd
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import PRIMARY_COLOR, ACCENT_COLOR, DPI, PLOTS_PER_PAGE, SUBPLOT_ROWS, SUBPLOT_COLS
+from plot_config import PRIMARY_COLOR, ACCENT_COLOR, DPI, PLOTS_PER_PAGE, SUBPLOT_ROWS, SUBPLOT_COLS, HIST_FIGSIZE, HIST_BINS, HIST_ALPHA, HIST_EDGECOLOR, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE
 
 
 # ORCHESTRATOR
@@ -55,14 +55,14 @@ def create_histogram_pages(df: pd.DataFrame, predictions: dict, selected_templat
 
 # Create single page with up to 4 histograms
 def create_single_page(df: pd.DataFrame, predictions: dict, templates: list):
-    fig, axes = plt.subplots(SUBPLOT_ROWS, SUBPLOT_COLS, figsize=(12, 10))
+    fig, axes = plt.subplots(SUBPLOT_ROWS, SUBPLOT_COLS, figsize=HIST_FIGSIZE)
     axes = axes.flatten()
 
     for i, template in enumerate(templates):
         ax = axes[i]
         template_data = df[df['template'] == template]['runtime']
 
-        ax.hist(template_data, bins=15, color=PRIMARY_COLOR, alpha=0.8, edgecolor='black')
+        ax.hist(template_data, bins=HIST_BINS, color=PRIMARY_COLOR, alpha=HIST_ALPHA, edgecolor=HIST_EDGECOLOR)
         ax.set_title(f'{template}', fontsize=11)
         ax.set_xlabel('Runtime (ms)', fontsize=10)
         ax.set_ylabel('Count', fontsize=10)
@@ -79,7 +79,7 @@ def create_single_page(df: pd.DataFrame, predictions: dict, templates: list):
         if template_key in predictions:
             ax.axvline(predictions[template_key], color=ACCENT_COLOR, linestyle='--', linewidth=2)
 
-        ax.grid(axis='y', alpha=0.3, linestyle='--')
+        ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     for j in range(len(templates), len(axes)):
         axes[j].set_visible(False)

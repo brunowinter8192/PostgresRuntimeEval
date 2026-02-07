@@ -16,7 +16,7 @@ from mapping_config import PLAN_TARGET, PLAN_METADATA
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import METHOD_COLORS, DPI, DEEP_RED
+from plot_config import METHOD_COLORS, DPI, DEEP_RED, GROUPED_BAR_FIGSIZE, GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GROUPED_BAR_EDGECOLOR, GROUPED_BAR_LINEWIDTH, GROUPED_BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, CAP_OVERFLOW_COLOR
 
 
 # ORCHESTRATOR
@@ -110,9 +110,8 @@ def create_comparison_plot(results: dict, output_dir: Path) -> None:
     template_df = results['template_comparison']
     templates = template_df.index.tolist()
     x = np.arange(len(templates))
-    width = 0.35
 
-    fig, ax = plt.subplots(figsize=(14, 7))
+    fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE)
 
     y_limit = 100
     ml_values = template_df['mre_ml_pct'].values
@@ -120,36 +119,36 @@ def create_comparison_plot(results: dict, output_dir: Path) -> None:
     ml_display = np.minimum(ml_values, y_limit)
     opt_display = np.minimum(opt_values, y_limit)
 
-    bars_ml = ax.bar(x - width/2, ml_display, width,
+    bars_ml = ax.bar(x - GROUPED_BAR_WIDTH/2, ml_display, GROUPED_BAR_WIDTH,
                      label=f"Plan-Level Methode (Overall: {results['overall_ml']*100:.1f}%)",
-                     color=METHOD_COLORS['Plan_Level'], alpha=0.8)
-    bars_opt = ax.bar(x + width/2, opt_display, width,
+                     color=METHOD_COLORS['Plan_Level'], alpha=GROUPED_BAR_ALPHA, edgecolor=GROUPED_BAR_EDGECOLOR, linewidth=GROUPED_BAR_LINEWIDTH)
+    bars_opt = ax.bar(x + GROUPED_BAR_WIDTH/2, opt_display, GROUPED_BAR_WIDTH,
                       label=f"Optimizer Cost Model (Overall: {results['overall_optimizer']*100:.1f}%)",
-                      color=METHOD_COLORS['Optimizer'], alpha=0.8)
+                      color=METHOD_COLORS['Optimizer'], alpha=GROUPED_BAR_ALPHA, edgecolor=GROUPED_BAR_EDGECOLOR, linewidth=GROUPED_BAR_LINEWIDTH)
 
     for i, bar in enumerate(bars_ml):
         actual = ml_values[i]
-        color = DEEP_RED if actual > y_limit else 'black'
+        color = CAP_OVERFLOW_COLOR if actual > y_limit else 'black'
         ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
-                f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
+                f'{actual:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
 
     for i, bar in enumerate(bars_opt):
         actual = opt_values[i]
         template = templates[i]
-        color = DEEP_RED if actual > y_limit else 'black'
+        color = CAP_OVERFLOW_COLOR if actual > y_limit else 'black'
         if template in ['Q16', 'Q22'] and bar.get_height() > 90:
             ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() - 5,
-                    f'{actual:.1f}%', ha='center', va='top', fontsize=7, color=color)
+                    f'{actual:.1f}%', ha='center', va='top', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
         else:
             ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
-                    f'{actual:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
+                    f'{actual:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
 
     ax.set_xlabel('Template', fontsize=12)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=10)
     ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis='y', alpha=0.3)
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
     ax.set_ylim(0, y_limit * 1.1)
 
     plt.tight_layout()
