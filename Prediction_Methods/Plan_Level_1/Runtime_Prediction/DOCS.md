@@ -361,14 +361,14 @@ python A_01g_Evaluation_Plot.py Baseline_SVM/SVM/03_template_summary.csv
 **Purpose**: Create mean runtime bar plot per template (sorted ascending)
 
 **Inputs**:
-- `dataset_csv` (positional): Complete dataset CSV with runtime column
+- `template_summary_csv` (positional): Template summary CSV from A_01j_Summarize_Results.py
 
 **Outputs**:
 - `A_01h_template_runtime_plot.png`: Bar chart showing mean runtime per template (300 DPI, sorted low to high)
 
 **Usage**:
 ```bash
-python A_01h_Runtime_Plot.py ../Datasets/Baseline/complete_dataset.csv --output-dir Baseline_SVM/Evaluation
+python A_01h_Runtime_Plot.py Baseline_SVM/Evaluation/A_01j_template_summary.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables**:
@@ -424,19 +424,19 @@ python A_01j_Summarize_Results.py Baseline_SVM/Evaluation/02_predictions.csv --o
 **Purpose**: Visualize runtime distribution per template with histograms and predicted mean overlay
 
 **Inputs**:
-- `dataset_csv` (positional): Complete dataset CSV (complete_dataset.csv for full runtime distribution)
-- `--predictions-csv` (required): Predictions CSV with query_file and predicted_ms columns
+- `predictions_csv` (positional): Predictions CSV with query_file, actual_ms and predicted_ms columns
 
 **Outputs**:
 - `A_01k_runtime_histograms_*.png`: Grid of histograms (2x2 per page) with predicted mean line overlay
 
 **Usage**:
 ```bash
-python A_01k_Runtime_Histograms.py ../Datasets/Baseline/complete_dataset.csv --predictions-csv Baseline_SVM/Evaluation/02_predictions.csv --output-dir Baseline_SVM/Evaluation
+python A_01k_Runtime_Histograms.py Baseline_SVM/Evaluation/02_predictions.csv --output-dir Baseline_SVM/Evaluation
 ```
 
 **Variables**:
 - `--output-dir`: Output directory (default: Baseline_SVM/Evaluation/)
+- `--templates`: Comma-separated list of templates to include (e.g., Q11,Q13,Q16,Q18)
 
 ---
 

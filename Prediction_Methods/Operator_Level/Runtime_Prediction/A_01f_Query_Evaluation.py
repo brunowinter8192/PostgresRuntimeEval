@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
-from plot_config import METHOD_COLORS, DPI
+from plot_config import METHOD_COLORS, DPI, BAR_FIGSIZE, BAR_WIDTH, BAR_ALPHA, BAR_EDGECOLOR, BAR_LINEWIDTH, BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, CAP_OVERFLOW_COLOR, apply_top_margin, OPERATOR_LEVEL_MRE_Y_SCALE, OPERATOR_LEVEL_MRE_Y_STEP
 
 # ORCHESTRATOR
 def evaluate_predictions_workflow(predictions_file, output_dir):
@@ -87,33 +87,35 @@ def create_and_save_plot(template_stats, output_dir):
 
 # Create MRE bar plot by template
 def create_mre_plot(template_stats):
-    fig, ax = plt.subplots(figsize=(16, 8))
-    
+    fig, ax = plt.subplots(figsize=BAR_FIGSIZE)
+
     templates = template_stats.index.tolist()
     mean_mre_values = template_stats['mean_mre_pct'].values
-    
+
     x = np.arange(len(templates))
-    width = 0.5
-    
-    bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
-                   color=METHOD_COLORS['Operator_Level'], alpha=0.8, edgecolor='black', linewidth=0.8)
+    y_limit = OPERATOR_LEVEL_MRE_Y_SCALE
+    display_values = np.minimum(mean_mre_values, y_limit)
+
+    bars = ax.bar(x, display_values, BAR_WIDTH, label='Mean MRE',
+                   color=METHOD_COLORS['Operator_Level'], alpha=BAR_ALPHA, edgecolor=BAR_EDGECOLOR, linewidth=BAR_LINEWIDTH)
 
     ax.set_xlabel('Template', fontsize=13)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
-    ax.set_ylim(0, max(mean_mre_values) * 1.1)
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
+
+    plt.tight_layout()
+    apply_top_margin(ax, fig, y_limit, OPERATOR_LEVEL_MRE_Y_STEP)
 
     for i, bar in enumerate(bars):
-        height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height,
-                f'{height:.1f}%',
-                ha='center', va='bottom', fontsize=9)
-    
-    plt.tight_layout()
-    
+        actual = mean_mre_values[i]
+        color = CAP_OVERFLOW_COLOR if actual > y_limit else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.5,
+                f'{actual:.1f}%',
+                ha='center', va='bottom', fontsize=BAR_LABEL_FONTSIZE, color=color)
+
     return fig
 
 

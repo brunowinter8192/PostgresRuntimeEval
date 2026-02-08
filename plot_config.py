@@ -40,7 +40,7 @@ LIGHT_GREEN = "#99CBA4"
 BAR_FIGSIZE = (16, 8)
 BAR_WIDTH = 0.5
 BAR_ALPHA = 0.8
-BAR_EDGECOLOR = 'black'
+BAR_EDGECOLOR = 'none'
 BAR_LINEWIDTH = 0.8
 BAR_LABEL_FONTSIZE = 9
 
@@ -48,7 +48,7 @@ BAR_LABEL_FONTSIZE = 9
 GROUPED_BAR_FIGSIZE = (16, 8)
 GROUPED_BAR_WIDTH = 0.35
 GROUPED_BAR_ALPHA = 0.85
-GROUPED_BAR_EDGECOLOR = 'black'
+GROUPED_BAR_EDGECOLOR = 'none'
 GROUPED_BAR_LINEWIDTH = 0.8
 GROUPED_BAR_LABEL_FONTSIZE = 7
 
@@ -68,11 +68,35 @@ GRID_AXIS = 'y'
 GRID_ALPHA = 0.3
 GRID_LINESTYLE = '--'
 
+# === Y-AXIS MARGIN ===
+BAR_TOP_MARGIN_CM = 1.5  # Fester physischer Abstand oben (alle Bar-Plots)
+
+# === Y-AXIS SCALES (User-definiert pro Plot-Kontext) ===
+# Scale und Step werden vom User individuell vorgegeben.
+# Plan_Level_1
+PLAN_LEVEL_MRE_Y_SCALE = 50       # A_01g: MRE in %
+PLAN_LEVEL_MRE_Y_STEP = 10        # Ticks: 0, 10, 20, 30, 40, 50
+PLAN_LEVEL_RUNTIME_Y_SCALE = 3500  # A_01h: Runtime in ms
+PLAN_LEVEL_RUNTIME_Y_STEP = 500   # Ticks: 0, 500, ..., 3500
+PLAN_LEVEL_COMPARE_Y_SCALE = 50   # A_01i: Vergleichs-MRE in %
+PLAN_LEVEL_COMPARE_Y_STEP = 10    # Ticks: 0, 10, 20, 30, 40, 50
+# Operator_Level
+OPERATOR_LEVEL_MRE_Y_SCALE = 50       # A_01f: MRE in %
+OPERATOR_LEVEL_MRE_Y_STEP = 10        # Ticks: 0, 10, 20, 30, 40, 50
+OPERATOR_LEVEL_COMPARE_Y_SCALE = 50   # A_01h: Vergleichs-MRE in %
+OPERATOR_LEVEL_COMPARE_Y_STEP = 10    # Ticks: 0, 10, 20, 30, 40, 50
+# Hybrid_1
+HYBRID_1_MRE_Y_SCALE = 50            # A_01a: MRE in %
+HYBRID_1_MRE_Y_STEP = 10             # Ticks: 0, 10, 20, 30, 40, 50
+
 # === CAP/OVERFLOW ===
 CAP_OVERFLOW_COLOR = DEEP_RED
+# Welche Overflow-Labels nach unten verschoben werden entscheidet der User dynamisch.
+# Fester Abstand zwischen Legende-Unterkante und verschobenem Label:
+CAP_LABEL_GAP_CM = 0.5
 
 # === BASE-FARBEN ===
-# Histogramme, Scatter, Propagation
+# Alle Plots die NICHT MRE-Template-Plots sind (Runtime, Histogramme, Scatter, Propagation)
 PRIMARY_COLOR = DEEP_BLUE
 SECONDARY_COLOR = DEEP_ORANGE
 ACCENT_COLOR = DEEP_RED
@@ -81,7 +105,7 @@ ACCENT_COLOR = DEEP_RED
 DEPTH_PREDICTED = DEEP_BLUE
 DEPTH_ACTUAL = DEEP_ORANGE
 
-# === METHODEN-FARBEN ===
+# === METHODEN-FARBEN (nur MRE-Template-Plots) ===
 METHOD_COLORS = {
     "Plan_Level": DEEP_GREEN,
     "Operator_Level": DEEP_GREEN,
@@ -106,3 +130,16 @@ STRATEGY_COLORS_EPSILON = {
     "Frequency": LIGHT_PURPLE,
     "Size": LIGHT_CYAN,
 }
+
+
+# === HILFSFUNKTIONEN ===
+
+# Festen physischen Top-Margin (BAR_TOP_MARGIN_CM) auf Y-Achse anwenden
+def apply_top_margin(ax, fig, y_scale: float, y_step: float = None) -> None:
+    fig.canvas.draw()
+    ax_height_inches = fig.get_size_inches()[1] * ax.get_position().height
+    margin_inches = BAR_TOP_MARGIN_CM / 2.54
+    margin_data = y_scale * (margin_inches / (ax_height_inches - margin_inches))
+    ax.set_ylim(0, y_scale + margin_data)
+    if y_step:
+        ax.set_yticks(range(0, int(y_scale) + 1, int(y_step)))

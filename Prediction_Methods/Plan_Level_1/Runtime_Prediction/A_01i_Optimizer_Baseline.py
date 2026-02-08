@@ -16,7 +16,7 @@ from mapping_config import PLAN_TARGET, PLAN_METADATA
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import METHOD_COLORS, DPI, DEEP_RED, GROUPED_BAR_FIGSIZE, GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GROUPED_BAR_EDGECOLOR, GROUPED_BAR_LINEWIDTH, GROUPED_BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, CAP_OVERFLOW_COLOR
+from plot_config import METHOD_COLORS, DPI, DEEP_RED, GROUPED_BAR_FIGSIZE, GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GROUPED_BAR_EDGECOLOR, GROUPED_BAR_LINEWIDTH, GROUPED_BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, CAP_OVERFLOW_COLOR, apply_top_margin, PLAN_LEVEL_COMPARE_Y_SCALE, PLAN_LEVEL_COMPARE_Y_STEP, CAP_LABEL_GAP_CM
 
 
 # ORCHESTRATOR
@@ -113,7 +113,7 @@ def create_comparison_plot(results: dict, output_dir: Path) -> None:
 
     fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE)
 
-    y_limit = 100
+    y_limit = PLAN_LEVEL_COMPARE_Y_SCALE
     ml_values = template_df['mre_ml_pct'].values
     opt_values = template_df['mre_optimizer_pct'].values
     ml_display = np.minimum(ml_values, y_limit)
@@ -126,33 +126,50 @@ def create_comparison_plot(results: dict, output_dir: Path) -> None:
                       label=f"Optimizer Cost Model (Overall: {results['overall_optimizer']*100:.1f}%)",
                       color=METHOD_COLORS['Optimizer'], alpha=GROUPED_BAR_ALPHA, edgecolor=GROUPED_BAR_EDGECOLOR, linewidth=GROUPED_BAR_LINEWIDTH)
 
+    ax.set_xlabel('Template', fontsize=12)
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
+    ax.set_xticks(x)
+    ax.set_xticklabels(templates, fontsize=10)
+    legend = ax.legend(fontsize=11, loc='upper right')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
+
+    plt.tight_layout()
+    apply_top_margin(ax, fig, y_limit, PLAN_LEVEL_COMPARE_Y_STEP)
+
+    legend_bbox = legend.get_window_extent(fig.canvas.get_renderer())
+    legend_bottom_data = ax.transData.inverted().transform((0, legend_bbox.y0))[1]
+    gap_inches = CAP_LABEL_GAP_CM / 2.54
+    ax_height_inches = fig.get_size_inches()[1] * ax.get_position().height
+    ylim = ax.get_ylim()
+    gap_data = (ylim[1] - ylim[0]) * (gap_inches / ax_height_inches)
+    shifted_y = legend_bottom_data - gap_data
+
+    shifted_labels_opt = ['Q16', 'Q22']
+    shifted_labels_ml = ['Q18']
+
     for i, bar in enumerate(bars_ml):
         actual = ml_values[i]
+        template = templates[i]
         color = CAP_OVERFLOW_COLOR if actual > y_limit else 'black'
-        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
-                f'{actual:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
+        if template in shifted_labels_ml:
+            ax.text(bar.get_x() + bar.get_width()/2., shifted_y,
+                    f'{actual:.1f}%', ha='center', va='top', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
+        else:
+            ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.5,
+                    f'{actual:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
 
     for i, bar in enumerate(bars_opt):
         actual = opt_values[i]
         template = templates[i]
         color = CAP_OVERFLOW_COLOR if actual > y_limit else 'black'
-        if template in ['Q16', 'Q22'] and bar.get_height() > 90:
-            ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() - 5,
+        if template in shifted_labels_opt and actual > y_limit:
+            ax.text(bar.get_x() + bar.get_width()/2., shifted_y,
                     f'{actual:.1f}%', ha='center', va='top', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
         else:
-            ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
+            ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.5,
                     f'{actual:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
 
-    ax.set_xlabel('Template', fontsize=12)
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
-    ax.set_xticks(x)
-    ax.set_xticklabels(templates, fontsize=10)
-    ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
-    ax.set_ylim(0, y_limit * 1.1)
-
-    plt.tight_layout()
-    plt.savefig(output_dir / 'A_01i_optimizer_baseline_plot.png', dpi=DPI)
+    fig.savefig(output_dir / 'A_01i_optimizer_baseline_plot.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 
 

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
-from plot_config import PRIMARY_COLOR, DPI
+from plot_config import PRIMARY_COLOR, DPI, HIST_FIGSIZE, HIST_ALPHA, HIST_EDGECOLOR
 
 OPERATOR_ORDER = [
     'Seq Scan', 'Index Scan', 'Index Only Scan',
@@ -21,10 +21,12 @@ OPERATOR_ORDER = [
 
 # ORCHESTRATOR
 
-def operator_distribution_workflow(dataset_csv, output_dir, selected_operators=None):
+def operator_distribution_workflow(dataset_csv, output_dir, selected_operators=None, column='both'):
     df = load_dataset(dataset_csv)
-    create_histogram_plot(df, 'actual_startup_time', 'startup_time', output_dir, selected_operators)
-    create_histogram_plot(df, 'actual_total_time', 'total_time', output_dir, selected_operators)
+    if column in ('startup_time', 'both'):
+        create_histogram_plot(df, 'actual_startup_time', 'startup_time', output_dir, selected_operators)
+    if column in ('total_time', 'both'):
+        create_histogram_plot(df, 'actual_total_time', 'total_time', output_dir, selected_operators)
 
 
 # FUNCTIONS
@@ -39,7 +41,7 @@ def create_histogram_plot(df, column, name, output_dir, selected_operators=None)
     if selected_operators:
         operators = [op for op in OPERATOR_ORDER if op in selected_operators]
         rows, cols = 2, 2
-        figsize = (12, 10)
+        figsize = HIST_FIGSIZE
     else:
         operators = OPERATOR_ORDER
         rows, cols = 4, 4
@@ -58,7 +60,7 @@ def create_histogram_plot(df, column, name, output_dir, selected_operators=None)
             ax.set_yticks([])
             continue
 
-        ax.hist(op_data, bins=50, color=PRIMARY_COLOR, edgecolor='black', alpha=0.7)
+        ax.hist(op_data, bins=50, color=PRIMARY_COLOR, edgecolor=HIST_EDGECOLOR, alpha=HIST_ALPHA)
         ax.set_title(f'{operator} (n={len(op_data)})', fontsize=9)
         ax.set_xlabel('ms', fontsize=8)
         ax.set_ylabel('count', fontsize=8)
@@ -81,7 +83,8 @@ if __name__ == '__main__':
     parser.add_argument("dataset_csv", help="Path to operator dataset CSV file")
     parser.add_argument("--output-dir", required=True, help="Output directory")
     parser.add_argument("--operators", default=None, help="Comma-separated list of operators (e.g., 'Seq Scan,Hash,Limit,Aggregate')")
+    parser.add_argument("--column", choices=['total_time', 'startup_time', 'both'], default='both', help="Which time column to plot")
     args = parser.parse_args()
 
     selected = [op.strip() for op in args.operators.split(',')] if args.operators else None
-    operator_distribution_workflow(args.dataset_csv, args.output_dir, selected)
+    operator_distribution_workflow(args.dataset_csv, args.output_dir, selected, args.column)

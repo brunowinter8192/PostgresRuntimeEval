@@ -337,20 +337,21 @@ python A_01c_Time_Analysis.py ../../Operator_Level/Datasets/Baseline/03_training
 1. Load structure CSV for correct plan hash calculation
 2. Load predictions
 3. Compute plan_hash per query from structure (based on node_type, depth, parent_relationship)
-4. Group by plan_hash and depth, calculate mean actual/predicted times
+4. Select sample query per unique plan hash (filtered by seed if provided)
 5. Generate line plot with automatic label positioning (adjustText)
 
 **Inputs:**
 - `structure_csv` - Path to structure CSV (test.csv) for correct plan hash calculation (positional)
 - `predictions_csv` - Path to predictions.csv (positional)
 
+**Variables:**
+- `--output-dir` - Output directory (required)
+- `--seed` - Filter for specific seed to select consistent sample query across templates (default: first query per plan hash)
+
 **Outputs:**
 - `{output-dir}/A_01d_depth_{template}_{plan_hash[:8]}.png` per unique plan within template
 
 **Usage:**
 ```bash
-python A_01d_Depth_Propagation.py ../Datasets/Baseline_SVM/test.csv Baseline_SVM/Predictions/approach_1/predictions.csv --output-dir Baseline_SVM/Evaluation/approach_1
+python A_01d_Depth_Propagation.py ../Datasets/Baseline_SVM/test.csv Baseline_SVM/Predictions/approach_1/predictions.csv --output-dir Baseline_SVM/Evaluation/approach_1/propagation --seed seed_1033707906
 ```
-
-**Variables:**
-- `--output-dir` - Output directory (required)

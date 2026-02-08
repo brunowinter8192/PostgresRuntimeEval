@@ -16,6 +16,9 @@ cd Prediction_Methods/Dynamic/Runtime_Prediction/Plan_Level
 Plan_Level/
 ├── DOCS.md
 ├── 00_Batch_Workflow.py
+├── A_01a_Query_Evaluation.py
+├── A_01b_Static_Dynamic_Comparison.py
+├── Evaluation/
 └── Q1/, Q3/, ... Q19/
     ├── SVM/
     └── 02_predictions_*.csv
@@ -67,3 +70,26 @@ python3 00_Batch_Workflow.py
 ```bash
 python3 A_01a_Query_Evaluation.py --output-dir Evaluation
 ```
+
+---
+
+## A_01b - Static_Dynamic_Comparison.py
+
+**Purpose:** Compare Plan-Level MRE between static and dynamic workloads per template.
+
+**Inputs:**
+- `--static-csv` (required): Template summary CSV from static evaluation (Baseline_14T)
+- Dynamic data: `Evaluation/loto_mre.csv` (from A_01a)
+
+**Outputs:**
+- `{output-dir}/A_01b_static_dynamic_comparison.csv` - Combined MRE per template
+- `{output-dir}/A_01b_static_dynamic_comparison.png` - Grouped bar plot
+
+**Usage:**
+```bash
+python3 A_01b_Static_Dynamic_Comparison.py \
+    --static-csv /path/to/Plan_Level_1/Runtime_Prediction/Baseline_14T_SVM/Evaluation/A_01j_template_summary.csv \
+    --output-dir Evaluation
+```
+
+**Note:** Die statische Baseline muss auf denselben 14 Templates trainiert worden sein (Baseline_14T).

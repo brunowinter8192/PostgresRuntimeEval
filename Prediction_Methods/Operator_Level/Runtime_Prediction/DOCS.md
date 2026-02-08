@@ -331,9 +331,13 @@ python3 A_01b_Template_Operators.py \
 - `dataset_csv` - Path to operator dataset CSV (full dataset for complete distribution)
 - `--output-dir` - Output directory
 
+**Variables**:
+- `--operators` - Comma-separated list of operators to plot (default: all 13, uses 2x2 grid when 4 selected)
+- `--column` - Which time column to plot: `total_time`, `startup_time`, `both` (default: `both`)
+
 **Outputs**:
-- `Evaluation/A_01c_histogram_startup_time.png` - 13 subplots for startup time
-- `Evaluation/A_01c_histogram_total_time.png` - 13 subplots for total time
+- `Evaluation/A_01c_histogram_startup_time.png` - Subplots for startup time
+- `Evaluation/A_01c_histogram_total_time.png` - Subplots for total time
 
 **Usage**:
 ```bash
@@ -344,19 +348,24 @@ python3 A_01c_Operator_Distribution.py <dataset_csv> --output-dir <output_dir>
 ```bash
 python3 A_01c_Operator_Distribution.py \
     ../Datasets/Baseline/01_operator_dataset_cleaned.csv \
-    --output-dir ./Baseline_SVM
+    --output-dir ./Baseline_SVM \
+    --operators "Seq Scan,Hash,Aggregate,Limit" \
+    --column total_time
 ```
 
 ---
 
 ### A_01d - A_01d_Depth_Propagation.py
 
-**Purpose**: Create depth propagation plots showing predicted vs actual time per depth level (averaged per plan hash within template).
+**Purpose**: Create depth propagation plots showing predicted vs actual time per depth level (single sample query per unique plan hash within template).
 
 **Inputs**:
 - `structure_csv` - Path to structure CSV (test.csv) for correct plan hash calculation
 - `predictions_csv` - Path to predictions CSV
 - `--output-dir` - Output directory
+
+**Variables**:
+- `--seed` - Filter for specific seed to select consistent sample query across templates (default: first query per plan hash)
 
 **Outputs**:
 - `{output-dir}/A_01d_depth_{template}_{plan_hash[:8]}.png` - One plot per unique plan within template
@@ -371,7 +380,8 @@ python3 A_01d_Depth_Propagation.py <structure_csv> <predictions_csv> --output-di
 python3 A_01d_Depth_Propagation.py \
     ../Datasets/Baseline/03_test.csv \
     ./Baseline_SVM/predictions.csv \
-    --output-dir ./Baseline_SVM/Evaluation
+    --output-dir ./Baseline_SVM/Evaluation \
+    --seed seed_1033707906
 ```
 
 ---

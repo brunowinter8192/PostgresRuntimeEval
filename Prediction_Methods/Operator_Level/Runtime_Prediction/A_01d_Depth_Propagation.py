@@ -11,19 +11,19 @@ from pathlib import Path
 from adjustText import adjust_text
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
-from plot_config import DEPTH_PREDICTED, DEPTH_ACTUAL, DPI
+from plot_config import DEPTH_PREDICTED, DEPTH_ACTUAL, DPI, GRID_ALPHA, GRID_LINESTYLE
 
 
 # ORCHESTRATOR
 
-def depth_propagation_workflow(structure_csv, predictions_csv, output_dir):
+def depth_propagation_workflow(structure_csv, predictions_csv, output_dir, seed=None):
     df_structure = load_csv(structure_csv)
     df_predictions = load_csv(predictions_csv)
     plan_hash_map = build_plan_hash_map(df_structure)
     df = merge_with_plan_hash(df_predictions, plan_hash_map)
     df = add_template_column(df)
     plan_hashes = get_unique_plan_hashes(df)
-    create_depth_plots(df, plan_hashes, output_dir)
+    create_depth_plots(df, plan_hashes, output_dir, seed)
 
 
 # FUNCTIONS
@@ -68,13 +68,19 @@ def get_unique_plan_hashes(df):
 
 
 # Create depth propagation plot for each plan hash
-def create_depth_plots(df, plan_hashes, output_dir):
+def create_depth_plots(df, plan_hashes, output_dir, seed=None):
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
     for plan_hash, template in plan_hashes:
         plan_df = df[(df['plan_hash'] == plan_hash) & (df['template'] == template)].copy()
-        sample_query = plan_df['query_file'].iloc[0]
+        if seed:
+            seed_matches = plan_df[plan_df['query_file'].str.contains(seed)]
+            if seed_matches.empty:
+                continue
+            sample_query = seed_matches['query_file'].iloc[0]
+        else:
+            sample_query = plan_df['query_file'].iloc[0]
         query_ops = plan_df[plan_df['query_file'] == sample_query].copy()
         query_ops = sort_tree_order(query_ops)
 
@@ -107,7 +113,7 @@ def create_depth_plots(df, plan_hashes, output_dir):
         ax.set_xlabel('Operator (Leaf -> Root)')
         ax.set_ylabel('Total Time (ms)')
         ax.legend()
-        ax.grid(True, alpha=0.3)
+        ax.grid(True, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
         plt.tight_layout()
 
@@ -134,6 +140,7 @@ if __name__ == '__main__':
     parser.add_argument("structure_csv", help="Path to structure CSV (test.csv) for plan hash")
     parser.add_argument("predictions_csv", help="Path to predictions CSV file")
     parser.add_argument("--output-dir", required=True, help="Output directory")
+    parser.add_argument("--seed", default=None, help="Filter for specific seed (e.g., 'seed_1033707906')")
     args = parser.parse_args()
 
-    depth_propagation_workflow(args.structure_csv, args.predictions_csv, args.output_dir)
+    depth_propagation_workflow(args.structure_csv, args.predictions_csv, args.output_dir, args.seed)

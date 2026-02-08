@@ -21,6 +21,7 @@ Operator_Level/
 ├── 03_Query_Prediction.py
 ├── A_01a_Query_Evaluation.py
 ├── A_01b_Static_Dynamic_Comparison.py
+├── A_01c_Unique_Operators.py
 └── Q1/, Q3/, ... Q19/
     ├── SVM/
     ├── Model/
@@ -201,4 +202,22 @@ python3 A_01a_Query_Evaluation.py --output-dir Evaluation
 python3 A_01b_Static_Dynamic_Comparison.py \
   --static-csv ../../Operator_Level/Runtime_Prediction/Baseline_SVM/Evaluation/A_01f_template_mre.csv \
   --output-dir Evaluation
+```
+
+---
+
+## A_01c - Unique_Operators.py
+
+**Purpose:** Identify operators that exist in a LOTO test set but not in the corresponding training set.
+
+**Inputs:**
+- Dataset: `../../Dataset/Dataset_Operator/Qx/training.csv` and `test.csv`
+
+**Outputs:**
+- `{output-dir}/A_01c_unique_operators.csv`
+  - Columns: template;operator
+
+**Usage:**
+```bash
+python3 A_01c_Unique_Operators.py --output-dir Evaluation
 ```

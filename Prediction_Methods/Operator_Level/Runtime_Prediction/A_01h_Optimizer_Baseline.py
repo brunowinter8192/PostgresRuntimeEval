@@ -11,7 +11,7 @@ from pathlib import Path
 from sklearn.linear_model import LinearRegression
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
-from plot_config import METHOD_COLORS, DPI
+from plot_config import METHOD_COLORS, DPI, GROUPED_BAR_FIGSIZE, GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GROUPED_BAR_EDGECOLOR, GROUPED_BAR_LINEWIDTH, GROUPED_BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, CAP_OVERFLOW_COLOR, apply_top_margin, OPERATOR_LEVEL_COMPARE_Y_SCALE, OPERATOR_LEVEL_COMPARE_Y_STEP, CAP_LABEL_GAP_CM
 
 
 # ORCHESTRATOR
@@ -100,39 +100,45 @@ def create_comparison_plot(results, output_dir):
     template_df = results['template_comparison']
     templates = template_df.index.tolist()
     x = np.arange(len(templates))
-    width = 0.35
 
-    fig, ax = plt.subplots(figsize=(14, 7))
+    fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE)
 
+    y_limit = OPERATOR_LEVEL_COMPARE_Y_SCALE
     ml_values = template_df['mre_ml_pct'].values
     opt_values = template_df['mre_optimizer_pct'].values
-    max_value = max(ml_values.max(), opt_values.max())
+    ml_display = np.minimum(ml_values, y_limit)
+    opt_display = np.minimum(opt_values, y_limit)
 
-    bars_ml = ax.bar(x - width/2, ml_values, width,
+    bars_ml = ax.bar(x - GROUPED_BAR_WIDTH/2, ml_display, GROUPED_BAR_WIDTH,
                      label=f"Operator-Level Methode (Overall: {results['overall_ml']*100:.1f}%)",
-                     color=METHOD_COLORS['Operator_Level'], alpha=0.8)
-    bars_opt = ax.bar(x + width/2, opt_values, width,
+                     color=METHOD_COLORS['Operator_Level'], alpha=GROUPED_BAR_ALPHA, edgecolor=GROUPED_BAR_EDGECOLOR, linewidth=GROUPED_BAR_LINEWIDTH)
+    bars_opt = ax.bar(x + GROUPED_BAR_WIDTH/2, opt_display, GROUPED_BAR_WIDTH,
                       label=f"Optimizer Cost Model (Overall: {results['overall_optimizer']*100:.1f}%)",
-                      color=METHOD_COLORS['Optimizer'], alpha=0.8)
-
-    for i, bar in enumerate(bars_ml):
-        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + max_value * 0.01,
-                f'{ml_values[i]:.1f}%', ha='center', va='bottom', fontsize=7)
-
-    for i, bar in enumerate(bars_opt):
-        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + max_value * 0.01,
-                f'{opt_values[i]:.1f}%', ha='center', va='bottom', fontsize=7)
+                      color=METHOD_COLORS['Optimizer'], alpha=GROUPED_BAR_ALPHA, edgecolor=GROUPED_BAR_EDGECOLOR, linewidth=GROUPED_BAR_LINEWIDTH)
 
     ax.set_xlabel('Template', fontsize=12)
     ax.set_ylabel('Mean Relative Error (%)', fontsize=12)
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=10)
-    ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis='y', alpha=0.3)
-    ax.set_ylim(0, max_value * 1.15)
+    legend = ax.legend(fontsize=11, loc='upper right')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     plt.tight_layout()
-    plt.savefig(output_path / 'A_01h_optimizer_baseline_plot.png', dpi=DPI)
+    apply_top_margin(ax, fig, y_limit, OPERATOR_LEVEL_COMPARE_Y_STEP)
+
+    for i, bar in enumerate(bars_ml):
+        actual = ml_values[i]
+        color = CAP_OVERFLOW_COLOR if actual > y_limit else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.5,
+                f'{actual:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
+
+    for i, bar in enumerate(bars_opt):
+        actual = opt_values[i]
+        color = CAP_OVERFLOW_COLOR if actual > y_limit else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.5,
+                f'{actual:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
+
+    fig.savefig(output_path / 'A_01h_optimizer_baseline_plot.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 
 

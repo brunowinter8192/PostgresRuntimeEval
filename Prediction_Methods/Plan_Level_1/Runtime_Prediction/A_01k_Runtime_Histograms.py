@@ -16,24 +16,24 @@ from plot_config import PRIMARY_COLOR, ACCENT_COLOR, DPI, PLOTS_PER_PAGE, SUBPLO
 # ORCHESTRATOR
 
 # Create and save runtime histograms for each template
-def create_histograms_workflow(dataset_csv: Path, predictions_csv: Path, output_dir: Path, selected_templates: list = None) -> None:
-    df = load_dataset(dataset_csv)
-    predictions = load_predictions(predictions_csv)
-    figures = create_histogram_pages(df, predictions, selected_templates)
+def create_histograms_workflow(predictions_csv: Path, output_dir: Path, selected_templates: list = None) -> None:
+    df = load_predictions(predictions_csv)
+    pred_means = compute_prediction_means(df)
+    figures = create_histogram_pages(df, pred_means, selected_templates)
     save_plots(figures, output_dir)
 
 
 # FUNCTIONS
 
-# Load dataset from CSV with semicolon delimiter
-def load_dataset(csv_path: Path) -> pd.DataFrame:
-    return pd.read_csv(csv_path, delimiter=';')
-
-
 # Load predictions and extract template from query_file
 def load_predictions(csv_path: Path) -> pd.DataFrame:
     df = pd.read_csv(csv_path, delimiter=';')
     df['template'] = df['query_file'].str.extract(r'^(Q\d+)_')[0]
+    return df
+
+
+# Compute mean predicted runtime per template
+def compute_prediction_means(df: pd.DataFrame) -> dict:
     return df.groupby('template')['predicted_ms'].mean().to_dict()
 
 
@@ -60,7 +60,7 @@ def create_single_page(df: pd.DataFrame, predictions: dict, templates: list):
 
     for i, template in enumerate(templates):
         ax = axes[i]
-        template_data = df[df['template'] == template]['runtime']
+        template_data = df[df['template'] == template]['actual_ms']
 
         ax.hist(template_data, bins=HIST_BINS, color=PRIMARY_COLOR, alpha=HIST_ALPHA, edgecolor=HIST_EDGECOLOR)
         ax.set_title(f'{template}', fontsize=11)
@@ -75,9 +75,8 @@ def create_single_page(df: pd.DataFrame, predictions: dict, templates: list):
                 ha='left', va='top', fontsize=9,
                 bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
-        template_key = f'Q{template}' if not str(template).startswith('Q') else str(template)
-        if template_key in predictions:
-            ax.axvline(predictions[template_key], color=ACCENT_COLOR, linestyle='--', linewidth=2)
+        if template in predictions:
+            ax.axvline(predictions[template], color=ACCENT_COLOR, linestyle='--', linewidth=2)
 
         ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
@@ -100,14 +99,12 @@ def save_plots(figures: list, output_dir: Path) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create runtime histograms per template")
-    parser.add_argument("dataset_csv", help="Complete dataset CSV file")
-    parser.add_argument("--predictions-csv", required=True, help="Predictions CSV file")
+    parser.add_argument("predictions_csv", help="Predictions CSV file with actual_ms and predicted_ms")
     parser.add_argument("--output-dir", default=None, help="Output directory (default: script_dir/Baseline_SVM/Evaluation)")
     parser.add_argument("--templates", default=None, help="Comma-separated list of templates to include (e.g., Q11,Q13,Q16,Q18)")
 
     args = parser.parse_args()
 
-    dataset_path = Path(args.dataset_csv)
     predictions_path = Path(args.predictions_csv)
     if args.output_dir:
         output_path = Path(args.output_dir)
@@ -116,4 +113,4 @@ if __name__ == "__main__":
 
     selected = args.templates.split(',') if args.templates else None
 
-    create_histograms_workflow(dataset_path, predictions_path, output_path, selected)
+    create_histograms_workflow(predictions_path, output_path, selected)

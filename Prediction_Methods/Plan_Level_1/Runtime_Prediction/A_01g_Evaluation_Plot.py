@@ -15,7 +15,7 @@ from mapping_config import PLAN_METADATA
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import METHOD_COLORS, DPI, BAR_FIGSIZE, BAR_WIDTH, BAR_ALPHA, BAR_EDGECOLOR, BAR_LINEWIDTH, BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE
+from plot_config import METHOD_COLORS, DPI, BAR_FIGSIZE, BAR_WIDTH, BAR_ALPHA, BAR_EDGECOLOR, BAR_LINEWIDTH, BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin, PLAN_LEVEL_MRE_Y_SCALE, PLAN_LEVEL_MRE_Y_STEP
 
 
 # ORCHESTRATOR
@@ -51,7 +51,6 @@ def create_mre_plot(df: pd.DataFrame):
     ax.set_xticklabels([f'Q{t}' for t in templates], rotation=0, fontsize=11)
     ax.legend(fontsize=11, loc='upper left')
     ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
-    ax.set_ylim(0, max(mean_mre_pct) * 1.1)
 
     for i, bar in enumerate(bars):
         actual_value = mean_mre_pct[i]
@@ -61,6 +60,7 @@ def create_mre_plot(df: pd.DataFrame):
                 ha='center', va='bottom', fontsize=BAR_LABEL_FONTSIZE)
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, PLAN_LEVEL_MRE_Y_SCALE, PLAN_LEVEL_MRE_Y_STEP)
 
     return fig
 
