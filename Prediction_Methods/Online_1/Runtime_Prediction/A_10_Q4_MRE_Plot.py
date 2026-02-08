@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_GREEN
+from plot_config import DPI, DEEP_GREEN, BAR_ALPHA, BAR_EDGECOLOR, BAR_LINEWIDTH, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP
 
 # ORCHESTRATOR
 def q4_mre_plot_workflow(predictions_dir, output_dir):
@@ -70,8 +70,8 @@ def create_q4_barplot(query_mre, overall_mre):
     x = np.arange(len(queries))
     width = 0.7
 
-    bars = ax.bar(x, mre_values, width, color=DEEP_GREEN, alpha=0.8,
-                  edgecolor='black', linewidth=0.8)
+    bars = ax.bar(x, mre_values, width, color=DEEP_GREEN, alpha=BAR_ALPHA,
+                  edgecolor=BAR_EDGECOLOR, linewidth=BAR_LINEWIDTH)
 
     ax.set_xlabel('Query', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
@@ -80,7 +80,7 @@ def create_q4_barplot(query_mre, overall_mre):
     ax.set_xticks(x)
     ax.set_xticklabels([q.replace('_seed_', '\n') for q in queries],
                        rotation=90, ha='center', fontsize=8)
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     for bar in bars:
         height = bar.get_height()
@@ -94,6 +94,7 @@ def create_q4_barplot(query_mre, overall_mre):
             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8, edgecolor='gray'))
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP)
 
     return fig
 

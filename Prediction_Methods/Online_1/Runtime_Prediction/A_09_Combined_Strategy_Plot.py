@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, STRATEGY_COLORS, DEEP_RED
+from plot_config import DPI, STRATEGY_COLORS, GROUPED_BAR_FIGSIZE_WIDE, GROUPED_BAR_ALPHA, GROUPED_BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, CAP_OVERFLOW_COLOR, apply_top_margin, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP
 
 
 # ORCHESTRATOR
@@ -29,7 +29,7 @@ def load_all_mre_data(size_mre: str, frequency_mre: str, error_mre: str, optimiz
         'Size': load_template_mre(size_mre),
         'Frequency': load_template_mre(frequency_mre),
         'Error': load_template_mre(error_mre),
-        'Optimizer': load_optimizer_mre(optimizer_mre)
+        'Optimizer': load_template_mre(optimizer_mre)
     }
 
 
@@ -42,15 +42,6 @@ def load_template_mre(csv_path: str) -> dict:
         'overall_mre': overall_mre * 100
     }
 
-
-# Load optimizer MRE from CSV (different column names)
-def load_optimizer_mre(csv_path: str) -> dict:
-    df = pd.read_csv(csv_path, delimiter=';', index_col=0)
-    overall_mre = df['mre_optimizer'].mean()
-    return {
-        'template_mre': df['mre_optimizer_pct'].to_dict(),
-        'overall_mre': overall_mre * 100
-    }
 
 
 # Create combined dataframe with all strategies
@@ -84,9 +75,9 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     templates = sorted(data['Size']['template_mre'].keys(), key=lambda x: int(x[1:]))
     x = np.arange(len(templates))
 
-    fig, ax = plt.subplots(figsize=(18, 8))
+    fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE_WIDE)
 
-    y_limit = 10
+    y_limit = ONLINE_1_MRE_Y_SCALE
     strategies = ['Size', 'Frequency', 'Error', 'Optimizer']
     colors = [STRATEGY_COLORS['Size'], STRATEGY_COLORS['Frequency'], STRATEGY_COLORS['Error'], STRATEGY_COLORS['Optimizer']]
     offsets = [-1.5, -0.5, 0.5, 1.5]
@@ -98,32 +89,32 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
         overall = data[strategy]['overall_mre']
         display_name = "Optimizer Cost Model" if strategy == "Optimizer" else strategy
         label = f"{display_name} (Overall: {overall:.2f}%)"
-        bars = ax.bar(x + offset * width, display_values, width, label=label, color=color, alpha=0.85)
+        bars = ax.bar(x + offset * width, display_values, width, label=label, color=color, alpha=GROUPED_BAR_ALPHA)
 
         for i, bar in enumerate(bars):
             actual = actual_values[i]
             template = templates[i]
-            label_color = DEEP_RED if actual > y_limit else 'black'
+            label_color = CAP_OVERFLOW_COLOR if actual > y_limit else 'black'
             if template in ['Q14', 'Q19'] and strategy == 'Optimizer' and actual > y_limit:
                 ax.text(bar.get_x() + bar.get_width()/2., 9.0,
-                        f'{actual:.1f}%', ha='center', va='top', fontsize=6, color=label_color)
+                        f'{actual:.1f}%', ha='center', va='top', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=label_color)
             elif template == 'Q18' and actual > y_limit:
                 ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() - 1,
-                        f'{actual:.1f}%', ha='center', va='top', fontsize=6, color=label_color)
+                        f'{actual:.1f}%', ha='center', va='top', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=label_color)
             else:
                 ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.3,
-                        f'{actual:.1f}%', ha='center', va='bottom', fontsize=6, color=label_color)
+                        f'{actual:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=label_color)
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=11)
     ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
-
-    ax.set_ylim(0, y_limit * 1.1)
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP)
+
     plt.savefig(output_path / 'A_09_combined_strategy_plot.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 

@@ -45,7 +45,8 @@ BAR_LINEWIDTH = 0.8
 BAR_LABEL_FONTSIZE = 9
 
 # === BAR PLOT (grouped) ===
-GROUPED_BAR_FIGSIZE = (16, 8)
+GROUPED_BAR_FIGSIZE = (16, 8)       # 1-3 grouped bars
+GROUPED_BAR_FIGSIZE_WIDE = (18, 8)  # Ab 4 grouped bars
 GROUPED_BAR_WIDTH = 0.35
 GROUPED_BAR_ALPHA = 0.85
 GROUPED_BAR_EDGECOLOR = 'none'
@@ -88,6 +89,12 @@ OPERATOR_LEVEL_COMPARE_Y_STEP = 10    # Ticks: 0, 10, 20, 30, 40, 50
 # Hybrid_1
 HYBRID_1_MRE_Y_SCALE = 50            # A_01a: MRE in %
 HYBRID_1_MRE_Y_STEP = 10             # Ticks: 0, 10, 20, 30, 40, 50
+# Hybrid_2
+HYBRID_2_MRE_Y_SCALE = 10            # A_01a/A_01c: MRE in %
+HYBRID_2_MRE_Y_STEP = 2              # Ticks: 0, 2, 4, 6, 8, 10
+# Online_1
+ONLINE_1_MRE_Y_SCALE = 10            # A_01a/A_06/A_09: MRE in %
+ONLINE_1_MRE_Y_STEP = 2              # Ticks: 0, 2, 4, 6, 8, 10
 
 # === CAP/OVERFLOW ===
 CAP_OVERFLOW_COLOR = DEEP_RED
@@ -131,6 +138,10 @@ STRATEGY_COLORS_EPSILON = {
     "Size": LIGHT_CYAN,
 }
 
+
+# === LEGEND-KONVENTION ===
+# Strategievergleich (mehrere Strategien): loc='upper right', Labels mit "(Predicted)"
+# Einzelstrategie: nur Metrik-Label (z.B. "Mean MRE"), loc='upper left'
 
 # === HILFSFUNKTIONEN ===
 

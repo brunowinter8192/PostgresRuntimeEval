@@ -305,6 +305,33 @@ python3 A_06_Strategy_MRE_Comparison.py --output-dir Evaluation/Analysis/Overall
 
 ---
 
+## A_09 - Combined_Strategy_Plot.py
+
+**Purpose:** Create grouped bar chart comparing all 3 strategies + Optimizer cost model baseline
+
+**Inputs:**
+- `--size-mre`: Path to Size template_mre.csv (required)
+- `--frequency-mre`: Path to Frequency template_mre.csv (required)
+- `--error-mre`: Path to Error template_mre.csv (required)
+- `--optimizer-mre`: Path to Optimizer template_mre.csv (required)
+- `--output-dir`: Output directory (required)
+
+**Outputs:**
+- `{output-dir}/A_09_combined_strategy_mre.csv` - Combined MRE per template
+- `{output-dir}/A_09_combined_strategy_plot.png` - Grouped bar plot (4 bars per template)
+
+**Usage:**
+```bash
+python3 A_09_Combined_Strategy_Plot.py \
+  --size-mre Evaluation/Analysis/Size/template_mre.csv \
+  --frequency-mre Evaluation/Analysis/Frequency/template_mre.csv \
+  --error-mre Evaluation/Analysis/Error/template_mre.csv \
+  --optimizer-mre Evaluation/Analysis/Overall/A_08_optimizer_template_mre.csv \
+  --output-dir Evaluation/Analysis/Overall
+```
+
+---
+
 ## A_10 - Q4_MRE_Plot.py
 
 **Purpose:** Generate bar plot showing MRE for all 30 Q4 queries with overall MRE annotation

@@ -123,11 +123,11 @@ def create_combined_plot(labels, size_pos, size_means, freq_pos, freq_means,
 
     ax.plot(size_pos, size_means,
             color=STRATEGY_COLORS['Size'], marker='s', markersize=8, linewidth=2,
-            alpha=0.7, label='Size', zorder=3)
+            alpha=0.7, label='Size (Predicted)', zorder=3)
 
     ax.plot(freq_pos, freq_means,
             color=STRATEGY_COLORS['Frequency'], marker='o', markersize=8, linewidth=2,
-            alpha=0.7, label='Frequency', zorder=3)
+            alpha=0.7, label='Frequency (Predicted)', zorder=3)
 
     texts = []
     for x, y in zip(size_pos, size_means):
@@ -141,7 +141,7 @@ def create_combined_plot(labels, size_pos, size_means, freq_pos, freq_means,
     ax.set_xticklabels(labels, rotation=45, ha='right', fontsize=8)
     ax.set_xlabel('Operator (Leaf -> Root)')
     ax.set_ylabel('Mean Predicted Total Time (ms)')
-    ax.legend()
+    ax.legend(loc='upper right')
     ax.grid(True, alpha=0.3)
 
     plt.tight_layout()

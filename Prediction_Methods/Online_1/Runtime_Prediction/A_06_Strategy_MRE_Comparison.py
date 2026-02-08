@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, STRATEGY_COLORS, DEEP_RED
+from plot_config import DPI, STRATEGY_COLORS, GROUPED_BAR_FIGSIZE, GROUPED_BAR_ALPHA, GROUPED_BAR_LABEL_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, CAP_OVERFLOW_COLOR, apply_top_margin, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ANALYSIS_DIR = SCRIPT_DIR / 'Evaluation' / 'Analysis'
@@ -76,42 +76,42 @@ def create_combined_plot(data: dict, output_dir: str) -> None:
     templates = sorted(data['Size']['template_mre'].keys(), key=lambda x: int(x[1:]))
     x = np.arange(len(templates))
 
-    fig, ax = plt.subplots(figsize=(18, 8))
+    fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE)
 
     strategies = ['Size', 'Frequency', 'Error']
     colors = [STRATEGY_COLORS['Size'], STRATEGY_COLORS['Frequency'], STRATEGY_COLORS['Error']]
     offsets = [-1.0, 0.0, 1.0]
     width = 0.25
 
-    y_limit = 10
+    y_limit = ONLINE_1_MRE_Y_SCALE
 
     for strategy, color, offset in zip(strategies, colors, offsets):
         actual_values = [data[strategy]['template_mre'].get(t, 0) for t in templates]
         display_values = [min(v, y_limit) for v in actual_values]
         overall = data[strategy]['overall_mre']
         label = f"{strategy} (Overall: {overall:.2f}%)"
-        bars = ax.bar(x + offset * width, display_values, width, label=label, color=color, alpha=0.85)
+        bars = ax.bar(x + offset * width, display_values, width, label=label, color=color, alpha=GROUPED_BAR_ALPHA)
 
         for i, bar in enumerate(bars):
             actual = actual_values[i]
-            label_color = DEEP_RED if actual > y_limit else 'black'
+            label_color = CAP_OVERFLOW_COLOR if actual > y_limit else 'black'
             if actual > y_limit:
                 ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() - 0.2,
-                        f'{actual:.1f}%', ha='center', va='top', fontsize=6, color=label_color)
+                        f'{actual:.1f}%', ha='center', va='top', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=label_color)
             else:
                 ax.text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.1,
-                        f'{actual:.1f}%', ha='center', va='bottom', fontsize=6, color=label_color)
+                        f'{actual:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=label_color)
 
     ax.set_xlabel('Template', fontsize=13, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=11)
     ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
-
-    ax.set_ylim(0, y_limit * 1.1)
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP)
+
     plt.savefig(output_path / 'A_06_strategy_comparison.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 

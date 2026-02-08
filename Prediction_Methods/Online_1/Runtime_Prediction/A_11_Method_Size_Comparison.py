@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, STRATEGY_COLORS, LIGHT_CYAN
+from plot_config import DPI, STRATEGY_COLORS, LIGHT_CYAN, GROUPED_BAR_FIGSIZE, GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP
 
 
 # ORCHESTRATOR
@@ -46,9 +46,8 @@ def create_comparison_plot(data: dict, output_dir: str) -> None:
 
     templates = sorted(data['Online_1']['template_mre'].keys(), key=lambda x: int(x[1:]))
     x = np.arange(len(templates))
-    width = 0.35
 
-    fig, ax = plt.subplots(figsize=(16, 8))
+    fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE)
 
     online1_values = [data['Online_1']['template_mre'].get(t, 0) for t in templates]
     hybrid2_values = [data['Hybrid_2']['template_mre'].get(t, 0) for t in templates]
@@ -56,12 +55,12 @@ def create_comparison_plot(data: dict, output_dir: str) -> None:
     online1_overall = data['Online_1']['overall_mre']
     hybrid2_overall = data['Hybrid_2']['overall_mre']
 
-    bars1 = ax.bar(x - width/2, online1_values, width,
+    bars1 = ax.bar(x - GROUPED_BAR_WIDTH/2, online1_values, GROUPED_BAR_WIDTH,
                    label=f'Online_1 Size (Overall: {online1_overall:.2f}%)',
-                   color=STRATEGY_COLORS['Size'], alpha=0.85)
-    bars2 = ax.bar(x + width/2, hybrid2_values, width,
+                   color=STRATEGY_COLORS['Size'], alpha=GROUPED_BAR_ALPHA)
+    bars2 = ax.bar(x + GROUPED_BAR_WIDTH/2, hybrid2_values, GROUPED_BAR_WIDTH,
                    label=f'Hybrid_2 Size (Overall: {hybrid2_overall:.2f}%)',
-                   color=LIGHT_CYAN, alpha=0.85)
+                   color=LIGHT_CYAN, alpha=GROUPED_BAR_ALPHA)
 
     ax.bar_label(bars1, fmt='%.1f%%', padding=2, fontsize=8)
     ax.bar_label(bars2, fmt='%.1f%%', padding=2, fontsize=8)
@@ -71,12 +70,10 @@ def create_comparison_plot(data: dict, output_dir: str) -> None:
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=11)
     ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
-
-    max_val = max(max(online1_values), max(hybrid2_values))
-    ax.set_ylim(0, max_val * 1.25)
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP)
     plt.savefig(output_path / 'A_11_size_comparison.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 
