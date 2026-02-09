@@ -30,6 +30,7 @@ DEEP_OLIVE = "#CCB974"
 DEEP_CYAN = "#64B5CD"
 
 # === LIGHT VARIANTS (für Epsilon) ===
+LIGHT_BLUE = "#94AAD0"
 LIGHT_CYAN = "#A3D4E5"
 LIGHT_OLIVE = "#E2D4A8"
 LIGHT_RED = "#DB9194"
@@ -99,6 +100,9 @@ ONLINE_1_MRE_Y_STEP = 2              # Ticks: 0, 2, 4, 6, 8, 10
 # Dynamic
 DYNAMIC_MRE_Y_SCALE = 50             # Alle Dynamic LOTO Plots
 DYNAMIC_MRE_Y_STEP = 10              # Ticks: 0, 10, 20, 30, 40, 50
+# Cache_Validation
+CACHE_VALIDATION_CV_Y_SCALE = 12     # CV in %
+CACHE_VALIDATION_CV_Y_STEP = 2       # Ticks: 0, 2, 4, 6, 8, 10, 12
 
 # === CAP/OVERFLOW ===
 CAP_OVERFLOW_COLOR = DEEP_RED

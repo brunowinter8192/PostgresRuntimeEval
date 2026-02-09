@@ -2,11 +2,24 @@
 
 # INFRASTRUCTURE
 import argparse
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+# From plot_config.py: Centralized plot styling constants
+from plot_config import (
+    DEEP_BLUE, LIGHT_BLUE, DPI, TITLE_FONTSIZE, LABEL_FONTSIZE, TICK_FONTSIZE,
+    BAR_FIGSIZE, BAR_WIDTH, BAR_ALPHA, BAR_EDGECOLOR, BAR_LINEWIDTH, BAR_LABEL_FONTSIZE,
+    GROUPED_BAR_FIGSIZE, GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GROUPED_BAR_EDGECOLOR,
+    GROUPED_BAR_LINEWIDTH, GROUPED_BAR_LABEL_FONTSIZE,
+    GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE,
+    CACHE_VALIDATION_CV_Y_SCALE, CACHE_VALIDATION_CV_Y_STEP, apply_top_margin,
+)
 
 
 # ORCHESTRATOR
@@ -20,8 +33,8 @@ def variance_analysis_workflow(baseline_csv: Path, state1_csv: Path, output_dir:
     comparison = create_comparison(stats_baseline, stats_state1)
     export_results(stats_baseline, stats_state1, comparison, output_dir)
     templates_sorted = sort_templates(stats_baseline['template'].tolist())
-    plot_cv(stats_baseline, templates_sorted, 'Baseline', output_dir / 'A_01_cv_baseline.png')
-    plot_cv(stats_state1, templates_sorted, 'State_1', output_dir / 'A_01_cv_state1.png')
+    plot_cv(stats_baseline, templates_sorted, 'Baseline', DEEP_BLUE, output_dir / 'A_01_cv_baseline.png')
+    plot_cv(stats_state1, templates_sorted, 'State_1', LIGHT_BLUE, output_dir / 'A_01_cv_state1.png')
     plot_cv_comparison(stats_baseline, stats_state1, templates_sorted, output_dir / 'A_01_cv_comparison.png')
 
 
@@ -84,25 +97,27 @@ def sort_templates(templates: list) -> list:
 
 
 # Plot CV values for a single dataset
-def plot_cv(stats: pd.DataFrame, templates_sorted: list, label: str, output_path: Path) -> None:
+def plot_cv(stats: pd.DataFrame, templates_sorted: list, label: str, color: str, output_path: Path) -> None:
     stats_sorted = stats.set_index('template').loc[templates_sorted].reset_index()
 
-    fig, ax = plt.subplots(figsize=(16, 8))
+    fig, ax = plt.subplots(figsize=BAR_FIGSIZE)
 
     x = range(len(templates_sorted))
-    bars = ax.bar(x, stats_sorted['cv'], width=0.5,
-                  color='steelblue', alpha=0.8, edgecolor='black', linewidth=0.8)
+    ax.bar(x, stats_sorted['cv'], width=BAR_WIDTH,
+           color=color, alpha=BAR_ALPHA, edgecolor=BAR_EDGECOLOR, linewidth=BAR_LINEWIDTH)
 
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('CV (%)', fontsize=13, fontweight='bold')
-    ax.set_title(f'Coefficient of Variation - {label}', fontsize=15, fontweight='bold', pad=20)
+    ax.set_xlabel('Template', fontsize=LABEL_FONTSIZE)
+    ax.set_ylabel('CV (%)', fontsize=LABEL_FONTSIZE)
+    ax.set_title(f'Coefficient of Variation - {label}', fontsize=TITLE_FONTSIZE, pad=20)
     ax.set_xticks(x)
-    ax.set_xticklabels(templates_sorted, rotation=0, fontsize=11)
+    ax.set_xticklabels(templates_sorted, rotation=0, fontsize=TICK_FONTSIZE)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f'{y:.0f}%'))
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
+
+    apply_top_margin(ax, fig, CACHE_VALIDATION_CV_Y_SCALE, CACHE_VALIDATION_CV_Y_STEP)
 
     plt.tight_layout()
-    fig.savefig(output_path, dpi=300, bbox_inches='tight')
+    fig.savefig(output_path, dpi=DPI, bbox_inches='tight')
     plt.close(fig)
 
 
@@ -111,33 +126,32 @@ def plot_cv_comparison(stats_baseline: pd.DataFrame, stats_state1: pd.DataFrame,
     baseline_sorted = stats_baseline.set_index('template').loc[templates_sorted].reset_index()
     state1_sorted = stats_state1.set_index('template').loc[templates_sorted].reset_index()
 
-    fig, ax = plt.subplots(figsize=(16, 8))
+    fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE)
 
     x = range(len(templates_sorted))
-    width = 0.35
 
-    bars1 = ax.bar([i - width/2 for i in x], baseline_sorted['cv'], width, label='Baseline',
-                   color='steelblue', alpha=0.8, edgecolor='black', linewidth=0.8)
-    bars2 = ax.bar([i + width/2 for i in x], state1_sorted['cv'], width, label='State_1',
-                   color='coral', alpha=0.8, edgecolor='black', linewidth=0.8)
+    ax.bar([i - GROUPED_BAR_WIDTH/2 for i in x], baseline_sorted['cv'], GROUPED_BAR_WIDTH, label='Baseline',
+           color=DEEP_BLUE, alpha=GROUPED_BAR_ALPHA, edgecolor=GROUPED_BAR_EDGECOLOR, linewidth=GROUPED_BAR_LINEWIDTH)
+    ax.bar([i + GROUPED_BAR_WIDTH/2 for i in x], state1_sorted['cv'], GROUPED_BAR_WIDTH, label='State_1',
+           color=LIGHT_BLUE, alpha=GROUPED_BAR_ALPHA, edgecolor=GROUPED_BAR_EDGECOLOR, linewidth=GROUPED_BAR_LINEWIDTH)
 
-    for bar in bars1:
-        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.15,
-                f'{bar.get_height():.1f}%', ha='center', va='bottom', fontsize=7, rotation=0)
-    for bar in bars2:
-        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.15,
-                f'{bar.get_height():.1f}%', ha='center', va='bottom', fontsize=7, rotation=0)
+    for container in ax.containers:
+        for bar in container:
+            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.15,
+                    f'{bar.get_height():.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, rotation=0)
 
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('CV (%)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('Template', fontsize=LABEL_FONTSIZE)
+    ax.set_ylabel('CV (%)', fontsize=LABEL_FONTSIZE)
     ax.set_xticks(x)
-    ax.set_xticklabels(templates_sorted, rotation=0, fontsize=11)
+    ax.set_xticklabels(templates_sorted, rotation=0, fontsize=TICK_FONTSIZE)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f'{y:.0f}%'))
-    ax.legend(fontsize=11, loc='upper left')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.legend(fontsize=TICK_FONTSIZE, loc='upper left')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
+
+    apply_top_margin(ax, fig, CACHE_VALIDATION_CV_Y_SCALE, CACHE_VALIDATION_CV_Y_STEP)
 
     plt.tight_layout()
-    fig.savefig(output_path, dpi=300, bbox_inches='tight')
+    fig.savefig(output_path, dpi=DPI, bbox_inches='tight')
     plt.close(fig)
 
 
