@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
 from plot_config import (DPI, DEEP_GREEN, BAR_FIGSIZE, BAR_ALPHA, BAR_LABEL_FONTSIZE,
     LABEL_FONTSIZE, TICK_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE,
-    apply_top_margin, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
+    apply_top_margin, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP, CAP_OVERFLOW_COLOR)
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -69,10 +69,11 @@ def create_plot(stats: pd.DataFrame, output_dir: Path) -> None:
     overall = stats['overall_mre'].iloc[0] * 100
 
     x = np.arange(len(templates))
-    bars = ax.bar(x, values, color=DEEP_GREEN, alpha=BAR_ALPHA,
-                  label=f'Operator-Level Optimizer (Overall: {overall:.2f}%)')
+    y_cap = DYNAMIC_MRE_Y_SCALE
+    capped_values = np.minimum(values, y_cap)
 
-    ax.bar_label(bars, fmt='%.1f%%', padding=3, fontsize=BAR_LABEL_FONTSIZE)
+    bars = ax.bar(x, capped_values, color=DEEP_GREEN, alpha=BAR_ALPHA,
+                  label=f'Operator-Level Optimizer (Overall: {overall:.2f}%)')
 
     ax.set_xlabel('Template', fontsize=LABEL_FONTSIZE, fontweight='bold')
     ax.set_ylabel('Mean Relative Error (%)', fontsize=LABEL_FONTSIZE, fontweight='bold')
@@ -80,6 +81,11 @@ def create_plot(stats: pd.DataFrame, output_dir: Path) -> None:
     ax.set_xticklabels(templates, fontsize=TICK_FONTSIZE)
     ax.legend(fontsize=TICK_FONTSIZE, loc='upper right')
     ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
+
+    for bar, val in zip(bars, values):
+        color = CAP_OVERFLOW_COLOR if val > y_cap else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                f'{val:.1f}%', ha='center', va='bottom', fontsize=BAR_LABEL_FONTSIZE, color=color)
 
     plt.tight_layout()
     apply_top_margin(ax, fig, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)

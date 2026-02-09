@@ -356,7 +356,6 @@ python3 A_02a_Query_Evaluation.py Evaluation/Operator_Training_Test/predictions.
 1. Load selection_log.csv
 2. Filter SELECTED patterns
 3. Calculate delta statistics (mean, median, min, max)
-4. Extract delta distribution sorted by delta DESC
 
 **Inputs:**
 - `selection_log_file`: Path to selection_log.csv
@@ -364,8 +363,6 @@ python3 A_02a_Query_Evaluation.py Evaluation/Operator_Training_Test/predictions.
 **Outputs:**
 - `{output-dir}/{prefix}_delta_stats.csv`: Summary statistics
   - Columns: selected_count;mean_delta;median_delta;min_delta;max_delta
-- `{output-dir}/{prefix}_delta_distribution.csv`: Full delta distribution for SELECTED patterns
-  - Columns: iteration;pattern_hash;delta (sorted by delta DESC)
 
 **Variables:**
 - `--prefix`: Prefix for output filenames (default: none)

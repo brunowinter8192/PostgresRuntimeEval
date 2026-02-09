@@ -157,13 +157,10 @@ python3 A_02_Overall_Comparison.py --plan-csv Plan_Level/loto_mre.csv --operator
 **Usage:**
 ```bash
 python3 A_03a_Plan_Static_Dynamic.py \
-  --static-csv ../../../Plan_Level_1/Runtime_Prediction/Baseline_SVM/Evaluation/A_01i_optimizer_baseline_template.csv \
+  --static-csv ../../../Plan_Level_1/Runtime_Prediction/Baseline_14T_SVM/Evaluation/A_01i_optimizer_baseline_template.csv \
   --dynamic-csv Plan_Level/loto_mre.csv \
   --output-dir Plan_Level
 ```
-
-**Implementation Details:**
-- Filters static CSV to 14 TEMPLATES (excludes Q2, Q11, Q16, Q21, Q22)
 
 ---
 
@@ -205,7 +202,7 @@ python3 A_03b_Operator_Static_Dynamic.py \
 ```bash
 python3 A_04a_Plan_ML_Optimizer.py \
   --optimizer-csv Plan_Level/loto_mre.csv \
-  --ml-csv ../../Plan_Level/Evaluation/loto_mre.csv \
+  --ml-csv ../Plan_Level/Evaluation/loto_mre.csv \
   --output-dir Plan_Level
 ```
 
@@ -229,16 +226,16 @@ python3 A_04a_Plan_ML_Optimizer.py \
 ```bash
 python3 A_04b_Operator_ML_Optimizer.py \
   --optimizer-csv Operator_Level/loto_mre.csv \
-  --operator-csv ../../Operator_Level/Evaluation/loto_mre.csv \
-  --hybrid-csv ../../Hybrid_1/Evaluation/approach_3/loto_mre.csv \
-  --online-csv ../../Online_1/Evaluation/Analysis/Size/loto_mre.csv \
+  --operator-csv ../Operator_Level/Evaluation/loto_mre.csv \
+  --hybrid-csv ../Hybrid_1/Evaluation/approach_3/loto_mre.csv \
+  --online-csv ../Online_1/Evaluation/Analysis/Size/loto_mre.csv \
   --output-dir Operator_Level
 ```
 
 ## External Dependencies
 
 **Static Optimizer Baselines (from other workflows):**
-- Plan_Level_1: `Prediction_Methods/Plan_Level_1/Runtime_Prediction/Baseline_SVM/Evaluation/A_01i_optimizer_baseline_template.csv`
+- Plan_Level_1: `Prediction_Methods/Plan_Level_1/Runtime_Prediction/Baseline_14T_SVM/Evaluation/A_01i_optimizer_baseline_template.csv`
 - Operator_Level: `Prediction_Methods/Operator_Level/Runtime_Prediction/Baseline_SVM/Evaluation/A_01h_optimizer_baseline_template.csv`
 
 **ML loto_mre CSVs (from Dynamic workflows):**

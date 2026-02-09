@@ -145,7 +145,7 @@ def plot_cv_comparison(stats_baseline: pd.DataFrame, stats_state1: pd.DataFrame,
     ax.set_xticks(x)
     ax.set_xticklabels(templates_sorted, rotation=0, fontsize=TICK_FONTSIZE)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f'{y:.0f}%'))
-    ax.legend(fontsize=TICK_FONTSIZE, loc='upper left')
+    ax.legend(fontsize=TICK_FONTSIZE, loc='upper right')
     ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     apply_top_margin(ax, fig, CACHE_VALIDATION_CV_Y_SCALE, CACHE_VALIDATION_CV_Y_STEP)
@@ -166,5 +166,5 @@ if __name__ == "__main__":
     variance_analysis_workflow(
         Path(args.baseline_csv),
         Path(args.state1_csv),
-        Path(args.output_dir)
+        Path(args.output_dir),
     )

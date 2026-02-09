@@ -26,7 +26,11 @@ Runtime_Prediction/
 ├── A_01j_Summarize_Results.py           # Analysis: Template and overall summaries
 ├── A_01k_Runtime_Histograms.py          # Analysis: Runtime distribution histograms
 ├── D_Alternative_Modelle.md             # Thesis appendix: RF/XGBoost results
-├── Baseline_SVM/                        # NuSVR outputs
+├── Baseline_SVM/                        # NuSVR outputs (22T)
+│   ├── SVM/                             # [FFS outputs]
+│   ├── Model/                           # [training outputs]
+│   └── Evaluation/                      # [evaluation outputs]
+├── Baseline_14T_SVM/                    # NuSVR outputs (14T, for Dynamic workloads)
 │   ├── SVM/                             # [FFS outputs]
 │   ├── Model/                           # [training outputs]
 │   └── Evaluation/                      # [evaluation outputs]
@@ -393,7 +397,11 @@ python A_01h_Runtime_Plot.py Baseline_SVM/Evaluation/A_01j_template_summary.csv 
 
 **Usage**:
 ```bash
-python A_01i_Optimizer_Baseline.py ../Datasets/Baseline/training_data.csv ../Datasets/Baseline/test_data.csv Baseline_SVM/Evaluation/02_predictions.csv --output-dir Baseline_SVM/Evaluation/Optimizer
+# 22T (all templates)
+python A_01i_Optimizer_Baseline.py ../Datasets/Baseline/training_data.csv ../Datasets/Baseline/test_data.csv Baseline_SVM/Evaluation/02_predictions.csv --output-dir Baseline_SVM/Evaluation
+
+# 14T (Dynamic workload templates)
+python A_01i_Optimizer_Baseline.py ../Datasets/Baseline_14T/training_data.csv ../Datasets/Baseline_14T/test_data.csv Baseline_14T_SVM/Evaluation/02_predictions.csv --output-dir Baseline_14T_SVM/Evaluation
 ```
 
 ---

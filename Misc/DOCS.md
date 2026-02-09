@@ -179,7 +179,7 @@ Cache_Validation/
 ├── B_Cold_Cache.md                              (Anhang B Quelldatei)
 ├── Plan_Level_CC/
 │   ├── A_01_Runtime_Variance.py
-│   └── csv/
+│   └── Evaluation/
 ├── cold_cache_validation/
 │   └── restart_docker/
 │       ├── execute_queries.py
@@ -214,9 +214,9 @@ Cache_Validation/
 ```bash
 cd Cache_Validation/Plan_Level_CC
 python3 A_01_Runtime_Variance.py \
-  ../../Prediction_Methods/Plan_Level_1/Datasets/Baseline/complete_dataset.csv \
-  ../../Prediction_Methods/Plan_Level_1/Datasets/State_1/complete_dataset.csv \
-  --output-dir csv
+  ../../../Prediction_Methods/Plan_Level_1/Datasets/Baseline/complete_dataset.csv \
+  ../../../Prediction_Methods/Plan_Level_1/Datasets/State_1/complete_dataset.csv \
+  --output-dir Evaluation
 ```
 
 **Metrics:**

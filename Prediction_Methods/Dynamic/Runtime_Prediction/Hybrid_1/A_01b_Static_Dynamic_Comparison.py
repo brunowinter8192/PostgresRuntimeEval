@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 from plot_config import (DPI, DEEP_GREEN, LIGHT_GREEN, GROUPED_BAR_FIGSIZE,
     GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GROUPED_BAR_LABEL_FONTSIZE, LABEL_FONTSIZE,
     TICK_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin,
-    DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
+    DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP, CAP_OVERFLOW_COLOR, CAP_LABEL_GAP_CM)
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -72,13 +72,17 @@ def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
 
     x = np.arange(len(templates))
 
+    y_cap = DYNAMIC_MRE_Y_SCALE
     static_overall = static_values.mean()
     dynamic_overall = dynamic_values.mean()
 
-    bars_static = ax.bar(x - GROUPED_BAR_WIDTH/2, static_values, GROUPED_BAR_WIDTH,
+    static_capped = np.minimum(static_values, y_cap)
+    dynamic_capped = np.minimum(dynamic_values, y_cap)
+
+    bars_static = ax.bar(x - GROUPED_BAR_WIDTH/2, static_capped, GROUPED_BAR_WIDTH,
                          label=f'Static (Overall: {static_overall:.2f}%)',
                          color=LIGHT_GREEN, alpha=GROUPED_BAR_ALPHA)
-    bars_dynamic = ax.bar(x + GROUPED_BAR_WIDTH/2, dynamic_values, GROUPED_BAR_WIDTH,
+    bars_dynamic = ax.bar(x + GROUPED_BAR_WIDTH/2, dynamic_capped, GROUPED_BAR_WIDTH,
                           label=f'Dynamic (Overall: {dynamic_overall:.2f}%)',
                           color=DEEP_GREEN, alpha=GROUPED_BAR_ALPHA)
 
@@ -86,14 +90,35 @@ def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
     ax.set_ylabel('Mean Relative Error (%)', fontsize=LABEL_FONTSIZE, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(templates, fontsize=TICK_FONTSIZE)
-    ax.legend(fontsize=TICK_FONTSIZE, loc='upper right')
+    legend = ax.legend(fontsize=TICK_FONTSIZE, loc='upper right')
     ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
-
-    ax.bar_label(bars_static, fmt='%.1f%%', padding=2, fontsize=GROUPED_BAR_LABEL_FONTSIZE, rotation=0)
-    ax.bar_label(bars_dynamic, fmt='%.1f%%', padding=2, fontsize=GROUPED_BAR_LABEL_FONTSIZE, rotation=0)
 
     plt.tight_layout()
     apply_top_margin(ax, fig, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
+
+    legend_bbox = legend.get_window_extent(fig.canvas.get_renderer())
+    legend_bottom_data = ax.transData.inverted().transform((0, legend_bbox.y0))[1]
+    gap_inches = CAP_LABEL_GAP_CM / 2.54
+    ax_height_inches = fig.get_size_inches()[1] * ax.get_position().height
+    ylim = ax.get_ylim()
+    gap_data = (ylim[1] - ylim[0]) * (gap_inches / ax_height_inches)
+    shifted_y = legend_bottom_data - gap_data
+
+    shifted_labels_dynamic = ['Q18']
+
+    for bar, val in zip(bars_static, static_values):
+        color = CAP_OVERFLOW_COLOR if val > y_cap else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                f'{val:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
+    for i, (bar, val) in enumerate(zip(bars_dynamic, dynamic_values)):
+        color = CAP_OVERFLOW_COLOR if val > y_cap else 'black'
+        template = templates[i]
+        if template in shifted_labels_dynamic:
+            ax.text(bar.get_x() + bar.get_width()/2., shifted_y,
+                    f'{val:.1f}%', ha='center', va='top', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
+        else:
+            ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                    f'{val:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
 
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)

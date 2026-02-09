@@ -12,7 +12,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
 from plot_config import (DPI, DEEP_GREEN, BAR_FIGSIZE, BAR_WIDTH, BAR_ALPHA, BAR_EDGECOLOR,
     BAR_LINEWIDTH, BAR_LABEL_FONTSIZE, LABEL_FONTSIZE, TICK_FONTSIZE, TITLE_FONTSIZE,
-    GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
+    GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP,
+    CAP_OVERFLOW_COLOR)
 
 # ORCHESTRATOR
 def evaluate_predictions_workflow(predictions_dir, output_dir):
@@ -105,7 +106,10 @@ def create_mre_plot(template_stats):
 
     x = np.arange(len(templates))
 
-    bars = ax.bar(x, mean_mre_values, BAR_WIDTH, label='Mean MRE',
+    y_cap = DYNAMIC_MRE_Y_SCALE
+    capped_values = np.minimum(mean_mre_values, y_cap)
+
+    bars = ax.bar(x, capped_values, BAR_WIDTH, label='Mean MRE',
                    color=DEEP_GREEN, alpha=BAR_ALPHA, edgecolor=BAR_EDGECOLOR, linewidth=BAR_LINEWIDTH)
 
     ax.set_xlabel('Template', fontsize=LABEL_FONTSIZE, fontweight='bold')
@@ -118,10 +122,11 @@ def create_mre_plot(template_stats):
     ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     for i, bar in enumerate(bars):
-        height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height,
-                f'{height:.1f}%',
-                ha='center', va='bottom', fontsize=BAR_LABEL_FONTSIZE, fontweight='bold')
+        actual = mean_mre_values[i]
+        color = CAP_OVERFLOW_COLOR if actual > y_cap else 'black'
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                f'{actual:.1f}%',
+                ha='center', va='bottom', fontsize=BAR_LABEL_FONTSIZE, fontweight='bold', color=color)
 
     plt.tight_layout()
     apply_top_margin(ax, fig, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
