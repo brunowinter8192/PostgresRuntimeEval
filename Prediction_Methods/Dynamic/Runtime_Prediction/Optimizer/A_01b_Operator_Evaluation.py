@@ -10,7 +10,9 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_GREEN
+from plot_config import (DPI, DEEP_GREEN, BAR_FIGSIZE, BAR_ALPHA, BAR_LABEL_FONTSIZE,
+    LABEL_FONTSIZE, TICK_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE,
+    apply_top_margin, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -60,28 +62,27 @@ def export_results(stats: pd.DataFrame, output_dir: Path) -> None:
 def create_plot(stats: pd.DataFrame, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    fig, ax = plt.subplots(figsize=(14, 7))
+    fig, ax = plt.subplots(figsize=BAR_FIGSIZE)
 
     templates = stats.index.tolist()
     values = stats['mean_mre_pct'].values
     overall = stats['overall_mre'].iloc[0] * 100
 
     x = np.arange(len(templates))
-    bars = ax.bar(x, values, color=DEEP_GREEN, alpha=0.85,
+    bars = ax.bar(x, values, color=DEEP_GREEN, alpha=BAR_ALPHA,
                   label=f'Operator-Level Optimizer (Overall: {overall:.2f}%)')
 
-    ax.bar_label(bars, fmt='%.1f%%', padding=3, fontsize=8)
+    ax.bar_label(bars, fmt='%.1f%%', padding=3, fontsize=BAR_LABEL_FONTSIZE)
 
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('Template', fontsize=LABEL_FONTSIZE, fontweight='bold')
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=LABEL_FONTSIZE, fontweight='bold')
     ax.set_xticks(x)
-    ax.set_xticklabels(templates, fontsize=11)
-    ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
-
-    ax.set_ylim(0, values.max() * 1.25)
+    ax.set_xticklabels(templates, fontsize=TICK_FONTSIZE)
+    ax.legend(fontsize=TICK_FONTSIZE, loc='upper right')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
     plt.savefig(output_dir / 'A_01b_operator_mre_plot.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 

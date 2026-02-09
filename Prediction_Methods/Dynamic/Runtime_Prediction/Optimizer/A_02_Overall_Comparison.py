@@ -10,7 +10,10 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_GREEN
+from plot_config import (DPI, DEEP_BLUE, DEEP_GREEN, GROUPED_BAR_FIGSIZE,
+    GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GROUPED_BAR_LABEL_FONTSIZE, LABEL_FONTSIZE,
+    TICK_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin,
+    DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -35,39 +38,36 @@ def load_mre_stats(csv_path: Path, method: str) -> pd.DataFrame:
 def create_comparison_plot(plan_stats: pd.DataFrame, operator_stats: pd.DataFrame, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    fig, ax = plt.subplots(figsize=(16, 8))
+    fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE)
 
     templates = [t for t in TEMPLATES if t in plan_stats.index and t in operator_stats.index]
     plan_values = np.array([plan_stats.loc[t, 'mean_mre_pct'] for t in templates])
     operator_values = np.array([operator_stats.loc[t, 'mean_mre_pct'] for t in templates])
 
     x = np.arange(len(templates))
-    width = 0.35
 
     plan_overall = plan_values.mean()
     operator_overall = operator_values.mean()
 
-    bars_plan = ax.bar(x - width/2, plan_values, width,
+    bars_plan = ax.bar(x - GROUPED_BAR_WIDTH/2, plan_values, GROUPED_BAR_WIDTH,
                        label=f'Plan-Level (Overall: {plan_overall:.2f}%)',
-                       color=DEEP_BLUE, alpha=0.85)
-    bars_operator = ax.bar(x + width/2, operator_values, width,
+                       color=DEEP_BLUE, alpha=GROUPED_BAR_ALPHA)
+    bars_operator = ax.bar(x + GROUPED_BAR_WIDTH/2, operator_values, GROUPED_BAR_WIDTH,
                            label=f'Operator-Level (Overall: {operator_overall:.2f}%)',
-                           color=DEEP_GREEN, alpha=0.85)
+                           color=DEEP_GREEN, alpha=GROUPED_BAR_ALPHA)
 
-    ax.bar_label(bars_plan, fmt='%.1f%%', padding=2, fontsize=7, rotation=0)
-    ax.bar_label(bars_operator, fmt='%.1f%%', padding=2, fontsize=7, rotation=0)
+    ax.bar_label(bars_plan, fmt='%.1f%%', padding=2, fontsize=GROUPED_BAR_LABEL_FONTSIZE, rotation=0)
+    ax.bar_label(bars_operator, fmt='%.1f%%', padding=2, fontsize=GROUPED_BAR_LABEL_FONTSIZE, rotation=0)
 
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('Template', fontsize=LABEL_FONTSIZE, fontweight='bold')
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=LABEL_FONTSIZE, fontweight='bold')
     ax.set_xticks(x)
-    ax.set_xticklabels(templates, fontsize=11)
-    ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
-
-    max_val = max(plan_values.max(), operator_values.max())
-    ax.set_ylim(0, max_val * 1.15)
+    ax.set_xticklabels(templates, fontsize=TICK_FONTSIZE)
+    ax.legend(fontsize=TICK_FONTSIZE, loc='upper right')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
     plt.savefig(output_dir / 'A_02_comparison_plot.png', dpi=DPI, bbox_inches='tight')
     plt.close()
 

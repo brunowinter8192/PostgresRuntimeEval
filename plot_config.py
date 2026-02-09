@@ -35,6 +35,7 @@ LIGHT_OLIVE = "#E2D4A8"
 LIGHT_RED = "#DB9194"
 LIGHT_PURPLE = "#B3A8C9"
 LIGHT_GREEN = "#99CBA4"
+LIGHT_GRAY = "#B8B8B8"
 
 # === BAR PLOT (single) ===
 BAR_FIGSIZE = (16, 8)
@@ -95,6 +96,9 @@ HYBRID_2_MRE_Y_STEP = 2              # Ticks: 0, 2, 4, 6, 8, 10
 # Online_1
 ONLINE_1_MRE_Y_SCALE = 10            # A_01a/A_06/A_09: MRE in %
 ONLINE_1_MRE_Y_STEP = 2              # Ticks: 0, 2, 4, 6, 8, 10
+# Dynamic
+DYNAMIC_MRE_Y_SCALE = 50             # Alle Dynamic LOTO Plots
+DYNAMIC_MRE_Y_STEP = 10              # Ticks: 0, 10, 20, 30, 40, 50
 
 # === CAP/OVERFLOW ===
 CAP_OVERFLOW_COLOR = DEEP_RED

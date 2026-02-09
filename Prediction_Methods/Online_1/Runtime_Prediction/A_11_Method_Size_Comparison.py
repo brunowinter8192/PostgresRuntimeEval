@@ -10,7 +10,9 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, STRATEGY_COLORS, LIGHT_CYAN, GROUPED_BAR_FIGSIZE, GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP
+from plot_config import (DPI, STRATEGY_COLORS, LIGHT_CYAN, GROUPED_BAR_FIGSIZE, GROUPED_BAR_WIDTH,
+    GROUPED_BAR_ALPHA, GROUPED_BAR_LABEL_FONTSIZE, LABEL_FONTSIZE, TICK_FONTSIZE, GRID_AXIS,
+    GRID_ALPHA, GRID_LINESTYLE, apply_top_margin, ONLINE_1_MRE_Y_SCALE, ONLINE_1_MRE_Y_STEP)
 
 
 # ORCHESTRATOR
@@ -62,14 +64,14 @@ def create_comparison_plot(data: dict, output_dir: str) -> None:
                    label=f'Hybrid_2 Size (Overall: {hybrid2_overall:.2f}%)',
                    color=LIGHT_CYAN, alpha=GROUPED_BAR_ALPHA)
 
-    ax.bar_label(bars1, fmt='%.1f%%', padding=2, fontsize=8)
-    ax.bar_label(bars2, fmt='%.1f%%', padding=2, fontsize=8)
+    ax.bar_label(bars1, fmt='%.1f%%', padding=2, fontsize=GROUPED_BAR_LABEL_FONTSIZE)
+    ax.bar_label(bars2, fmt='%.1f%%', padding=2, fontsize=GROUPED_BAR_LABEL_FONTSIZE)
 
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('Template', fontsize=LABEL_FONTSIZE, fontweight='bold')
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=LABEL_FONTSIZE, fontweight='bold')
     ax.set_xticks(x)
-    ax.set_xticklabels(templates, fontsize=11)
-    ax.legend(fontsize=11, loc='upper right')
+    ax.set_xticklabels(templates, fontsize=TICK_FONTSIZE)
+    ax.legend(fontsize=TICK_FONTSIZE, loc='upper right')
     ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     plt.tight_layout()

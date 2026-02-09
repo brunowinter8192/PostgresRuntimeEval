@@ -10,7 +10,10 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_BLUE, DEEP_GREEN
+from plot_config import (DPI, DEEP_CYAN, LIGHT_CYAN, GROUPED_BAR_FIGSIZE,
+    GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GROUPED_BAR_LABEL_FONTSIZE, LABEL_FONTSIZE,
+    TICK_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin,
+    DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
 
 # ORCHESTRATOR
 def compare_workflow(online_csv: str, static_csv: str, output_dir: str) -> None:
@@ -33,7 +36,7 @@ def merge_data(online_df: pd.DataFrame, static_df: pd.DataFrame) -> pd.DataFrame
 
 # Create grouped bar plot comparing methods
 def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
-    fig, ax = plt.subplots(figsize=(16, 8))
+    fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE)
 
     templates = sorted(df['template'].unique(), key=lambda x: int(x[1:]))
 
@@ -44,32 +47,29 @@ def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
     online_values = np.array([online_data[online_data['template'] == t]['mean_mre_pct'].values[0] for t in templates])
 
     x = np.arange(len(templates))
-    width = 0.35
 
     static_overall = static_values.mean()
     online_overall = online_values.mean()
 
-    bars_static = ax.bar(x - width/2, static_values, width,
+    bars_static = ax.bar(x - GROUPED_BAR_WIDTH/2, static_values, GROUPED_BAR_WIDTH,
                          label=f'Static (Overall: {static_overall:.2f}%)',
-                         color=DEEP_BLUE, alpha=0.85)
-    bars_online = ax.bar(x + width/2, online_values, width,
+                         color=LIGHT_CYAN, alpha=GROUPED_BAR_ALPHA)
+    bars_online = ax.bar(x + GROUPED_BAR_WIDTH/2, online_values, GROUPED_BAR_WIDTH,
                          label=f'Dynamic (Overall: {online_overall:.2f}%)',
-                         color=DEEP_GREEN, alpha=0.85)
+                         color=DEEP_CYAN, alpha=GROUPED_BAR_ALPHA)
 
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('Template', fontsize=LABEL_FONTSIZE, fontweight='bold')
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=LABEL_FONTSIZE, fontweight='bold')
     ax.set_xticks(x)
-    ax.set_xticklabels(templates, fontsize=11)
-    ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.set_xticklabels(templates, fontsize=TICK_FONTSIZE)
+    ax.legend(fontsize=TICK_FONTSIZE, loc='upper right')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
-    max_val = max(static_values.max(), online_values.max())
-    ax.set_ylim(0, max_val * 1.15)
-
-    ax.bar_label(bars_static, fmt='%.1f%%', padding=2, fontsize=7, rotation=0)
-    ax.bar_label(bars_online, fmt='%.1f%%', padding=2, fontsize=7, rotation=0)
+    ax.bar_label(bars_static, fmt='%.1f%%', padding=2, fontsize=GROUPED_BAR_LABEL_FONTSIZE, rotation=0)
+    ax.bar_label(bars_online, fmt='%.1f%%', padding=2, fontsize=GROUPED_BAR_LABEL_FONTSIZE, rotation=0)
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
 
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     plt.savefig(f'{output_dir}/compare_online_static.png', dpi=DPI, bbox_inches='tight')

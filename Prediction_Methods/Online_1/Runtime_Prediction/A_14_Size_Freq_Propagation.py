@@ -141,7 +141,7 @@ def create_combined_plot(labels, size_pos, size_means, freq_pos, freq_means,
     ax.set_xticklabels(labels, rotation=45, ha='right', fontsize=8)
     ax.set_xlabel('Operator (Leaf -> Root)')
     ax.set_ylabel('Mean Predicted Total Time (ms)')
-    ax.legend(loc='upper right')
+    ax.legend(loc='upper left')
     ax.grid(True, alpha=0.3)
 
     plt.tight_layout()

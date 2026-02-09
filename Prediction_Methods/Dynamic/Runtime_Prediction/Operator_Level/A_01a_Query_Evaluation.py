@@ -10,7 +10,9 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_GREEN
+from plot_config import (DPI, DEEP_GREEN, BAR_FIGSIZE, BAR_WIDTH, BAR_ALPHA, BAR_EDGECOLOR,
+    BAR_LINEWIDTH, BAR_LABEL_FONTSIZE, LABEL_FONTSIZE, TICK_FONTSIZE, TITLE_FONTSIZE,
+    GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -97,34 +99,34 @@ def create_and_save_plot(loto_stats: pd.DataFrame, output_dir: str) -> None:
 
 # Create MRE bar plot by LOTO template
 def create_mre_plot(loto_stats: pd.DataFrame) -> plt.Figure:
-    fig, ax = plt.subplots(figsize=(16, 8))
+    fig, ax = plt.subplots(figsize=BAR_FIGSIZE)
 
     templates = loto_stats.index.tolist()
     mean_mre_values = loto_stats['mean_mre_pct'].values
 
     x = np.arange(len(templates))
-    width = 0.5
 
-    bars = ax.bar(x, mean_mre_values, width, label='Mean MRE',
-                   color=DEEP_GREEN, alpha=0.8, edgecolor='black', linewidth=0.8)
+    bars = ax.bar(x, mean_mre_values, BAR_WIDTH, label='Mean MRE',
+                   color=DEEP_GREEN, alpha=BAR_ALPHA, edgecolor=BAR_EDGECOLOR, linewidth=BAR_LINEWIDTH)
 
-    ax.set_xlabel('LOTO Template (Test Set)', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('LOTO Template (Test Set)', fontsize=LABEL_FONTSIZE, fontweight='bold')
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=LABEL_FONTSIZE, fontweight='bold')
     ax.set_title('Operator-Level Prediction Error by LOTO Template',
-                 fontsize=15, fontweight='bold', pad=20)
+                 fontsize=TITLE_FONTSIZE, fontweight='bold', pad=20)
     ax.set_xticks(x)
-    ax.set_xticklabels(templates, rotation=0, fontsize=11)
-    ax.legend(fontsize=11, loc='upper left')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.set_xticklabels(templates, rotation=0, fontsize=TICK_FONTSIZE)
+    ax.legend(fontsize=TICK_FONTSIZE, loc='upper left')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     for i, bar in enumerate(bars):
         height = bar.get_height()
         if not np.isnan(height):
             ax.text(bar.get_x() + bar.get_width()/2., height,
                     f'{height:.1f}%',
-                    ha='center', va='bottom', fontsize=9, fontweight='bold')
+                    ha='center', va='bottom', fontsize=BAR_LABEL_FONTSIZE, fontweight='bold')
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
 
     return fig
 

@@ -10,7 +10,10 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 # From plot_config.py: Central plot configuration
-from plot_config import DPI, DEEP_GREEN, LIGHT_GREEN, DEEP_RED
+from plot_config import (DPI, DEEP_GREEN, LIGHT_GREEN, DEEP_RED, GROUPED_BAR_FIGSIZE,
+    GROUPED_BAR_WIDTH, GROUPED_BAR_ALPHA, GROUPED_BAR_LABEL_FONTSIZE, LABEL_FONTSIZE,
+    TICK_FONTSIZE, GRID_AXIS, GRID_ALPHA, GRID_LINESTYLE, apply_top_margin,
+    DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP, CAP_OVERFLOW_COLOR)
 
 TEMPLATES = ['Q1', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q12', 'Q13', 'Q14', 'Q18', 'Q19']
 
@@ -61,49 +64,46 @@ def export_csv(df: pd.DataFrame, output_dir: str) -> None:
 
 # Create grouped bar plot comparing static vs dynamic
 def create_comparison_plot(df: pd.DataFrame, output_dir: str) -> None:
-    fig, ax = plt.subplots(figsize=(16, 8))
+    fig, ax = plt.subplots(figsize=GROUPED_BAR_FIGSIZE)
 
     templates = df['template'].tolist()
     static_values = df['static_mre_pct'].values
     dynamic_values = df['dynamic_mre_pct'].values
 
     x = np.arange(len(templates))
-    width = 0.35
 
-    y_cap = 70
+    y_cap = DYNAMIC_MRE_Y_SCALE
     static_overall = static_values.mean()
     dynamic_overall = dynamic_values.mean()
 
     static_capped = np.minimum(static_values, y_cap)
     dynamic_capped = np.minimum(dynamic_values, y_cap)
 
-    bars_static = ax.bar(x - width/2, static_capped, width,
+    bars_static = ax.bar(x - GROUPED_BAR_WIDTH/2, static_capped, GROUPED_BAR_WIDTH,
                          label=f'Static (Overall: {static_overall:.2f}%)',
-                         color=LIGHT_GREEN, alpha=0.85)
-    bars_dynamic = ax.bar(x + width/2, dynamic_capped, width,
+                         color=LIGHT_GREEN, alpha=GROUPED_BAR_ALPHA)
+    bars_dynamic = ax.bar(x + GROUPED_BAR_WIDTH/2, dynamic_capped, GROUPED_BAR_WIDTH,
                           label=f'Dynamic (Overall: {dynamic_overall:.2f}%)',
-                          color=DEEP_GREEN, alpha=0.85)
+                          color=DEEP_GREEN, alpha=GROUPED_BAR_ALPHA)
 
-    ax.set_xlabel('Template', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Mean Relative Error (%)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('Template', fontsize=LABEL_FONTSIZE, fontweight='bold')
+    ax.set_ylabel('Mean Relative Error (%)', fontsize=LABEL_FONTSIZE, fontweight='bold')
     ax.set_xticks(x)
-    ax.set_xticklabels(templates, fontsize=11)
-    ax.legend(fontsize=11, loc='upper right')
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
-
-    ax.set_ylim(0, y_cap * 1.1)
-    ax.set_yticks(np.arange(0, y_cap + 1, 10))
+    ax.set_xticklabels(templates, fontsize=TICK_FONTSIZE)
+    ax.legend(fontsize=TICK_FONTSIZE, loc='upper right')
+    ax.grid(axis=GRID_AXIS, alpha=GRID_ALPHA, linestyle=GRID_LINESTYLE)
 
     for bar, val in zip(bars_static, static_values):
-        color = DEEP_RED if val > y_cap else 'black'
+        color = CAP_OVERFLOW_COLOR if val > y_cap else 'black'
         ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
-                f'{val:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
+                f'{val:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
     for bar, val in zip(bars_dynamic, dynamic_values):
-        color = DEEP_RED if val > y_cap else 'black'
+        color = CAP_OVERFLOW_COLOR if val > y_cap else 'black'
         ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(),
-                f'{val:.1f}%', ha='center', va='bottom', fontsize=7, color=color)
+                f'{val:.1f}%', ha='center', va='bottom', fontsize=GROUPED_BAR_LABEL_FONTSIZE, color=color)
 
     plt.tight_layout()
+    apply_top_margin(ax, fig, DYNAMIC_MRE_Y_SCALE, DYNAMIC_MRE_Y_STEP)
 
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
