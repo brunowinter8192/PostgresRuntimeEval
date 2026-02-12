@@ -11,7 +11,6 @@ This DOCS.md covers multiple subdirectories at root level. Per CLAUDE.md convent
 ```
 Misc/
 ├── DOCS.md
-├── Learning-based_Query_Performance_Modeling_and_Pred.md   (Base paper)
 ├── Setup/                                                   [documented below]
 │   ├── A_Setup.md                                          (Anhang A Quelldatei)
 │   ├── Postgres_Docker/                                    [documented below]
@@ -21,11 +20,7 @@ Misc/
 ├── Cache_Validation/                                        [documented below]
 ├── FFS_Comparison/                                          [documented below]
 ├── Pass_Through/                                            [documented below]
-├── Q17_Q20/                                                 [documented below]
-└── specification/
-    └── auto/
-        ├── specification.md                                 (TPC-H Specification)
-        └── specification_clean.md                           (TPC-H Specification, cleaned)
+└── Q17_Q20/                                                 [documented below]
 ```
 
 ---
